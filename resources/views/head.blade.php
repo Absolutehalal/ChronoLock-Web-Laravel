@@ -23,7 +23,7 @@
 
     <link href="plugins/daterangepicker/daterangepicker.css" rel="stylesheet" />
 
-    <!-- MONO CSS -->
+    <!-- ChronoLock CSS -->
     <link id="main-css-href" rel="stylesheet" href="css/style.css" />
 
     <!-- FAVICON -->

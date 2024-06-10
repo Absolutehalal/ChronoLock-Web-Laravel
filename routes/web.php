@@ -2,13 +2,28 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\GoogleAuthController;
+use App\Http\Controllers\AdminController;
+use App\Http\Middleware\AuthenticateUser;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 //route for login page for all the users including the admin
 Route::get('/loginPage', [UserController::class, 'login'])->name('login');
+
+Route::get('auth/google', [GoogleAuthController::class, 'redirectToGoogle'])->name('login.google');
+Route::post('/loginWithEmail', [GoogleAuthController::class, 'loginWithEmail']);
+Route::get('auth/google/call-back', [GoogleAuthController::class, 'handleGoogleCallback']);
+Route::post('/logout', [GoogleAuthController::class, 'logout'])->name('logout');
+
+// Routes that need authentication
+Route::get('/adminPage', [AdminController::class, 'index'])->middleware(AuthenticateUser::class);
+
+
+
 
 //admin pages route
 Route::get('/adminPage', [UserController::class, 'index'])->name('index');
