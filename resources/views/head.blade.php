@@ -27,7 +27,7 @@
     <link id="main-css-href" rel="stylesheet" href="css/style.css" />
 
     <!-- FAVICON -->
-    <link href="images/favicon.png" rel="shortcut icon" />
+    <link href="images/chronolock-small.png" rel="shortcut icon" />
 
     <!-- CALENDAR -->
     <link href="plugins/fullcalendar/core-4.3.1/main.min.css" rel="stylesheet">
