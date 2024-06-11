@@ -53,7 +53,7 @@
 
                         @include('sweetalert::alert')
 
-                        <div>
+                        <!-- <div>
                             @if($errors->any())
                             <div class="col-lg-12">
                                 @foreach($errors->all() as $error)
@@ -69,16 +69,16 @@
                             @if(session()->has('success'))
                             <div class="alert alert-success">{{session('success')}}</div>
                             @endif
-                        </div>
+                        </div> -->
 
 
                         <form method="post" action="{{ route('login.user') }}">
                             @csrf
                             <div class="input-group mb-3">
-                                <input id="email" name="email" type="text" class="form-control form-control-lg bg-light fs-6" placeholder="Email address">
+                                <input id="email" name="email" type="text" class="form-control form-control-lg bg-light fs-6" placeholder="Email address" required>
                             </div>
                             <div class="input-group mb-1">
-                                <input id="password" name="password" type="password" class="form-control form-control-lg bg-light fs-6" placeholder="Password">
+                                <input id="password" name="password" type="password" class="form-control form-control-lg bg-light fs-6" placeholder="Password" required>
                             </div>
                             <div class="input-group mb-5 d-flex justify-content-between">
                                 <div class="form-check">

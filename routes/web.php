@@ -13,7 +13,7 @@ Route::get('/', function () {
 
 //route for login page for all the users including the admin
 Route::get('/login', [GoogleAuthController::class, 'login'])->name('login');
-Route::post('/login-user', [GoogleAuthController::class, 'loginUser'])->name('login.user');
+Route::post('/login', [GoogleAuthController::class, 'loginUser'])->name('login.user');
 Route::get('/auth/google', [GoogleAuthController::class, 'redirectToGoogle'])->name('login.google');
 Route::get('/auth/google/call-back', [GoogleAuthController::class, 'handleGoogleCallback'])->name('login.google.callback');
 Route::post('/logout', [GoogleAuthController::class, 'logout'])->name('logout');

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -54,6 +55,8 @@ class GoogleAuthController extends Controller
             return redirect()->intended('/login');
         }
 
+
+        // Attempt to authenticate the user
         $data = $request->only('email', 'password');
 
         if (Auth::attempt($data)) {
@@ -66,6 +69,7 @@ class GoogleAuthController extends Controller
             return redirect()->intended('/adminPage');
         }
 
+        // Display an error message
         Alert::error('Error', 'Invalid email or password. Please try again.')
             ->autoClose(5000)
             ->timerProgressBar()
@@ -120,7 +124,7 @@ class GoogleAuthController extends Controller
                 ], [
                     'name' => $googleUser->name,
                     'email' => $googleUser->email,
-                    'password' => encrypt('12345678'), // A temporary password is set for new users
+                    'password' => Hash::make('12345678'), // A temporary password is set for new users
                     'avatar' => $googleUser->getAvatar(),
                 ]);
 
