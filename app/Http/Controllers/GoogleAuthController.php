@@ -43,7 +43,7 @@ class GoogleAuthController extends Controller
         }
 
         // Check if the password field is not valid
-        if (strlen($request->input('password')) < 5) {
+        if (strlen($request->input('password')) < 8) {
             // Display an alert
             Alert::warning('Warning', 'Password is invalid.')
                 ->autoClose(3000)
@@ -74,7 +74,7 @@ class GoogleAuthController extends Controller
         return redirect()->intended('/login');
     }
 
-    
+
     public function redirectToGoogle()
     {
         return Socialite::driver('google')->redirect();
