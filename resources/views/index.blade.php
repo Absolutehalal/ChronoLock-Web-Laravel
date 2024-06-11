@@ -37,6 +37,9 @@
     NProgress.start();
   </script>
 
+
+  @include('sweetalert::alert')
+
   <div id="toast"></div>
   @include('adminSideNav')
   <!-- ====================================

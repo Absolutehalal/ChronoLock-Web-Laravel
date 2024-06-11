@@ -9,10 +9,10 @@ class UserController extends Controller
 
     //functions for all the user including the head admin
 
-        //login
-        public function login(){
-            return view ('login');
-        }
+        // //login
+        // public function login(){
+        //     return view ('login');
+        // }
 
     //admin functions
 

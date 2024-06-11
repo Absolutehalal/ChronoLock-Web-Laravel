@@ -33,6 +33,10 @@
     <link href="plugins/fullcalendar/core-4.3.1/main.min.css" rel="stylesheet">
     <link href="plugins/fullcalendar/daygrid-4.3.0/main.min.css" rel="stylesheet">
 
+    <!-- SWEET ALERT -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.11.1/dist/sweetalert2.all.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.11.1/dist/sweetalert2.min.css" rel="stylesheet">
+
     <!--
     HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries
   -->
