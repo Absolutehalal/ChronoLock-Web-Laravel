@@ -22,7 +22,11 @@ Route::post('/logout', [GoogleAuthController::class, 'logout'])->name('logout');
 //admin pages route
 Route::get('/adminPage', [UserController::class, 'index'])->name('index');
 Route::get('/pendingRFIDPage', [UserController::class,'pendingRFID'])->name('pendingRFID');
-Route::get('/userManagementPage', [UserController::class,'userManagement'])->name('userManagement');
+
+//userManagement
+Route::get('/userManagementPage', [UserController::class, 'userManagement'])->name('userManagement');
+Route::put('/userManagementPage/{user}/update', [UserController::class, 'updateUser'])->name('updateUser');
+
 Route::get('/scheduleManagementPage', [UserController::class,'adminScheduleManagement'])->name('adminScheduleManagement');
 Route::get('/studentAttendanceManagementPage', [UserController::class, 'studentAttendanceManagement'])->name('studentAttendanceManagement');
 Route::get('/instructorAttendanceManagementPage', [UserController::class, 'instructorAttendanceManagement'])->name('instructorAttendanceManagement');

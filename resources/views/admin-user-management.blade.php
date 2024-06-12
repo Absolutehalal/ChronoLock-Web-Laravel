@@ -26,6 +26,7 @@
     });
     NProgress.start();
   </script>
+    @include('sweetalert::alert')
     @include('adminSideNav')
   <!-- ====================================
       ——— PAGE WRAPPER
@@ -93,22 +94,21 @@
               <thead class="table-dark">
                 <tr>
                   <th>#</th>
-                  <th>Name</th>
-                  <th>ID</th>
+                  <th>FirstName</th>
+                  <th>LastName</th>
+                  <th>UserType</th>
                   <th>Email</th>
-                  <th>Gender</th>
-                  <th>Age</th>
                   <th>Action</th>
                 </tr>
               </thead>
               <tbody>
+                @foreach ($users as $user)
                 <tr>
-                  <td>1</td>
-                  <td>Lorzano, Ralph H.</td>
-                  <td>C21104744</td>
-                  <td>ralorzano@my.cspc.edu.ph</td>
-                  <td>Male</td>
-                  <td>22</td>
+                  <td> {{$user->id}} </td>
+                  <td> {{$user->firstName}} </td>
+                  <td> {{$user->lastName}} </td>
+                  <td> {{$user->userType}} </td>
+                  <td> {{$user->email}} </td>
                   <th>
                     <!-- Example single primary button -->
                     <div class="dropdown d-inline-block">
@@ -116,7 +116,7 @@
                         Actions
                       </button>
                       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <button class="dropdown-item" type="button" data-toggle="modal" data-target="#exampleModalForm">
+                        <button class="dropdown-item" type="button" data-toggle="modal" data-target="#editModal">
                           <i class="mdi mdi-circle-edit-outline text-warning"></i>
                           Edit</button>
                         <button class="dropdown-item">
@@ -126,32 +126,7 @@
                     </div>
                   </th>
                 </tr>
-
-                <tr>
-                  <td>2</td>
-                  <td>Sotto, Edward L.</td>
-                  <td>C21123333</td>
-                  <td>edwsotto@my.cspc.edu.ph</td>
-                  <td>Female</td>
-                  <td>22</td>
-                  <th>
-                    <!-- Example single primary button -->
-                    <div class="dropdown d-inline-block">
-                      <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
-                        Actions
-                      </button>
-                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <button class="dropdown-item" type="button" data-toggle="modal" data-target="#exampleModalForm">
-                          <i class="mdi mdi-circle-edit-outline text-warning"></i>
-                          Edit</button>
-                        <button class="dropdown-item">
-                          <i class="mdi mdi-trash-can text-danger"></i>
-                          Delete</button>
-                      </div>
-                    </div>
-                  </th>
-                </tr>
-
+                @endforeach
 
               </tbody>
             </table>
@@ -172,70 +147,80 @@
   </div>
   </div>
 
-  <div class="modal fade" id="exampleModalForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalFormTitle" aria-hidden="true">
+  <!-- Edit Modal -->
+  <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalFormTitle" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalFormTitle">Add New User</h5>
+          <h5 class="modal-title" id="exampleModalFormTitle">Edit User</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <div class="modal-body">
-          <form>
-            <div class="row">
+        <div class="modal-body"> 
 
+        <form method="post" action="{{route('updateUser', ['user' =>$user])}}">
+            @csrf
+            @method('put')
+
+            <div class="row">
               <div class="col-lg-6">
                 <div class="form-group">
-                  <label>Name</label>
-                  <input type="text" class="form-control border border-dark border border-dark" id="exampleInputRFID" placeholder="ex. Sotto, Edward L.">
+                  <label>First Name</label>
+                  <input type="text" class="form-control border border-dark border border-dark" id="firstName" name="firstName"
+                   placeholder="Enter New First Name" value="{{ $user->firstName }}">
                 </div>
               </div>
 
               <div class="col-lg-6">
                 <div class="form-group">
-                  <label>ID</label>
-                  <input type="text" class="form-control border border-dark" id="exampleInputUser" placeholder="Enter User ID">
+                  <label>Last Name</label>
+                  <input type="text" class="form-control border border-dark border border-dark" id="lastName" name="lastName"
+                   placeholder="Enter New Last Name" value="{{ $user->lastName }}">
+                </div>
+              </div>
+
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label>User Type</label>
+                    <select class="form-select form-control border border-dark" aria-label="Default select example" id="userType" name="userType">
+                      <option selected  value="{{ $user->userType }}" hidden>{{ $user->userType }}</option>
+                      <option value="Instructor">Instructor</option>
+                      <option value="Student">Student</option>
+                      <option value="Faculty">Faculty</option>
+                      <option value="Staff">Staff</option>
+                      <option value="Student Aide">Student Aide</option>
+                    </select>
                 </div>
               </div>
 
               <div class="col-lg-6">
                 <div class="form-group">
                   <label>Email</label>
-                  <input type="text" class="form-control border border-dark" id="exampleInputUser" placeholder="ex. edsotto@my.cspc.edu.ph">
+                  <input type="text" class="form-control border border-dark" id="email" name="email" 
+                  placeholder="ex. chrono@my.cspc.edu.ph" value="{{ $user->email }}">
                 </div>
               </div>
-
 
               <div class="col-lg-6">
                 <div class="form-group">
-                  <label>Gender</label>
-                  <div>
-                    <select class="form-select form-control border border-dark" aria-label="Default select example">
-                      <option selected disabled>Select Gender</option>
-                      <option value="1">Male</option>
-                      <option value="2">Female</option>
-                    </select>
-                  </div>
+                  <label>Student ID</label>"
+                  <input type="text" class="form-control border border-dark" id="google_id" name="google_id"
+                  placeholder="Enter User ID" value="{{$user->google_id}}">
                 </div>
               </div>
+            </div> <!-- Modal Boday End-->
 
-              <!-- <div class="col-lg-6">
-                <div class="form-group">
-                  <label></label>
-                  <input type="text" class="form-control border border-dark" id="exampleInputUser" placeholder="Enter User Name">
-                </div>
-              </div> -->
-
-            </div>
-          </form>
-        </div>
+           <!-- Modal Footer --> 
         <div class="modal-footer">
           <button type="button" class="btn btn-danger btn-pill" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary btn-pill">Save</button>
+          <button type="submit" class="btn btn-primary btn-pill">Save</button>
         </div>
+
+      </form>
+
       </div>
     </div>
   </div>
-  
+
   @include('footer')
