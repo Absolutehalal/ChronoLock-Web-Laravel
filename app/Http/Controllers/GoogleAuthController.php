@@ -19,10 +19,9 @@ class GoogleAuthController extends Controller
         // Check if the user is already authenticated
         if (Auth::check()) {
             return redirect('/adminPage');
-        }else{
+        }
         // Default to showing the login page
         return view('login');
-        }
     }
 
     public function loginUser(Request $request)
