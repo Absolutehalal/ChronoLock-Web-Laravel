@@ -2151,7 +2151,7 @@ pre code {
   opacity: 1;
 }
 .form-control:disabled, .form-control[readonly] {
-  background-color: #000000;
+  background-color: #D3D3D3;
   font-weight: bold;
   opacity: 1;
 }
@@ -17412,5 +17412,6 @@ html[dir=rtl] .sidebar li > a .caret:before {
   top: 32%;
   right: 35%;
 }
+
 
 /*# sourceMappingURL=style.css.map */

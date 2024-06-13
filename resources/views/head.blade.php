@@ -8,6 +8,8 @@
     <!-- Show password on Add user  -->
     <script defer src="js/password.js"></script>
 
+    <script defer src="js/passwordGenerator.js"></script>
+
     <!-- Active Page -->
     <script defer src="js/dataTable.js"></script>
 

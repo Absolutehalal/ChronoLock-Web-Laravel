@@ -6,7 +6,7 @@
         </button>
 
         @if(Auth::check())
-        <span class="page-title">Hello, {{ Auth::user()->name }}!</span>
+        <span class="page-title">Hello, {{ Auth::user()->accountName }}!</span>
         @endif
 
         <div class="navbar-right">

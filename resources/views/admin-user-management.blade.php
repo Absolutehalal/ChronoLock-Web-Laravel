@@ -146,7 +146,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="addUser">Add New User</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <button type="button" class="close" id="upClose" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -196,10 +196,10 @@
                   <div class="form-group">
                     <label>Temporary Password</label>
                     <div class="input-group">
-                      <input type="password" class="form-control border border-dark" id="password" name="password" placeholder="Generate Password">
+                      <input type="password" class="form-control border border-dark" id="password" name="password" placeholder="Generate Password" disabled>
                       <i class="fa fa-eye-slash" id="show-password"></i>
                       <div class="input-group-append">
-                        <button class="btn btn-primary btn-md fw-bold" type="button">Generate</button>
+                        <button class="btn btn-primary btn-md fw-bold" type="button" id="generate-password">Generate</button>
                       </div>
                     </div>
                   </div>
@@ -295,5 +295,5 @@
     </div>
   </div>
   </div>
-   
+  
   @include('footer')
