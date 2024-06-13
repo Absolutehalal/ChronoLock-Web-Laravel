@@ -28,7 +28,7 @@ class GoogleAuthController extends Controller
     {
         $request->validate([
             'email' => 'required|email',
-            'password'  => 'required'
+            'password' => 'required|string',
         ]);
 
         // Check if the email field is not valid
@@ -103,6 +103,7 @@ class GoogleAuthController extends Controller
                 return redirect('/login');
             }
 
+            
             // Find user by Google ID
             $existingUser = User::where('google_id', $googleUser->id)->first();
 
@@ -124,7 +125,7 @@ class GoogleAuthController extends Controller
                 ], [
                     'name' => $googleUser->name,
                     'email' => $googleUser->email,
-                    'password' => Hash::make('12345678'), // A temporary password is set for new users
+                    'password' => '12345', // A temporary password is set for new users - Hash::make('12345678'),
                     'avatar' => $googleUser->getAvatar(),
                 ]);
 

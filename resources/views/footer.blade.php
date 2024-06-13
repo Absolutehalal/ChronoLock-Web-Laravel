@@ -123,6 +123,18 @@
     });
 </script>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var input = document.getElementById('excel-file');
+        var label = document.querySelector('label[for="excel-file"]');
+
+        input.addEventListener('change', function(event) {
+            var fileName = event.target.files[0] ? event.target.files[0].name : 'Choose file';
+            label.textContent = fileName;
+        });
+    });
+</script>
+
 <script src="js/timedate.js"></script>
 
 <script src="plugins/jquery/jquery.min.js"></script>
@@ -160,6 +172,11 @@
 <script defer src="https://cdn.datatables.net/responsive/3.0.2/js/responsive.dataTables.js"></script>
 <script defer src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
 
+<!-- Include DataTables Search Highlight Plugin -->
+<script src="https://cdn.datatables.net/plug-ins/1.10.21/features/searchHighlight/dataTables.searchHighlight.min.js"></script>
+<!-- Include Mark.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js"></script>
 
 <!--  -->
 </body>
