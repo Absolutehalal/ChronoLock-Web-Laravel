@@ -17402,4 +17402,15 @@ html[dir=rtl] .sidebar li > a .caret:before {
 .copyright p {
   font-weight: 500;
 }
+
+/* added css */
+
+.fa-eye-slash{
+  position: absolute;
+  cursor: pointer;
+  color: black;
+  top: 32%;
+  right: 35%;
+}
+
 /*# sourceMappingURL=style.css.map */

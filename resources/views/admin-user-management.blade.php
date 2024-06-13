@@ -75,7 +75,7 @@
 
           <div class="col-md-3 d-flex justify-content-end">
             <div class="dropdown d-inline-block mb-2 rounded-2">
-              <button class="btn btn-warning fw-bold" type="button" data-toggle="modal" data-target="#exampleModalForm">
+              <button class="btn btn-warning fw-bold" type="button" data-toggle="modal" data-target="#addUserModal">
                 <i class="mdi mdi-account-plus"></i>
                 Add New User
               </button>
@@ -85,7 +85,8 @@
 
         <!-- END -->
 
-        <div class="card card-default">
+  <!-- table -->
+  <div class="card card-default">
           <div class="card-header">
             <h1>User Management</h1>
           </div>
@@ -116,7 +117,7 @@
                         Actions
                       </button>
                       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <button class="dropdown-item" type="button" data-toggle="modal" data-target="#editModal">
+                        <button class="dropdown-item" type="button" data-toggle="modal" data-target="#updateUserModal">
                           <i class="mdi mdi-circle-edit-outline text-warning"></i>
                           Edit</button>
                         <button class="dropdown-item">
@@ -127,32 +128,103 @@
                   </th>
                 </tr>
                 @endforeach
-
               </tbody>
             </table>
 
           </div>
         </div>
-
-
-
-
       </div>
-
-
-
-
     </div>
   </div>
   </div>
   </div>
 
-  <!-- Edit Modal -->
-  <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalFormTitle" aria-hidden="true">
+
+ <!-- Add User Modal -->
+ <div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="addUser" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalFormTitle">Edit User</h5>
+          <h5 class="modal-title" id="addUser">Add New User</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body"> 
+
+          <form method="post" action="">
+            @csrf 
+            @method('post')
+
+              <div class="row">
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label>First Name</label>
+                    <input type="text" class="form-control border border-dark border border-dark" id="firstName" name="firstName" placeholder="Enter First Name"/>
+                  </div>
+                </div>
+
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label>Last Name</label>
+                    <input type="text" class="form-control border border-dark border border-dark" id="lastName" name="lastName" placeholder="Enter Last Name"/>
+                  </div>
+                </div>
+
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label>User Type</label>
+                      <select class="form-select form-control border border-dark" aria-label="Default select example" id="userType" name="userType">
+                        <option selected  value="" hidden>---Select User Type---</option>
+                        <option value="Instructor">Instructor</option>
+                        <option value="Student">Student</option>
+                        <option value="Faculty">Faculty</option>
+                        <option value="Staff">Staff</option>
+                        <option value="Student Aide">Student Aide</option>
+                      </select>
+                  </div>
+                </div>
+
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label>Email</label>
+                    <input type="text" class="form-control border border-dark border border-dark" id="email" name="email" placeholder="Enter Email"/>
+                  </div>
+                </div>
+
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label>Temporary Password</label>
+                    <div class="input-group">
+                      <input type="password" class="form-control border border-dark" id="password" name="password" placeholder="Generate Password">
+                      <i class="fa fa-eye-slash" id="show-password"></i>
+                      <div class="input-group-append">
+                        <button class="btn btn-primary btn-md fw-bold" type="button">Generate</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div> <!-- Modal Boday End-->
+
+              <!-- Modal Footer --> 
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger btn-pill" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary btn-pill">Save</button>
+            </div>
+
+          </form>
+
+        </div>
+    </div>
+  </div>
+</div>      
+
+  <!-- Update User Modal -->
+  <div class="modal fade" id="updateUserModal" tabindex="-1" role="dialog" aria-labelledby="updateUser" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="updateUser">Edit User</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -222,5 +294,6 @@
       </div>
     </div>
   </div>
-
+  </div>
+   
   @include('footer')

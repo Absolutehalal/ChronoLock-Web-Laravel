@@ -307,7 +307,7 @@
                 @if(Auth::check())
                     <button class="dropdown-toggle nav-link" data-toggle="dropdown">
                         <img src="{{ Auth::user()->avatar }}" class="user-image rounded-circle" alt="User Image" />
-                        <span class="d-none d-lg-inline-block">{{ Auth::user()->name }}</span>
+                        <span class="d-none d-lg-inline-block">{{ Auth::user()->accountName }}</span>
                     </button>
                 @endif
                     <ul class="dropdown-menu dropdown-menu-right">

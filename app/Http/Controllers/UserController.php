@@ -48,8 +48,11 @@ class UserController extends Controller
                 'email' => 'required',
                 'google_id' => 'required',
             ]);
+
             $email = $request->get('email');
             $emailDomain = substr(strrchr($email, "@"), 1);
+            $checkEmail = User::where('email', 'LIKE',  $email)->value('email');
+
             if ($emailDomain !== 'my.cspc.edu.ph') {
 
                 Alert::error('Error', 'Invalid email. Please use a CSPC email.')
@@ -58,10 +61,10 @@ class UserController extends Controller
                     ->showCloseButton();
 
                 return redirect('/userManagementPage');
-            }
-            $checkEmail = User::where('email', 'LIKE',  $email)->value('email');
-            if($checkEmail == $email){
+            }else if($checkEmail == $email){
+
                 $user->update($data);
+
                 Alert::success('Success', 'Update successful.')
                     ->autoClose(3000)
                     ->timerProgressBar()
@@ -69,6 +72,7 @@ class UserController extends Controller
     
                 return redirect()->intended('/userManagementPage');
             }else if($checkEmail != ""){
+
                 Alert::error('Error', 'Email already exist. Please use another email.')
                     ->autoClose(5000)
                     ->timerProgressBar()
