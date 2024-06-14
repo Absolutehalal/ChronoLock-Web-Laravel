@@ -123,7 +123,7 @@ class GoogleAuthController extends Controller
                 $newUser = User::updateOrCreate([
                     'google_id' => $googleUser->id,
                 ], [
-                    'name' => $googleUser->name,
+                    'accountName' => $googleUser->name,
                     'email' => $googleUser->email,
                     'password' => '12345', // A temporary password is set for new users - Hash::make('12345678'),
                     'avatar' => $googleUser->getAvatar(),

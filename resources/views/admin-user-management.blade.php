@@ -105,9 +105,8 @@
                             <thead class="table-dark">
                                 <tr>
                                     <th>#</th>
-                                    <th>Name</th>
-                                    <!-- <th>Firstname</th>
-                                    <th>Lastname</th> -->
+                                    <th>Firstname</th>
+                                    <th>Lastname</th>
                                     <th>User Email</th>
                                     <th>User ID</th>
                                     <th>User Type</th>
@@ -117,13 +116,12 @@
                             <tbody>
                                 @foreach($users as $user)
                                 <tr>
-                                    <td> {{$user->id}} </td>
-                                    <td> {{$user->name}} </td>
-                                    <!-- <td> {{$user->firstname}} </td>
-                                    <td> {{$user->lastname}} </td> -->
-                                    <td> {{$user->email}} </td>
-                                    <td> {{$user->uid}} </td>
-                                    <td> {{$user->type}} </td>
+                                    <td> {{$user->id       }} </td>
+                                    <td> {{$user->firstName}} </td>
+                                    <td> {{$user->lastName }} </td>
+                                    <td> {{$user->email    }} </td>
+                                    <td> {{$user->idNumber }} </td>
+                                    <td> {{$user->userType }} </td>
                                     <th>
                                         <!-- Example single primary button -->
                                         <div class="dropdown d-inline-block">
