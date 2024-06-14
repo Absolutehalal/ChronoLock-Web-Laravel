@@ -41,6 +41,7 @@
   @include('sweetalert::alert')
 
   <div id="toast"></div>
+  
   @include('adminSideNav')
   <!-- ====================================
       ——— PAGE WRAPPER

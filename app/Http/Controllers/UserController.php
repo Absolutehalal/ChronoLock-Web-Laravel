@@ -11,23 +11,6 @@ use RealRashid\SweetAlert\Facades\Alert;
 class UserController extends Controller
 {
 
-    //functions for all the user including the head admin
-
-
-    // public function import_excel(Request $request)
-    // {
-    //     Excel::import(new UserImport, $request->file('excel-file'));
-
-    //     toast('Imported Successfully', 'success')
-    //         ->autoClose(5000)
-    //         ->timerProgressBar()
-    //         ->showCloseButton();
-
-    //     // Redirect back to the intended page
-    //     return redirect()->intended('/userManagementPage');
-    // }
-
-
     public function import_excel(Request $request)
     {
         try {
@@ -36,22 +19,14 @@ class UserController extends Controller
             $request->validate([
                 'excel-file' => 'required|file|mimes:xls,xlsx'
             ]);
+
             // Create a new instance of the import class
             $import = new UserImport;
 
             // Import the file using Laravel Excel
             Excel::import($import, $request->file('excel-file'));
 
-            // Check for errors
-            $errors = $import->getErrors();
-
-            if (!empty($errors)) {
-                // If there are errors, display them using SweetAlert
-                toast('Users already exist', 'info')->autoClose(3000)->timerProgressBar()->showCloseButton();
-            } else {
-                // If no errors, display success message
-                toast('Import successful.', 'success')->autoClose(3000)->timerProgressBar()->showCloseButton();
-            }
+            toast('Import successfully.', 'success')->autoClose(3000)->timerProgressBar()->showCloseButton();
 
             // Redirect back to the form page
             return redirect()->intended('/userManagementPage');
@@ -70,6 +45,11 @@ class UserController extends Controller
         return view('admin-user-management', ['users' => $users]);
     }
 
+
+    public function FourOFour()
+    {
+        return view('404');
+    }
 
     //admin functions
 

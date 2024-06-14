@@ -71,6 +71,7 @@ class UserImport implements ToCollection, ToModel, WithHeadingRow
                 'idNumber'  => $row['uid'      ],
                 'userType'  => $row['type'     ],
             ]);
+            
             return $existingUser; // Return the updated user
         } 
         else {
