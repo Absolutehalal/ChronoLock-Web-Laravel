@@ -7,8 +7,12 @@
 
     <!-- Show password on Add user  -->
     <script defer src="js/password.js"></script>
-
+    
+    <!-- Auto Generate password -->
     <script defer src="js/passwordGenerator.js"></script>
+
+    <!-- csrf-token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- Active Page -->
     <script defer src="js/dataTable.js"></script>
@@ -55,5 +59,5 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
     <script src="plugins/nprogress/nprogress.js"></script>
-
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
  

@@ -17413,5 +17413,8 @@ html[dir=rtl] .sidebar li > a .caret:before {
   right: 35%;
 }
 
+.error{
+  color:red;
+}
 
 /*# sourceMappingURL=style.css.map */

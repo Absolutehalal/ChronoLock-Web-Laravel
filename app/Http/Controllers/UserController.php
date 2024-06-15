@@ -5,6 +5,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -38,9 +39,16 @@ class UserController extends Controller
             return view('admin-user-management', ['users' => $users]);
         }
 
+        public function fetchUsers(){
+            $users = User::all('id','firstName','lastName','userType','email');
+            return response()->json([
+                'users'=>$users,
+            ]);
+        }
+
          //user management page functions
 
-         public function updateUser(User $user, Request $request){
+        public function updateUser(User $user, Request $request){
             $data = $request->validate([
                 'firstName'=>'required',
                 'lastName'=>'required',
@@ -81,6 +89,47 @@ class UserController extends Controller
                 return redirect('/userManagementPage');
             }
     }
+
+        public function addUser(Request $request){
+            $validator = Validator::make($request->all(), [
+                'firstName'=>'required',
+                'lastName' => 'required',
+                'userType' => 'required',
+                'email' => 'required|email',
+                'password' => 'required',
+            ]);
+
+            $email = $request->get('email');
+            $emailDomain = substr(strrchr($email, "@"), 1);
+            $checkEmail = User::where('email', 'LIKE',  $email)->value('email');
+
+
+            if($validator->fails())
+            {
+                return response()->json([
+                    'status'=>400,
+                    'errors'=>$validator->messages()
+                ]);
+            }else{
+                if ($emailDomain !== 'my.cspc.edu.ph') {
+                        return response()->json([
+                            'status'=>300,
+                        ]);
+
+                }else{
+                $user = new User;
+                $user->firstName = $request->input('firstName');
+                $user->lastName = $request->input('lastName');
+                $user->userType = $request->input('userType');
+                $user->email = $request->input('email');
+                $user->password = $request->input('password');
+                $user->save();
+                return response()->json([
+                    'status'=>200,
+                ]);
+            }
+        }
+        }
 
         //schedule management page
         public function adminScheduleManagement(){

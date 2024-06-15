@@ -25,7 +25,9 @@ Route::get('/pendingRFIDPage', [UserController::class,'pendingRFID'])->name('pen
 
 //userManagement
 Route::get('/userManagementPage', [UserController::class, 'userManagement'])->name('userManagement');
+Route::get('/fetchUsers', [UserController::class, 'fetchUsers'])->name('fetchUsers');
 Route::put('/userManagementPage/{user}/update', [UserController::class, 'updateUser'])->name('updateUser');
+Route::post('/userManagementPage', [UserController::class, 'addUser'])->name('addUser');
 
 Route::get('/scheduleManagementPage', [UserController::class,'adminScheduleManagement'])->name('adminScheduleManagement');
 Route::get('/studentAttendanceManagementPage', [UserController::class, 'studentAttendanceManagement'])->name('studentAttendanceManagement');

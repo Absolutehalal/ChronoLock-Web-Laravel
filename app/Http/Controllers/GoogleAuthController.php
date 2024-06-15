@@ -120,21 +120,21 @@ class GoogleAuthController extends Controller
                 return redirect()->intended('/adminPage');
 
              }
-            // else {  ----->user for development
-            //     // If user doesn't exist, create a new one
-            //     $newUser = User::updateOrCreate([
-            //         'google_id' => $googleUser->id,
-            //     ], [
-            //         'accountName' => $googleUser->name,
-            //         'email' => $googleUser->email,
-            //         'password' => Hash::make('12345678'), // A temporary password is set for new users
-            //         'avatar' => $googleUser->getAvatar(),
-            //     ]);
+            else {  
+                // If user doesn't exist, create a new one
+                $newUser = User::updateOrCreate([
+                    'google_id' => $googleUser->id,
+                ], [
+                    'accountName' => $googleUser->name,
+                    'email' => $googleUser->email,
+                    'password' => Hash::make('12345678'), // A temporary password is set for new users
+                    'avatar' => $googleUser->getAvatar(),
+                ]);
 
-            //     Auth::login($newUser, true);
-            // }
+                Auth::login($newUser, true);
+            }
 
-            // Redirect the user to the admin page after successful authentication
+           // Redirect the user to the admin page after successful authentication
 
             Alert::success('Success', 'Login successful.')
                 ->autoClose(3000)

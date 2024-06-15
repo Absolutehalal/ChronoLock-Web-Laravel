@@ -16,6 +16,10 @@ passwordGenerate.onclick = function(){
 }
 
 upClose.onclick = function(){
+    $('#firstName').val("");
+    $('#lastName').val("");
+    $('#userType').val("");
+    $('#email').val("");
     $(passwordValue).val("");
 
 }

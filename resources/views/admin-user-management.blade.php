@@ -102,32 +102,32 @@
                   <th>Action</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody >
                 @foreach ($users as $user)
-                <tr>
-                  <td> {{$user->id}} </td>
-                  <td> {{$user->firstName}} </td>
-                  <td> {{$user->lastName}} </td>
-                  <td> {{$user->userType}} </td>
-                  <td> {{$user->email}} </td>
-                  <th>
-                    <!-- Example single primary button -->
-                    <div class="dropdown d-inline-block">
-                      <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
-                        Actions
-                      </button>
-                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <button class="dropdown-item" type="button" data-toggle="modal" data-target="#updateUserModal">
-                          <i class="mdi mdi-circle-edit-outline text-warning"></i>
-                          Edit</button>
-                        <button class="dropdown-item">
-                          <i class="mdi mdi-trash-can text-danger"></i>
-                          Delete</button>
+                  <tr>
+                    <td> {{$user->id}} </td>
+                    <td> {{$user->firstName}} </td>
+                    <td> {{$user->lastName}} </td>
+                    <td> {{$user->userType}} </td>
+                    <td> {{$user->email}} </td>
+                    <th>
+                      <!-- Example single primary button -->
+                      <div class="dropdown d-inline-block">
+                        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+                          Actions
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                          <button class="dropdown-item" type="button" data-toggle="modal" data-target="#updateUserModal">
+                            <i class="mdi mdi-circle-edit-outline text-warning"></i>
+                            Edit</button>
+                          <button class="dropdown-item">
+                            <i class="mdi mdi-trash-can text-danger"></i>
+                            Delete</button>
+                        </div>
                       </div>
-                    </div>
-                  </th>
-                </tr>
-                @endforeach
+                    </th>
+                  </tr>
+                  @endforeach
               </tbody>
             </table>
 
@@ -138,8 +138,7 @@
   </div>
   </div>
   </div>
-
-
+  
  <!-- Add User Modal -->
  <div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="addUser" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
@@ -151,13 +150,13 @@
           </button>
         </div>
         <div class="modal-body"> 
-
-          <form method="post" action="">
-            @csrf 
+          <form method="post" action="{{route('addUser')}}">
+            @csrf
             @method('post')
 
               <div class="row">
                 <div class="col-lg-6">
+                <ul id="firstNameError"></ul>
                   <div class="form-group">
                     <label>First Name</label>
                     <input type="text" class="form-control border border-dark border border-dark" id="firstName" name="firstName" placeholder="Enter First Name"/>
@@ -165,6 +164,7 @@
                 </div>
 
                 <div class="col-lg-6">
+                <ul id="lastNameError"></ul>
                   <div class="form-group">
                     <label>Last Name</label>
                     <input type="text" class="form-control border border-dark border border-dark" id="lastName" name="lastName" placeholder="Enter Last Name"/>
@@ -172,6 +172,7 @@
                 </div>
 
                 <div class="col-lg-6">
+                <ul id="userTypeError"></ul>
                   <div class="form-group">
                     <label>User Type</label>
                       <select class="form-select form-control border border-dark" aria-label="Default select example" id="userType" name="userType">
@@ -186,6 +187,7 @@
                 </div>
 
                 <div class="col-lg-6">
+                <ul id="emailError"></ul>
                   <div class="form-group">
                     <label>Email</label>
                     <input type="text" class="form-control border border-dark border border-dark" id="email" name="email" placeholder="Enter Email"/>
@@ -193,10 +195,11 @@
                 </div>
 
                 <div class="col-lg-6">
+                <ul id="passwordError"></ul>
                   <div class="form-group">
                     <label>Temporary Password</label>
                     <div class="input-group">
-                      <input type="password" class="form-control border border-dark" id="password" name="password" placeholder="Generate Password" disabled>
+                      <input type="password" class="form-control border border-dark" id="password" name="password" placeholder="Generate Password" readonly="true">
                       <i class="fa fa-eye-slash" id="show-password"></i>
                       <div class="input-group-append">
                         <button class="btn btn-primary btn-md fw-bold" type="button" id="generate-password">Generate</button>
@@ -209,7 +212,7 @@
               <!-- Modal Footer --> 
             <div class="modal-footer">
               <button type="button" class="btn btn-danger btn-pill" data-dismiss="modal">Close</button>
-              <button type="submit" class="btn btn-primary btn-pill">Save</button>
+              <button type="submit" class="btn btn-primary btn-pill addUser">Save</button>
             </div>
 
           </form>
@@ -231,7 +234,7 @@
         </div>
         <div class="modal-body"> 
 
-        <form method="post" action="{{route('updateUser', ['user' =>$user])}}">
+        <form method="post" action="">
             @csrf
             @method('put')
 
@@ -240,7 +243,7 @@
                 <div class="form-group">
                   <label>First Name</label>
                   <input type="text" class="form-control border border-dark border border-dark" id="firstName" name="firstName"
-                   placeholder="Enter New First Name" value="{{ $user->firstName }}">
+                   placeholder="Enter New First Name" value="">
                 </div>
               </div>
 
@@ -248,7 +251,7 @@
                 <div class="form-group">
                   <label>Last Name</label>
                   <input type="text" class="form-control border border-dark border border-dark" id="lastName" name="lastName"
-                   placeholder="Enter New Last Name" value="{{ $user->lastName }}">
+                   placeholder="Enter New Last Name" value="">
                 </div>
               </div>
 
@@ -256,7 +259,7 @@
                 <div class="form-group">
                   <label>User Type</label>
                     <select class="form-select form-control border border-dark" aria-label="Default select example" id="userType" name="userType">
-                      <option selected  value="{{ $user->userType }}" hidden>{{ $user->userType }}</option>
+                      <option selected  value="" hidden></option>
                       <option value="Instructor">Instructor</option>
                       <option value="Student">Student</option>
                       <option value="Faculty">Faculty</option>
@@ -270,7 +273,7 @@
                 <div class="form-group">
                   <label>Email</label>
                   <input type="text" class="form-control border border-dark" id="email" name="email" 
-                  placeholder="ex. chrono@my.cspc.edu.ph" value="{{ $user->email }}">
+                  placeholder="ex. chrono@my.cspc.edu.ph" value="">
                 </div>
               </div>
 
@@ -278,7 +281,7 @@
                 <div class="form-group">
                   <label>Student ID</label>"
                   <input type="text" class="form-control border border-dark" id="google_id" name="google_id"
-                  placeholder="Enter User ID" value="{{$user->google_id}}">
+                  placeholder="Enter User ID" value="">
                 </div>
               </div>
             </div> <!-- Modal Boday End-->
@@ -296,4 +299,138 @@
   </div>
   </div>
   
+  <script>
+     import { Toast } from 'bootstrap.esm.min.js'
+const firstName = document.getElementById
+("firstName");
+const lastName = document.getElementById
+("lastName");
+const userType = document.getElementById
+("userType");
+const email = document.getElementById
+("email");
+const password = document.getElementById
+("password");
+
+ 
+   $(document).ready(function () {
+    fetchUsers();
+
+function fetchUsers() {
+
+    $.ajax({
+        type: "GET",
+        url: "/fetchUsers",
+        dataType: "json",
+        success: function (response) {
+          $('tbody').html("");
+                    $.each(response.users, function (key, item) {
+                        $('tbody').append('<tr>\
+                  <td>' + item.id + '</td>\
+                  <td>' + item.firstName + '</td>\
+                  <td>' + item.lastName + '</td>\
+                  <td>' + item.userType + '</td>\
+                  <td>' + item.email + '</td>\
+                  <th>\
+                    <!-- Example single primary button -->\
+                    <div class="dropdown d-inline-block">\
+                      <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">Actions\
+                      </button>\
+                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">\
+                        <button class="dropdown-item" type="button" data-toggle="modal" data-target="#updateUserModal">\
+                          <i class="mdi mdi-circle-edit-outline text-warning"></i>\
+                          Edit</button>\
+                        <button class="dropdown-item">\
+                          <i class="mdi mdi-trash-can text-danger"></i>\
+                          Delete</button>\
+                      </div>\
+                    </div>\
+                  </th>\
+                </tr>');
+                    });
+                }
+            });
+        }
+        $(document).on('click', '.addUser', function (e) {
+            e.preventDefault();
+            $(this).text('Sending..');
+            var data = {
+                'firstName': $(firstName).val(),
+                'lastName': $(lastName).val(),
+                'userType': $(userType).val(),
+                'email': $(email).val(),
+                'password': $(password).val(),
+            }
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $.ajax({
+                type: "POST",
+                url: "/userManagementPage",
+                data: data,
+                dataType: "json",
+                success: function (response) {
+                    // console.log(response);
+                    if (response.status == 400) {
+                        $('#firstNameError').html("");
+                        $('#firstNameError').addClass('error');
+                        $('#lastNameError').html("");
+                        $('#lastNameError').addClass('error');
+                        $('#userTypeError').html("");
+                        $('#userTypeError').addClass('error');
+                        $('#emailError').html("");
+                        $('#emailError').addClass('error');
+                        $('#passwordError').html("");
+                        $('#passwordError').addClass('error');
+                        $.each(response.errors.firstName, function (key, err_value) {
+                            $('#firstNameError').append('<li>' + err_value + '</li>');
+                        });
+                        $.each(response.errors.lastName, function (key, err_value) {
+                            $('#lastNameError').append('<li>' + err_value + '</li>');
+                        });
+                        $.each(response.errors.userType, function (key, err_value) {
+                            $('#userTypeError').append('<li>' + err_value + '</li>');
+                        });
+                        $.each(response.errors.email, function (key, err_value) {
+                            $('#emailError').append('<li>' + err_value + '</li>');
+                        });
+                        $.each(response.errors.password, function (key, err_value) {
+                            $('#passwordError').append('<li>' + err_value + '</li>');
+                        });
+                        $('.addUser').text('Save');
+                    } else if(response.status == 200){
+                        $('#firstNameError').html("");
+                        $('#lastNameError').html("");
+                        $('#userTypeError').html("");
+                        $('#emailError').html("");
+                        $('#passwordError').html("");
+                        $('.addUser').text('Save');
+                        $("#addUserModal .close").click()
+                        fetchUsers();
+                    }
+                    else if(response.status == 300){
+                        $('#firstNameError').html("");
+                        $('#lastNameError').html("");
+                        $('#userTypeError').html("");
+                        $('#emailError').html("");
+                        $('#passwordError').html("");
+                        $('.addUser').text('Save');
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            text: "Invalid email. Please use a CSPC email.",
+                          });
+                        $("#addUserModal .close").click()
+                    }
+                }
+            });
+
+        });
+    });
+</script>
+ 
   @include('footer')
+  
