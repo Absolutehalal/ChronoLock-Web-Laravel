@@ -53,7 +53,7 @@ class UserController extends Controller
                 'firstName'=>'required',
                 'lastName'=>'required',
                 'userType' => 'required',
-                'email' => 'required',
+                'Email' => 'required',
                 'google_id' => 'required',
             ]);
 
@@ -77,7 +77,6 @@ class UserController extends Controller
                     ->autoClose(3000)
                     ->timerProgressBar()
                     ->showCloseButton();
-    
                 return redirect()->intended('/userManagementPage');
             }else if($checkEmail != ""){
 
@@ -98,7 +97,13 @@ class UserController extends Controller
                 'email' => 'required|email',
                 'password' => 'required',
             ]);
-
+            $data = $request->validate([
+                'firstName'=>'required',
+                'lastName'=>'required',
+                'userType' => 'required',
+                'email' => 'required',
+                'password' => 'required',
+            ]);
             $email = $request->get('email');
             $emailDomain = substr(strrchr($email, "@"), 1);
             $checkEmail = User::where('email', 'LIKE',  $email)->value('email');
@@ -117,13 +122,7 @@ class UserController extends Controller
                         ]);
 
                 }else{
-                $user = new User;
-                $user->firstName = $request->input('firstName');
-                $user->lastName = $request->input('lastName');
-                $user->userType = $request->input('userType');
-                $user->email = $request->input('email');
-                $user->password = $request->input('password');
-                $user->save();
+                    $user = new User;
                 return response()->json([
                     'status'=>200,
                 ]);

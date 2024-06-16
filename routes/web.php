@@ -28,6 +28,7 @@ Route::get('/userManagementPage', [UserController::class, 'userManagement'])->na
 Route::get('/fetchUsers', [UserController::class, 'fetchUsers'])->name('fetchUsers');
 Route::put('/userManagementPage/{user}/update', [UserController::class, 'updateUser'])->name('updateUser');
 Route::post('/userManagementPage', [UserController::class, 'addUser'])->name('addUser');
+Route::get('/userManagementPage/{user}/edit', [ProductController::class,'edit'])->name('edit');
 
 Route::get('/scheduleManagementPage', [UserController::class,'adminScheduleManagement'])->name('adminScheduleManagement');
 Route::get('/studentAttendanceManagementPage', [UserController::class, 'studentAttendanceManagement'])->name('studentAttendanceManagement');

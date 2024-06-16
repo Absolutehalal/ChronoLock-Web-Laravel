@@ -102,8 +102,8 @@
                   <th>Action</th>
                 </tr>
               </thead>
-              <tbody >
-                @foreach ($users as $user)
+                <tbody>
+                  @foreach ($users as $user)
                   <tr>
                     <td> {{$user->id}} </td>
                     <td> {{$user->firstName}} </td>
@@ -117,7 +117,7 @@
                           Actions
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                          <button class="dropdown-item" type="button" data-toggle="modal" data-target="#updateUserModal">
+                          <button class="dropdown-item" type="button" data-toggle="modal" data-target="#updateUserModal" value="{{$user->id}}">
                             <i class="mdi mdi-circle-edit-outline text-warning"></i>
                             Edit</button>
                           <button class="dropdown-item">
@@ -128,7 +128,7 @@
                     </th>
                   </tr>
                   @endforeach
-              </tbody>
+                </tbody>
             </table>
 
           </div>
@@ -222,8 +222,8 @@
   </div>
 </div>      
 
-  <!-- Update User Modal -->
-  <div class="modal fade" id="updateUserModal" tabindex="-1" role="dialog" aria-labelledby="updateUser" aria-hidden="true">
+    <!-- Update User Modal -->
+    <div class="modal fade" id="updateUserModal" tabindex="-1" role="dialog" aria-labelledby="updateUser" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -234,7 +234,7 @@
         </div>
         <div class="modal-body"> 
 
-        <form method="post" action="">
+        <form method="post" action="{{route('updateUser', ['user' =>$user])}}">
             @csrf
             @method('put')
 
@@ -243,7 +243,7 @@
                 <div class="form-group">
                   <label>First Name</label>
                   <input type="text" class="form-control border border-dark border border-dark" id="firstName" name="firstName"
-                   placeholder="Enter New First Name" value="">
+                   placeholder="Enter New First Name" value="{{ $user->firstName }}">
                 </div>
               </div>
 
@@ -251,7 +251,7 @@
                 <div class="form-group">
                   <label>Last Name</label>
                   <input type="text" class="form-control border border-dark border border-dark" id="lastName" name="lastName"
-                   placeholder="Enter New Last Name" value="">
+                   placeholder="Enter New Last Name" value="{{ $user->lastName }}">
                 </div>
               </div>
 
@@ -259,7 +259,7 @@
                 <div class="form-group">
                   <label>User Type</label>
                     <select class="form-select form-control border border-dark" aria-label="Default select example" id="userType" name="userType">
-                      <option selected  value="" hidden></option>
+                      <option selected  value="{{ $user->userType }}" hidden>{{ $user->userType }}</option>
                       <option value="Instructor">Instructor</option>
                       <option value="Student">Student</option>
                       <option value="Faculty">Faculty</option>
@@ -273,7 +273,7 @@
                 <div class="form-group">
                   <label>Email</label>
                   <input type="text" class="form-control border border-dark" id="email" name="email" 
-                  placeholder="ex. chrono@my.cspc.edu.ph" value="">
+                  placeholder="ex. chrono@my.cspc.edu.ph" value="{{ $user->email }}">
                 </div>
               </div>
 
@@ -281,7 +281,7 @@
                 <div class="form-group">
                   <label>Student ID</label>"
                   <input type="text" class="form-control border border-dark" id="google_id" name="google_id"
-                  placeholder="Enter User ID" value="">
+                  placeholder="Enter User ID" value="{{$user->google_id}}">
                 </div>
               </div>
             </div> <!-- Modal Boday End-->
@@ -298,9 +298,8 @@
     </div>
   </div>
   </div>
-  
   <script>
-     import { Toast } from 'bootstrap.esm.min.js'
+    
 const firstName = document.getElementById
 ("firstName");
 const lastName = document.getElementById
@@ -314,7 +313,7 @@ const password = document.getElementById
 
  
    $(document).ready(function () {
-    fetchUsers();
+    
 
 function fetchUsers() {
 
@@ -326,7 +325,7 @@ function fetchUsers() {
           $('tbody').html("");
                     $.each(response.users, function (key, item) {
                         $('tbody').append('<tr>\
-                  <td>' + item.id + '</td>\
+                  <td class="dtr-control dt-type-numeric sorting_1" tabindex="0">' + item.id + '</td>\
                   <td>' + item.firstName + '</td>\
                   <td>' + item.lastName + '</td>\
                   <td>' + item.userType + '</td>\
@@ -348,8 +347,11 @@ function fetchUsers() {
                   </th>\
                 </tr>');
                     });
+                  
                 }
+               
             });
+            window.location.href = "{{route('userManagement')}}";
         }
         $(document).on('click', '.addUser', function (e) {
             e.preventDefault();
