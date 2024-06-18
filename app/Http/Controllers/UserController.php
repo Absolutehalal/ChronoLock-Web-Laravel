@@ -39,55 +39,93 @@ class UserController extends Controller
             return view('admin-user-management', ['users' => $users]);
         }
 
-        public function fetchUsers(){
-            $users = User::all('id','firstName','lastName','userType','email');
-            return response()->json([
-                'users'=>$users,
-            ]);
-        }
+        // public function fetchUsers(){ => reserve
+        //     $users = User::all('id','firstName','lastName','userType','email');
+        //     return response()->json([
+        //         'users'=>$users,
+        //     ]);
+        // }
 
          //user management page functions
 
-        public function updateUser(User $user, Request $request){
-            $data = $request->validate([
-                'firstName'=>'required',
-                'lastName'=>'required',
-                'userType' => 'required',
-                'Email' => 'required',
-                'google_id' => 'required',
+        public function updateUser($id, Request $request){
+            $validator = Validator::make($request->all(), [
+                'updateFirstName'=>'required',
+                'updateLastName' => 'required',
+                'updateUserType' => 'required',
+                'updateEmail' => 'required|email',
+                'userIdNumber' => 'required',
             ]);
 
-            $email = $request->get('email');
+            $email = $request->get('updateEmail');
             $emailDomain = substr(strrchr($email, "@"), 1);
             $checkEmail = User::where('email', 'LIKE',  $email)->value('email');
 
-            if ($emailDomain !== 'my.cspc.edu.ph') {
+            if($validator->fails())
+            {
+                return response()->json([
+                    'status'=>400,
+                    'errors'=>$validator->messages()
+                ]);
+            }else{
+                if ($emailDomain !== 'my.cspc.edu.ph') {
+                    return response()->json([
+                        'status'=>300,
+                    ]);
 
-                Alert::error('Error', 'Invalid email. Please use a CSPC email.')
-                    ->autoClose(5000)
-                    ->timerProgressBar()
-                    ->showCloseButton();
+                }else if($checkEmail == $email){
+                    $user = User::find($id);
+                    if($user)
+                    {
+                        $user->firstName = $request->input('updateFirstName');
+                        $user->lastName = $request->input('updateLastName');
+                        $user->userType = $request->input('updateUserType');
+                        $user->email = $request->input('updateEmail');
+                        $user->idNumber = $request->input('userIdNumber');
+                        $user->update();
+                        return response()->json([
+                            'status'=>200,
+                        ]);
+                    } else {
+                        return response()->json([
+                            'status'=>404,
+                        ]);
+                    }
+        
+                }else if($checkEmail != ""){
+                    return response()->json([
+                        'status'=>500,
+                    ]);
 
-                return redirect('/userManagementPage');
-            }else if($checkEmail == $email){
-
-                $user->update($data);
-
-                Alert::success('Success', 'Update successful.')
-                    ->autoClose(3000)
-                    ->timerProgressBar()
-                    ->showCloseButton();
-                return redirect()->intended('/userManagementPage');
-            }else if($checkEmail != ""){
-
-                Alert::error('Error', 'Email already exist. Please use another email.')
-                    ->autoClose(5000)
-                    ->timerProgressBar()
-                    ->showCloseButton();
-
-                return redirect('/userManagementPage');
+                }
             }
-    }
+            // if ($emailDomain !== 'my.cspc.edu.ph') {
+
+            //     Alert::error('Error', 'Invalid email. Please use a CSPC email.')
+            //         ->autoClose(5000)
+            //         ->timerProgressBar()
+            //         ->showCloseButton();
+
+            //     return redirect('/userManagementPage');
+            // }else if($checkEmail == $email){
+
+            //     $user->update($data);
+
+            //     Alert::success('Success', 'Update successful.')
+            //         ->autoClose(3000)
+            //         ->timerProgressBar()
+            //         ->showCloseButton();
+            //     return redirect()->intended('/userManagementPage');
+            // }else if($checkEmail != ""){
+
+            //     Alert::error('Error', 'Email already exist. Please use another email.')
+                    // ->autoClose(5000)
+                    // ->timerProgressBar()
+                    // ->showCloseButton();
+
+            //     return redirect('/userManagementPage');
+            // }
+        }
 
         public function addUser(Request $request){
             $validator = Validator::make($request->all(), [
@@ -95,13 +133,6 @@ class UserController extends Controller
                 'lastName' => 'required',
                 'userType' => 'required',
                 'email' => 'required|email',
-                'password' => 'required',
-            ]);
-            $data = $request->validate([
-                'firstName'=>'required',
-                'lastName'=>'required',
-                'userType' => 'required',
-                'email' => 'required',
                 'password' => 'required',
             ]);
             $email = $request->get('email');
@@ -123,11 +154,53 @@ class UserController extends Controller
 
                 }else{
                     $user = new User;
+                    $user->firstName = $request->input('firstName');
+                    $user->lastName = $request->input('lastName');
+                    $user->userType = $request->input('userType');
+                    $user->email = $request->input('email');
+                    $user->password = $request->input('password');
+                    $user->save();
+                    return response()->json([
+                        'status'=>200,
+                    ]);
+                }
+            }
+        }
+
+        public function edit($id){
+            
+            $user = User::find($id);
+            if($user)
+            {
+                return response()->json([
+                    'status'=>200,
+                    'user'=> $user,
+                ]);
+            }
+            else
+            {
+                return response()->json([
+                    'status'=>404,
+                ]);
+            }
+
+        }
+        public function deleteUser($id)
+        {
+            $user = User::find($id);
+            if($user)
+            {
+                $user->delete();
                 return response()->json([
                     'status'=>200,
                 ]);
             }
-        }
+            else
+            {
+                return response()->json([
+                    'status'=>404,
+                ]);
+            }
         }
 
         //schedule management page
