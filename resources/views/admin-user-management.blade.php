@@ -58,19 +58,24 @@
 
         <div class="row">
           <div class="col-md-9 d-flex justify-content-start">
-            <div class="dropdown d-inline-block mb-2 mr-3 rounded-2">
-              <button class="btn btn-primary btn-md fw-bold" type="button" data-toggle="modal" data-target="#modal-add-event">
-                <i class="mdi mdi-file-check"></i>
-                Import
-              </button>
-            </div>
-            <div class="dropdown d-inline-block mb-3">
-              <div class="custom-file rounded">
-                <input type="file" class="custom-file-input" required>
-                <label class="custom-file-label" for="coverImage">Choose file...</label>
-                <div class="invalid-feedback">Example invalid custom file feedback</div>
+            <form action="{{ route('user.import') }}" method="post" enctype="multipart/form-data">
+              @csrf
+
+              <div class="dropdown d-inline-block mr-3">
+                  <button class="btn btn-primary btn-md fw-bold" type="submit">
+                      <i class="mdi mdi-file-check"></i>
+                      Import
+                  </button>
               </div>
-            </div>
+
+              <div class="dropdown d-inline-block mb-3">
+                <div class="custom-file rounded">
+                  <input type="file" class="custom-file-input" required>
+                  <label class="custom-file-label" for="coverImage">Choose file...</label>
+                  <div class="invalid-feedback">Example invalid custom file feedback</div>
+                </div>
+              </div>
+            </form>
           </div>
 
           <div class="col-md-3 d-flex justify-content-end">
@@ -236,7 +241,7 @@
           <form method="post">
             @csrf
             @method('delete')
-            <input type="text" id="deleteID" class="id form-control ">
+            <input type="hidden" id="deleteID" class="id form-control ">
 
             <h4> Are you sure you want to delete this user?</h4>
              
@@ -454,16 +459,17 @@
                       $('#lastNameError').html("");
                       $('#userTypeError').html("");
                       $('#emailError').html("");
-                      $('#passwordError').html("");
-                      $('.addUser').text('Save');
-                      $("#addUserModal .close").click()
+                      $('#passwordError').html(""); 
                       Swal.fire({
                           icon: "success",
                           title: "Success",
                           text: "User Created",
                         });
+                      $('.addUser').text('Save');
+                      $("#addUserModal .close").click()
+                    
                       // fetchUsers(); -----------reserve-------------
-                      window.location.href =  "{{route('userManagement')}}", 3000;
+                      window.location.href =  "{{route('userManagement')}}", 4000;
                   }
                   else if(response.status == 300){
                       $('#firstNameError').html("");
@@ -578,22 +584,19 @@
                       $('#editUserTypeError').html("");
                       $('#editEmailError').html("");
                       $('#editUserIdError').html("");
-                   
+                      Swal.fire({
+                            icon: "success",
+                            title: "Successful",
+                            text: "User Updated",
+                            buttons: false,
+                            });
                        
-                        $('.updateUser').text('Update');
-                        $("#updateUserModal .close").click()
+                      $('.updateUser').text('Update');
+                      $("#updateUserModal .close").click()
                        
-                        Swal.fire({
-                          icon: "success",
-                          title: "Successful",
-                          text: "User Updated",
-                          timer: 3000,
-                          buttons: false,
-                          });
-                      
                         // $('#updateUserModal').find('input').val('');
                        
-                        window.location.href =  "{{route('userManagement')}}", 3000;
+                        window.location.href =  "{{route('userManagement')}}", 4000;
                     } else if((response.status == 300)){
                       $('#editFirstNameError').html("");
                       $('#editLastNameError').html("");
@@ -664,12 +667,11 @@
                           icon: "success",
                           title: "Successful",
                           text: "User Deleted",
-                          timer: 3000,
                           buttons: false,
                           });
                       
                        
-                        window.location.href =  "{{route('userManagement')}}", 3000;
+                        window.location.href =  "{{route('userManagement')}}", 4000;
                     }
                 }
             });

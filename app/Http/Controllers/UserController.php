@@ -6,35 +6,67 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Validator;
+use App\Imports\UserImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class UserController extends Controller
 {
 
-    //functions for all the user including the head admin
+        public function import_excel(Request $request)
+        {
+            try {
 
-        // //login
-        // public function login(){
-        //     return view ('login');
-        // }
+                // Validate the incoming request to ensure a file is present
+                $request->validate([
+                    'excel-file' => 'required|file|mimes:xls,xlsx'
+                ]);
 
-    //admin functions
+                // Create a new instance of the import class
+                $import = new UserImport;
 
-        //index page
-        public function index(){
-            if (!Auth::check()) {
-                return redirect('/login');
-            }else{
-            return view ('index');
+                // Import the file using Laravel Excel
+                Excel::import($import, $request->file('excel-file'));
+
+                toast('Import successfully.', 'success')->autoClose(3000)->timerProgressBar()->showCloseButton();
+
+                // Redirect back to the form page
+                return redirect()->intended('/userManagementPage');
+            } catch (\Exception $e) {
+
+                toast('Import failed.', 'error')->autoClose(3000)->timerProgressBar()->showCloseButton();
+                return redirect()->intended('/userManagementPage');
             }
         }
 
+        public function FourOFour()
+        {
+            return view('404');
+        }
+    
+    //functions for all the user including the head admin
+
+        //index page
+        public function index()
+        {
+            return view('index');
+        }
+        // public function index(){
+        //     if (!Auth::check()) {
+        //         return redirect('/login');
+        //     }else{
+        //     return view ('index');
+        //     }
+        // }
+
         //pending RFID page
-        public function pendingRFID(){
-            return view ('admin-pendingRFID');
+        public function pendingRFID()
+        {
+            return view('admin-pendingRFID');
         }
 
         //user management page
-        public function userManagement(){
+        public function userManagement()
+        {
             $users = User::all();
             return view('admin-user-management', ['users' => $users]);
         }
@@ -204,50 +236,59 @@ class UserController extends Controller
         }
 
         //schedule management page
-        public function adminScheduleManagement(){
-            return view ('admin-schedule');
+        public function adminScheduleManagement()
+        {
+            return view('admin-schedule');
         }
 
         //student attendance management page
-        public function studentAttendanceManagement(){
-            return view ('admin-studentAttendance');
+        public function studentAttendanceManagement()
+        {
+            return view('admin-studentAttendance');
         }
 
         //intructor attendace management page
-        public function instructorAttendanceManagement(){
-            return view ('admin-instructorAttendance');
+         public function instructorAttendanceManagement()
+        {
+            return view('admin-instructorAttendance');
         }
 
         //RFID management page
-        public function RFIDManagement(){
-            return view ('admin-RFIDAccount');
+        public function RFIDManagement()
+        {
+            return view('admin-RFIDAccount');
         }
 
         //LOGS page
-        public function logs(){
-            return view ('admin-logs');
+        public function logs()
+        {
+            return view('admin-logs');
         }
 
         //report generation page
-        public function reportGeneration(){
-            return view ('admin-report-generation');
+        public function reportGeneration()
+        {
+            return view('admin-report-generation');
         }
 
     //instructor functions
 
         //index page
-        public function instructorIndex(){
-            return view ('instructor-dashboard');
+        public function instructorIndex()
+        {
+            return view('instructor-dashboard');
         }
 
         //class record
-        public function classRecordManagement(){
-            return view ('instructor-class-record');
+        public function classRecordManagement()
+        {
+            return view('instructor-class-record');
         }
 
         //schedule
-        public function instructorScheduleManagement(){
-            return view ('instructor-schedule');
+        public function instructorScheduleManagement()
+        {
+            return view('instructor-schedule');
         }
 
 

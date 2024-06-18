@@ -17,6 +17,9 @@
     <title>ChronoLock Instructor Dashboard</title>
 
     @include('head')
+
+    <!-- TOASTER -->
+    <link href="plugins/toaster/toastr.min.css" rel="stylesheet">
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <!-- Toastr JS -->
@@ -32,6 +35,11 @@
         });
         NProgress.start();
     </script>
+
+     @include('sweetalert::alert')
+
+    <div id="toast"></div>
+    
      @include('instructorSideNav')
     <!-- ====================================
       ——— PAGE WRAPPER
@@ -46,7 +54,7 @@
         <div class="content-wrapper">
             <div class="content">
 
-            <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex justify-content-between align-items-center">
                     <!-- Navigation -->
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">

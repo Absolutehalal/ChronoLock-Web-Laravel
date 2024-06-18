@@ -19,9 +19,9 @@ class GoogleAuthController extends Controller
         // Check if the user is already authenticated
         if (Auth::check()) {
             return redirect('/adminPage');
-        }else{
-        // Default to showing the login page
-        return view('login');
+        } else {
+            // Default to showing the login page
+            return view('login');
         }
     }
 
@@ -29,7 +29,7 @@ class GoogleAuthController extends Controller
     {
         $request->validate([
             'email' => 'required|email',
-            'password'  => 'required'
+            'password' => 'required'
         ]);
 
         // Check if the email field is not valid
@@ -56,27 +56,33 @@ class GoogleAuthController extends Controller
             return redirect()->intended('/login');
         }
 
-
         // Attempt to authenticate the user
         $data = $request->only('email', 'password');
 
         if (Auth::attempt($data)) {
+            // Fetch the authenticated user
+            $user = Auth::user();
 
             Alert::success('Success', 'Login successful.')
                 ->autoClose(3000)
                 ->timerProgressBar()
                 ->showCloseButton();
 
-            return redirect()->intended('/adminPage');
+            // Check userType and redirect accordingly
+            if ($user->userType === 'Admin') {
+                return redirect()->intended('/adminPage');
+            } elseif ($user->userType === 'Instructor') {
+                return redirect()->intended('/instructorDashboard');
+            }
+        } else {
+            // Authentication failed, return to login with an error messag
+            Alert::warning('Warning', 'Invalid credentials. Please try again.')
+                ->autoClose(3000)
+                ->timerProgressBar()
+                ->showCloseButton();
+
+            return redirect()->back();
         }
-
-        // Display an error message
-        Alert::error('Error', 'Invalid email or password. Please try again.')
-            ->autoClose(5000)
-            ->timerProgressBar()
-            ->showCloseButton();
-
-        return redirect()->intended('/login');
     }
 
 
@@ -117,31 +123,15 @@ class GoogleAuthController extends Controller
                     ->timerProgressBar()
                     ->showCloseButton();
 
-                return redirect()->intended('/adminPage');
-
-             }
-            else {  
-                // If user doesn't exist, create a new one
-                $newUser = User::updateOrCreate([
-                    'google_id' => $googleUser->id,
-                ], [
-                    'accountName' => $googleUser->name,
-                    'email' => $googleUser->email,
-                    'password' => Hash::make('12345678'), // A temporary password is set for new users
-                    'avatar' => $googleUser->getAvatar(),
-                ]);
-
-                Auth::login($newUser, true);
+               // Check userType and redirect accordingly
+                if ($existingUser->userType === 'Admin') {
+                    return redirect()->intended('/adminPage');
+                } elseif ($existingUser->userType === 'Instructor') {
+                    return redirect()->intended('/instructorDashboard');
+                } else {
+                return redirect()->back(); // Default redirect for other user types
+                }
             }
-
-           // Redirect the user to the admin page after successful authentication
-
-            Alert::success('Success', 'Login successful.')
-                ->autoClose(3000)
-                ->timerProgressBar()
-                ->showCloseButton();
-
-            return redirect()->intended('/adminPage');
         } catch (\Exception $e) {
 
             Alert::error('Error', 'Something went wrong. Please try again.')
@@ -153,9 +143,11 @@ class GoogleAuthController extends Controller
         }
     }
 
-    public function logout(Request $request)
+    public function logout()
     {
+        // Log out the user
         Auth::logout();
+        // Flush the session data
         Session::flush();
 
         Alert::success('Success', 'Logout successful.')
