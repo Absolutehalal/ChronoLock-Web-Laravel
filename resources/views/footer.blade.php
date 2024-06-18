@@ -99,6 +99,35 @@
     </div>
 </div>
 
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var input = document.getElementById('excel-file');
+        var label = document.querySelector('label[for="excel-file"]');
+        
+        input.addEventListener('change', function(event) {
+            var fileName = event.target.files[0] ? event.target.files[0].name : 'Choose file';
+            label.textContent = fileName;
+        });
+    });
+</script>
+
+<script src="js/timedate.js"></script>
+
+<script src="plugins/jquery/jquery.min.js"></script>
+<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="plugins/simplebar/simplebar.min.js"></script>
+<script src="https://unpkg.com/hotkeys-js/dist/hotkeys.min.js"></script>
+
+<script src="plugins/apexcharts/apexcharts.js"></script>
+
+<script src="plugins/jvectormap/jquery-jvectormap-2.0.3.min.js"></script>
+<script src="plugins/jvectormap/jquery-jvectormap-world-mill.js"></script>
+<script src="plugins/jvectormap/jquery-jvectormap-us-aea.js"></script>
+
+<script src="plugins/daterangepicker/moment.min.js"></script>
+<script src="plugins/daterangepicker/daterangepicker.js"></script>
+
 <script>
     jQuery(document).ready(function() {
         jQuery('input[name="dateRange"]').daterangepicker({
@@ -122,33 +151,6 @@
         );
     });
 </script>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var input = document.getElementById('excel-file');
-        var label = document.querySelector('label[for="excel-file"]');
-        input.addEventListener('change', function(event) {
-            var fileName = event.target.files[0] ? event.target.files[0].name : 'Choose file';
-            label.textContent = fileName;
-        });
-    });
-</script>
-
-<script src="js/timedate.js"></script>
-
-<script src="plugins/jquery/jquery.min.js"></script>
-<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="plugins/simplebar/simplebar.min.js"></script>
-<script src="https://unpkg.com/hotkeys-js/dist/hotkeys.min.js"></script>
-
-<script src="plugins/apexcharts/apexcharts.js"></script>
-
-<script src="plugins/jvectormap/jquery-jvectormap-2.0.3.min.js"></script>
-<script src="plugins/jvectormap/jquery-jvectormap-world-mill.js"></script>
-<script src="plugins/jvectormap/jquery-jvectormap-us-aea.js"></script>
-
-<script src="plugins/daterangepicker/moment.min.js"></script>
-<script src="plugins/daterangepicker/daterangepicker.js"></script>
 
 <script src="js/mono.js"></script>
 <script src="js/chart.js"></script>
