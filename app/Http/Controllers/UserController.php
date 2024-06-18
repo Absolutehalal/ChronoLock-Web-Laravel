@@ -3,10 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Attendance;
+use App\Models\InstAttendance;
+
 use Illuminate\Http\Request;
 use App\Imports\UserImport;
 use Maatwebsite\Excel\Facades\Excel;
 use RealRashid\SweetAlert\Facades\Alert;
+use Yajra\DataTables\DataTables;
 
 class UserController extends Controller
 {
@@ -75,16 +79,79 @@ class UserController extends Controller
     }
 
     //student attendance management page
-    public function studentAttendanceManagement()
+    public function studentAttendanceManagement(Request $request)
     {
-        return view('admin-studentAttendance');
+        $attendances = $this->fetchAttendances();
+        $years = $this->fetchDistinctYears();
+        $courses = $this->fetchCourses(); 
+        $status = $this->fetchStatus(); 
+
+        return view('admin-studentAttendance', [
+            'attendance' => $attendances,
+            'years' => $years,
+            'courses' => $courses, 
+            'status' => $status, 
+        ]);
     }
+
+    private function fetchAttendances()
+    {
+       return Attendance::orderBy('date')->get();
+    }
+
+    private function fetchDistinctYears()
+    {
+        return Attendance::select('year_section')->distinct()->get();
+    }
+
+    private function fetchCourses()
+    {
+        return Attendance::select('course')->distinct()->get();
+    }
+
+    private function fetchStatus()
+    {
+        return Attendance::select('status')->distinct()->get();
+    }
+
 
     //intructor attendace management page
     public function instructorAttendanceManagement()
     {
-        return view('admin-instructorAttendance');
+        $inst_attendances = $this->fetchInstructorAttendance();
+        $inst_name = $this->fetchInstructorName();
+        $inst_status = $this->fetchInstructorStatus();
+
+        return view('admin-InstructorAttendance', [
+            'inst_attendance' => $inst_attendances,
+            'instructor_name' => $inst_name,
+            'status' => $inst_status,
+        ]);
+    }   
+
+    private function fetchInstructorAttendance()
+    {
+        return InstAttendance::orderBy('date')->get();
     }
+    
+
+    private function fetchInstructorName()
+    {
+        return InstAttendance::select('instructor_name')
+            ->orderBy('instructor_name')
+            ->distinct()
+            ->get();
+    }
+
+    private function fetchInstructorStatus()
+    {
+        return InstAttendance::select('status')
+            ->distinct()
+            ->get();
+    }
+
+
+
 
     //RFID management page
     public function RFIDManagement()
@@ -103,6 +170,9 @@ class UserController extends Controller
     {
         return view('admin-report-generation');
     }
+
+
+
 
     //instructor functions
 

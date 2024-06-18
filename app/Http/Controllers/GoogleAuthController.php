@@ -20,7 +20,14 @@ class GoogleAuthController extends Controller
     {
         // Check if the user is already authenticated
         if (Auth::check()) {
-            return redirect('/adminPage');
+            $user = Auth::user();
+            if ($user->userType == 'Admin') {
+                return redirect('/adminPage');
+            } elseif ($user->userType == 'Instructor') {
+                return redirect('/instructorDashboard');
+            } else {
+                return redirect()->back(); // Redirect to a default page if usertype doesn't match
+            }
         } else {
             // Default to showing the login page
             return view('login');

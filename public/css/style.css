@@ -42,6 +42,10 @@
     box-sizing: border-box;
 }
 
+.scrollable-dropdown {
+    max-height: 200px; /* Adjust the height as needed */
+    overflow-y: auto;
+  }
 
 .card-title {
     font-size: 35px;
@@ -585,7 +589,7 @@ mark,
 .mark {
     padding: 0.2em;
     background-color: #04082e;
-    color: #ffffff
+    color: #ffffff;
 }
 
 .list-unstyled {
@@ -3757,7 +3761,7 @@ input[type="button"].btn-block {
 }
 .dropdown-item.active,
 .dropdown-item:active {
-    color: #000000;
+    color: #ffffff;
     text-decoration: none;
     background-color: #04082e;
 }
@@ -15687,9 +15691,11 @@ table.dataTable thead .sorting {
     cursor: pointer;
 }
 .date-range .date-holder {
-    font-size: 0.875rem;
-    color: #8a909d;
+    font-size: 16px;
+    color: #ffffff;
     text-transform: uppercase;
+    justify-content: center;
+    align-items: center;
 }
 .date-range i.mdi.mdi-menu-down {
     position: relative;
@@ -15710,16 +15716,19 @@ table.dataTable thead .sorting {
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
     border-radius: 5px;
+    height: 2.7rem;
     box-shadow: 0px 1px 2px 0px rgba(28, 29, 36, 0.1),
         inset 0px -1px 0px 0px rgba(229, 230, 235, 0.1);
 }
 .date-range.date-range-lg .date-holder {
-    font-size: 1rem;
-    text-transform: capitalize;
+    font-size: 16px;
 }
+
 @media (min-width: 1200px) {
     .date-range.date-range-lg .date-holder {
-        font-size: 1.375rem;
+        color: #ffffff;
+        font-size: 16px;
+        font-weight: 580;
     }
 }
 

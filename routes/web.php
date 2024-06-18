@@ -17,11 +17,7 @@ Route::post('/login', [GoogleAuthController::class, 'loginUser'])->name('login.u
 Route::get('/auth/google', [GoogleAuthController::class, 'redirectToGoogle'])->name('login.google');
 Route::get('/auth/google/call-back', [GoogleAuthController::class, 'handleGoogleCallback'])->name('login.google.callback');
 
-
-Route::group(['middleware' => ['auth']], function () {
-    Route::post('/logout', [GoogleAuthController::class, 'logout'])->middleware('auth')->name('logout');
-});
-
+Route::post('/logout', [GoogleAuthController::class, 'logout'])->name('logout');
 
 // ADMIN MIDDLEWARE
 Route::group(['middleware' => ['auth', 'admin']], function () {
@@ -33,12 +29,12 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     Route::get('/pendingRFIDPage', [UserController::class, 'pendingRFID'])->name('pendingRFID');
     Route::get('/scheduleManagementPage', [UserController::class, 'adminScheduleManagement'])->name('adminScheduleManagement');
     Route::get('/studentAttendanceManagementPage', [UserController::class, 'studentAttendanceManagement'])->name('studentAttendanceManagement');
+    Route::get('/instructorAttendanceManagementPage', [UserController::class, 'instructorAttendanceManagement'])->name('instructorAttendanceManagement');
+
+
     Route::get('/RFIDManagementPage', [UserController::class, 'RFIDManagement'])->name('RFIDManagement');
     Route::get('/logsPage', [UserController::class, 'logs'])->name('logs');
     Route::get('/reportGenerationPage', [UserController::class, 'reportGeneration'])->name('reportGeneration');
-
-
-    Route::post('/logout', [GoogleAuthController::class, 'logout'])->name('logout');
 });
 
 
@@ -47,7 +43,6 @@ Route::group(['middleware' => ['auth', 'instructor']], function () {
     Route::get('/instructorDashboard', [UserController::class, 'instructorIndex'])->name('instructorIndex');
     Route::get('/instructorClassRecord', [UserController::class, 'classRecordManagement'])->name('classRecordManagement');
     Route::get('/instructorSchedule', [UserController::class, 'instructorScheduleManagement'])->name('instructorScheduleManagement');
-    Route::get('/instructorAttendanceManagementPage', [UserController::class, 'instructorAttendanceManagement'])->name('instructorAttendanceManagement');
 });
 
 
