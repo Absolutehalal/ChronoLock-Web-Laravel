@@ -1,68 +1,75 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\User;
+use App\Models\Attendance;
+use App\Models\InstAttendance;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Validator;
 use App\Imports\UserImport;
 use Maatwebsite\Excel\Facades\Excel;
+use Yajra\DataTables\DataTables;
 
 class UserController extends Controller
 {
 
-        public function import_excel(Request $request)
-        {
-            try {
+    public function import_excel(Request $request)
+    {
+        try {
 
-                // Validate the incoming request to ensure a file is present
-                $request->validate([
-                    'excel-file' => 'required|file|mimes:xls,xlsx'
-                ]);
+            // Validate the incoming request to ensure a file is present
+            $request->validate([
+                'excel-file' => 'required|file|mimes:xls,xlsx'
+            ]);
 
-                // Create a new instance of the import class
-                $import = new UserImport;
+            // Create a new instance of the import class
+            $import = new UserImport;
 
-                // Import the file using Laravel Excel
-                Excel::import($import, $request->file('excel-file'));
+            // Import the file using Laravel Excel
+            Excel::import($import, $request->file('excel-file'));
 
-                toast('Import successfully.', 'success')->autoClose(3000)->timerProgressBar()->showCloseButton();
+            toast('Import successfully.', 'success')->autoClose(3000)->timerProgressBar()->showCloseButton();
 
-                // Redirect back to the form page
-                return redirect()->intended('/userManagementPage');
-            } catch (\Exception $e) {
+            // Redirect back to the form page
+            return redirect()->intended('/userManagementPage');
+        } catch (\Exception $e) {
 
-                toast('Import failed.', 'error')->autoClose(3000)->timerProgressBar()->showCloseButton();
-                return redirect()->intended('/userManagementPage');
-            }
+            toast('Import failed.', 'error')->autoClose(3000)->timerProgressBar()->showCloseButton();
+            return redirect()->intended('/userManagementPage');
         }
+    }
 
-        public function FourOFour()
-        {
-            return view('404');
-        }
-    
-    //functions for all the user including the head admin
 
-        //index page
-        public function index()
-        {
-            return view('index');
-        }
-        // public function index(){
-        //     if (!Auth::check()) {
-        //         return redirect('/login');
-        //     }else{
-        //     return view ('index');
-        //     }
-        // }
 
-        //pending RFID page
-        public function pendingRFID()
-        {
-            return view('admin-pendingRFID');
-        }
+    public function userManagement()
+    {
+        $users = User::all();
+        return view('admin-user-management', ['users' => $users]);
+    }
+
+
+    public function FourOFour()
+    {
+        return view('404');
+    }
+
+    //admin functions
+
+    //index page
+    public function index()
+    {
+        return view('index');
+    }
+
+    //pending RFID page
+    public function pendingRFID()
+    {
+        return view('admin-pendingRFID');
+    }
 
         //user management page
         public function userManagement()
@@ -235,61 +242,125 @@ class UserController extends Controller
             }
         }
 
-        //schedule management page
-        public function adminScheduleManagement()
-        {
-            return view('admin-schedule');
-        }
+    //schedule management page
+    public function adminScheduleManagement()
+    {
+        return view('admin-schedule');
+    }
 
-        //student attendance management page
-        public function studentAttendanceManagement()
-        {
-            return view('admin-studentAttendance');
-        }
+    //student attendance management page
+    public function studentAttendanceManagement(Request $request)
+    {
+        $attendances = $this->fetchAttendances();
+        $years = $this->fetchDistinctYears();
+        $courses = $this->fetchCourses(); 
+        $status = $this->fetchStatus(); 
 
-        //intructor attendace management page
-         public function instructorAttendanceManagement()
-        {
-            return view('admin-instructorAttendance');
-        }
+        return view('admin-studentAttendance', [
+            'attendance' => $attendances,
+            'years' => $years,
+            'courses' => $courses, 
+            'status' => $status, 
+        ]);
+    }
 
-        //RFID management page
-        public function RFIDManagement()
-        {
-            return view('admin-RFIDAccount');
-        }
+    private function fetchAttendances()
+    {
+       return Attendance::orderBy('date')->get();
+    }
 
-        //LOGS page
-        public function logs()
-        {
-            return view('admin-logs');
-        }
+    private function fetchDistinctYears()
+    {
+        return Attendance::select('year_section')->distinct()->get();
+    }
 
-        //report generation page
-        public function reportGeneration()
-        {
-            return view('admin-report-generation');
-        }
+    private function fetchCourses()
+    {
+        return Attendance::select('course')->distinct()->get();
+    }
+
+    private function fetchStatus()
+    {
+        return Attendance::select('status')->distinct()->get();
+    }
+
+
+    //intructor attendace management page
+    public function instructorAttendanceManagement()
+    {
+        $inst_attendances = $this->fetchInstructorAttendance();
+        $inst_name = $this->fetchInstructorName();
+        $inst_status = $this->fetchInstructorStatus();
+
+        return view('admin-InstructorAttendance', [
+            'inst_attendance' => $inst_attendances,
+            'instructor_name' => $inst_name,
+            'status' => $inst_status,
+        ]);
+    }   
+
+    private function fetchInstructorAttendance()
+    {
+        return InstAttendance::orderBy('date')->get();
+    }
+    
+
+    private function fetchInstructorName()
+    {
+        return InstAttendance::select('instructor_name')
+            ->orderBy('instructor_name')
+            ->distinct()
+            ->get();
+    }
+
+    private function fetchInstructorStatus()
+    {
+        return InstAttendance::select('status')
+            ->distinct()
+            ->get();
+    }
+
+
+
+
+    //RFID management page
+    public function RFIDManagement()
+    {
+        return view('admin-RFIDAccount');
+    }
+
+    //LOGS page
+    public function logs()
+    {
+        return view('admin-logs');
+    }
+
+    //report generation page
+    public function reportGeneration()
+    {
+        return view('admin-report-generation');
+    }
+
+
+
 
     //instructor functions
 
-        //index page
-        public function instructorIndex()
-        {
-            return view('instructor-dashboard');
-        }
+    //index page
+    public function instructorIndex()
+    {
+        return view('instructor-dashboard');
+    }
 
-        //class record
-        public function classRecordManagement()
-        {
-            return view('instructor-class-record');
-        }
+    //class record
+    public function classRecordManagement()
+    {
+        return view('instructor-class-record');
+    }
 
-        //schedule
-        public function instructorScheduleManagement()
-        {
-            return view('instructor-schedule');
-        }
-
-
+    //schedule
+    public function instructorScheduleManagement()
+    {
+        return view('instructor-schedule');
+    }
 }

@@ -20,6 +20,7 @@
 
     <!-- TOASTER -->
     <link href="plugins/toaster/toastr.min.css" rel="stylesheet">
+
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <!-- Toastr JS -->
@@ -36,11 +37,11 @@
         NProgress.start();
     </script>
 
-     @include('sweetalert::alert')
+    @include('sweetalert::alert')
 
     <div id="toast"></div>
-    
-     @include('instructorSideNav')
+
+    @include('instructorSideNav')
     <!-- ====================================
       ——— PAGE WRAPPER
       ===================================== -->

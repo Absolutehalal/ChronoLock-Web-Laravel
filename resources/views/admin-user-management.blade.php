@@ -10,73 +10,78 @@
 <html lang="en" dir="ltr">
 
 <head>
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>ChronoLock Admin-User Management</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  @include('head')
+    <title>ChronoLock Admin-User Management</title>
 
+    @include('head')
 </head>
 
 <body class="navbar-fixed sidebar-fixed" id="body">
-  <script>
-    NProgress.configure({
-      showSpinner: false
-    });
-    NProgress.start();
-  </script>
+    <script>
+        NProgress.configure({
+            showSpinner: false
+        });
+        NProgress.start();
+    </script>
+
     @include('sweetalert::alert')
+
     @include('adminSideNav')
-  <!-- ====================================
+    <!-- ====================================
       ——— PAGE WRAPPER
       ===================================== -->
-  <div class="page-wrapper">
-    <!-- Header -->
-    @include('header')
+    <div class="page-wrapper">
+        <!-- Header -->
+        @include('header')
 
-    <!-- ====================================
+        <!-- ====================================
         ——— CONTENT WRAPPER
         ===================================== -->
-    <div class="content-wrapper">
-      <div class="content">
+        <div class="content-wrapper">
+            <div class="content">
 
-        <div class="d-flex justify-content-between align-items-center">
-          <!-- Navigation -->
-          <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-              <li class="breadcrumb-item"><a href="index.php">Dashboard</a></li>
-              <li class="breadcrumb-item active"><a href="admin-user-management.php">User Management</a></li>
-            </ol>
-          </nav>
+                <div class="d-flex justify-content-between align-items-center">
+                    <!-- Navigation -->
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="index.php">Dashboard</a></li>
+                            <li class="breadcrumb-item active"><a href="admin-user-management.php">User Management</a>
+                            </li>
+                        </ol>
+                    </nav>
 
-          <!-- Live Date and Time -->
-          <div>
-            <p class="text-center date-time mb-3" id="liveDateTime">Your Date and Time</p>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-md-9 d-flex justify-content-start">
-            <form action="{{ route('user.import') }}" method="post" enctype="multipart/form-data">
-              @csrf
-
-              <div class="dropdown d-inline-block mr-3">
-                  <button class="btn btn-primary btn-md fw-bold" type="submit">
-                      <i class="mdi mdi-file-check"></i>
-                      Import
-                  </button>
-              </div>
-
-              <div class="dropdown d-inline-block mb-3">
-                <div class="custom-file rounded">
-                  <input type="file" class="custom-file-input" required>
-                  <label class="custom-file-label" for="coverImage">Choose file...</label>
-                  <div class="invalid-feedback">Example invalid custom file feedback</div>
+                    <!-- Live Date and Time -->
+                    <div>
+                        <p class="text-center date-time mb-3" id="liveDateTime">Your Date and Time</p>
+                    </div>
                 </div>
-              </div>
-            </form>
-          </div>
+
+                <div class="row">
+
+                    <div class="col-md-10 d-flex justify-content-start">
+                        <form action="{{ route('user.import') }}" method="post" enctype="multipart/form-data">
+                            @csrf
+
+                            <div class="dropdown d-inline-block mr-3">
+                                <button class="btn btn-primary btn-md fw-bold" type="submit">
+                                    <i class="mdi mdi-file-check"></i>
+                                    Import
+                                </button>
+                            </div>
+
+                            <div class="dropdown d-inline-block">
+                                <div class="custom-file rounded">
+                                    <input type="file" class="custom-file-input" id="excel-file" name="excel-file" required>
+                                    <label class="custom-file-label" for="excel-file">Choose file</label>
+                                    <div class="invalid-feedback">Example invalid custom file feedback</div>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
 
           <div class="col-md-3 d-flex justify-content-end">
             <div class="dropdown d-inline-block mb-2 rounded-2">
@@ -88,7 +93,7 @@
           </div>
         </div>
 
-        <!-- END -->
+                <!-- END -->
 
   <!-- table -->
   <div class="card card-default">

@@ -11,6 +11,7 @@
 
 <head>
   <meta charset="utf-8" />
+  <meta name="csrf-token" content="{{ csrf_token() }}" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
@@ -26,7 +27,7 @@
     });
     NProgress.start();
   </script>
-   @include('adminSideNav')
+  @include('adminSideNav')
   <!-- ====================================
       ——— PAGE WRAPPER
       ===================================== -->
@@ -62,16 +63,59 @@
         <div class="row">
           <div class="col-xl-9 col-md-9">
             <!-- Example single primary button -->
-            <div class="dropdown d-inline-block mb-3 ">
-              <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
-                <i class="mdi mdi-calendar"></i>
-                Date <!-- CALENDAR TYPE -->
-              </button>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <a class="dropdown-item" href="#">Something else here</a>
-              </div>
+
+            <div class="dropdown d-inline-block mb-3">
+              <form method="GET" action="{{ route('studentAttendanceManagement') }}">
+                <button class="btn btn-primary dropdown-toggle" type="button" id="yearDropdown" data-toggle="dropdown" aria-expanded="false">
+                  <i class="mdi mdi-developer-board"></i>
+                  Year & Section
+                </button>
+                <div class="dropdown-menu" aria-labelledby="yearDropdown">
+                  @foreach($years as $year)
+                  @csrf
+                  <a class="dropdown-item filter-year" data-value="{{ $year->year_section }}" href="#">
+                    {{ $year->year_section }}
+                  </a>
+                  @endforeach
+                </div>
+                <input type="hidden" name="year" id="selectedYear">
+              </form>
+            </div>
+
+            <div class="dropdown d-inline-block mb-3">
+              <form method="GET" action="{{ route('studentAttendanceManagement') }}">
+                <button class="btn btn-primary dropdown-toggle" type="button" id="courseDropdown" data-toggle="dropdown" aria-expanded="false">
+                  <i class="mdi mdi-alpha-c-box"></i>
+                  Course
+                </button>
+                <div class="dropdown-menu" aria-labelledby="courseDropdown">
+                  @foreach($courses as $course)
+                  @csrf
+                  <a class="dropdown-item filter-course" data-value="{{ $course->course }}" href="#">
+                    {{ $course->course }}
+                  </a>
+                  @endforeach
+                </div>
+                <input type="hidden" name="course" id="selectedCourse">
+              </form>
+            </div>
+
+            <div class="dropdown d-inline-block mb-3">
+              <form method="GET" action="{{ route('studentAttendanceManagement') }}">
+                <button class="btn btn-primary dropdown-toggle" type="button" id="statusDropdown" data-toggle="dropdown" aria-expanded="false">
+                  <i class="mdi mdi-alpha-s-box"></i>
+                  Status
+                </button>
+                <div class="dropdown-menu" aria-labelledby="statusDropdown">
+                  @foreach($status as $status)
+                  @csrf
+                  <a class="dropdown-item filter-status" data-value="{{ $status->status }}" href="#">
+                    {{ $status->status }}
+                  </a>
+                  @endforeach
+                </div>
+                <input type="hidden" name="status" id="selectedStatus">
+              </form>
             </div>
 
             <div class="dropdown d-inline-block mb-3 ">
@@ -79,56 +123,36 @@
                 <i class="mdi mdi-timer"></i>
                 Time
               </button>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <a class="dropdown-item" href="#">Something else here</a>
-              </div>
             </div>
 
             <div class="dropdown d-inline-block mb-3 ">
               <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
-                <i class="mdi mdi-timetable"></i>
-                Year & Section
+                <i class="mdi mdi-timer"></i>
+                Date
               </button>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <a class="dropdown-item" href="#">Something else here</a>
-              </div>
             </div>
 
             <!-- <div class="dropdown d-inline-block mb-3 ">
               <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
-                <i class="mdi mdi-alpha-s-box"></i>
-                Section
+                <i class="mdi mdi-timer"></i>
+                Date
               </button>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <a class="dropdown-item" href="#">Something else here</a>
-              </div>
             </div> -->
 
-            <div class="dropdown d-inline-block mb-3 ">
-              <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
-                <i class="mdi mdi-alpha-c-box"></i>
-                Course
+            <!-- <div class="dropdown d-inline-block mb-3">
+              <button id="mini-status-range" type="button" class="dropdown-toggle btn btn-primary">
+                <i class="mdi mdi-calendar"></i>
+                <span id="datepicker" class="date-holder text-light"></span>
               </button>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <a class="dropdown-item" href="#">Something else here</a>
-              </div>
-            </div>
+            </div> -->
           </div>
 
           <div class="col-xl-3 col-md-3 d-flex justify-content-end">
             <!-- Sort button -->
             <div class="dropdown d-inline-block mb-3 ">
-              <button class="btn btn-warning fw-bold" type="button">
-                <i class="mdi mdi-sort"></i>
-                SORT
+              <button class="btn btn-warning fw-bold" id="resetBtn" type="button">
+                <i class="mdi mdi-alpha-r-box"></i>
+                RESET
               </button>
             </div>
           </div>
@@ -155,14 +179,16 @@
                 </tr>
               </thead>
               <tbody>
+                @foreach($attendance as $record)
+                @csrf
                 <tr>
-                  <td>June 3, 2024</td>
-                  <td>7:32 a.m.</td>
-                  <td>Lorzano, Ralph H.</td>
-                  <td>C21104744</td>
-                  <td>BSIS</td>
-                  <td>1A</td>
-                  <th style="color: #31CE3C;">Present</th>
+                  <td>{{ $record->date }}</td>
+                  <td>{{ $record->time }}</td>
+                  <td>{{ $record->student_name }}</td>
+                  <td>{{ $record->student_id }}</td>
+                  <td>{{ $record->course }}</td>
+                  <td>{{ $record->year_section }}</td>
+                  <td class="fw-bold">{{ $record->status }}</td>
                   <th>
                     <!-- Example single primary button -->
                     <div class="dropdown d-inline-block">
@@ -179,11 +205,13 @@
                       </div>
                     </div>
                   </th>
-                </tr>
 
+                </tr>
+                @endforeach
 
               </tbody>
             </table>
+
 
           </div>
         </div>
@@ -199,29 +227,9 @@
   </div>
   </div>
 
+  </div>
 
 
-  <!-- Footer -->
-  <!-- <footer class="footer mt-auto">
-          <div class="copyright bg-white">
-            <p>
-              &copy; <span id="copy-year"></span> Copyright Mono Dashboard
-              Bootstrap Template by
-              <a
-                class="text-primary"
-                href="http://www.iamabdus.com/"
-                target="_blank"
-                >Abdus</a
-              >.
-            </p>
-          </div>
-          <script>
-            var d = new Date();
-            var year = d.getFullYear();
-            document.getElementById("copy-year").innerHTML = year;
-          </script>
-        </footer> -->
-  </div>
-  </div>
+
 
   @include('footer')

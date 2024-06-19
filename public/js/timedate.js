@@ -19,3 +19,4 @@
 
     // Initial call to update live date and time
     updateLiveDateTime();
+

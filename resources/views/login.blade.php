@@ -98,7 +98,7 @@
 
 
                         <div class="row">
-                            <small class="text-center w-100 mb-3">OR</small>
+                            <small class="col-lg-12 text-center w-100 mb-3 ml-3">OR</small>
                         </div>
 
                         <form>
@@ -110,6 +110,7 @@
                                 </a>
                             </div>
                         </form>
+
                     </div>
                 </div>
             </div>
