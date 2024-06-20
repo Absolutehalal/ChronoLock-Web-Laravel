@@ -234,10 +234,10 @@
 
 <!-- Delete User Modal -->
 <div class="modal fade" id="deleteUserModal" tabindex="-1" role="dialog" aria-labelledby="deleteUser" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-dialog-centered"  role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="deleteUser">Delete User</h5>
+          <h5 class="modal-title" id="deleteUser" style="text-align:center;">Delete User</h5>
           <button type="button" class="close" id="upClose" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -247,9 +247,12 @@
             @csrf
             @method('delete')
             <input type="hidden" id="deleteID" class="id form-control ">
-
-            <h4> Are you sure you want to delete this user?</h4>
-             
+              <div class="row">
+                <i class="fa-solid fa-trash-can text-danger" style="text-align:center; font-size:50px; padding:1rem;"></i>
+              </div>
+              <div class="row">
+                <h4 style="text-align:center;"> Are you sure you want to delete this user?</h4>
+              </div>
         </div> <!-- Modal Boday End-->
 
               <!-- Modal Footer --> 
