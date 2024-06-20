@@ -26,7 +26,7 @@
     });
     NProgress.start();
   </script>
-    @include('adminSideNav')
+  @include('adminSideNav')
   <!-- ====================================
       ——— PAGE WRAPPER
       ===================================== -->
@@ -40,7 +40,7 @@
     <div class="content-wrapper">
       <div class="content">
 
-      <div class="d-flex justify-content-between align-items-center">
+        <div class="d-flex justify-content-between align-items-center">
           <!-- Navigation -->
           <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
@@ -55,13 +55,13 @@
           </div>
         </div>
 
-      
-        <div class="card card-default">
+
+        <div class="card card-default  rounded shadow-sm">
           <div class="card-header">
             <h1>RFID Accounts</h1>
           </div>
           <div class="card-body col-md-12">
-            <table id="example" class="table table-bordered table-hover nowrap" style="width:100%">
+            <table id="example" class="table table-bordered table-hover no-wrap" style="width:100%">
               <thead class="table-dark">
                 <tr>
                   <th>#</th>
@@ -84,7 +84,7 @@
                   <th>
                     <!-- Example single primary button -->
                     <div class="dropdown d-inline-block">
-                      <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+                      <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
                         Actions
                       </button>
                       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -98,33 +98,6 @@
                     </div>
                   </th>
                 </tr>
-
-                <tr>
-                  <td>2</td>
-                  <td>Sotto, Edward L.</td>
-                  <td>C21123333</td>
-                  <td>Student Aide</td>
-                  <td>BSIS</td>
-                  <td>1A</td>
-                  
-                  <th>
-                    <!-- Example single primary button -->
-                    <div class="dropdown d-inline-block">
-                      <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
-                        Actions
-                      </button>
-                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <button class="dropdown-item">
-                          <i class="mdi mdi-circle-edit-outline text-warning"></i>
-                          Edit</button>
-                        <button class="dropdown-item">
-                          <i class="mdi mdi-trash-can text-danger"></i>
-                          Delete</button>
-                      </div>
-                    </div>
-                  </th>
-                </tr>
-
 
               </tbody>
             </table>

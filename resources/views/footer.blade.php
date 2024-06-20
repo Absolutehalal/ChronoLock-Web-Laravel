@@ -112,8 +112,15 @@
     });
 </script>
 
+<script>
+    flatpickr("input[datetime-local]", {});
+</script>
+
+<!--Flatpckr-->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
 <script src="js/timedate.js"></script>
-<script src="js/datePicker.js"></script>
+
 
 <script src="plugins/jquery/jquery.min.js"></script>
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -127,11 +134,6 @@
 <script src="plugins/jvectormap/jquery-jvectormap-world-mill.js"></script>
 <script src="plugins/jvectormap/jquery-jvectormap-us-aea.js"></script>
 
-<script>
-    $('.input-group.date').datepicker({
-        todayHighlight: true
-    });
-</script>
 
 <script src="js/mono.js"></script>
 <script src="js/chart.js"></script>

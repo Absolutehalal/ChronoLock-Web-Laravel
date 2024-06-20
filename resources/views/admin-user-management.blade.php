@@ -66,13 +66,13 @@
                             @csrf
 
                             <div class="dropdown d-inline-block mr-3">
-                                <button class="btn btn-primary btn-md fw-bold" type="submit">
+                                <button class="btn btn-primary btn-sm btn-md fw-bold" type="submit">
                                     <i class="mdi mdi-file-check"></i>
                                     Import
                                 </button>
                             </div>
 
-                            <div class="dropdown d-inline-block">
+                            <div class="dropdown d-inline-block mb-2">
                                 <div class="custom-file rounded">
                                     <input type="file" class="custom-file-input" id="excel-file" name="excel-file" required>
                                     <label class="custom-file-label" for="excel-file">Choose file</label>
@@ -86,7 +86,7 @@
 
                     <div class="col-md-2 d-flex justify-content-end">
                         <div class="dropdown d-inline-block mb-2 rounded-2">
-                            <button class="btn btn-warning fw-bold" type="button" data-toggle="modal" data-target="#createModal">
+                            <button class="btn btn-warning btn-sm fw-bold" type="button" data-toggle="modal" data-target="#createModal">
                                 <i class="mdi mdi-account-plus"></i>
                                 Add New User
                             </button>
@@ -96,7 +96,7 @@
 
                 <!-- END -->
 
-                <div class="card card-default">
+                <div class="card card-default  rounded shadow-sm">
                     <div class="card-header">
                         <h1>User Management</h1>
                     </div>
@@ -125,7 +125,7 @@
                                     <th>
                                         <!-- Example single primary button -->
                                         <div class="dropdown d-inline-block">
-                                            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+                                            <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
                                                 Actions
                                             </button>
                                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">

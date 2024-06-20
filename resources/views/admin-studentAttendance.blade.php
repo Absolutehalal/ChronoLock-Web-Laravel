@@ -66,7 +66,7 @@
 
             <div class="dropdown d-inline-block mb-3">
               <form method="GET" action="{{ route('studentAttendanceManagement') }}">
-                <button class="btn btn-primary dropdown-toggle" type="button" id="yearDropdown" data-toggle="dropdown" aria-expanded="false">
+                <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="yearDropdown" data-toggle="dropdown" aria-expanded="false">
                   <i class="mdi mdi-developer-board"></i>
                   Year & Section
                 </button>
@@ -84,7 +84,7 @@
 
             <div class="dropdown d-inline-block mb-3">
               <form method="GET" action="{{ route('studentAttendanceManagement') }}">
-                <button class="btn btn-primary dropdown-toggle" type="button" id="courseDropdown" data-toggle="dropdown" aria-expanded="false">
+                <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="courseDropdown" data-toggle="dropdown" aria-expanded="false">
                   <i class="mdi mdi-alpha-c-box"></i>
                   Course
                 </button>
@@ -102,7 +102,7 @@
 
             <div class="dropdown d-inline-block mb-3">
               <form method="GET" action="{{ route('studentAttendanceManagement') }}">
-                <button class="btn btn-primary dropdown-toggle" type="button" id="statusDropdown" data-toggle="dropdown" aria-expanded="false">
+                <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="statusDropdown" data-toggle="dropdown" aria-expanded="false">
                   <i class="mdi mdi-alpha-s-box"></i>
                   Status
                 </button>
@@ -118,20 +118,27 @@
               </form>
             </div>
 
-            <div class="dropdown d-inline-block mb-3 ">
-              <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
-                <i class="mdi mdi-timer"></i>
-                Time
-              </button>
+            <div class="dropdown d-inline-block mb-3">
+              <div class="input-group date" id="datepicker">
+                <input type="datetime-local" class="form-control border border-primary" placeholder="Date" id="selectedDate">
+                <div class="input-group-append">
+                  <div class="input-group text-light btn btn-primary btn-sm" id="dateIcon">
+                    <i class="mdi mdi-calendar "></i>
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <div class="dropdown d-inline-block mb-3 ">
-              <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
-                <i class="mdi mdi-timer"></i>
-                Date
-              </button>
+            <div class="dropdown d-inline-block mb-3">
+              <div class="input-group date" id="timepicker">
+                <input type="datetime-local" class="form-control border border-primary" placeholder="Time" id="selectedTime">
+                <div class="input-group-append">
+                  <div class="input-group text-light btn btn-primary btn-sm" id="timeIcon">
+                    <i class="mdi mdi-clock "></i>
+                  </div>
+                </div>
+              </div>
             </div>
-
             <!-- <div class="dropdown d-inline-block mb-3 ">
               <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
                 <i class="mdi mdi-timer"></i>
@@ -150,7 +157,7 @@
           <div class="col-xl-3 col-md-3 d-flex justify-content-end">
             <!-- Sort button -->
             <div class="dropdown d-inline-block mb-3 ">
-              <button class="btn btn-warning fw-bold" id="resetBtn" type="button">
+              <button class="btn btn-warning btn-sm fw-bold" id="resetBtn" type="button">
                 <i class="mdi mdi-alpha-r-box"></i>
                 RESET
               </button>
@@ -160,7 +167,7 @@
         </div>
         <!-- END -->
 
-        <div class="card card-default">
+        <div class="card card-default  rounded shadow-sm">
           <div class="card-header">
             <h1>Student Realtime Attendance</h1>
           </div>
@@ -192,7 +199,7 @@
                   <th>
                     <!-- Example single primary button -->
                     <div class="dropdown d-inline-block">
-                      <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+                      <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
                         Actions
                       </button>
                       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">

@@ -42,6 +42,12 @@
     box-sizing: border-box;
 }
 
+#datepicker, #timepicker {
+    max-width: 200px; 
+    max-height: 200px;
+}
+
+
 .scrollable-dropdown {
     max-height: 200px; /* Adjust the height as needed */
     overflow-y: auto;
@@ -2271,23 +2277,23 @@ pre code {
     font-weight: bold;
 }
 .form-control::-moz-placeholder {
-    color: #6c757d;
+    color: #ffffff;
     opacity: 1;
 }
 .form-control::placeholder {
-    color: #6c757d;
+    color: #000000;
     opacity: 1;
 }
 .form-control:disabled,
 .form-control[readonly] {
-    background-color: #000000;
+    background-color: #ffffff;
     font-weight: bold;
     opacity: 1;
 }
 
 input[type="date"].form-control,
 input[type="time"].form-control,
-input[type="datetime-local"].form-control,
+form-control[readonly]
 input[type="month"].form-control {
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -3489,7 +3495,7 @@ fieldset:disabled a.btn {
 .btn-sm,
 .btn-group-sm > .btn {
     padding: 0.125rem 0.625rem;
-    font-size: 0.75rem;
+    font-size: 13px;
     line-height: 1.5;
     border-radius: 0.2rem;
 }
@@ -3915,8 +3921,9 @@ input[type="button"].btn-block {
     position: relative;
     flex: 1 1 auto;
     width: 1%;
+    height: 2.50rem;
     min-width: 0;
-    margin-bottom: 0;
+    /* margin-bottom: 0; */
 }
 .input-group > .form-control + .form-control,
 .input-group > .form-control + .custom-select,
@@ -4329,7 +4336,7 @@ input[type="button"].btn-block {
     z-index: 2;
     width: 100%;
     height: calc(1.5em + 1.12rem + 2px);
-    margin-top: 5px;
+    margin-top: 7px;
     overflow: hidden;
     opacity: 0;
 }
@@ -6973,7 +6980,7 @@ a.close.disabled {
 }
 
 .bg-primary {
-    background-color: #04082e !important;
+    background-color: #007bff !important;
 }
 
 a.bg-primary:hover,
@@ -7131,7 +7138,7 @@ button.bg-smoke:focus {
 }
 
 .border-primary {
-    border-color: #04082e !important;
+    border-color: #007bff !important;
 }
 
 .border-secondary {

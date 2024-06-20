@@ -50,11 +50,6 @@ class UserController extends Controller
     }
 
 
-    public function FourOFour()
-    {
-        return view('404');
-    }
-
     //admin functions
 
     //index page
@@ -81,10 +76,10 @@ class UserController extends Controller
     //student attendance management page
     public function studentAttendanceManagement(Request $request)
     {
-        $attendances = $this->fetchAttendances();
-        $years = $this->fetchDistinctYears();
-        $courses = $this->fetchCourses(); 
-        $status = $this->fetchStatus(); 
+        $attendances = $this->fetchStudentAttendance();
+        $years = $this->fetchAttendanceYear();
+        $courses = $this->fetchStudentCourse(); 
+        $status = $this->fetchStudentStatus(); 
 
         return view('admin-studentAttendance', [
             'attendance' => $attendances,
@@ -94,22 +89,22 @@ class UserController extends Controller
         ]);
     }
 
-    private function fetchAttendances()
+    private function fetchStudentAttendance()
     {
        return Attendance::orderBy('date')->get();
     }
 
-    private function fetchDistinctYears()
+    private function fetchAttendanceYear()
     {
         return Attendance::select('year_section')->distinct()->get();
     }
 
-    private function fetchCourses()
+    private function fetchStudentCourse()
     {
         return Attendance::select('course')->distinct()->get();
     }
 
-    private function fetchStatus()
+    private function fetchStudentStatus()
     {
         return Attendance::select('status')->distinct()->get();
     }
@@ -131,7 +126,7 @@ class UserController extends Controller
 
     private function fetchInstructorAttendance()
     {
-        return InstAttendance::orderBy('date')->get();
+        return InstAttendance::orderBy('id')->get();
     }
     
 
@@ -151,8 +146,6 @@ class UserController extends Controller
     }
 
 
-
-
     //RFID management page
     public function RFIDManagement()
     {
@@ -170,7 +163,6 @@ class UserController extends Controller
     {
         return view('admin-report-generation');
     }
-
 
 
 
