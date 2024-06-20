@@ -1,3 +1,5 @@
+@include('sweetalert::alert')
+
 <script defer src="js/activePage.js"></script>
 <!-- ====================================
     ——— WRAPPER

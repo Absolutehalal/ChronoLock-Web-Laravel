@@ -18,19 +18,6 @@
 
   @include('head')
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
-
-
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
-
-  <script>
-    $('.input-group.date').datepicker({
-      todayHighlight: true
-    });
-  </script>
 </head>
 
 <body class="navbar-fixed sidebar-fixed" id="body">
@@ -74,18 +61,10 @@
 
         <div class="row">
           <div class="col-xl-9 col-md-9">
-            <!-- Example single primary button -->
-
-            <div class="dropdown d-inline-block mb-3 ">
-              <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
-                <i class="mdi mdi-timer"></i>
-                Time
-              </button>
-            </div>
 
             <div class="dropdown d-inline-block mb-3">
               <form method="GET" action="{{ route('instructorAttendanceManagement') }}">
-                <button class="btn btn-primary dropdown-toggle" type="button" id="instNameDropdown" data-toggle="dropdown" aria-expanded="false">
+                <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="instNameDropdown" data-toggle="dropdown" aria-expanded="false">
                   <i class="mdi mdi-alpha-i-box"></i>
                   Instructor Name
                 </button>
@@ -103,7 +82,7 @@
 
             <div class="dropdown d-inline-block mb-3">
               <form method="GET" action="{{ route('instructorAttendanceManagement') }}">
-                <button class="btn btn-primary dropdown-toggle" type="button" id="instStatusDropdown" data-toggle="dropdown" aria-expanded="false">
+                <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="instStatusDropdown" data-toggle="dropdown" aria-expanded="false">
                   <i class="mdi mdi-alpha-s-box"></i>
                   Status
                 </button>
@@ -119,24 +98,35 @@
               </form>
             </div>
 
-            <div class="d-inline-block mb-3">
-              <div class="input-group date" id="datepicker">
-                <input type="text" class="form-control">
-                <span class="input-group-append">
-                  <span class="input-group-text bg-white">
-                    <i class="fa fa-calendar"></i>
-                  </span>
-                </span>
+            <div class="dropdown d-inline-block mb-3">
+              <div class="input-group date " id="datepicker">
+                <input type="datetime-local" class="form-control border border-primary" placeholder="Date" id="selectedDate">
+                <div class="input-group-append">
+                  <div class="input-group text-light btn btn-primary btn-sm" id="dateIcon">
+                    <i class="mdi mdi-calendar "></i>
+                  </div>
+                </div>
               </div>
-
             </div>
+
+            <div class="dropdown d-inline-block mb-3">
+              <div class="input-group date" id="timepicker">
+                <input type="datetime-local" class="form-control border border-primary" placeholder="Time" id="selectedTime">
+                <div class="input-group-append">
+                  <div class="input-group text-light btn btn-primary btn-sm" id="timeIcon">
+                    <i class="mdi mdi-clock "></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+
           </div>
 
 
           <div class="col-xl-3 col-md-3 d-flex justify-content-end">
             <!-- Reset button -->
             <div class="d-inline-block mb-3 ">
-              <button class="btn btn-warning fw-bold" id="resetBtn" type="button">
+              <button class="btn btn-warning btn-sm fw-bold" id="resetBtn" type="button">
                 <i class="mdi mdi-alpha-r-box"></i>
                 Reset
               </button>
@@ -147,7 +137,7 @@
         <!-- END -->
 
 
-        <div class="card card-default">
+        <div class="card card-default rounded shadow-sm">
           <div class="card-header">
             <h1>Instructor Realtime Attendance</h1>
           </div>
@@ -175,7 +165,7 @@
                   <th>
                     <!-- Example single primary button -->
                     <div class="dropdown d-inline-block">
-                      <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+                      <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
                         Actions
                       </button>
                       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">

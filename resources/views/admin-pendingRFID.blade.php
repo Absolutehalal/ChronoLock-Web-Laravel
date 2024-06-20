@@ -58,7 +58,7 @@
         </div>
 
 
-        <div class="card card-default">
+        <div class="card card-default  rounded shadow-sm">
           <div class="card-header">
             <h1>RFID Pending Request</h1>
 
@@ -66,7 +66,7 @@
               <div class="col-xl-12 col-md-12 d-flex justify-content-end">
                 <!-- Sort button -->
                 <div class="dropdown d-inline-block ">
-                  <button class="btn btn-primary fw-bold" type="button" data-toggle="modal" data-target="#modal-add-event">
+                  <button class="btn btn-primary btn-sm fw-bold" type="button" data-toggle="modal" data-target="#modal-add-event">
                     <i class=" mdi mdi-calendar-plus"></i>
                     ADD RFID
                   </button>
@@ -95,7 +95,7 @@
                   <th>
                     <!-- Example single primary button -->
                     <div class="dropdown d-inline-block">
-                      <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+                      <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
                         Options
                       </button>
                       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
