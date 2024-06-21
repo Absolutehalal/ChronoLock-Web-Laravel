@@ -64,7 +64,7 @@
 
             <div class="dropdown d-inline-block mb-3">
               <form method="GET" action="{{ route('instructorAttendanceManagement') }}">
-                <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="instNameDropdown" data-toggle="dropdown" aria-expanded="false">
+                <button class="btn btn-primary btn-sm dropdown-toggle fw-bold" type="button" id="instNameDropdown" data-toggle="dropdown" aria-expanded="false">
                   <i class="mdi mdi-alpha-i-box"></i>
                   Instructor Name
                 </button>
@@ -82,7 +82,7 @@
 
             <div class="dropdown d-inline-block mb-3">
               <form method="GET" action="{{ route('instructorAttendanceManagement') }}">
-                <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="instStatusDropdown" data-toggle="dropdown" aria-expanded="false">
+                <button class="btn btn-primary btn-sm dropdown-toggle fw-bold" type="button" id="instStatusDropdown" data-toggle="dropdown" aria-expanded="false">
                   <i class="mdi mdi-alpha-s-box"></i>
                   Status
                 </button>
@@ -137,12 +137,12 @@
         <!-- END -->
 
 
-        <div class="card card-default rounded shadow-sm">
+        <div class="card card-default shadow">
           <div class="card-header">
             <h1>Instructor Realtime Attendance</h1>
           </div>
           <div class="card-body ">
-            <table id="instructorAttendanceTable" class="table table-bordered table-hover no-wrap" style="width:100%">
+            <table id="AttendanceTable" class="table table-bordered table-hover no-wrap" style="width:100%">
               <thead class="table-dark">
                 <tr>
                   <th>Date</th>

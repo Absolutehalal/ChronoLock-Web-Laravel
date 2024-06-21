@@ -27,7 +27,7 @@
     });
     NProgress.start();
   </script>
-  
+
   @include('adminSideNav')
   <!-- ====================================
       ——— PAGE WRAPPER
@@ -67,7 +67,7 @@
 
             <div class="dropdown d-inline-block mb-3">
               <form method="GET" action="{{ route('studentAttendanceManagement') }}">
-                <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="yearDropdown" data-toggle="dropdown" aria-expanded="false">
+                <button class="btn btn-primary btn-sm dropdown-toggle fw-bold" type="button" id="yearDropdown" data-toggle="dropdown" aria-expanded="false">
                   <i class="mdi mdi-developer-board"></i>
                   Year & Section
                 </button>
@@ -85,7 +85,7 @@
 
             <div class="dropdown d-inline-block mb-3">
               <form method="GET" action="{{ route('studentAttendanceManagement') }}">
-                <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="courseDropdown" data-toggle="dropdown" aria-expanded="false">
+                <button class="btn btn-primary btn-sm dropdown-toggle fw-bold" type="button" id="courseDropdown" data-toggle="dropdown" aria-expanded="false">
                   <i class="mdi mdi-alpha-c-box"></i>
                   Course
                 </button>
@@ -103,7 +103,7 @@
 
             <div class="dropdown d-inline-block mb-3">
               <form method="GET" action="{{ route('studentAttendanceManagement') }}">
-                <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="statusDropdown" data-toggle="dropdown" aria-expanded="false">
+                <button class="btn btn-primary btn-sm dropdown-toggle fw-bold" type="button" id="statusDropdown" data-toggle="dropdown" aria-expanded="false">
                   <i class="mdi mdi-alpha-s-box"></i>
                   Status
                 </button>
@@ -168,12 +168,12 @@
         </div>
         <!-- END -->
 
-        <div class="card card-default  rounded shadow-sm">
+        <div class="card card-default shadow">
           <div class="card-header">
             <h1>Student Realtime Attendance</h1>
           </div>
           <div class="card-body ">
-            <table id="example" class="table table-bordered table-hover no-wrap" style="width:100%">
+            <table id="AttendanceTable" class="table table-bordered table-hover no-wrap" style="width:100%">
               <thead class="table-dark">
                 <tr>
                   <th>Date</th>

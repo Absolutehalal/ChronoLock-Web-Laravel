@@ -58,7 +58,7 @@
         </div>
 
 
-        <div class="card card-default  rounded shadow-sm">
+        <div class="card card-default shadow">
           <div class="card-header">
             <h1>RFID Pending Request</h1>
 

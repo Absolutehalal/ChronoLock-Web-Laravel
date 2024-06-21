@@ -56,12 +56,12 @@
         </div>
 
 
-        <div class="card card-default  rounded shadow-sm">
+        <div class="card card-default shadow">
           <div class="card-header">
             <h1>RFID Accounts</h1>
           </div>
           <div class="card-body col-md-12">
-            <table id="example" class="table table-bordered table-hover no-wrap" style="width:100%">
+            <table id="exampleTable" class="table table-bordered table-hover no-wrap" style="width:100%">
               <thead class="table-dark">
                 <tr>
                   <th>#</th>
