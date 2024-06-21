@@ -1,5 +1,16 @@
 // DataTable
 $(document).ready(function () {
+    var dateConfig = {
+        dateFormat: "F j, Y",
+    };
+
+    var timeConfig = {
+        enableTime: true,
+        noCalendar: true,
+        dateFormat: "h:i K", // 'h' for 12-hour format, 'i' for minutes, 'K' for AM/PM
+        time_24hr: false, // Use 12-hour time format with AM/PM
+    };
+    
     var table = $("#example").DataTable({
         // scrollX: true,
         // "searching": false, order: [[0, 'asc']],
@@ -37,16 +48,7 @@ $(document).ready(function () {
     });
 
     // Flatpckr
-    var dateConfig = {
-        dateFormat: "F j, Y",
-    };
 
-    var timeConfig = {
-        enableTime: true,
-        noCalendar: true,
-        dateFormat: "h:i K", // 'h' for 12-hour format, 'i' for minutes, 'K' for AM/PM
-        time_24hr: false, // Use 12-hour time format with AM/PM
-    };
 
     // Initialize flatpickr instances
     flatpickr("#selectedDate", dateConfig);

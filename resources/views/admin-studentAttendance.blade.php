@@ -27,6 +27,7 @@
     });
     NProgress.start();
   </script>
+  
   @include('adminSideNav')
   <!-- ====================================
       ——— PAGE WRAPPER
@@ -222,6 +223,7 @@
 
           </div>
         </div>
+        <!-- END -->
 
 
 
