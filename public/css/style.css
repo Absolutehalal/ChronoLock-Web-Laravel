@@ -47,6 +47,11 @@
     max-height: 200px;
 }
 
+.table-wrapper {
+    max-height: 400px; /* Adjust the height as needed */
+    overflow-y: auto;
+}
+
 
 .scrollable-dropdown {
     max-height: 200px; /* Adjust the height as needed */
@@ -12089,7 +12094,7 @@ ul li {
 p {
     font-weight: 400;
     margin-bottom: 0;
-    font-size: 0.98rem;
+    font-size: 1.2rem;
 }
 
 ::-moz-selection {

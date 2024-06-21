@@ -6,9 +6,9 @@ use App\Http\Controllers\GoogleAuthController;
 use App\Http\Middleware\CheckGoogleAuth;
 use Illuminate\Support\Facades\Auth;
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+Route::get('/', function () {
+    return view('login');
+});
 
 // Auth::routes();
 
@@ -29,6 +29,7 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     // Route::get('/adminPage', [UserController::class, 'index'])->name('index')->middleware(['auth', 'admin']);
     Route::get('/pendingRFIDPage', [UserController::class,'pendingRFID'])->name('pendingRFID');
     Route::post('/userManagementPage/import', [UserController::class, 'import_excel'])->name('user.import');
+
 
     //--------START userManagement ROUTES---------
     Route::get('/userManagementPage', [UserController::class, 'userManagement'])->name('userManagement');

@@ -79,7 +79,7 @@
 
           <div class="card-body">
             <table class="table table-bordered table-hover">
-              <thead class="thead-dark">
+              <thead class="table-dark">
                 <tr class="text-center">
                   <th scope="col">#</th>
                   <th scope="col">RFID Code</th>
