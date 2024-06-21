@@ -26,7 +26,7 @@
     });
     NProgress.start();
   </script>
-     @include('adminSideNav')
+  @include('adminSideNav')
   <!-- ====================================
       ——— PAGE WRAPPER
       ===================================== -->
@@ -39,7 +39,7 @@
     <div class="content-wrapper">
       <div class="content">
 
-      <div class="d-flex justify-content-between align-items-center">
+        <div class="d-flex justify-content-between align-items-center">
           <!-- Navigation -->
           <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
@@ -55,20 +55,20 @@
         </div>
 
 
-        <div class="card card-default">
+        <div class="card card-default shadow">
           <div class="card-header card-header-border-bottom d-flex justify-content-between align-items-center">
             <h1>Schedule</h1>
             <div class="row">
               <div class="col-xl-12 col-md-12 d-flex justify-content-end">
                 <!-- Sort button -->
                 <div class="dropdown d-inline-block mb-3 mr-3">
-                  <button class="btn btn-primary fw-bold" type="button" data-toggle="modal" data-target="#modal-add-event">
+                  <button class="btn btn-primary btn-sm fw-bold" type="button" data-toggle="modal" data-target="#modal-add-event">
                     <i class=" mdi mdi-calendar-plus"></i>
                     ADD SCHEDULE
                   </button>
                 </div>
                 <div class="dropdown d-inline-block mb-3">
-                  <button class="btn btn-warning fw-bold" type="button">
+                  <button class="btn btn-warning btn-sm fw-bold" type="button">
                     <i class="mdi mdi-cloud-print-outline"></i>
                     PRINT
                   </button>

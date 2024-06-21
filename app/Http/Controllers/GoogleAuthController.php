@@ -150,7 +150,7 @@ class GoogleAuthController extends Controller
                     'password' => '12345', // A temporary password is set for new users - Hash::make('12345678'),
                     'avatar' => $googleUser->getAvatar(),
                 ]);
-    
+
                 Auth::login($newUser, true);
             }
         } catch (\Exception $e) {

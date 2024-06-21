@@ -191,6 +191,7 @@
                 <h2>Recent Added RFID</h2>
               </div>
               <div class="card-body">
+                <div class="table-wrapper">
                 <table class="table table-bordered table-hover">
                   <thead class="table-dark">
                    <tr>
@@ -239,6 +240,7 @@
                     </tr>
                   </tbody>
                 </table>
+                </div>
               </div>
             </div>
           </div>
