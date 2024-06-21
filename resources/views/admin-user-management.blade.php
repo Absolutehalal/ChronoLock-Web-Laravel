@@ -96,7 +96,7 @@
             <h1>User Management</h1>
           </div>
           <div class="card-body">
-            <table id="example" class="table table-bordered table-hover nowrap" style="width:100%">
+            <table id="userTable" class="table table-bordered table-hover nowrap" style="width:100%">
               <thead class="table-dark">
                 <tr>
                   <th>#</th>

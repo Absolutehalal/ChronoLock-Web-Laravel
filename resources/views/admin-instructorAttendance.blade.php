@@ -142,7 +142,7 @@
             <h1>Instructor Realtime Attendance</h1>
           </div>
           <div class="card-body ">
-            <table id="example" class="table table-bordered table-hover no-wrap" style="width:100%">
+            <table id="instructorAttendanceTable" class="table table-bordered table-hover no-wrap" style="width:100%">
               <thead class="table-dark">
                 <tr>
                   <th>Date</th>

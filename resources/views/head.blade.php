@@ -11,11 +11,11 @@
     <!-- Auto Generate password -->
     <script defer src="js/passwordGenerator.js"></script>
 
+     <!-- Active Page -->
+    <script defer src="js/dataTable.js"></script>
+
     <!-- csrf-token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
-    <!-- Active Page -->
-    <script defer src="js/dataTable.js"></script>
 
     <!-- Font Awesome -->
     <script src="https://kit.fontawesome.com/fc44043d19.js" crossorigin="anonymous"></script>
