@@ -237,21 +237,6 @@ class UserController extends Controller
         return view('admin-schedule');
     }
 
-    //student attendance management page
-    public function studentAttendanceManagement(Request $request)
-    {
-        $attendances = $this->fetchStudentAttendance();
-        $years = $this->fetchAttendanceYear();
-        $courses = $this->fetchStudentCourse();
-        $status = $this->fetchStudentStatus();
-
-        return view('admin-studentAttendance', [
-            'attendance' => $attendances,
-            'years' => $years,
-            'courses' => $courses,
-            'status' => $status,
-        ]);
-    }
 
     private function fetchStudentAttendance()
     {

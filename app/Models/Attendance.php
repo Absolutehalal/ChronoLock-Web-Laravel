@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class Attendance extends Model
 {
@@ -27,14 +27,4 @@ class Attendance extends Model
         'remark',
     ];
 
-    // Accessor to format time in 12-hour format with AM/PM
-    public function getTimeAttribute($value)
-    {
-        return Carbon::createFromFormat('H:i:s', $value)->format('g:i A');
-    }
-
-    public function getDateAttribute($value)
-    {
-        return Carbon::createFromFormat('Y-m-d', $value)->format('F j, Y');
-    }
 }

@@ -89,8 +89,8 @@
                 <div class="dropdown-menu scrollable-dropdown" aria-labelledby="instStatusDropdown">
                 @foreach($remarks as $remarks)
                   @csrf
-                  <a class="dropdown-item filter-inst-status" data-value="{{ $remarks->status }}" href="#">
-                    {{ $remarks->status }}
+                  <a class="dropdown-item filter-inst-status" data-value="{{ $remarks->remark }}" href="#">
+                    {{ $remarks->remark }}
                   </a>
                   @endforeach
                 </div>
@@ -157,8 +157,8 @@
               @foreach($instructors as $instructors)
                 @csrf
                 <tr>
-                  <td>{{ $instructors->date }}</td>
-                  <td>{{ $instructors->time }}</td>
+                  <td>{{ $instructors->formatted_date }}</td>
+                  <td>{{ $instructors->formatted_time }}</td>
                   <td>{{ $instructors->firstName }}</td>
                   <td>{{ $instructors->idNumber }}</td>
                   <td class="fw-bold">{{ $instructors->remark }}</td>
