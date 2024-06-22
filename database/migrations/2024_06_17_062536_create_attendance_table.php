@@ -12,18 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('attendances', function (Blueprint $table) {
-            $table->id();
-            $table->date('date')->nullable();
-            $table->time('time')->nullable();
-            $table->string('student_name')->nullable();
-            $table->string('student_id')->nullable();
-            $table->string('course')->nullable();
-            $table->string('year_section')->nullable();
-            $table->string('status')->nullable();
+            $table->id('attendanceID');
+            $table->string('id');
+            $table->date('date');
+            $table->time('time');
+            $table->string('remark');
             // $table->timestamps();
         });
     }
-
 
     /**
      * Reverse the migrations.

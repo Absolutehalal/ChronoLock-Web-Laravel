@@ -69,10 +69,10 @@
                   Instructor Name
                 </button>
                 <div class="dropdown-menu scrollable-dropdown" aria-labelledby="instNameDropdown">
-                @foreach($instructors as $instructor)
+                @foreach($instructorsName as $instructor)
                   @csrf
-                  <a class="dropdown-item filter-inst-name" data-value="{{ $instructor->instructor_name }}" href="#">
-                    {{ $instructor->instructor_name }}
+                  <a class="dropdown-item filter-inst-name" data-value="{{ $instructor->firstName }}" href="#">
+                    {{ $instructor->firstName }}
                   </a>
                   @endforeach
                 </div>
@@ -87,10 +87,10 @@
                   Status
                 </button>
                 <div class="dropdown-menu scrollable-dropdown" aria-labelledby="instStatusDropdown">
-                @foreach($instructors as $instructor)
+                @foreach($remarks as $remarks)
                   @csrf
-                  <a class="dropdown-item filter-inst-status" data-value="{{ $instructor->status }}" href="#">
-                    {{ $instructor->status }}
+                  <a class="dropdown-item filter-inst-status" data-value="{{ $remarks->status }}" href="#">
+                    {{ $remarks->status }}
                   </a>
                   @endforeach
                 </div>
@@ -159,9 +159,9 @@
                 <tr>
                   <td>{{ $instructors->date }}</td>
                   <td>{{ $instructors->time }}</td>
-                  <td>{{ $instructors->instructor_name }}</td>
-                  <td>{{ $instructors->instructor_id }}</td>
-                  <td class="fw-bold">{{ $instructors->status }}</td>
+                  <td>{{ $instructors->firstName }}</td>
+                  <td>{{ $instructors->idNumber }}</td>
+                  <td class="fw-bold">{{ $instructors->remark }}</td>
                   <th>
                     <!-- Example single primary button -->
                     <div class="dropdown d-inline-block">

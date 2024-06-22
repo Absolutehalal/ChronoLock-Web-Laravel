@@ -10,6 +10,16 @@ class InstAttendanceController extends Controller
       public function instructorAttendanceManagement()
       {
           $instructors = InstAttendance::all();
-          return view('admin-instructorAttendance', ['instructors' => $instructors]);
+
+          $remarks = InstAttendance::select('status')
+          ->distinct()
+          ->get();
+          
+          $instructorsName = InstAttendance::select('instructor_name')
+    
+            ->orderBy('instructor_name')
+            ->distinct()
+            ->get();
+          return view('admin-instructorAttendance', ['instructors' => $instructors , 'instructorsName' =>   $instructorsName, 'remarks' =>   $remarks]);
       }
 }

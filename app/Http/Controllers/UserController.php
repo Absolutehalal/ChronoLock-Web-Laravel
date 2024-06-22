@@ -274,6 +274,7 @@ class UserController extends Controller
     }
 
 
+  
     private function fetchInstructorAttendance()
     {
         return InstAttendance::orderBy('id')->get();
