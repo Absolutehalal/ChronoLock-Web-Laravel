@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\GoogleAuthController;
+use App\Http\Controllers\InstAttendanceController;
 use App\Http\Middleware\CheckGoogleAuth;
 use Illuminate\Support\Facades\Auth;
 
@@ -43,7 +44,7 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     
     Route::get('/scheduleManagementPage', [UserController::class, 'adminScheduleManagement'])->name('adminScheduleManagement');
     Route::get('/studentAttendanceManagementPage', [UserController::class, 'studentAttendanceManagement'])->name('studentAttendanceManagement');
-    Route::get('/instructorAttendanceManagementPage', [UserController::class, 'instructorAttendanceManagement'])->name('instructorAttendanceManagement');
+    Route::get('/instructorAttendanceManagementPage', [InstAttendanceController::class, 'instructorAttendanceManagement'])->name('instructorAttendanceManagement');
     Route::get('/RFIDManagementPage', [UserController::class, 'RFIDManagement'])->name('RFIDManagement');
     Route::get('/logsPage', [UserController::class, 'logs'])->name('logs');
     Route::get('/reportGenerationPage', [UserController::class, 'reportGeneration'])->name('reportGeneration');

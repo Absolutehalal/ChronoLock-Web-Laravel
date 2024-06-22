@@ -69,10 +69,10 @@
                   Instructor Name
                 </button>
                 <div class="dropdown-menu scrollable-dropdown" aria-labelledby="instNameDropdown">
-                  @foreach($instructor_name as $instructor_names)
+                @foreach($instructors as $instructor)
                   @csrf
-                  <a class="dropdown-item filter-inst-name" data-value="{{ $instructor_names->instructor_name }}" href="#">
-                    {{ $instructor_names->instructor_name }}
+                  <a class="dropdown-item filter-inst-name" data-value="{{ $instructor->instructor_name }}" href="#">
+                    {{ $instructor->instructor_name }}
                   </a>
                   @endforeach
                 </div>
@@ -87,10 +87,10 @@
                   Status
                 </button>
                 <div class="dropdown-menu scrollable-dropdown" aria-labelledby="instStatusDropdown">
-                  @foreach($status as $instructor_status)
+                @foreach($instructors as $instructor)
                   @csrf
-                  <a class="dropdown-item filter-inst-status" data-value="{{ $instructor_status->status }}" href="#">
-                    {{ $instructor_status->status }}
+                  <a class="dropdown-item filter-inst-status" data-value="{{ $instructor->status }}" href="#">
+                    {{ $instructor->status }}
                   </a>
                   @endforeach
                 </div>
@@ -154,14 +154,14 @@
                 </tr>
               </thead>
               <tbody>
-                @foreach($inst_attendance as $record)
+              @foreach($instructors as $instructors)
                 @csrf
                 <tr>
-                  <td>{{ $record->date }}</td>
-                  <td>{{ $record->time }}</td>
-                  <td>{{ $record->instructor_name }}</td>
-                  <td>{{ $record->instructor_id }}</td>
-                  <td class="fw-bold">{{ $record->status }}</td>
+                  <td>{{ $instructors->date }}</td>
+                  <td>{{ $instructors->time }}</td>
+                  <td>{{ $instructors->instructor_name }}</td>
+                  <td>{{ $instructors->instructor_id }}</td>
+                  <td class="fw-bold">{{ $instructors->status }}</td>
                   <th>
                     <!-- Example single primary button -->
                     <div class="dropdown d-inline-block">
