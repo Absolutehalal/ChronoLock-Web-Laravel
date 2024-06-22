@@ -10,14 +10,21 @@ class Attendance extends Model
 {
     use HasFactory;
 
+    // protected $fillable = [
+    //     'date',
+    //     'time',
+    //     'student_name',
+    //     'student_id',
+    //     'course',
+    //     'year_section',
+    //     'status',
+    // ];
+
     protected $fillable = [
         'date',
         'time',
-        'student_name',
-        'student_id',
-        'course',
-        'year_section',
-        'status',
+        'userID',
+        'remark',
     ];
 
     // Accessor to format time in 12-hour format with AM/PM

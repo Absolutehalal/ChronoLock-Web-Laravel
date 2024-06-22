@@ -124,23 +124,40 @@ class GoogleAuthController extends Controller
             $existingUser = User::where('google_id', $googleUser->id)->first();
 
             if ($existingUser) {
-                // If user exists, log them in
-                Auth::login($existingUser, true);
-
-                Alert::success('Success', 'Login successful.')
-                    ->autoClose(3000)
-                    ->timerProgressBar()
-                    ->showCloseButton();
 
                 // Check userType and redirect accordingly
                 if ($existingUser->userType === 'Admin') {
+                     // If user exists, log them in
+                    Auth::login($existingUser, true);
+
+                    Alert::success('Success', 'Login successful.')
+                        ->autoClose(3000)
+                        ->timerProgressBar()
+                        ->showCloseButton();
+
                     return redirect()->intended('/adminPage');
+
                 } elseif ($existingUser->userType === 'Instructor') {
+                     // If user exists, log them in
+                    Auth::login($existingUser, true);
+
+                    Alert::success('Success', 'Login successful.')
+                        ->autoClose(3000)
+                        ->timerProgressBar()
+                        ->showCloseButton();
+
                     return redirect()->intended('/instructorDashboard');
+                    
                 } else {
+                    Alert::warning('401', 'Unauthorized Access.')
+                        ->autoClose(10000)
+                        ->timerProgressBar()
+                        ->showCloseButton();
                     return redirect()->back(); // Default redirect for other user types
                 }
             } else {
+
+                // debugging
                 // If user doesn't exist, create a new one
                 $newUser = User::updateOrCreate([
                     'google_id' => $googleUser->id,

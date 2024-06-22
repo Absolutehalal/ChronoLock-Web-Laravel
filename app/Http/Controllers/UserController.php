@@ -274,20 +274,7 @@ class UserController extends Controller
     }
 
 
-    //intructor attendace management page
-    public function instructorAttendanceManagement()
-    {
-        $inst_attendances = $this->fetchInstructorAttendance();
-        $inst_name = $this->fetchInstructorName();
-        $inst_status = $this->fetchInstructorStatus();
-
-        return view('admin-InstructorAttendance', [
-            'inst_attendance' => $inst_attendances,
-            'instructor_name' => $inst_name,
-            'status' => $inst_status,
-        ]);
-    }
-
+  
     private function fetchInstructorAttendance()
     {
         return InstAttendance::orderBy('id')->get();
