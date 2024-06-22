@@ -37,6 +37,8 @@ $(document).ready(function () {
     });
 });
 
+
+// Attendance Table - Instructor/Student
 $(document).ready(function () {
     // Initialize DataTable
     var attendanceTable = $("#AttendanceTable").DataTable({
@@ -115,6 +117,7 @@ $(document).ready(function () {
             return false;
         });
     });
+    
     // Custom filter time for the DataTable
     $("#timepicker").on("click", function () {
         $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
@@ -156,6 +159,7 @@ $(document).ready(function () {
             return false;
         });
     });
+
     // Event listener for date change
     $("#selectedDate, #selectedTime").on("change", function () {
         attendanceTable.draw();
@@ -259,6 +263,127 @@ $(document).ready(function () {
 
         // Clear DataTable filters and redraw
         attendanceTable.search("").columns().search("").draw();
+
+        // Remove active class from all filter options
+        $(".dropdown-item").removeClass("active");
+    });
+});
+
+// CLASS LIST TABLE
+$(document).ready(function () {
+    var ClassListTable = $("#ClassListTable").DataTable({
+        // scrollX: true,
+        // "searching": false, order: [[0, 'asc']],
+        rowReorder: true,
+        pagingType: "simple_numbers",
+        responsive: true,
+        rowReorder: {
+            selector: "td:nth-child(2)",
+        },
+        // stateSave: false,
+        mark: true,
+        language: {
+            searchPlaceholder: "Search Here",
+        },
+    });
+
+    // Highlight search term
+    ClassListTable.on("draw", function () {
+        var body = $(ClassListTable.table().body());
+        var searchTerm = ClassListTable.search();
+
+        // Clear previous highlights
+        body.unmark();
+
+        if (searchTerm) {
+            // Highlight new search term in specific columns (excluding the Actions column)
+            body.find("td").each(function () {
+                var cell = $(this);
+                // Highlight in all columns except the last one (assuming it's the Actions column)
+                if (!cell.hasClass("action-cell")) {
+                    cell.mark(searchTerm);
+                }
+            });
+        }
+    });
+
+    // Course
+    $(".filter-course").on("click", function (e) {
+        e.preventDefault();
+        var course = $(this).data("value");
+
+        // Update the selected course in a hidden input (if needed)
+        $("#selectedCourse").val(course);
+
+        // Filter DataTable based on the selected course
+        ClassListTable.column(2).search(course).draw();
+
+        // Toggle active class for visual indication
+        $(".filter-course").removeClass("active");
+        $(this).addClass("active");
+    });
+
+    // Year
+    $(".filter-year").on("click", function (e) {
+        e.preventDefault(); // Prevents the default action from navigating
+        var year = $(this).data("value");
+
+        // Update the selected year in a hidden input (if needed)
+        $("#selectedYear").val(year);
+
+        // Filter DataTable based on the selected year
+        ClassListTable.column(3).search(year).draw();
+
+        // Toggle active class for visual indication
+        $(".filter-year").removeClass("active");
+        $(this).addClass("active");
+    });
+
+    // Subject Name
+    $(".filter-subjectName").on("click", function (e) {
+        e.preventDefault();
+        var subjectName = $(this).data("value");
+
+        // Update the selected subject name in a hidden input (if needed)
+        $("#selectedSubjectName").val(subjectName);
+
+        // Filter DataTable based on the selected subject name
+        ClassListTable.column(4).search(subjectName).draw();
+
+        // Toggle active class for visual indication
+        $(".filter-subjectName").removeClass("active");
+        $(this).addClass("active");
+    });
+
+    // Subject Code
+    $(".filter-subjectCode").on("click", function (e) {
+        e.preventDefault();
+        var subjectCode = $(this).data("value");
+
+        // Update the selected subject code in a hidden input (if needed)
+        $("#selectedSubjectCode").val(subjectCode);
+
+        // Filter DataTable based on the selected subject code
+        ClassListTable.column(5).search(subjectCode).draw();
+
+        // Toggle active class for visual indication
+        $(".filter-subjectCode").removeClass("active");
+        $(this).addClass("active");
+    });
+
+    // Reset button click event handler
+    $("#resetBtn").on("click", function (e) {
+        e.preventDefault();
+
+        // Clear the selected (if needed)
+        $("#selectedYear").val("");
+        $("#selectedCourse").val("");
+      
+        $("#selectedSubjectName").val("");
+        $("#selectedSubjectCode").val("");
+
+        // Clear DataTable filters and redraw
+        ClassListTable.search("").columns().search("").draw();
 
         // Remove active class from all filter options
         $(".dropdown-item").removeClass("active");

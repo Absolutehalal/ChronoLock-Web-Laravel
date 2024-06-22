@@ -60,6 +60,7 @@
           <div class="card-header">
             <h1>RFID Accounts</h1>
           </div>
+          
           <div class="card-body col-md-12">
             <table id="exampleTable" class="table table-bordered table-hover no-wrap" style="width:100%">
               <thead class="table-dark">
@@ -108,10 +109,8 @@
 
 
 
-      </div>
-
-
-    </div>
+        </div> <!-- content -->
+    </div> <!-- content-wrapper -->
   </div>
   </div>
   </div>
