@@ -13,13 +13,17 @@ return new class extends Migration
     {
         Schema::create('attendances', function (Blueprint $table) {
             $table->id('attendanceID');
-            $table->string('id');
+            $table->unsignedBigInteger('id'); // Use unsignedBigInteger for foreign key
             $table->date('date');
             $table->time('time');
             $table->string('remark');
             // $table->timestamps();
+
+            // Define foreign key constraint
+            $table->foreign('id')->references('id')->on('users')->onDelete('cascade');
         });
     }
+
 
     /**
      * Reverse the migrations.
