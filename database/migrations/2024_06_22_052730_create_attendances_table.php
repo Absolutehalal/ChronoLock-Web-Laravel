@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('attendances', function (Blueprint $table) {
             $table->id('attendanceID');
-            $table->int('userID');
+            $table->integer('userID');
             $table->date('date');
             $table->time('time');
             $table->string('remark');
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('_attendances');
+        Schema::dropIfExists('attendances');
     }
 };

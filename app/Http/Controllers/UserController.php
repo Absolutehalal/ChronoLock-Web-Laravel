@@ -49,7 +49,7 @@ class UserController extends Controller
 
     public function index()
     {
-        $tblUsers = User::orderBy('id', 'desc')->take(15)->get(); // This will fetch only 15 users
+        $tblUsers = User::orderBy('userID', 'desc')->take(15)->get(); // This will fetch only 15 users
         $countTotalUsers = User::where('userType', '!=', 'Admin')->count(); //Count the users except the Admin userType
         $countStudents = User::where('userType', 'Student')->count();
         $countInstructor = User::where('userType', 'Instructor')->count();
@@ -87,7 +87,7 @@ class UserController extends Controller
 
     //user management page functions
 
-    public function updateUser($id, Request $request)
+    public function updateUser($userID, Request $request)
     {
         $validator = Validator::make($request->all(), [
             'updateFirstName' => 'required',
@@ -112,7 +112,7 @@ class UserController extends Controller
                     'status' => 300,
                 ]);
             } else if ($checkEmail == $email) {
-                $user = User::find($id);
+                $user = User::find($userID);
                 if ($user) {
                     $user->firstName = $request->input('updateFirstName');
                     $user->lastName = $request->input('updateLastName');
@@ -201,10 +201,10 @@ class UserController extends Controller
         }
     }
 
-    public function edit($id)
+    public function edit($userID)
     {
 
-        $user = User::find($id);
+        $user = User::find($userID);
         if ($user) {
             return response()->json([
                 'status' => 200,
@@ -216,9 +216,9 @@ class UserController extends Controller
             ]);
         }
     }
-    public function deleteUser($id)
+    public function deleteUser($userID)
     {
-        $user = User::find($id);
+        $user = User::find($userID);
         if ($user) {
             $user->delete();
             return response()->json([
@@ -236,51 +236,6 @@ class UserController extends Controller
     {
         return view('admin-schedule');
     }
-
-
-    private function fetchStudentAttendance()
-    {
-        return Attendance::orderBy('date')->get();
-    }
-
-    private function fetchAttendanceYear()
-    {
-        return Attendance::select('year_section')->distinct()->get();
-    }
-
-    private function fetchStudentCourse()
-    {
-        return Attendance::select('course')->distinct()->get();
-    }
-
-    private function fetchStudentStatus()
-    {
-        return Attendance::select('status')->distinct()->get();
-    }
-
-
-  
-    private function fetchInstructorAttendance()
-    {
-        return InstAttendance::orderBy('id')->get();
-    }
-
-
-    private function fetchInstructorName()
-    {
-        return InstAttendance::select('instructor_name')
-            ->orderBy('instructor_name')
-            ->distinct()
-            ->get();
-    }
-
-    private function fetchInstructorStatus()
-    {
-        return InstAttendance::select('status')
-            ->distinct()
-            ->get();
-    }
-
 
     //RFID management page
     public function RFIDManagement()

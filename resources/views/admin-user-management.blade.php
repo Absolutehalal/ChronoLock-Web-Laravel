@@ -110,7 +110,7 @@
               <tbody>
                 @foreach ($users as $user)
                 <tr>
-                  <td> {{$user->id}} </td>
+                  <td> {{$user->userID}} </td>
                   <td> {{$user->firstName}} </td>
                   <td> {{$user->lastName}} </td>
                   <td> {{$user->userType}} </td>
@@ -122,10 +122,10 @@
                         Actions
                       </button>
                       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <button class="dropdown-item editBtn" type="button" data-toggle="modal" data-target="#updateUserModal" value="{{$user->id}}">
+                        <button class="dropdown-item editBtn" type="button" data-toggle="modal" data-target="#updateUserModal" value="{{$user->userID}}">
                           <i class="mdi mdi-circle-edit-outline text-warning"></i>
                           Edit</button>
-                        <button class="dropdown-item deleteBtn" type="button" data-toggle="modal" data-target="#deleteUserModal" value="{{$user->id}}">
+                        <button class="dropdown-item deleteBtn" type="button" data-toggle="modal" data-target="#deleteUserModal" value="{{$user->userID}}">
                           <i class="mdi mdi-trash-can text-danger"></i>
                           Delete</button>
                       </div>
@@ -508,7 +508,7 @@
               $('#edit_userType').val(response.user.userType);
               $('#edit_email').val(response.user.email);
               $('#edit_userId_no').val(response.user.idNumber);
-              $('#user_ID').val(response.user.id);
+              $('#user_ID').val(response.user.userID);
             }
           }
         });
@@ -521,7 +521,7 @@
         e.preventDefault();
 
         $(this).text('Updating..');
-        var id = $('#user_ID').val();
+        var userID = $('#user_ID').val();
         // alert(id);
 
         var data = {
@@ -539,7 +539,7 @@
 
         $.ajax({
           type: "PUT",
-          url: "/updateUser/" + id,
+          url: "/updateUser/" + userID,
           data: data,
           dataType: "json",
           success: function(response) {
@@ -630,7 +630,7 @@
         e.preventDefault();
 
         $(this).text('Deleting..');
-        var id = $('#deleteID').val();
+        var userID = $('#deleteID').val();
 
         $.ajaxSetup({
           headers: {
@@ -640,7 +640,7 @@
 
         $.ajax({
           type: "DELETE",
-          url: "/deleteUser/" + id,
+          url: "/deleteUser/" + userID,
           dataType: "json",
           success: function(response) {
             // console.log(response);

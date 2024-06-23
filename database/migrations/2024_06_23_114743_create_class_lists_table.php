@@ -11,12 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('attendances', function (Blueprint $table) {
-            $table->id('attendanceID');
-            $table->string('id');
-            $table->date('date');
-            $table->time('time');
-            $table->string('remark');
+        Schema::create('class_lists', function (Blueprint $table) {
+            $table->id('classID');
+            $table->Integer('scheduleID');
+            $table->foreign('scheduleID')->references('scheduleID')->on('schedules')->onDelete('set null'); 
+         
             // $table->timestamps();
         });
     }
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('attendances');
+        Schema::dropIfExists('class_lists');
     }
 };

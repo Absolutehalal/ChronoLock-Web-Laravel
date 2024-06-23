@@ -17,7 +17,7 @@ class AttendanceController extends Controller
         $instructors = DB::table('attendances')
 
         ->join('users', function (JoinClause $join) {
-            $join->on('attendances.id', '=', 'users.id');
+            $join->on('attendances.attendanceID', '=', 'users.userID');
         })
         ->where('users.userType', '=', 'Instructor')
         ->get();
@@ -33,7 +33,7 @@ class AttendanceController extends Controller
          
          $instructorsName =Attendance::select('firstName')
          ->join('users', function (JoinClause $join) {
-            $join->on('attendances.id', '=', 'users.id');
+            $join->on('attendances.attendanceID', '=', 'users.userID');
         })
             ->where('users.userType', '=', 'Instructor')
             ->orderBy('firstName')

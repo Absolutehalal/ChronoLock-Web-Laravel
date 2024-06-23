@@ -19,7 +19,7 @@ class Attendance extends Model
     //     'year_section',
     //     'status',
     // ];
-
+    protected $primaryKey = 'attendanceID';
     protected $fillable = [
         'date',
         'time',
