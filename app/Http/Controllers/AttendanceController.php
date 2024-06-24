@@ -36,8 +36,9 @@ class AttendanceController extends Controller
             ->distinct()
             ->get();
 
+
         // Get distinct first and last names of instructors from the 'attendances' table
-        $instructorsName = Attendance::select('firstName', 'lastName')
+        $instructorsName = Attendance::select('firstName', 'lastName', 'users.idNumber')
             // Join the 'users' table with the 'attendances' table where 'attendances.id' matches 'users.id'
             ->join('users', function (JoinClause $join) {
                 $join->on('attendances.id', '=', 'users.id');

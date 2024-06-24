@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "dyrynda/laravel-cascade-soft-deletes": "^4.4",
         "laravel/framework": "^11.9",
         "laravel/socialite": "^5.14",
         "laravel/tinker": "^2.9",

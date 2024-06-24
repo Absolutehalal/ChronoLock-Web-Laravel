@@ -18,6 +18,7 @@ return new class extends Migration
             $table->time('time');
             $table->string('remark');
             // $table->timestamps();
+            $table->softDeletes()->nullable();
 
             // Define foreign key constraint
             $table->foreign('id')->references('id')->on('users')->onDelete('cascade');

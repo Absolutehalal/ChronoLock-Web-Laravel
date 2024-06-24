@@ -53,7 +53,7 @@ class UserController extends Controller
         $countTotalUsers = User::where('userType', '!=', 'Admin')->count(); //Count the users except the Admin userType
         $countStudents = User::where('userType', 'Student')->count();
         $countInstructor = User::where('userType', 'Instructor')->count();
-    
+
         // $countRFID = User::count();
 
         return view('index', [
@@ -204,31 +204,88 @@ class UserController extends Controller
     public function edit($id)
     {
 
-        $user = User::find($id);
-        if ($user) {
-            return response()->json([
-                'status' => 200,
-                'user' => $user,
-            ]);
-        } else {
-            return response()->json([
-                'status' => 404,
-            ]);
+        $user = User::find($id); 
+        if ($user) { 
+            return response()->json([ 'status' => 200, 'user' => $user, ]); 
+        } else  { 
+            return response()->json([ 'status' => 404, ]); 
         }
     }
     public function deleteUser($id)
     {
-        $user = User::find($id);
+        $user = User::findOrFail($id);
         if ($user) {
             $user->delete();
-            return response()->json([
-                'status' => 200,
-            ]);
+            return response()->json(['status' => 200]);
         } else {
-            return response()->json([
-                'status' => 404,
-            ]);
+            return response()->json(['status' => 404]);
         }
+    }
+
+
+    public function forceDelete($id)
+    {
+        $user = User::withTrashed()->findOrFail($id);
+
+        if (!$user) {
+            // Handle the case where the user is not found
+            Alert::error('Error', 'User not found');
+            return redirect('/archive');
+        }
+
+        $user->forceDelete();
+
+        Alert::success('Success', 'User deleted permanently')
+            ->autoClose(5000)
+            ->timerProgressBar()
+            ->showCloseButton();
+
+        return redirect('/archive');
+    }
+
+    public function userArchive()
+    {
+        $archiveUsers = User::onlyTrashed()->get();
+
+
+        return view('admin-user-archive', [
+            'archiveUsers' => $archiveUsers
+        ]);
+    }
+
+    public function restore($id)
+    {
+        User::whereId($id)->restore();
+
+        toast('User restored successfully', 'success')
+            ->autoClose(5000)
+            ->timerProgressBar()
+            ->showCloseButton();
+
+        return redirect('/userManagementPage');
+    }
+
+    public function restoreAllUsers()
+    {
+        $trashedUsersCount = User::onlyTrashed()->count();
+
+        if ($trashedUsersCount > 0) {
+            User::onlyTrashed()->restore();
+
+            Alert::success('Success', 'All users restored successfully')
+                ->autoClose(5000)
+                ->timerProgressBar()
+                ->showCloseButton();
+        } else {
+            Alert::info('No Users', 'No users to be restored')
+                ->autoClose(5000)
+                ->timerProgressBar()
+                ->showCloseButton();
+
+            return back();
+        }
+
+        return redirect('/userManagementPage');
     }
 
     //schedule management page
@@ -274,7 +331,7 @@ class UserController extends Controller
     }
 
 
-  
+
     private function fetchInstructorAttendance()
     {
         return InstAttendance::orderBy('id')->get();
@@ -302,6 +359,8 @@ class UserController extends Controller
     {
         return view('admin-RFIDAccount');
     }
+
+
 
     //LOGS page
     public function logs()

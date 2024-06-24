@@ -39,7 +39,13 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     Route::post('/userManagementPage', [UserController::class, 'addUser'])->name('addUser');
     Route::get('/editUser/{id}', [UserController::class,'edit'])->name('edit');
     Route::put('/updateUser/{user}', [UserController::class, 'updateUser'])->name('updateUser');
-    Route::delete('/deleteUser/{user}', [UserController::class, 'deleteUser'])->name('deleteUser');
+
+    Route::delete('/deleteUser/{id}', [UserController::class, 'deleteUser'])->name('deleteUser');
+    
+    Route::get('/forceDelete/{id}', [UserController::class, 'forceDelete'])->name('forceDelete');
+    Route::get('/archive', [UserController::class, 'userArchive'])->name('archive');
+    Route::get('restore/{id}',[UserController::class,'restore'])->name('restore');
+    Route::get('restore-all-users',[UserController::class,'restoreAllUsers'])->name('restoreAllUsers');
     //--------END userManagement ROUTES-----------
     
     Route::get('/scheduleManagementPage', [UserController::class, 'adminScheduleManagement'])->name('adminScheduleManagement');

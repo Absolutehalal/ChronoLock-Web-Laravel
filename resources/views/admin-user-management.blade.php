@@ -94,7 +94,18 @@
         <div class="card card-default shadow">
           <div class="card-header">
             <h1>User Management</h1>
+            <div class="row">
+              <div class="col-xl-12 col-md-12 d-flex justify-content-end">
+                <div class="dropdown d-inline-block mb-3 mr-3">
+                  <a class="btn btn-primary btn-sm fw-bold" href="archive">
+                    <i class=" mdi mdi-archive"></i>
+                    Archives
+                  </a>
+                </div>
+              </div>
+            </div>
           </div>
+          
           <div class="card-body">
             <table id="exampleTable" class="table table-bordered table-hover nowrap" style="width:100%">
               <thead class="table-dark">
@@ -207,7 +218,7 @@
                     <input type="password" class="form-control border border-dark" id="password" name="password" placeholder="Generate Password" readonly="true">
                     <i class="fa fa-eye-slash" id="show-password"></i>
                     <div class="input-group-append">
-                      <button class="btn btn-primary btn-md fw-bold" type="button" id="generate-password">Generate</button>
+                      <button class="btn btn-primary btn-sm fw-bold" type="button" id="generate-password">Generate</button>
                     </div>
                   </div>
                 </div>
@@ -620,6 +631,7 @@
           }
         });
       });
+      
       $(document).on('click', '.deleteBtn', function() {
         var userID = $(this).val();
         $('#DeleteModal').modal('show');
