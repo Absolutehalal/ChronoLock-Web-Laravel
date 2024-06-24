@@ -72,7 +72,7 @@
                 @foreach($instructorsName as $instructor)
                   @csrf
                   <a class="dropdown-item filter-inst-name" data-value="{{ $instructor->firstName }}" href="#">
-                    {{ $instructor->firstName }}
+                    {{ $instructor->instFirstName }}  {{ $instructor->instLastName }}
                   </a>
                   @endforeach
                 </div>
@@ -147,9 +147,12 @@
                 <tr>
                   <th>Date</th>
                   <th>Time</th>
+                  <th>Course Code</th>
+                  <th>Course & Section</th>
                   <th>Instructor Name</th>
                   <th>Instructor ID</th>
-                  <th>Status</th>
+
+                  <th>Remarks</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -159,8 +162,10 @@
                 <tr>
                   <td>{{ $instructors->formatted_date }}</td>
                   <td>{{ $instructors->formatted_time }}</td>
-                  <td>{{ $instructors->firstName }}</td>
-                  <td>{{ $instructors->idNumber }}</td>
+                  <td>{{ $instructors->courseCode }}</td>
+                  <td>{{ $instructors->course }}-{{ $instructors->section }}</td>
+                  <td>{{ $instructors->instFirstName }} {{ $instructors->instLastName }}</td>
+                  <td>{{ $instructors->userID }}</td>
                   <td class="fw-bold">{{ $instructors->remark }}</td>
                   <th>
                     <!-- Example single primary button -->

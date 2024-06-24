@@ -83,16 +83,7 @@ class UserImport implements ToCollection, ToModel, WithHeadingRow
                 'idNumber'  => $row['uid'      ],
                 'userType'  => $row['type'     ],
             ]);
-            $userType =  $row['type'];
-            if ($userType=="Student"){
-            return MasterList::create([
-                'UserID' => $row['IDNUMBER'],
-                'STATUS'  => $row['STATUS' ],
-                'email'     => $row['email'    ],
-                'idNumber'  => $row['uid'      ],
-                'userType'  => $row['type'     ],
-            ]);
-        }
+          
         }
     }
 

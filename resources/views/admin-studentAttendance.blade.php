@@ -72,7 +72,7 @@
                   Year & Section
                 </button>
                 <div class="dropdown-menu" aria-labelledby="yearDropdown">
-                  @foreach($years as $year)
+                  @foreach($students as $students)
                   @csrf
                   <a class="dropdown-item filter-year" data-value="{{ $year->year_section }}" href="#">
                     {{ $year->year_section }}
@@ -187,15 +187,15 @@
                 </tr>
               </thead>
               <tbody>
-                @foreach($attendance as $record)
+                @foreach($students as $student)
                 @csrf
                 <tr>
-                  <td>{{ $record->date }}</td>
-                  <td>{{ $record->time }}</td>
-                  <td>{{ $record->student_name }}</td>
-                  <td>{{ $record->student_id }}</td>
-                  <td>{{ $record->course }}</td>
-                  <td>{{ $record->year_section }}</td>
+                  <td>{{ $student->date }}</td>
+                  <td>{{ $student->time }}</td>
+                  <td>{{ $student->student_name }}</td>
+                  <td>{{ $student->student_id }}</td>
+                  <td>{{ $student->course }}</td>
+                  <td>{{ $student->year_section }}</td>
                   <td class="fw-bold">{{ $record->status }}</td>
                   <th>
                     <!-- Example single primary button -->

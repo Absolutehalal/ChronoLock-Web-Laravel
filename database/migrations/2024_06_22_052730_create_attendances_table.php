@@ -13,7 +13,12 @@ return new class extends Migration
     {
         Schema::create('attendances', function (Blueprint $table) {
             $table->id('attendanceID');
-            $table->integer('userID');
+            $table->string('userID');
+            $table->foreign('userID')->references('idNumber')->on('users')->cascadeOnUpdate();
+            $table->unsignedBigInteger('scheduleID');
+            $table->foreign('scheduleID')->references('scheduleID')->on('class_lists')->cascadeOnUpdate();
+            $table->unsignedBigInteger('classID');
+            $table->foreign('classID')->references('classID')->on('class_lists')->cascadeOnUpdate();
             $table->date('date');
             $table->time('time');
             $table->string('remark');

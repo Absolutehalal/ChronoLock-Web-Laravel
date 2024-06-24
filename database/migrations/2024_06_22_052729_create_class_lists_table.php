@@ -13,9 +13,14 @@ return new class extends Migration
     {
         Schema::create('class_lists', function (Blueprint $table) {
             $table->id('classID');
-            $table->Integer('scheduleID');
-            $table->foreign('scheduleID')->references('scheduleID')->on('schedules')->onDelete('set null'); 
-         
+            $table->unsignedBigInteger('scheduleID')->unique();
+            $table->foreign('scheduleID')->references('scheduleID')->on('schedules'); 
+            $table->string('course');
+            $table->string('year');
+            $table->string('section');
+            $table->string('semester');
+            $table->string('enrollmentKey');
+            // $table->primary(['classID', 'scheduleID']);
             // $table->timestamps();
         });
     }

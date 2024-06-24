@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('schedules', function (Blueprint $table) {
             $table->id('scheduleID');
-            $table->string('courseCode')->nullable(); 
-            $table->unsignedBigInteger('userID');
-            $table->foreign('userID')->references('userID')->on('users')->onDelete('set null');
+            $table->string('courseCode')->nullable();
+            $table->string('userID')->nullable();
+            $table->foreign('userID')->references('idNumber')->on('users')->cascadeOnUpdate();
             $table->string('instFirstName')->nullable();
             $table->string('instLastName')->nullable();
             $table->string('course')->nullable();
@@ -26,8 +26,7 @@ return new class extends Migration
             $table->date('startDate')->nullable();
             $table->date('endDate')->nullable();
             $table->string('day')->nullable();
-           
-         
+
             // $table->timestamps();
         });
     }

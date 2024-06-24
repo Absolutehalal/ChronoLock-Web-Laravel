@@ -110,7 +110,7 @@
               <tbody>
                 @foreach ($users as $user)
                 <tr>
-                  <td> {{$user->userID}} </td>
+                  <td> {{$user->id}} </td>
                   <td> {{$user->firstName}} </td>
                   <td> {{$user->lastName}} </td>
                   <td> {{$user->userType}} </td>
@@ -122,10 +122,10 @@
                         Actions
                       </button>
                       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <button class="dropdown-item editBtn" type="button" data-toggle="modal" data-target="#updateUserModal" value="{{$user->userID}}">
+                        <button class="dropdown-item editBtn" type="button" data-toggle="modal" data-target="#updateUserModal" value="{{$user->id}}">
                           <i class="mdi mdi-circle-edit-outline text-warning"></i>
                           Edit</button>
-                        <button class="dropdown-item deleteBtn" type="button" data-toggle="modal" data-target="#deleteUserModal" value="{{$user->userID}}">
+                        <button class="dropdown-item deleteBtn" type="button" data-toggle="modal" data-target="#deleteUserModal" value="{{$user->id}}">
                           <i class="mdi mdi-trash-can text-danger"></i>
                           Delete</button>
                       </div>
@@ -408,6 +408,7 @@
           'email': $(email).val(),
           'password': $(password).val(),
         }
+       
         $.ajaxSetup({
           headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -420,7 +421,7 @@
           data: data,
           dataType: "json",
           success: function(response) {
-            // console.log(response);
+            console.log(response);
             if (response.status == 400) {
               $('#firstNameError').html("");
               $('#firstNameError').addClass('error');
@@ -464,7 +465,20 @@
 
               // fetchUsers(); -----------reserve-------------
               window.location.href = "{{route('userManagement')}}", 4000;
-            } else if (response.status == 300) {
+            } else if (response.status == 100) {
+              $('#firstNameError').html("");
+              $('#lastNameError').html("");
+              $('#userTypeError').html("");
+              $('#emailError').html("");
+              $('#passwordError').html("");
+              $('.addUser').text('Save');
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Email already Exist. Please use a another Email.",
+              });
+
+            }else if (response.status == 300) {
               $('#firstNameError').html("");
               $('#lastNameError').html("");
               $('#userTypeError').html("");
@@ -485,13 +499,13 @@
 
       $(document).on('click', '.editBtn', function(e) {
         e.preventDefault();
-        var userID = $(this).val();
+        var id = $(this).val();
         // console.log(userID);
         // // alert(userID);
 
         $.ajax({
           type: "GET",
-          url: "/editUser/" + userID,
+          url: "/editUser/" + id,
           success: function(response) {
             // console.log(response);
             if (response.status == 404) {
@@ -508,7 +522,7 @@
               $('#edit_userType').val(response.user.userType);
               $('#edit_email').val(response.user.email);
               $('#edit_userId_no').val(response.user.idNumber);
-              $('#user_ID').val(response.user.userID);
+              $('#user_ID').val(response.user.id);
             }
           }
         });
@@ -521,7 +535,7 @@
         e.preventDefault();
 
         $(this).text('Updating..');
-        var userID = $('#user_ID').val();
+        var id = $('#user_ID').val();
         // alert(id);
 
         var data = {
@@ -539,7 +553,7 @@
 
         $.ajax({
           type: "PUT",
-          url: "/updateUser/" + userID,
+          url: "/updateUser/" + id,
           data: data,
           dataType: "json",
           success: function(response) {
@@ -621,16 +635,16 @@
         });
       });
       $(document).on('click', '.deleteBtn', function() {
-        var userID = $(this).val();
+        var id = $(this).val();
         $('#DeleteModal').modal('show');
-        $('#deleteID').val(userID);
+        $('#deleteID').val(id);
       });
 
       $(document).on('click', '.deleteUser', function(e) {
         e.preventDefault();
 
         $(this).text('Deleting..');
-        var userID = $('#deleteID').val();
+        var id = $('#deleteID').val();
 
         $.ajaxSetup({
           headers: {
@@ -640,7 +654,7 @@
 
         $.ajax({
           type: "DELETE",
-          url: "/deleteUser/" + userID,
+          url: "/deleteUser/" + id,
           dataType: "json",
           success: function(response) {
             // console.log(response);

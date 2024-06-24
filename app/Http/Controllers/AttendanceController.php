@@ -16,10 +16,10 @@ class AttendanceController extends Controller
 
         $instructors = DB::table('attendances')
 
-        ->join('users', function (JoinClause $join) {
-            $join->on('attendances.attendanceID', '=', 'users.userID');
+        ->join('schedules', function (JoinClause $join) {
+            $join->on('attendances.scheduleID', '=', 'schedules.scheduleID');
         })
-        ->where('users.userType', '=', 'Instructor')
+       
         ->get();
         
         foreach ($instructors as $instructor) {
@@ -31,14 +31,44 @@ class AttendanceController extends Controller
          ->distinct()
          ->get();
          
-         $instructorsName =Attendance::select('firstName')
-         ->join('users', function (JoinClause $join) {
-            $join->on('attendances.attendanceID', '=', 'users.userID');
-        })
-            ->where('users.userType', '=', 'Instructor')
-            ->orderBy('firstName')
-            ->distinct()
-            ->get();
+        $instructorsName =Attendance::select('instFirstName', 'instLastName')
+            ->join('schedules', function (JoinClause $join) {
+                $join->on('attendances.scheduleID', '=', 'schedules.scheduleID');
+            })
+                
+                ->orderBy('instFirstName')
+                ->distinct()
+                ->get();
+       
          return view('admin-instructorAttendance', ['instructors' => $instructors , 'instructorsName' =>   $instructorsName, 'remarks' =>   $remarks]);
      }
-}
+
+     public function studentAttendanceManagement(){
+        $students = DB::table('attendances')
+
+        ->join('users', 'attendances.userID', '=', 'users.idNumber')
+        ->join('class_lists', 'attendances.classID', '=', 'class_lists.classID')
+        ->get();
+        
+        foreach ($students as $student) {
+            // 'date and time' is the field in 'attendances' table
+            $student->formatted_date = Carbon::parse($student->date)->format('F j, Y');
+            $student->formatted_time = Carbon::parse($student->time)->format('g:i A');
+        }
+         $remarks =Attendance::select('remark')
+         ->distinct()
+         ->get();
+         
+        $studentsName =Attendance::select('firstName', 'lastName')
+            ->join('users', function (JoinClause $join) {
+                $join->on('attendances.userID', '=', 'users.idNumber');
+            })
+                
+                ->orderBy('firstName')
+                ->distinct()
+                ->get();
+       
+         return view('admin-studentAttendance', ['students' => $students , 'studentsName' =>   $studentsName, 'remarks' =>   $remarks]);
+     }
+     }
+

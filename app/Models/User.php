@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+// use Haruncpi\LaravelIdGenerator\IdGenerator;
 
 class User extends Authenticatable
 {
@@ -16,9 +17,9 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-
-    protected $primaryKey = 'userID';
-    
+   
+    protected $primaryKey = 'id';
+    // public $incrementing = false;
     protected $fillable = [
         'accountName',
         'firstName',
@@ -34,7 +35,13 @@ class User extends Authenticatable
         'RFID_Code',
 
     ];
-
+    // public static function boot()
+    // {
+    //     parent::boot();
+    //     self::creating(function ($model) {
+    //         $model-> id = IdGenerator::generate(['table' => 'users', 'length' => 2, 'prefix' =>'1']);
+    //     });
+    // }
     /**
      * The attributes that should be hidden for serialization.
      *
