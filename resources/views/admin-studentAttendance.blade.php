@@ -72,10 +72,10 @@
                   Year & Section
                 </button>
                 <div class="dropdown-menu" aria-labelledby="yearDropdown">
-                  @foreach($students as $students)
+                  @foreach($studentYears as $studentYears)
                   @csrf
-                  <a class="dropdown-item filter-year" data-value="{{ $year->year_section }}" href="#">
-                    {{ $year->year_section }}
+                  <a class="dropdown-item filter-year" data-value="{{ $studentYears->year }}-{{ $studentYears->section }}" href="#">
+                    {{ $studentYears->year }}-{{ $studentYears->section }}
                   </a>
                   @endforeach
                 </div>
@@ -90,10 +90,10 @@
                   Course
                 </button>
                 <div class="dropdown-menu" aria-labelledby="courseDropdown">
-                  @foreach($courses as $course)
+                  @foreach($studentCourses as $studentCourses)
                   @csrf
-                  <a class="dropdown-item filter-course" data-value="{{ $course->course }}" href="#">
-                    {{ $course->course }}
+                  <a class="dropdown-item filter-course" data-value="{{ $studentCourses->course }}" href="#">
+                    {{ $studentCourses->course }}
                   </a>
                   @endforeach
                 </div>
@@ -105,13 +105,13 @@
               <form method="GET" action="{{ route('studentAttendanceManagement') }}">
                 <button class="btn btn-primary btn-sm dropdown-toggle fw-bold" type="button" id="statusDropdown" data-toggle="dropdown" aria-expanded="false">
                   <i class="mdi mdi-alpha-s-box"></i>
-                  Status
+                  Remark
                 </button>
                 <div class="dropdown-menu" aria-labelledby="statusDropdown">
-                  @foreach($status as $status)
+                  @foreach($studentRemarks as $studentRemarks)
                   @csrf
-                  <a class="dropdown-item filter-status" data-value="{{ $status->status }}" href="#">
-                    {{ $status->status }}
+                  <a class="dropdown-item filter-status" data-value="{{ $studentRemarks->remark }}" href="#">
+                    {{ $studentRemarks->remark }}
                   </a>
                   @endforeach
                 </div>
@@ -187,27 +187,27 @@
                 </tr>
               </thead>
               <tbody>
-                @foreach($students as $student)
+                @foreach($students as $students)
                 @csrf
                 <tr>
-                  <td>{{ $student->date }}</td>
-                  <td>{{ $student->time }}</td>
-                  <td>{{ $student->student_name }}</td>
-                  <td>{{ $student->student_id }}</td>
-                  <td>{{ $student->course }}</td>
-                  <td>{{ $student->year_section }}</td>
-                  <td class="fw-bold">{{ $record->status }}</td>
+                  <td>{{ $students->formatted_date }}</td>
+                  <td>{{ $students->formatted_time }}</td>
+                  <td>{{ $students->firstName }} {{ $students->lastName }}</td>
+                  <td>{{ $students->idNumber }}</td>
+                  <td>{{ $students->course }}</td>
+                  <td>{{ $students->year }}-{{ $students->section }}</td>
+                  <td class="fw-bold">{{ $students->remark }}</td>
                   <th>
                     <!-- Example single primary button -->
                     <div class="dropdown d-inline-block">
                       <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
                         Actions
-                      </button>
+                        </button>
                       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <button class="dropdown-item">
+                        <button class="dropdown-item editBtn" type="button" data-toggle="modal" data-target="#updateUserModal" value="{{$students->id}}">
                           <i class="mdi mdi-circle-edit-outline text-warning"></i>
                           Edit</button>
-                        <button class="dropdown-item">
+                        <button class="dropdown-item deleteBtn" type="button" data-toggle="modal" data-target="#deleteUserModal" value="{{$students->id}}">
                           <i class="mdi mdi-trash-can text-danger"></i>
                           Delete</button>
                       </div>
@@ -219,8 +219,6 @@
 
               </tbody>
             </table>
-
-
           </div>
         </div>
         <!-- END -->

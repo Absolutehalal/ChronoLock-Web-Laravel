@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('student_masterlists', function (Blueprint $table) {
             $table->id('MIT_ID');
-            $table->unsignedBigInteger('userID');
-            $table->foreign('userID')->references('id')->on('users')->cascadeOnUpdate();
+            $table->string('userID');
+            $table->foreign('userID')->references('idNumber')->on('users')->cascadeOnUpdate();
             $table->string('status')->nullable();
-            $table->unsignedBigInteger('classID');
-            $table->foreign('classID')->references('classID')->on('class_lists')->cascadeOnUpdate();;
-            // $table->timestamps();
+            $table->unsignedBigInteger('classID')->nullable();
+            $table->foreign('classID')->references('classID')->on('class_lists')->cascadeOnUpdate();
+            $table->timestamps();
         });
     }
 

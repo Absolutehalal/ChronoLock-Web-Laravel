@@ -421,7 +421,7 @@
           data: data,
           dataType: "json",
           success: function(response) {
-            console.log(response);
+            // console.log(response);
             if (response.status == 400) {
               $('#firstNameError').html("");
               $('#firstNameError').addClass('error');
@@ -557,7 +557,7 @@
           data: data,
           dataType: "json",
           success: function(response) {
-            console.log(response);
+            // console.log(response);
             if (response.status == 400) {
               $('#editFirstNameError').html("");
               $('#editFirstNameError').addClass('error');

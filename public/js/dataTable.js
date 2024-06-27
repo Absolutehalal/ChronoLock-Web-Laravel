@@ -211,18 +211,18 @@ $(document).ready(function () {
 
     // INSTRUCTOR FILTERS
     // Instructor Name
-    $(".filter-inst-name").on("click", function (e) {
+    $(".filter-inst-id").on("click", function (e) {
         e.preventDefault();
-        var instructorName = $(this).data("value");
+        var instructorID = $(this).data("value");
 
         // Update the selected inst_name in a hidden input (if needed)
-        $("#selectedInstName").val(instructorName);
+        $("#selectedInstID").val(instructorID);
 
         // Filter DataTable based on the selected inst_name
-        attendanceTable.column(2).search(instructorName).draw();
+        attendanceTable.column(5).search(instructorID).draw();
 
         // Toggle active class for visual indication
-        $(".filter-inst-name").removeClass("active");
+        $(".filter-inst-id").removeClass("active");
         $(this).addClass("active");
     });
 
@@ -235,7 +235,7 @@ $(document).ready(function () {
         $("#selectedInstStatus").val(instructorStatus);
 
         // Filter DataTable based on the selected inst_name
-        attendanceTable.column(4).search(instructorStatus).draw();
+        attendanceTable.column(6).search(instructorStatus).draw();
 
         // Toggle active class for visual indication
         $(".filter-inst-status").removeClass("active");

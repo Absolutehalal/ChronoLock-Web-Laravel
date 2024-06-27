@@ -44,7 +44,14 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     
     Route::get('/scheduleManagementPage', [UserController::class, 'adminScheduleManagement'])->name('adminScheduleManagement');
     Route::get('/studentAttendanceManagementPage', [AttendanceController::class, 'studentAttendanceManagement'])->name('studentAttendanceManagement');
+
+    //--------START instructor attendance Management ROUTES---------  
     Route::get('/instructorAttendanceManagementPage', [AttendanceController::class, 'instructorAttendanceManagement'])->name('instructorAttendanceManagement');
+    Route::get('/editInstructorAttendance/{id}', [AttendanceController::class,'editAttendance'])->name('editAttendance');
+    Route::put('/updateInstructorAttendance/{id}', [AttendanceController::class, 'updateAttendance'])->name('updateAttendance');
+ 
+     //--------END userManagement ROUTES-----------
+
     Route::get('/RFIDManagementPage', [UserController::class, 'RFIDManagement'])->name('RFIDManagement');
     Route::get('/logsPage', [UserController::class, 'logs'])->name('logs');
     Route::get('/reportGenerationPage', [UserController::class, 'reportGeneration'])->name('reportGeneration');

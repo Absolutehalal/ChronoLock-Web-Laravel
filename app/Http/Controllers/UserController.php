@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Attendance;
-use App\Models\InstAttendance;
+
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Imports\UserImport;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\DataTables;
-use Haruncpi\LaravelIdGenerator\IdGenerator;
+
 
 
 class UserController extends Controller
@@ -122,10 +122,6 @@ class UserController extends Controller
                     $user->update();
                     return response()->json([
                         'status' => 200,
-                    ]);
-                } else {
-                    return response()->json([
-                        'status' => 404,
                     ]);
                 }
             } else if ($checkEmail != "") {

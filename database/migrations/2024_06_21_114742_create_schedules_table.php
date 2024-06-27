@@ -27,7 +27,7 @@ return new class extends Migration
             $table->date('endDate')->nullable();
             $table->string('day')->nullable();
 
-            // $table->timestamps();
+            $table->timestamps();
         });
     }
 

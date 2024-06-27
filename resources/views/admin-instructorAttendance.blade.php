@@ -62,21 +62,21 @@
         <div class="row">
           <div class="col-xl-9 col-md-9">
 
-            <div class="dropdown d-inline-block mb-3">
+          <div class="dropdown d-inline-block mb-3">
               <form method="GET" action="{{ route('instructorAttendanceManagement') }}">
                 <button class="btn btn-primary btn-sm dropdown-toggle fw-bold" type="button" id="instNameDropdown" data-toggle="dropdown" aria-expanded="false">
                   <i class="mdi mdi-alpha-i-box"></i>
-                  Instructor Name
+                  Instructor ID
                 </button>
                 <div class="dropdown-menu scrollable-dropdown" aria-labelledby="instNameDropdown">
-                @foreach($instructorsName as $instructor)
+                @foreach($instructors as $instructor)
                   @csrf
-                  <a class="dropdown-item filter-inst-name" data-value="{{ $instructor->firstName }}" href="#">
-                    {{ $instructor->instFirstName }}  {{ $instructor->instLastName }}
+                  <a class="dropdown-item filter-inst-id" data-value="{{ $instructor->userID }}" href="#">
+                  {{ $instructor->userID }}-{{ $instructor->instFirstName }}  {{ $instructor->instLastName }}
                   </a>
                   @endforeach
                 </div>
-                <input type="hidden" name="instructorName" id="selectedInstName">
+                <input type="hidden" name="instructorID" id="selectedInstID">
               </form>
             </div>
 
@@ -84,7 +84,7 @@
               <form method="GET" action="{{ route('instructorAttendanceManagement') }}">
                 <button class="btn btn-primary btn-sm dropdown-toggle fw-bold" type="button" id="instStatusDropdown" data-toggle="dropdown" aria-expanded="false">
                   <i class="mdi mdi-alpha-s-box"></i>
-                  Status
+                  Remark
                 </button>
                 <div class="dropdown-menu scrollable-dropdown" aria-labelledby="instStatusDropdown">
                 @foreach($remarks as $remarks)
@@ -151,7 +151,6 @@
                   <th>Course & Section</th>
                   <th>Instructor Name</th>
                   <th>Instructor ID</th>
-
                   <th>Remarks</th>
                   <th>Action</th>
                 </tr>
@@ -172,12 +171,12 @@
                     <div class="dropdown d-inline-block">
                       <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
                         Actions
-                      </button>
+                        </button>
                       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <button class="dropdown-item">
+                        <button class="dropdown-item editAttendanceBtn" type="button" data-toggle="modal" data-target="#updateAttendanceModal" value="{{$instructors->attendanceID}}">
                           <i class="mdi mdi-circle-edit-outline text-warning"></i>
                           Edit</button>
-                        <button class="dropdown-item">
+                        <button class="dropdown-item deleteBtn" type="button" data-toggle="modal" data-target="#deleteAttendanceModal" value="{{$instructors->attendanceID}}">
                           <i class="mdi mdi-trash-can text-danger"></i>
                           Delete</button>
                       </div>
@@ -195,7 +194,60 @@
     </div>
   </div>
 
+<!-- Update Attendance Modal -->
+  <div class="modal fade" id="updateAttendanceModal" tabindex="-1" role="dialog" aria-labelledby="updateAttendance" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="updateAttendance">Edit User</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
 
+          <ul id="attendanceError"></ul>
 
+          <form method="post">
+            @csrf
+            @method('put')
+            <input type="hidden" id="attendance_ID" class="id form-control ">
 
+            <div class="row">
+              <div class="col-lg-6">
+                <ul id="editIDError"></ul>
+                <div class="form-group">
+                  <label>Instructor ID</label>
+                  <input type="text" class="updateUserID form-control border border-dark border border-dark" id="edit_instructorID" name="update_instructorID">
+                 
+                </div>
+              </div>
+
+              <div class="col-lg-6">
+                <ul id="editRemarkError"></ul>
+                <div class="form-group">
+                  <label>Remark</label>
+                  <select class="updateRemark form-select form-control border border-dark" aria-label="Default select example" id="edit_Remark" name="update_Remark">
+                  <option selected hidden></option>
+                    <option value="Present">Present</option>
+                    <option value="Absent">Absent</option>
+                    <option value="Late">Late</option>
+                  </select>
+                </div>
+              </div>
+
+           <!-- Modal Boday End-->
+
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger btn-pill" id="updateClose" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary btn-pill updateAttendance">Update</button>
+            </div>
+
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
   @include('footer')
