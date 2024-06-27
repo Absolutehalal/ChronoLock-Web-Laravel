@@ -59,7 +59,7 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     Route::get('/instructorAttendanceManagementPage', [AttendanceController::class, 'instructorAttendanceManagement'])->name('instructorAttendanceManagement');
     Route::get('/editInstructorAttendance/{id}', [AttendanceController::class,'editAttendance'])->name('editAttendance');
     Route::put('/updateInstructorAttendance/{id}', [AttendanceController::class, 'updateAttendance'])->name('updateAttendance');
-
+    Route::delete('/deleteInstructorAttendance/{id}', [AttendanceController::class, 'deleteAttendance'])->name('deleteAttendance');
     Route::get('/instructor-attendance-generation', [AttendanceController::class, 'instructorAttendanceGeneration'])->name('instructorAttendanceGeneration');
     Route::get('/exportAttendance', [AttendanceController::class, 'instructorAttendanceExport'])->name('instructorAttendanceExport');
 

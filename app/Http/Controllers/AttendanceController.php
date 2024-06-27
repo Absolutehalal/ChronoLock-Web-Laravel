@@ -134,6 +134,20 @@ class AttendanceController extends Controller
          }
         }
     
+        public function deleteAttendance($id)
+        {
+            $attendance = Attendance::findOrFail($id);
+            if ($attendance) {
+                $attendance->delete();
+                return response()->json([
+                    'status' => 200,
+                ]);
+            } else {
+                return response()->json([
+                    'status' => 404,
+                ]);
+            }
+        }
 
 // Section Ralph
  // public function printPDF(Request $request)

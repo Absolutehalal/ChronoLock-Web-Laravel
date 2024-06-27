@@ -91,5 +91,56 @@ $(document).on('click', '.editAttendanceBtn', function(e) {
       }
     });
   });
+
+
+  $(document).on('click', '.deleteAttendanceBtn', function() {
+    var id = $(this).val();
+    $('#deleteAttendanceModal').modal('show');
+    $('#deleteID').val(id);
+  });
+
+
+
+  $(document).on('click', '.deleteAttendance', function(e) {
+    e.preventDefault();
+
+    $(this).text('Deleting..');
+    var id = $('#deleteID').val();
+
+    $.ajaxSetup({
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+
+    $.ajax({
+      type: "DELETE",
+      url: "/deleteInstructorAttendance/" + id,
+      dataType: "json",
+      success: function(response) {
+        // console.log(response);
+        if (response.status == 404) {
+          $('.deleteAttendance').text('Delete');
+          $("#deleteAttendanceModal .close").click()
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "No Attendance Found",
+          });
+
+        } else {
+          $('.deleteAttendance').text('Delete');
+          $("#deleteAttendanceModal .close").click()
+          Swal.fire({
+            icon: "success",
+            title: "Successful",
+            text: "Attendance Deleted",
+            buttons: false,
+          });
+          location.reload();
+        }
+      }
+    });
+  });
 });
 
