@@ -44,16 +44,26 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     
     Route::get('/forceDelete/{id}', [UserController::class, 'forceDelete'])->name('forceDelete');
     Route::get('/archive', [UserController::class, 'userArchive'])->name('archive');
-    Route::get('restore/{id}',[UserController::class,'restore'])->name('restore');
-    Route::get('restore-all-users',[UserController::class,'restoreAllUsers'])->name('restoreAllUsers');
+    Route::get('/restore/{id}', [UserController::class,'restore'])->name('restore');
+    Route::get('/restore-all-users', [UserController::class,'restoreAllUsers'])->name('restoreAllUsers');
     //--------END userManagement ROUTES-----------
     
     Route::get('/scheduleManagementPage', [UserController::class, 'adminScheduleManagement'])->name('adminScheduleManagement');
     Route::get('/studentAttendanceManagementPage', [UserController::class, 'studentAttendanceManagement'])->name('studentAttendanceManagement');
-    Route::get('/instructorAttendanceManagementPage', [AttendanceController::class, 'instructorAttendanceManagement'])->name('instructorAttendanceManagement');
+    
+   
     Route::get('/RFIDManagementPage', [UserController::class, 'RFIDManagement'])->name('RFIDManagement');
     Route::get('/logsPage', [UserController::class, 'logs'])->name('logs');
     Route::get('/reportGenerationPage', [UserController::class, 'reportGeneration'])->name('reportGeneration');
+
+    Route::get('/instructorAttendanceManagementPage', [AttendanceController::class, 'instructorAttendanceManagement'])->name('instructorAttendanceManagement');
+    Route::get('/instructor-attendance-generation', [AttendanceController::class, 'instructorAttendanceGeneration'])->name('instructorAttendanceGeneration');
+    Route::get('/exportAttendance', [AttendanceController::class, 'instructorAttendanceExport'])->name('instructorAttendanceExport');
+
+    Route::get('/getFilteredData', [AttendanceController::class, 'getFilteredData']);
+    
+    Route::get('/print-pdf', [AttendanceController::class, 'printPDF'])->name('printPDF');
+
 });
 
 

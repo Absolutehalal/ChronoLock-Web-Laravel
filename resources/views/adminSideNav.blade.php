@@ -100,38 +100,60 @@
           <span class="nav-text" data-toggle="tooltip" title="Logs">Logs</span>
         </a>
       </li>
-
+<!-- 
       <li>
         <a class="sidenav-item-link" href="{{route('reportGeneration')}}">
           <i class="mdi mdi-file-export"></i>
           <span class="nav-text" data-toggle="tooltip" title="Report Generation">Report Generation</span>
         </a>
-      </li>
+      </li> -->
+
+      <li class="has-sub">
+            <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#reports" aria-expanded="false" aria-controls="users">
+              <i class="mdi mdi-file-export"></i>
+              <span class="nav-text" data-toggle="tooltip" title="Report Generation">Report Generation</span> <b class="caret"></b>
+            </a>
+            <ul class="collapse show" id="reports" data-parent="#sidebar-menu">
+              <div class="sub-menu">
+                <li>
+                  <a class="sidenav-item-link" href="{{route('instructorAttendanceGeneration')}}">
+                    <span class="nav-text">Student Attendance</span>
+
+                  </a>
+                </li>
+
+                <li>
+                  <a class="sidenav-item-link" href="{{route('instructorAttendanceGeneration')}}">
+                    <span class="nav-text">Instructor Attendance</span>
+
+                  </a>
+                </li>
+          </li>
 
 
       </ul>
     </div>
 
     <div class="sidebar-footer">
-    <div class="sidebar-footer-content">
+      <div class="sidebar-footer-content">
         <ul class="d-flex">
-            <li>
-                <a href="user-account-settings.php" data-toggle="tooltip" title="Profile settings">
-                    <i class="mdi mdi-settings"></i>
-                </a>
-            </li>
-            <li>
-                <!-- Logout form -->
-                <form id="logout-form" action="{{ route('logout') }}" method="post" style="display: none;">
-                    @csrf
-                </form>
-                <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" data-toggle="tooltip" title="Logout">
-                    <i class="mdi mdi-logout-variant"></i>
-                </a>
-            </li>
+          <li>
+            <a href="user-account-settings.php" data-toggle="tooltip" title="Profile settings">
+              <i class="mdi mdi-settings"></i>
+            </a>
+          </li>
+          <li>
+            <!-- Logout form -->
+            <form id="logout-form" action="{{ route('logout') }}" method="post" style="display: none;">
+              @csrf
+            </form>
+            <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" data-toggle="tooltip" title="Logout">
+              <i class="mdi mdi-logout-variant"></i>
+            </a>
+          </li>
         </ul>
+      </div>
     </div>
-</div>
 
 </div>
 </aside>

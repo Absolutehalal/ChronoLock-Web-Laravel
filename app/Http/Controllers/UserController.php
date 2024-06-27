@@ -395,4 +395,8 @@ class UserController extends Controller
     {
         return view('instructor-schedule');
     }
+    public function instructorAttendanceGeneration()
+    {
+        return view('admin-instructorAttendance-generation');
+    }
 }
