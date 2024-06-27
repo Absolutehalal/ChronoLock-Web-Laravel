@@ -4,7 +4,7 @@
     <link href="https://cdn.datatables.net/rowreorder/1.5.0/css/rowReorder.bootstrap5.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/responsive/3.0.2/css/responsive.dataTables.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.css" rel="stylesheet">
-
+<!-- <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.0.2/css/buttons.dataTables.css"> -->
     <!-- Show password on Add user  -->
     <script defer src="js/password.js"></script>
     
@@ -14,6 +14,7 @@
      <!-- Active Page -->
     <script defer src="js/dataTable.js"></script>
 
+    <!-- Ajax Instructor Attendance -->
     <script defer src="js/instructorEditAttendance.js"></script>
 
     <!-- csrf-token -->
@@ -57,5 +58,8 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.11.1/dist/sweetalert2.all.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.11.1/dist/sweetalert2.min.css" rel="stylesheet">
 
+    <!-- EXCEL EXPORT EXTENSION-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
+    
     <script src="plugins/nprogress/nprogress.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>

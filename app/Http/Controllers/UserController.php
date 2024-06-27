@@ -221,7 +221,7 @@ class UserController extends Controller
     }
     public function deleteUser($id)
     {
-        $user = User::find($id);
+        $user = User::findOrFail($id);
         if ($user) {
             $user->delete();
             return response()->json([
@@ -233,7 +233,70 @@ class UserController extends Controller
             ]);
         }
     }
+    public function forceDelete($id)
+    {
+        $user = User::withTrashed()->findOrFail($id);
 
+        if (!$user) {
+            // Handle the case where the user is not found
+            Alert::error('Error', 'User not found');
+            return redirect('/archive');
+        }
+
+        $user->forceDelete();
+
+        Alert::success('Success', 'User deleted permanently')
+            ->autoClose(5000)
+            ->timerProgressBar()
+            ->showCloseButton();
+
+        return redirect('/archive');
+    }
+
+    public function userArchive()
+    {
+        $archiveUsers = User::onlyTrashed()->get();
+
+
+        return view('admin-user-archive', [
+            'archiveUsers' => $archiveUsers
+        ]);
+    }
+
+    public function restore($id)
+    {
+        User::whereId($id)->restore();
+
+        toast('User restored successfully', 'success')
+            ->autoClose(5000)
+            ->timerProgressBar()
+            ->showCloseButton();
+
+        return redirect('/userManagementPage');
+    }
+
+    public function restoreAllUsers()
+    {
+        $trashedUsersCount = User::onlyTrashed()->count();
+
+        if ($trashedUsersCount > 0) {
+            User::onlyTrashed()->restore();
+
+            Alert::success('Success', 'All users restored successfully')
+                ->autoClose(5000)
+                ->timerProgressBar()
+                ->showCloseButton();
+        } else {
+            Alert::info('No Users', 'No users to be restored')
+                ->autoClose(5000)
+                ->timerProgressBar()
+                ->showCloseButton();
+
+            return back();
+        }
+
+        return redirect('/userManagementPage');
+    }
     //schedule management page
     public function adminScheduleManagement()
     {
@@ -278,5 +341,9 @@ class UserController extends Controller
     public function instructorScheduleManagement()
     {
         return view('instructor-schedule');
+    }
+    public function instructorAttendanceGeneration()
+    {
+        return view('admin-instructorAttendance-generation');
     }
 }

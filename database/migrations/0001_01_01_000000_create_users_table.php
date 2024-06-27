@@ -27,6 +27,7 @@ return new class extends Migration
             $table->rememberToken();
             $table->timestamps();
             $table->timestamp('email_verified_at')->nullable();
+            $table->softDeletes()->nullable();
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

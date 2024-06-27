@@ -33,23 +33,40 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
 
 
     //--------START userManagement ROUTES---------
+
     Route::get('/userManagementPage', [UserController::class, 'userManagement'])->name('userManagement');
     // Route::get('/fetchUsers', [UserController::class, 'fetchUsers'])->name('fetchUsers'); => reserve
     // Route::put('/userManagementPage/{user}/update', [UserController::class, 'updateUser'])->name('updateUser'); => deletable but pasiguro
     Route::post('/userManagementPage', [UserController::class, 'addUser'])->name('addUser');
     Route::get('/editUser/{id}', [UserController::class,'edit'])->name('edit');
     Route::put('/updateUser/{user}', [UserController::class, 'updateUser'])->name('updateUser');
-    Route::delete('/deleteUser/{user}', [UserController::class, 'deleteUser'])->name('deleteUser');
+    // Route::delete('/deleteUser/{user}', [UserController::class, 'deleteUser'])->name('deleteUser');
+        
+    Route::delete('/deleteUser/{id}', [UserController::class, 'deleteUser'])->name('deleteUser');
+
+    Route::get('/forceDelete/{id}', [UserController::class, 'forceDelete'])->name('forceDelete');
+    Route::get('/archive', [UserController::class, 'userArchive'])->name('archive');
+    Route::get('/restore/{id}', [UserController::class,'restore'])->name('restore');
+    Route::get('/restore-all-users', [UserController::class,'restoreAllUsers'])->name('restoreAllUsers');
+
     //--------END userManagement ROUTES-----------
     
     Route::get('/scheduleManagementPage', [UserController::class, 'adminScheduleManagement'])->name('adminScheduleManagement');
     Route::get('/studentAttendanceManagementPage', [AttendanceController::class, 'studentAttendanceManagement'])->name('studentAttendanceManagement');
 
     //--------START instructor attendance Management ROUTES---------  
+    
     Route::get('/instructorAttendanceManagementPage', [AttendanceController::class, 'instructorAttendanceManagement'])->name('instructorAttendanceManagement');
     Route::get('/editInstructorAttendance/{id}', [AttendanceController::class,'editAttendance'])->name('editAttendance');
     Route::put('/updateInstructorAttendance/{id}', [AttendanceController::class, 'updateAttendance'])->name('updateAttendance');
- 
+
+    Route::get('/instructor-attendance-generation', [AttendanceController::class, 'instructorAttendanceGeneration'])->name('instructorAttendanceGeneration');
+    Route::get('/exportAttendance', [AttendanceController::class, 'instructorAttendanceExport'])->name('instructorAttendanceExport');
+
+    Route::get('/getFilteredData', [AttendanceController::class, 'getFilteredData']);
+
+    Route::get('/print-pdf', [AttendanceController::class, 'printPDF'])->name('printPDF');
+
      //--------END userManagement ROUTES-----------
 
     Route::get('/RFIDManagementPage', [UserController::class, 'RFIDManagement'])->name('RFIDManagement');
