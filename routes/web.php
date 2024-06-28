@@ -52,22 +52,31 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     //--------END userManagement ROUTES-----------
     
     Route::get('/scheduleManagementPage', [UserController::class, 'adminScheduleManagement'])->name('adminScheduleManagement');
+
+     //--------START student attendance Management ROUTES---------  
+
     Route::get('/studentAttendanceManagementPage', [AttendanceController::class, 'studentAttendanceManagement'])->name('studentAttendanceManagement');
+    Route::get('/editStudentAttendance/{id}', [AttendanceController::class,'editStudentAttendance'])->name('editStudentAttendance');
+    Route::put('/updateStudentAttendance/{id}', [AttendanceController::class, 'updateStudentAttendance'])->name('updateStudentAttendance'); 
+    Route::delete('/deleteStudentAttendance/{id}', [AttendanceController::class, 'deleteStudentAttendance'])->name('deleteStudentAttendance');
+
+    //--------END student attendance Management ROUTES-----------
 
     //--------START instructor attendance Management ROUTES---------  
-    
+
     Route::get('/instructorAttendanceManagementPage', [AttendanceController::class, 'instructorAttendanceManagement'])->name('instructorAttendanceManagement');
-    Route::get('/editInstructorAttendance/{id}', [AttendanceController::class,'editAttendance'])->name('editAttendance');
-    Route::put('/updateInstructorAttendance/{id}', [AttendanceController::class, 'updateAttendance'])->name('updateAttendance');
-    Route::delete('/deleteInstructorAttendance/{id}', [AttendanceController::class, 'deleteAttendance'])->name('deleteAttendance');
+    Route::get('/editInstructorAttendance/{id}', [AttendanceController::class,'editInstructorAttendance'])->name('editAttendance');
+    Route::put('/updateInstructorAttendance/{id}', [AttendanceController::class, 'updateInstructorAttendance'])->name('updateAttendance');
+    Route::delete('/deleteInstructorAttendance/{id}', [AttendanceController::class, 'deleteInstructorAttendance'])->name('deleteAttendance');
     Route::get('/instructor-attendance-generation', [AttendanceController::class, 'instructorAttendanceGeneration'])->name('instructorAttendanceGeneration');
     Route::get('/exportAttendance', [AttendanceController::class, 'instructorAttendanceExport'])->name('instructorAttendanceExport');
-
     Route::get('/getFilteredData', [AttendanceController::class, 'getFilteredData']);
-
     Route::get('/print-pdf', [AttendanceController::class, 'printPDF'])->name('printPDF');
 
-     //--------END userManagement ROUTES-----------
+     //--------END instructor attendance Management ROUTES-----------
+
+
+   
 
     Route::get('/RFIDManagementPage', [UserController::class, 'RFIDManagement'])->name('RFIDManagement');
     Route::get('/logsPage', [UserController::class, 'logs'])->name('logs');

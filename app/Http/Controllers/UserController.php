@@ -76,7 +76,8 @@ class UserController extends Controller
     //user management page
     public function userManagement()
     {
-        $users = User::all();
+        $users = User::all()
+        ->where('userType', '!=', 'Admin');
         return view('admin-user-management', ['users' => $users]);
     }
 
@@ -120,6 +121,8 @@ class UserController extends Controller
                     $user->userType = $request->input('updateUserType');
                     $user->email = $request->input('updateEmail');
                     $user->update();
+
+                    
                     return response()->json([
                         'status' => 200,
                     ]);

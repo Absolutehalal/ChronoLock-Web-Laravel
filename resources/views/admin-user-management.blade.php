@@ -243,7 +243,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="deleteUser" style="text-align:center;">Delete User</h5>
-          <button type="button" class="close" id="upClose" data-dismiss="modal" aria-label="Close">
+          <button type="button" class="close" id="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -262,7 +262,7 @@
 
         <!-- Modal Footer -->
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary btn-pill" id="downClose" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary btn-pill" id="close" data-dismiss="modal">Close</button>
           <button type="submit" class="btn btn-danger btn-pill deleteUser">Delete</button>
         </div>
 
@@ -646,7 +646,6 @@
       });
       $(document).on('click', '.deleteBtn', function() {
         var id = $(this).val();
-        $('#DeleteModal').modal('show');
         $('#deleteID').val(id);
       });
 

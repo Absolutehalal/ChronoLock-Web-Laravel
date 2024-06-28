@@ -23,9 +23,9 @@ class AttendanceController extends Controller
     
         $instructors = DB::table('attendances')
 
-        ->join('schedules', function (JoinClause $join) {
-            $join->on('attendances.userID', '=', 'schedules.userID');
-        })
+        ->join('schedules', 'attendances.userID', '=', 'schedules.userID')
+        ->join('users', 'attendances.userID', '=', 'users.idNumber')
+        ->where('users.userType', '=', 'Instructor')
         ->get();
         
         foreach ($instructors as $instructor) {
@@ -33,20 +33,19 @@ class AttendanceController extends Controller
             $instructor->formatted_date = Carbon::parse($instructor->date)->format('F j, Y');
             $instructor->formatted_time = Carbon::parse($instructor->time)->format('g:i A');
         }
-         $remarks =Attendance::select('remark')
-         ->join('users', 'attendances.userID', '=', 'users.idNumber')
-         ->where('users.userType', '=', 'Instructor')
-         ->distinct()
-         ->get();
+        $remarks =Attendance::select('remark')
+        ->join('users', 'attendances.userID', '=', 'users.idNumber')
+        ->where('users.userType', '=', 'Instructor')
+        ->distinct()
+        ->get();
          
         $instructorsName =Attendance::select('instFirstName', 'instLastName')
-            ->join('schedules', function (JoinClause $join) {
-                $join->on('attendances.userID', '=', 'schedules.userID');
-            })
-                
-                ->orderBy('instFirstName')
-                ->distinct()
-                ->get();
+        ->join('schedules', 'attendances.userID', '=', 'schedules.userID')
+        ->join('users', 'attendances.userID', '=', 'users.idNumber')
+        ->where('users.userType', '=', 'Instructor')
+        ->orderBy('instFirstName')
+        ->distinct()
+        ->get();
        
          return view('admin-instructorAttendance', ['instructors' => $instructors , 'instructorsName' =>   $instructorsName, 'remarks' =>   $remarks]);
      }
@@ -69,24 +68,26 @@ class AttendanceController extends Controller
         ->join('users', 'attendances.userID', '=', 'users.idNumber')
         ->join('class_lists', 'attendances.classID', '=', 'class_lists.classID')
         ->where('users.userType', '=', 'Student')
+        ->distinct()
         ->get();
 
         $studentYears = DB::table('attendances')
         ->join('users', 'attendances.userID', '=', 'users.idNumber')
         ->join('class_lists', 'attendances.classID', '=', 'class_lists.classID')
         ->where('users.userType', '=', 'Student')
+        ->distinct()
         ->get();
 
         $studentRemarks =Attendance::select('remark')
         ->join('users', 'attendances.userID', '=', 'users.idNumber')
+        ->where('users.userType', '=', 'Student')  
         ->distinct()
-        ->where('users.userType', '=', 'Student')
         ->get();
 
          return view('admin-studentAttendance', ['students' => $students , 'studentCourses' => $studentCourses, 'studentYears' => $studentYears, 'studentRemarks' =>   $studentRemarks]);
      }
 
-     public function editAttendance($id)
+     public function editInstructorAttendance($id)
      {
 
          $attendance = Attendance::find($id);
@@ -102,7 +103,7 @@ class AttendanceController extends Controller
          }
      }
 
-     public function updateAttendance(Request $request, $id)
+     public function updateInstructorAttendance(Request $request, $id)
      {
          $validator = Validator::make($request->all(), [
              'updateUserID' => 'required',
@@ -134,8 +135,67 @@ class AttendanceController extends Controller
          }
         }
     
-        public function deleteAttendance($id)
+        public function deleteInstructorAttendance($id)
         {
+            $attendance = Attendance::findOrFail($id);
+            if ($attendance) {
+                $attendance->delete();
+                return response()->json([
+                    'status' => 200,
+                ]);
+            } else {
+                return response()->json([
+                    'status' => 404,
+                ]);
+            }
+        }
+
+        public function editStudentAttendance(){
+            $attendance = Attendance::find($id);
+            if ($attendance) {
+                return response()->json([
+                    'status' => 200,
+                    'attendance' => $attendance,
+                ]);
+            } else {
+                return response()->json([
+                    'status' => 404,
+                ]);
+            }
+        }
+
+        public function updateStudentAttendance(Request $request, $id){
+            $validator = Validator::make($request->all(), [
+                'updateUserID' => 'required',
+                'updateRemark' => 'required',
+            ]);
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => 400,
+                    'errors' => $validator->messages()
+                ]);
+               }else{ 
+                   $attendance = Attendance::find($id);
+                   
+                       
+                   if ($attendance) {
+                        $attendance->userID = $request->input('updateUserID');
+                        $attendance->remark = $request->input('updateRemark');
+                        $attendance->update();
+                        return response()->json([
+                           'status' => 200,
+                       ]);
+                      
+                    }else{
+                       return response()->json([
+                           'status'=>404,
+                           'message'=>'No Attendance Found.'
+                       ]);
+                    }
+            }
+        }
+
+        public function deleteStudentAttendance(){
             $attendance = Attendance::findOrFail($id);
             if ($attendance) {
                 $attendance->delete();

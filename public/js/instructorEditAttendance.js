@@ -20,7 +20,7 @@ $(document).on('click', '.editAttendanceBtn', function(e) {
           });
           $("#updateAttendanceModal .close").click()
         } else {
-           console.log(response.attendance);
+          //  console.log(response.attendance);
           $('#edit_instructorID').val(response.attendance.userID);
           $('#edit_Remark').val(response.attendance.remark); 
           $('#attendance_ID').val(response.attendance.attendanceID); 
@@ -56,7 +56,7 @@ $(document).on('click', '.editAttendanceBtn', function(e) {
           data: data,
           dataType: "json",
           success: function(response) {
-        console.log(response);
+        // console.log(response);
         if (response.status == 400) {
           $('#editIDError').html("");
           $('#editIDError').addClass('error');
@@ -71,7 +71,13 @@ $(document).on('click', '.editAttendanceBtn', function(e) {
           $('.updateAttendance').text('Update');
 
         } else if((response.status == 404)){
-          console.log(response.message);
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "No Attendance Record Found!!!",
+          });
+          $("#updateAttendanceModal .close").click()
+          // console.log(response.message);
         }else if ((response.status == 200)) {
           $('#editIDError').html("");
           $('#editRemarkError').html("");
@@ -80,7 +86,7 @@ $(document).on('click', '.editAttendanceBtn', function(e) {
             title: "Successful",
             text: "Attendance Successfully Updated!",
           });
-          console.log(response.attendance);
+          // console.log(response.attendance);
           $('.updateAttendance').text('Update');
           $("#updateAttendanceModal .close").click()
         location.reload();
@@ -94,9 +100,8 @@ $(document).on('click', '.editAttendanceBtn', function(e) {
 
 
   $(document).on('click', '.deleteAttendanceBtn', function() {
-    var id = $(this).val();
-    $('#deleteAttendanceModal').modal('show');
-    $('#deleteID').val(id);
+    var id = $(this).val(); 
+    $('#deleteAttendanceID').val(id);
   });
 
 
@@ -105,7 +110,7 @@ $(document).on('click', '.editAttendanceBtn', function(e) {
     e.preventDefault();
 
     $(this).text('Deleting..');
-    var id = $('#deleteID').val();
+    var id = $('#deleteAttendanceID').val();
 
     $.ajaxSetup({
       headers: {

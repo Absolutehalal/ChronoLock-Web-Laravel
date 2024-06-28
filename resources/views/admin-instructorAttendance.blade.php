@@ -194,12 +194,51 @@
     </div>
   </div>
 
+
+ <!-- Delete Attendance Modal -->
+ <div class="modal fade" id="deleteAttendanceModal" tabindex="-1" role="dialog" aria-labelledby="deleteAttendance" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteAttendance" style="text-align:center;">Delete Instructor Attendance</h5>
+          <button type="button" class="close" id="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form method="post">
+            @csrf
+            @method('delete')
+            <input type="hidden" id="deleteAttendanceID" class="id form-control ">
+            <div class="row">
+              <i class="fa-solid fa-trash-can text-danger" style="text-align:center; font-size:50px; padding:1rem;"></i>
+            </div>
+            <div class="row">
+              <h4 style="text-align:center;"> Are you sure you want to delete this Instructor Attendance?</h4>
+            </div>
+        </div> <!-- Modal Boday End-->
+
+        <!-- Modal Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary btn-pill" id="close" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-danger btn-pill deleteAttendance">Delete</button>
+        </div>
+
+        </form>
+
+      </div>
+    </div>
+  </div>
+  </div>
+
+
+
 <!-- Update Attendance Modal -->
   <div class="modal fade" id="updateAttendanceModal" tabindex="-1" role="dialog" aria-labelledby="updateAttendance" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="updateAttendance">Edit User</h5>
+          <h5 class="modal-title" id="updateAttendance">Edit Instructor Attendance</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -251,40 +290,4 @@
     </div>
   </div>
 
-
-   <!-- Delete Attendance Modal -->
-   <div class="modal fade" id="deleteAttendanceModal" tabindex="-1" role="dialog" aria-labelledby="deleteAttendance" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="deleteAttendance" style="text-align:center;">Delete User</h5>
-          <button type="button" class="close" id="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <form method="post">
-            @csrf
-            @method('delete')
-            <input type="hidden" id="deleteID" class="id form-control ">
-            <div class="row">
-              <i class="fa-solid fa-trash-can text-danger" style="text-align:center; font-size:50px; padding:1rem;"></i>
-            </div>
-            <div class="row">
-              <h4 style="text-align:center;"> Are you sure you want to delete this user?</h4>
-            </div>
-        </div> <!-- Modal Boday End-->
-
-        <!-- Modal Footer -->
-        <div class="modal-footer">
-          <button type="button" class="btn btn-primary btn-pill" id="close" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-danger btn-pill deleteAttendance">Delete</button>
-        </div>
-
-        </form>
-
-      </div>
-    </div>
-  </div>
-  </div>
   @include('footer')
