@@ -9,4 +9,20 @@ class Schedules extends Model
 {
     use HasFactory;
     protected $primaryKey = 'scheduleID';
+
+    protected $fillable = [
+        'scheduleID',
+        'courseCode',
+        'userID',
+        'instFirstName',
+        'instLastName',
+        'course',
+        'section',
+        'year',
+        'startTime',
+        'endTime',
+        'startDate',
+        'endDate',
+        'day'
+    ];
 }

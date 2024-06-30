@@ -62,17 +62,17 @@
         <div class="row">
           <div class="col-xl-9 col-md-9">
 
-          <div class="dropdown d-inline-block mb-3">
+            <div class="dropdown d-inline-block mb-3">
               <form method="GET" action="{{ route('instructorAttendanceManagement') }}">
-                <button class="btn btn-primary btn-sm dropdown-toggle fw-bold" type="button" id="instNameDropdown" data-toggle="dropdown" aria-expanded="false">
+                <button class="btn btn-primary btn-sm dropdown-toggle fw-bold" type="button" id="instIDDropdown" data-toggle="dropdown" aria-expanded="false">
                   <i class="mdi mdi-alpha-i-box"></i>
                   Instructor ID
                 </button>
                 <div class="dropdown-menu scrollable-dropdown" aria-labelledby="instNameDropdown">
-                @foreach($instructors as $instructor)
+                  @foreach($instructorsID as $instructorID)
                   @csrf
-                  <a class="dropdown-item filter-inst-id" data-value="{{ $instructor->userID }}" href="#">
-                  {{ $instructor->userID }}-{{ $instructor->instFirstName }}  {{ $instructor->instLastName }}
+                  <a class="dropdown-item id-item filter-inst-id" data-value="{{ $instructorID->userID }}" href="#">
+                    {{ $instructorID->userID }} - {{ $instructorID->instFirstName }} {{ $instructorID->instLastName }}
                   </a>
                   @endforeach
                 </div>
@@ -87,9 +87,9 @@
                   Remark
                 </button>
                 <div class="dropdown-menu scrollable-dropdown" aria-labelledby="instStatusDropdown">
-                @foreach($remarks as $remarks)
+                  @foreach($remarks as $remarks)
                   @csrf
-                  <a class="dropdown-item filter-inst-status" data-value="{{ $remarks->remark }}" href="#">
+                  <a class="dropdown-item remark-item filter-inst-status" data-value="{{ $remarks->remark }}" href="#">
                     {{ $remarks->remark }}
                   </a>
                   @endforeach
@@ -156,22 +156,30 @@
                 </tr>
               </thead>
               <tbody>
-              @foreach($instructors as $instructors)
+                @foreach($instructors as $instructors)
                 @csrf
                 <tr>
                   <td>{{ $instructors->formatted_date }}</td>
                   <td>{{ $instructors->formatted_time }}</td>
                   <td>{{ $instructors->courseCode }}</td>
-                  <td>{{ $instructors->course }}-{{ $instructors->section }}</td>
+                  <td>{{ $instructors->course }} - {{ $instructors->year }}{{ $instructors->section }}</td>
                   <td>{{ $instructors->instFirstName }} {{ $instructors->instLastName }}</td>
                   <td>{{ $instructors->userID }}</td>
-                  <td class="fw-bold">{{ $instructors->remark }}</td>
+                  <td>
+                    @if($instructors->remark == 'Present')
+                    <span class="badge badge-success">Present</span>
+                    @elseif($instructors->remark == 'Absent')
+                    <span class="badge badge-danger">Absent</span>
+                    @elseif($instructors->remark == 'Late')
+                    <span class="badge badge-warning">Late</span>
+                    @endif
+                  </td>
                   <th>
                     <!-- Example single primary button -->
                     <div class="dropdown d-inline-block">
                       <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
                         Actions
-                        </button>
+                      </button>
                       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         <button class="dropdown-item editAttendanceBtn" type="button" data-toggle="modal" data-target="#updateAttendanceModal" value="{{$instructors->attendanceID}}">
                           <i class="mdi mdi-circle-edit-outline text-warning"></i>
@@ -194,7 +202,7 @@
     </div>
   </div>
 
-<!-- Update Attendance Modal -->
+  <!-- Update Attendance Modal -->
   <div class="modal fade" id="updateAttendanceModal" tabindex="-1" role="dialog" aria-labelledby="updateAttendance" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
@@ -218,8 +226,8 @@
                 <ul id="editIDError"></ul>
                 <div class="form-group">
                   <label>Instructor ID</label>
-                  <input type="text" class="updateUserID form-control border border-dark border border-dark" id="edit_instructorID" name="update_instructorID">
-                 
+                  <input readonly type="text" class="updateUserID form-control border border-dark border border-dark" id="edit_instructorID" name="update_instructorID">
+
                 </div>
               </div>
 
@@ -228,7 +236,7 @@
                 <div class="form-group">
                   <label>Remark</label>
                   <select class="updateRemark form-select form-control border border-dark" aria-label="Default select example" id="edit_Remark" name="update_Remark">
-                  <option selected hidden></option>
+                    <option selected hidden></option>
                     <option value="Present">Present</option>
                     <option value="Absent">Absent</option>
                     <option value="Late">Late</option>
@@ -236,13 +244,13 @@
                 </div>
               </div>
 
-           <!-- Modal Boday End-->
+              <!-- Modal Boday End-->
 
-            <!-- Modal Footer -->
-            <div class="modal-footer">
-              <button type="button" class="btn btn-danger btn-pill" id="updateClose" data-dismiss="modal">Close</button>
-              <button type="submit" class="btn btn-primary btn-pill updateAttendance">Update</button>
-            </div>
+              <!-- Modal Footer -->
+              <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-pill" id="updateClose" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary btn-pill updateAttendance">Update</button>
+              </div>
 
           </form>
 
@@ -250,4 +258,34 @@
       </div>
     </div>
   </div>
+
+  <script>
+    const instIDDropdown = `<i class="mdi mdi-alpha-i-box"></i> Instructor ID`;
+    const instStatusDropdown = `<i class="mdi mdi-alpha-r-box"></i> Remark`;
+
+    document.addEventListener("DOMContentLoaded", function() {
+
+      document.querySelectorAll('.remark-item').forEach(function(item) {
+        item.addEventListener('click', function(e) {
+          e.preventDefault();
+          document.getElementById('instStatusDropdown').innerHTML = `<i class="mdi mdi-alpha-r-box"></i> ${this.textContent}`;
+        });
+      });
+
+      document.querySelectorAll('.id-item').forEach(function(item) {
+        item.addEventListener('click', function(e) {
+          e.preventDefault();
+          document.getElementById('instIDDropdown').innerHTML = `<i class="mdi mdi-alpha-i-box"></i> ${this.textContent}`;
+        });
+      });
+    });
+
+    $("#resetBtn").on("click", function (e) {
+        e.preventDefault();
+        // Reset the dropdown button to its default UI
+        document.getElementById("instIDDropdown").innerHTML = instIDDropdown;
+        document.getElementById("instStatusDropdown").innerHTML = instStatusDropdown;
+    });
+  </script>
+
   @include('footer')

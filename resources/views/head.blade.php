@@ -4,18 +4,20 @@
     <link href="https://cdn.datatables.net/rowreorder/1.5.0/css/rowReorder.bootstrap5.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/responsive/3.0.2/css/responsive.dataTables.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.css" rel="stylesheet">
-<!-- <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.0.2/css/buttons.dataTables.css"> -->
+    <!-- <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.0.2/css/buttons.dataTables.css"> -->
     <!-- Show password on Add user  -->
     <script defer src="js/password.js"></script>
-    
+
     <!-- Auto Generate password -->
     <script defer src="js/passwordGenerator.js"></script>
 
-     <!-- Active Page -->
+    <!-- Active Page -->
     <script defer src="js/dataTable.js"></script>
 
-    <!-- Ajax Instructor Attendance -->
-    <script defer src="js/instructorEditAttendance.js"></script>
+    <!-- Ajax Edit Attendance -->
+    <script defer src="js/instructorEditAttendance.js"></script> 
+
+    <script defer src="js/studentEditAttendance.js"></script>
 
     <!-- csrf-token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -42,7 +44,9 @@
 
     <!-- FLATPCK -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/material_blue.css">    
+    <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/material_blue.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/monthSelect/style.css">
 
     <!-- ChronoLock CSS -->
     <link id="main-css-href" rel="stylesheet" href="css/style.css" />
@@ -60,6 +64,7 @@
 
     <!-- EXCEL EXPORT EXTENSION-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
-    
+
     <script src="plugins/nprogress/nprogress.js"></script>
+    
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>

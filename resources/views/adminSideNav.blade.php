@@ -108,14 +108,14 @@
         </a>
       </li> -->
       <li class="has-sub">
-            <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#reports" aria-expanded="false" aria-controls="users">
+            <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#reports" aria-expanded="false" aria-controls="reports">
               <i class="mdi mdi-file-export"></i>
               <span class="nav-text" data-toggle="tooltip" title="Report Generation">Report Generation</span> <b class="caret"></b>
             </a>
-            <ul class="collapse show" id="reports" data-parent="#sidebar-menu">
+            <ul class="collapse show" id="reports">
               <div class="sub-menu">
                 <li>
-                  <a class="sidenav-item-link" href="{{route('instructorAttendanceGeneration')}}">
+                  <a class="sidenav-item-link" href="{{route('studentAttendanceGeneration')}}">
                     <span class="nav-text">Student Attendance</span>
 
                   </a>

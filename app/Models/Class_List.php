@@ -9,4 +9,13 @@ class Class_List extends Model
 {
     use HasFactory;
     protected $primaryKey = 'classID';
+
+    protected $fillable = [
+        'classID',
+        'course',
+        'year',
+        'section',
+        'semester',
+        'enrollmentKey',
+    ];
 }
