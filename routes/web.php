@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\UserLogController;
 use App\Http\Middleware\CheckGoogleAuth;
 use Illuminate\Support\Facades\Auth;
 
@@ -79,7 +80,7 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
    
 
     Route::get('/RFIDManagementPage', [UserController::class, 'RFIDManagement'])->name('RFIDManagement');
-    Route::get('/logsPage', [UserController::class, 'logs'])->name('logs');
+    Route::get('/logsPage', [UserLogController::class, 'logs'])->name('logs');
     Route::get('/reportGenerationPage', [UserController::class, 'reportGeneration'])->name('reportGeneration');
 });
 

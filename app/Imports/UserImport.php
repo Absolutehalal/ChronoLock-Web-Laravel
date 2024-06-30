@@ -6,7 +6,8 @@ use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\ToModel;
 use App\Models\User;
-
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Concerns\WithValidation;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
@@ -70,20 +71,51 @@ class UserImport implements ToCollection, ToModel, WithHeadingRow
                 'lastName'  => $row['lastname' ],
                 'idNumber'  => $row['uid'      ],
                 'userType'  => $row['type'     ],
-            ]);
-            
+            ]);  
+            // Start Logs
+             $id = Auth::id();
+             $userID =DB::table('users')->where('id', $id)->value('idNumber');
+             $email =  $row['email'];
+             date_default_timezone_set("Asia/Manila");
+             $date = date("Y-m-d");
+             $time = date("H:i:s");
+             $action = "Updated $email Account";
+             DB::table('user_logs')->insert([
+                 'userID' => $userID,
+                 'action' => $action,
+                 'date' => $date,
+                 'time' => $time,
+             ]);
+             // END Logs
             return $existingUser; // Return the updated user
+
+           
         } 
         else {
             // Create new user
-            return User::create([
+            User::create([
                 'firstName' => $row['firstname'],
                 'lastName'  => $row['lastname' ],
                 'email'     => $row['email'    ],
                 'idNumber'  => $row['uid'      ],
                 'userType'  => $row['type'     ],
             ]);
-          
+              // Start Logs
+              $email =  $row['email'];
+              $id = Auth::id();
+              $userID =DB::table('users')->where('id', $id)->value('idNumber');
+              date_default_timezone_set("Asia/Manila");
+              $date = date("Y-m-d");
+              $time = date("H:i:s");
+              $action = "imported new user: $email";
+              DB::table('user_logs')->insert([
+                  'userID' => $userID,
+                  'action' => $action,
+                  'date' => $date,
+                  'time' => $time,
+              ]);
+              // END Logs
+
         }
     }
 

@@ -86,7 +86,7 @@ $(document).ready(function() {
                 title: "Successful",
                 text: "Attendance Successfully Updated!",
               });
-            //   console.log(response.attendance);
+              // console.log(response.attendance);
               $('.updateAttendance').text('Update');
               $("#updateAttendanceModal .close").click()
             location.reload();

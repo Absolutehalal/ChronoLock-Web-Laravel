@@ -14,9 +14,6 @@
      <!-- Active Page -->
     <script defer src="js/dataTable.js"></script>
 
-    <!-- Ajax Instructor Attendance -->
-    <script defer src="js/instructorEditAttendance.js"></script>
-
     <!-- csrf-token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 

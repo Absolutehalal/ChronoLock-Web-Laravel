@@ -5,10 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class User_Log extends Model
+class UserLog extends Model
 {
     use HasFactory;
 
+    protected $primaryKey = 'idLogs';
     protected $fillable = [
         'userID',
         'action',

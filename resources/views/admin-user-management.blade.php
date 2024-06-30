@@ -192,11 +192,10 @@
                   <label>User Type</label>
                   <select class="form-select form-control border border-dark" aria-label="Default select example" id="userType" name="userType">
                     <option selected value="" hidden>---Select User Type---</option>
-                    <option value="Instructor">Instructor</option>
-                    <option value="Student">Student</option>
+                    <option value="Lab-in-Charge">Lab-in-Charge</option>
+                    <option value="Technician">Technician</option>
                     <option value="Faculty">Faculty</option>
-                    <option value="Staff">Staff</option>
-                    <option value="Student Aide">Student Aide</option>
+                    <option value="Student">Student</option>
                   </select>
                 </div>
               </div>
@@ -320,11 +319,10 @@
                   <select class="updateUserType form-select form-control border border-dark" aria-label="Default select example" id="edit_userType" name="updateUserType">
                     <!-- <option selected  value="{{ $user->userType }}" hidden>{{ $user->userType }}</option> -->
                     <option selected hidden></option>
-                    <option value="Instructor">Instructor</option>
-                    <option value="Student">Student</option>
+                    <option value="Lab-in-Charge">Lab-in-Charge</option>
+                    <option value="Technician">Technician</option>
                     <option value="Faculty">Faculty</option>
-                    <option value="Staff">Staff</option>
-                    <option value="Student Aide">Student Aide</option>
+                    <option value="Student">Student</option>
                   </select>
                 </div>
               </div>

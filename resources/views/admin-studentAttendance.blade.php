@@ -17,6 +17,7 @@
 
   <!-- Ajax Student Attendance -->
   <script defer src="js/studentEditAttendance.js"></script>
+  
   <title>ChronoLock Admin-Student Attendance</title>
 
   @include('head')

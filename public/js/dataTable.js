@@ -35,6 +35,211 @@ $(document).ready(function () {
             });
         }
     });
+
+// Start Logs Table------------
+
+//admin table
+
+    var adminTable = $("#adminTable").DataTable({
+        // scrollX: true,
+        // "searching": false, order: [[0, 'asc']],
+        rowReorder: true,
+        pagingType: "simple_numbers",
+        responsive: true,
+        rowReorder: {
+            selector: "td:nth-child(2)",
+        },
+        // stateSave: false,
+        mark: true,
+        language: {
+            searchPlaceholder: "Search Here",
+        },
+    });
+
+    // Highlight search term
+    adminTable.on("draw", function () {
+        var body = $(adminTable.table().body());
+        var searchTerm = adminTable.search();
+
+        // Clear previous highlights
+        body.unmark();
+
+        if (searchTerm) {
+            // Highlight new search term in specific columns (excluding the Actions column)
+            body.find("td").each(function () {
+                var cell = $(this);
+                // Highlight in all columns except the last one (assuming it's the Actions column)
+                if (!cell.hasClass("action-cell")) {
+                    cell.mark(searchTerm);
+                }
+            });
+        }
+    });
+
+ // end admin table
+
+ //lab-In-Charge table
+
+   var labInChargeTable = $("#labInChargeTable").DataTable({
+        // scrollX: true,
+        // "searching": false, order: [[0, 'asc']],
+        rowReorder: true,
+        pagingType: "simple_numbers",
+        responsive: true,
+        rowReorder: {
+            selector: "td:nth-child(2)",
+        },
+        // stateSave: false,
+        mark: true,
+        language: {
+            searchPlaceholder: "Search Here",
+        },
+    });
+
+    // Highlight search term
+    labInChargeTable.on("draw", function () {
+        var body = $(labInChargeTable.table().body());
+        var searchTerm = labInChargeTable.search();
+
+        // Clear previous highlights
+        body.unmark();
+
+        if (searchTerm) {
+            // Highlight new search term in specific columns (excluding the Actions column)
+            body.find("td").each(function () {
+                var cell = $(this);
+                // Highlight in all columns except the last one (assuming it's the Actions column)
+                if (!cell.hasClass("action-cell")) {
+                    cell.mark(searchTerm);
+                }
+            });
+        }
+    });
+
+ //end lab-In-Charge table
+
+ //technician table
+
+ var technicianTable = $("#technicianTable").DataTable({
+    // scrollX: true,
+    // "searching": false, order: [[0, 'asc']],
+    rowReorder: true,
+    pagingType: "simple_numbers",
+    responsive: true,
+    rowReorder: {
+        selector: "td:nth-child(2)",
+    },
+    // stateSave: false,
+    mark: true,
+    language: {
+        searchPlaceholder: "Search Here",
+    },
+});
+
+// Highlight search term
+technicianTable.on("draw", function () {
+    var body = $(technicianTable.table().body());
+    var searchTerm = technicianTable.search();
+
+    // Clear previous highlights
+    body.unmark();
+
+    if (searchTerm) {
+        // Highlight new search term in specific columns (excluding the Actions column)
+        body.find("td").each(function () {
+            var cell = $(this);
+            // Highlight in all columns except the last one (assuming it's the Actions column)
+            if (!cell.hasClass("action-cell")) {
+                cell.mark(searchTerm);
+            }
+        });
+    }
+});
+
+ //end technician table
+
+ //faculty table
+
+ var facultyTable = $("#facultyTable").DataTable({
+    // scrollX: true,
+    // "searching": false, order: [[0, 'asc']],
+    rowReorder: true,
+    pagingType: "simple_numbers",
+    responsive: true,
+    rowReorder: {
+        selector: "td:nth-child(2)",
+    },
+    // stateSave: false,
+    mark: true,
+    language: {
+        searchPlaceholder: "Search Here",
+    },
+});
+
+// Highlight search term
+facultyTable.on("draw", function () {
+    var body = $(facultyTable.table().body());
+    var searchTerm = facultyTable.search();
+
+    // Clear previous highlights
+    body.unmark();
+
+    if (searchTerm) {
+        // Highlight new search term in specific columns (excluding the Actions column)
+        body.find("td").each(function () {
+            var cell = $(this);
+            // Highlight in all columns except the last one (assuming it's the Actions column)
+            if (!cell.hasClass("action-cell")) {
+                cell.mark(searchTerm);
+            }
+        });
+    }
+});
+ 
+ //end faculty table
+
+ //student table
+
+ var studentTable = $("#studentTable").DataTable({
+    // scrollX: true,
+    // "searching": false, order: [[0, 'asc']],
+    rowReorder: true,
+    pagingType: "simple_numbers",
+    responsive: true,
+    rowReorder: {
+        selector: "td:nth-child(2)",
+    },
+    // stateSave: false,
+    mark: true,
+    language: {
+        searchPlaceholder: "Search Here",
+    },
+});
+
+// Highlight search term
+studentTable.on("draw", function () {
+    var body = $(studentTable.table().body());
+    var searchTerm = studentTable.search();
+
+    // Clear previous highlights
+    body.unmark();
+
+    if (searchTerm) {
+        // Highlight new search term in specific columns (excluding the Actions column)
+        body.find("td").each(function () {
+            var cell = $(this);
+            // Highlight in all columns except the last one (assuming it's the Actions column)
+            if (!cell.hasClass("action-cell")) {
+                cell.mark(searchTerm);
+            }
+        });
+    }
+});
+
+ //end student table
+
+// End Logs Table------------
+
 });
 
 $(document).ready(function () {
@@ -74,6 +279,12 @@ $(document).ready(function () {
             });
         }
     });
+
+
+
+
+
+
 
     // Flatpckr
     var dateConfig = {
@@ -160,6 +371,106 @@ $(document).ready(function () {
     $("#selectedDate, #selectedTime").on("change", function () {
         attendanceTable.draw();
     });
+
+
+    //ADMIN FILTERS START-----------
+
+//admin logs filter
+
+    $(".filter-admin-id").on("click", function (e) {
+        e.preventDefault();
+        var adminID = $(this).data("value");
+
+        // Update the selected inst_name in a hidden input (if needed)
+        $("#selectedAdminID").val(adminID);
+
+        // Filter DataTable based on the selected inst_name
+        adminTable.column(1).search(adminID).draw();
+
+        // Toggle active class for visual indication
+        $(".filter-admin-id").removeClass("active");
+        $(this).addClass("active");
+    });
+
+//end admin logs filter
+
+//lab-In-Charge logs filter
+
+$(".filter-labInCharge-id").on("click", function (e) {
+    e.preventDefault();
+    var labInChargeID = $(this).data("value");
+
+    // Update the selected inst_name in a hidden input (if needed)
+    $("#selectedLabInChargeID").val(labInChargeID);
+
+    // Filter DataTable based on the selected inst_name
+    labInChargeTable.column(1).search(labInChargeID).draw();
+
+    // Toggle active class for visual indication
+    $(".filter-labInCharge-id").removeClass("active");
+    $(this).addClass("active");
+});
+
+//end lab-In-Charge logs filter
+
+//technician logs filter
+
+$(".filter-technician-id").on("click", function (e) {
+    e.preventDefault();
+    var technicianID = $(this).data("value");
+
+    // Update the selected inst_name in a hidden input (if needed)
+    $("#selectedTechnicianID").val(technicianID);
+
+    // Filter DataTable based on the selected inst_name
+    technicianTable.column(1).search(technicianID).draw();
+
+    // Toggle active class for visual indication
+    $(".filter-technician-id").removeClass("active");
+    $(this).addClass("active");
+});
+
+//end technician logs filter
+
+//faculty logs filter
+
+$(".filter-faculty-id").on("click", function (e) {
+    e.preventDefault();
+    var facultyID = $(this).data("value");
+
+    // Update the selected inst_name in a hidden input (if needed)
+    $("#selectedFacultyID").val(facultyID);
+
+    // Filter DataTable based on the selected inst_name
+    facultyTable.column(1).search(facultyID).draw();
+
+    // Toggle active class for visual indication
+    $(".filter-faculty-id").removeClass("active");
+    $(this).addClass("active");
+});
+
+//end faculty logs filter
+
+//student filter
+
+$(".filter-student-id").on("click", function (e) {
+    e.preventDefault();
+    var studentID = $(this).data("value");
+
+    // Update the selected inst_name in a hidden input (if needed)
+    $("#selectedStudentID").val(studentID);
+
+    // Filter DataTable based on the selected inst_name
+    studentTable.column(1).search(studentID).draw();
+
+    // Toggle active class for visual indication
+    $(".filter-student-id").removeClass("active");
+    $(this).addClass("active");
+});
+
+//end student filter
+
+    //ADMIN FILTERS END-------------
 
     // STUDENT FILTERS
     // Year

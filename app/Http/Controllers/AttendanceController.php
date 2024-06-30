@@ -3,11 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Attendance;
+use App\Models\Class_List;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\FacultyAttendanceExport;
+use App\Exports\StudentAttendanceExport;
 class AttendanceController extends Controller
 {
      //intructor attendace management page
@@ -25,7 +30,7 @@ class AttendanceController extends Controller
 
         ->join('schedules', 'attendances.userID', '=', 'schedules.userID')
         ->join('users', 'attendances.userID', '=', 'users.idNumber')
-        ->where('users.userType', '=', 'Instructor')
+        ->where('users.userType', '=', 'Faculty')
         ->get();
         
         foreach ($instructors as $instructor) {
@@ -35,14 +40,14 @@ class AttendanceController extends Controller
         }
         $remarks =Attendance::select('remark')
         ->join('users', 'attendances.userID', '=', 'users.idNumber')
-        ->where('users.userType', '=', 'Instructor')
+        ->where('users.userType', '=', 'Faculty')
         ->distinct()
         ->get();
          
         $instructorsName =Attendance::select('instFirstName', 'instLastName')
         ->join('schedules', 'attendances.userID', '=', 'schedules.userID')
         ->join('users', 'attendances.userID', '=', 'users.idNumber')
-        ->where('users.userType', '=', 'Instructor')
+        ->where('users.userType', '=', 'Faculty')
         ->orderBy('instFirstName')
         ->distinct()
         ->get();
@@ -116,12 +121,41 @@ class AttendanceController extends Controller
              ]);
             }else{ 
                 $attendance = Attendance::find($id);
-                
-                    
+                $updatedID =DB::table('attendances')->where('attendanceID', $id)->value('AttendanceID');
+                $remark = DB::table('attendances')->where('attendanceID', $updatedID)->value('remark');  
+                $attendanceDate = DB::table('attendances')->where('attendanceID', $updatedID)->value('date');
+                $attendanceTime = DB::table('attendances')->where('attendanceID', $updatedID)->value('time');  
+                $idNumber = DB::table('attendances')->where('attendanceID', $updatedID)->value('userID');    
                 if ($attendance) {
                      $attendance->userID = $request->input('updateUserID');
                      $attendance->remark = $request->input('updateRemark');
                      $attendance->update();
+
+                // Start Logs   
+                $userType =DB::table('attendances')
+                ->join('users', 'attendances.userID', '=', 'users.idNumber')
+                ->where('attendanceID', $updatedID)
+                ->value('userType');
+
+                $inputRemark =  $request->input('updateRemark');
+                $id = Auth::id();
+                $userID =DB::table('users')->where('id', $id)->value('idNumber');
+                date_default_timezone_set("Asia/Manila");
+                $date = date("Y-m-d");
+                $time = date("H:i:s");
+                if(($inputRemark == $remark)){
+                    $action = "Attempt update on $idNumber attendance last $attendanceDate $attendanceTime";
+                }else {
+                    $action = "Updated $idNumber-$userType attendance on $attendanceDate $attendanceTime";
+                }
+                DB::table('user_logs')->insert([
+                    'userID' => $userID,
+                    'action' => $action,
+                    'date' => $date,
+                    'time' => $time,
+                ]);
+                // END Logs
+
                      return response()->json([
                         'status' => 200,
                     ]);
@@ -138,8 +172,34 @@ class AttendanceController extends Controller
         public function deleteInstructorAttendance($id)
         {
             $attendance = Attendance::findOrFail($id);
+            $deletedID =DB::table('attendances')->where('attendanceID', $id)->value('attendanceID');
+            $idNumber = DB::table('attendances')->where('attendanceID', $deletedID)->value('userID');
+            $attendanceDate = DB::table('attendances')->where('attendanceID', $deletedID)->value('date');
+            $attendanceTime = DB::table('attendances')->where('attendanceID', $deletedID)->value('time');    
+            $userType =DB::table('attendances')
+              ->join('users', 'attendances.userID', '=', 'users.idNumber')
+              ->where('attendanceID', $deletedID)
+              ->value('userType');
+
             if ($attendance) {
                 $attendance->delete();
+
+                 // Start Logs
+            
+          
+              $ID = Auth::id();
+              $userID =DB::table('users')->where('id', $ID)->value('idNumber');
+              date_default_timezone_set("Asia/Manila");
+              $date = date("Y-m-d");
+              $time = date("H:i:s");
+              $action = "Deleted $idNumber-$userType attendance on $attendanceDate $attendanceTime ";
+              DB::table('user_logs')->insert([
+                  'userID' => $userID,
+                  'action' => $action,
+                  'date' => $date,
+                  'time' => $time,
+              ]);
+              // END Logs
                 return response()->json([
                     'status' => 200,
                 ]);
@@ -176,12 +236,41 @@ class AttendanceController extends Controller
                 ]);
                }else{ 
                    $attendance = Attendance::find($id);
-                   
-                       
+                   $updatedID =DB::table('attendances')->where('attendanceID', $id)->value('AttendanceID');
+                   $remark = DB::table('attendances')->where('attendanceID', $updatedID)->value('remark');
+                   $attendanceDate = DB::table('attendances')->where('attendanceID', $updatedID)->value('date');
+                   $attendanceTime = DB::table('attendances')->where('attendanceID', $updatedID)->value('time');
+                   $idNumber = DB::table('attendances')->where('attendanceID', $updatedID)->value('userID');
+
                    if ($attendance) {
                         $attendance->userID = $request->input('updateUserID');
                         $attendance->remark = $request->input('updateRemark');
                         $attendance->update();
+
+                           // Start Logs   
+                $userType =DB::table('attendances')
+                ->join('users', 'attendances.userID', '=', 'users.idNumber')
+                ->where('attendanceID', $updatedID)
+                ->value('userType');
+
+                $inputRemark =  $request->input('updateRemark');
+                $id = Auth::id();
+                $userID =DB::table('users')->where('id', $id)->value('idNumber');
+                date_default_timezone_set("Asia/Manila");
+                $date = date("Y-m-d");
+                $time = date("H:i:s");
+                if(($inputRemark == $remark)){
+                    $action = "Attempt update on $idNumber attendance last $attendanceDate $attendanceTime";
+                }else {
+                    $action = "Updated $idNumber-$userType attendance on $attendanceDate $attendanceTime";
+                }
+                DB::table('user_logs')->insert([
+                    'userID' => $userID,
+                    'action' => $action,
+                    'date' => $date,
+                    'time' => $time,
+                ]);
+                // END Logs
                         return response()->json([
                            'status' => 200,
                        ]);
@@ -195,10 +284,37 @@ class AttendanceController extends Controller
             }
         }
 
-        public function deleteStudentAttendance(){
+        public function deleteStudentAttendance($id){
             $attendance = Attendance::findOrFail($id);
+            $deletedID =DB::table('attendances')->where('attendanceID', $id)->value('attendanceID');
+            $idNumber = DB::table('attendances')->where('attendanceID', $deletedID)->value('userID');
+            $attendanceDate = DB::table('attendances')->where('attendanceID', $deletedID)->value('date');
+            $attendanceTime = DB::table('attendances')->where('attendanceID', $deletedID)->value('time');   
+            $userType =DB::table('attendances')
+              ->join('users', 'attendances.userID', '=', 'users.idNumber')
+              ->where('attendanceID', $deletedID)
+              ->value('userType');
+
             if ($attendance) {
                 $attendance->delete();
+
+                     // Start Logs
+            
+           
+
+              $ID = Auth::id();
+              $userID =DB::table('users')->where('id', $ID)->value('idNumber');
+              date_default_timezone_set("Asia/Manila");
+              $date = date("Y-m-d");
+              $time = date("H:i:s");
+              $action = "Deleted $idNumber-$userType attendance on $attendanceDate $attendanceTime ";
+              DB::table('user_logs')->insert([
+                  'userID' => $userID,
+                  'action' => $action,
+                  'date' => $date,
+                  'time' => $time,
+              ]);
+              // END Logs
                 return response()->json([
                     'status' => 200,
                 ]);
@@ -268,7 +384,7 @@ public function instructorAttendanceGeneration(Request $request)
             ->join('attendances', function (JoinClause $join) {
                 $join->on('users.id', '=', 'attendances.id');
             })
-            ->where('users.userType', '=', 'Instructor')
+            ->where('users.userType', '=', 'Faculty')
             ->get();
 
         // Loop through each instructor
@@ -291,7 +407,7 @@ public function instructorAttendanceGeneration(Request $request)
                 $join->on('attendances.id', '=', 'users.id');
             })
             // Filter the results to include only users with the 'userType' of 'Instructor'
-            ->where('users.userType', '=', 'Instructor')
+            ->where('users.userType', '=', 'Faculty')
             ->orderBy('firstName')
             ->distinct()
             ->get();

@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Validator;
 use App\Imports\UserImport;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\DataTables;
 
@@ -54,7 +55,7 @@ class UserController extends Controller
         $tblUsers = User::orderBy('id', 'desc')->take(15)->get(); // This will fetch only 15 users
         $countTotalUsers = User::where('userType', '!=', 'Admin')->count(); //Count the users except the Admin userType
         $countStudents = User::where('userType', 'Student')->count();
-        $countInstructor = User::where('userType', 'Instructor')->count();
+        $countInstructor = User::where('userType', 'Faculty')->count();
     
         // $countRFID = User::count();
 
@@ -115,13 +116,41 @@ class UserController extends Controller
                 ]);
             } else if ($checkEmail == $email) {
                 $user = User::find($id);
+                $updatedID =DB::table('users')->where('id', $id)->value('id');
+                $idNumber = DB::table('users')->where('id', $updatedID)->value('idNumber');
+                $firstName = DB::table('users')->where('id', $updatedID)->value('firstName');
+                $lastName = DB::table('users')->where('id', $updatedID)->value('lastName');
+                $userType = DB::table('users')->where('id', $updatedID)->value('userType');
+                $email = DB::table('users')->where('id', $updatedID)->value('email');
                 if ($user) {
                     $user->firstName = $request->input('updateFirstName');
                     $user->lastName = $request->input('updateLastName');
                     $user->userType = $request->input('updateUserType');
                     $user->email = $request->input('updateEmail');
                     $user->update();
-
+                    
+                // Start Logs
+                $inputFirstName = $request->input('updateFirstName');
+                $inputLastName =  $request->input('updateLastName');
+                $inputUserType = $request->input('updateUserType');
+                $inputEmail =  $request->input('updateEmail');
+                $id = Auth::id();
+                $userID =DB::table('users')->where('id', $id)->value('idNumber');
+                date_default_timezone_set("Asia/Manila");
+                $date = date("Y-m-d");
+                $time = date("H:i:s");
+                if(($inputFirstName == $firstName) && ($inputLastName == $lastName) && ($inputUserType == $userType) && ($inputEmail == $email)){
+                    $action = "Attempt update on $email account : $userType User ID - $idNumber";
+                }else {
+                    $action = "Updated $email account : $inputUserType User ID - $idNumber";
+                }
+                DB::table('user_logs')->insert([
+                    'userID' => $userID,
+                    'action' => $action,
+                    'date' => $date,
+                    'time' => $time,
+                ]);
+                // END Logs
                     
                     return response()->json([
                         'status' => 200,
@@ -200,6 +229,23 @@ class UserController extends Controller
                 $user->email = $request->input('email');
                 $user->password = $request->input('password');
                 $user->save();
+
+                // Start Logs
+                $userType =  $request->input('userType');
+                $email =  $request->input('email');
+                $id = Auth::id();
+                $userID =DB::table('users')->where('id', $id)->value('idNumber');
+                date_default_timezone_set("Asia/Manila");
+                $date = date("Y-m-d");
+                $time = date("H:i:s");
+                $action = "Added new $userType account using $email ";
+                DB::table('user_logs')->insert([
+                    'userID' => $userID,
+                    'action' => $action,
+                    'date' => $date,
+                    'time' => $time,
+                ]);
+                // END Logs
                 return response()->json([
                     'status' => 200,
                 ]);
@@ -225,8 +271,27 @@ class UserController extends Controller
     public function deleteUser($id)
     {
         $user = User::findOrFail($id);
+        $deletedID =DB::table('users')->where('id', $id)->value('id');
         if ($user) {
             $user->delete();
+
+              // Start Logs
+              $email =DB::table('users')->where('id', $deletedID)->value('email');
+              $userType =DB::table('users')->where('id', $deletedID)->value('userType');
+              $ID = Auth::id();
+              $userID =DB::table('users')->where('id', $ID)->value('idNumber');
+              date_default_timezone_set("Asia/Manila");
+              $date = date("Y-m-d");
+              $time = date("H:i:s");
+              $action = "Deleted a $userType account associated to $email email";
+              DB::table('user_logs')->insert([
+                  'userID' => $userID,
+                  'action' => $action,
+                  'date' => $date,
+                  'time' => $time,
+              ]);
+              // END Logs
+
             return response()->json([
                 'status' => 200,
             ]);
@@ -310,12 +375,6 @@ class UserController extends Controller
     public function RFIDManagement()
     {
         return view('admin-RFIDAccount');
-    }
-
-    //LOGS page
-    public function logs()
-    {
-        return view('admin-logs');
     }
 
     //report generation page
