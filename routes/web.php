@@ -60,6 +60,8 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     Route::get('/editStudentAttendance/{id}', [AttendanceController::class,'editStudentAttendance'])->name('editStudentAttendance');
     Route::put('/updateStudentAttendance/{id}', [AttendanceController::class, 'updateStudentAttendance'])->name('updateStudentAttendance'); 
     Route::delete('/deleteStudentAttendance/{id}', [AttendanceController::class, 'deleteStudentAttendance'])->name('deleteStudentAttendance');
+    Route::get('/student-attendance-generation', [AttendanceController::class, 'studentAttendanceGeneration'])->name('studentAttendanceGeneration');
+    Route::get('/student-attendance-export', [AttendanceController::class, 'studentAttendanceExport'])->name('studentAttendanceExport');
 
     //--------END student attendance Management ROUTES-----------
 
@@ -70,9 +72,9 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     Route::put('/updateInstructorAttendance/{id}', [AttendanceController::class, 'updateInstructorAttendance'])->name('updateAttendance');
     Route::delete('/deleteInstructorAttendance/{id}', [AttendanceController::class, 'deleteInstructorAttendance'])->name('deleteAttendance');
     Route::get('/instructor-attendance-generation', [AttendanceController::class, 'instructorAttendanceGeneration'])->name('instructorAttendanceGeneration');
-    Route::get('/exportAttendance', [AttendanceController::class, 'instructorAttendanceExport'])->name('instructorAttendanceExport');
-    Route::get('/getFilteredData', [AttendanceController::class, 'getFilteredData']);
-    Route::get('/print-pdf', [AttendanceController::class, 'printPDF'])->name('printPDF');
+    Route::get('/instructor-attendance-export', [AttendanceController::class, 'instructorAttendanceExport'])->name('instructorAttendanceExport');
+
+
 
      //--------END instructor attendance Management ROUTES-----------
 

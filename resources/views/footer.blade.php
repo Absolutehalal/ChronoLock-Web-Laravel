@@ -118,7 +118,7 @@
 
 <!--Flatpckr-->
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/monthSelect/index.js"></script>
 <script src="js/timedate.js"></script>
 
 

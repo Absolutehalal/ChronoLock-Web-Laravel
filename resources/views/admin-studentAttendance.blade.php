@@ -74,10 +74,10 @@
                   <i class="mdi mdi-developer-board"></i>
                   Year & Section
                 </button>
-                <div class="dropdown-menu" aria-labelledby="yearDropdown">
+                <div class="dropdown-menu scrollable-dropdown" aria-labelledby="yearDropdown">
                   @foreach($studentYears as $studentYears)
                   @csrf
-                  <a class="dropdown-item filter-year" data-value="{{ $studentYears->year }}-{{ $studentYears->section }}" href="#">
+                  <a class="dropdown-item year-item filter-year" data-value="{{ $studentYears->year }}-{{ $studentYears->section }}" href="#">
                     {{ $studentYears->year }}-{{ $studentYears->section }}
                   </a>
                   @endforeach
@@ -92,10 +92,10 @@
                   <i class="mdi mdi-alpha-c-box"></i>
                   Course
                 </button>
-                <div class="dropdown-menu" aria-labelledby="courseDropdown">
+                <div class="dropdown-menu scrollable-dropdown" aria-labelledby="courseDropdown">
                   @foreach($studentCourses as $studentCourses)
                   @csrf
-                  <a class="dropdown-item filter-course" data-value="{{ $studentCourses->course }}" href="#">
+                  <a class="dropdown-item course-item filter-course" data-value="{{ $studentCourses->course }}" href="#">
                     {{ $studentCourses->course }}
                   </a>
                   @endforeach
@@ -110,10 +110,10 @@
                   <i class="mdi mdi-alpha-s-box"></i>
                   Remark
                 </button>
-                <div class="dropdown-menu" aria-labelledby="statusDropdown">
+                <div class="dropdown-menu scrollable-dropdown" aria-labelledby="statusDropdown">
                   @foreach($studentRemarks as $studentRemarks)
                   @csrf
-                  <a class="dropdown-item filter-status" data-value="{{ $studentRemarks->remark }}" href="#">
+                  <a class="dropdown-item remark-item filter-status" data-value="{{ $studentRemarks->remark }}" href="#">
                     {{ $studentRemarks->remark }}
                   </a>
                   @endforeach
@@ -185,7 +185,7 @@
                   <th>Student ID</th>
                   <th>Course</th>
                   <th>Year & Section</th>
-                  <th>Status</th>
+                  <th>Remarks</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -199,7 +199,15 @@
                   <td>{{ $students->idNumber }}</td>
                   <td>{{ $students->course }}</td>
                   <td>{{ $students->year }}-{{ $students->section }}</td>
-                  <td class="fw-bold">{{ $students->remark }}</td>
+                  <td>
+                    @if($students->remark == 'Present')
+                    <span class="badge badge-success">Present</span>
+                    @elseif($students->remark == 'Absent')
+                    <span class="badge badge-danger">Absent</span>
+                    @elseif($students->remark == 'Late')
+                    <span class="badge badge-warning">Late</span>
+                    @endif
+                  </td>
                   <th>
                     <!-- Example single primary button -->
                     <div class="dropdown d-inline-block">
@@ -321,7 +329,37 @@
     </div>
   </div>
 
-  
+  <script>
+    const yearDropdown = `<i class="mdi mdi-developer-board"></i> Year & Section`;
+    const courseDropdown = `<i class="mdi mdi-alpha-c-box"></i> Course`;
+    const statusDropdown = `<i class="mdi mdi-alpha-r-box"></i> Remark`;
+    document.addEventListener("DOMContentLoaded", function() {
+      document.querySelectorAll('.year-item').forEach(function(item) {
+        item.addEventListener('click', function(e) {
+          e.preventDefault();
+          document.getElementById('yearDropdown').innerHTML = `<i class="mdi mdi-developer-board"></i> ${this.textContent}`;
+        });
+      });
+      document.querySelectorAll('.course-item').forEach(function(item) {
+        item.addEventListener('click', function(e) {
+          e.preventDefault();
+          document.getElementById('courseDropdown').innerHTML = `<i class="mdi mdi-alpha-c-box"></i> ${this.textContent}`;
+        });
+      });
+      document.querySelectorAll('.remark-item').forEach(function(item) {
+        item.addEventListener('click', function(e) {
+          e.preventDefault();
+          document.getElementById('statusDropdown').innerHTML = `<i class="mdi mdi-alpha-r-box"></i> ${this.textContent}`;
+        });
+      });
+    });
+    $("#resetBtn").on("click", function (e) {
+        e.preventDefault();
+        document.getElementById("yearDropdown").innerHTML = yearDropdown;
+        document.getElementById("courseDropdown").innerHTML = courseDropdown;
+        document.getElementById("statusDropdown").innerHTML = statusDropdown;
+    });
+  </script>
 
 
 

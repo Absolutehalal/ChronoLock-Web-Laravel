@@ -258,6 +258,10 @@ $(document).ready(function () {
         language: {
             searchPlaceholder: "Search Here",
         },
+        order: [[1, "asc"]], // Change 0 to the correct index if your date column is different
+        columnDefs: [
+            { type: "date", targets: 1 }, // Add this to specify the column type if your dates are in the first column
+        ],
     });
 
     // Highlight search term
@@ -279,12 +283,6 @@ $(document).ready(function () {
             });
         }
     });
-
-
-
-
-
-
 
     // Flatpckr
     var dateConfig = {
@@ -574,38 +572,4 @@ $(".filter-student-id").on("click", function (e) {
         // Remove active class from all filter options
         $(".dropdown-item").removeClass("active");
     });
-});
-
-// Event listener for the date picker
-$("#selectedDate").on("change", function () {
-    var selectedDate = $(this).val();
-
-    // Fetch filtered data via AJAX
-    $.ajax({
-        url: "/getFilteredData",
-        data: { selectedDate: selectedDate },
-        success: function (data) {
-            // Clear existing data
-            attendanceTable.clear();
-
-            // Populate the table with new data
-            data.forEach(function (item) {
-                attendanceTable.row
-                    .add([
-                        item.date,
-                        item.time,
-                        item.remark,
-                        item.user_name,
-                        // Add other fields as needed
-                    ])
-                    .draw();
-            });
-        },
-    });
-});
-
-// Event listener for the export button
-$("#exportButton").on("click", function () {
-    var selectedDate = $("#selectedDate").val();
-    window.location.href = "/exportAttendance?selectedDate=" + selectedDate;
 });

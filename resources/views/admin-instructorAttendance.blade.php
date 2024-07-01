@@ -67,15 +67,15 @@
 
           <div class="dropdown d-inline-block mb-3">
               <form method="GET" action="{{ route('instructorAttendanceManagement') }}">
-                <button class="btn btn-primary btn-sm dropdown-toggle fw-bold" type="button" id="instNameDropdown" data-toggle="dropdown" aria-expanded="false">
+                <button class="btn btn-primary btn-sm dropdown-toggle fw-bold" type="button" id="instIDDropdown" data-toggle="dropdown" aria-expanded="false">
                   <i class="mdi mdi-alpha-i-box"></i>
                   Instructor ID
                 </button>
-                <div class="dropdown-menu scrollable-dropdown" aria-labelledby="instNameDropdown">
-                @foreach($instructors as $instructor)
+                <div class="dropdown-menu scrollable-dropdown" aria-labelledby="instIDDropdown">
+                @foreach($instructorsID as $instructorID)
                   @csrf
-                  <a class="dropdown-item filter-inst-id" data-value="{{ $instructor->userID }}" href="#">
-                  {{ $instructor->userID }}-{{ $instructor->instFirstName }}  {{ $instructor->instLastName }}
+                  <a class="dropdown-item id-item filter-inst-id" data-value="{{ $instructorID->userID }}" href="#">
+                  {{ $instructorID->userID }}-{{ $instructorID->instFirstName }}  {{ $instructorID->instLastName }}
                   </a>
                   @endforeach
                 </div>
@@ -92,7 +92,7 @@
                 <div class="dropdown-menu scrollable-dropdown" aria-labelledby="instStatusDropdown">
                 @foreach($remarks as $remarks)
                   @csrf
-                  <a class="dropdown-item filter-inst-status" data-value="{{ $remarks->remark }}" href="#">
+                  <a class="dropdown-item remark-item filter-inst-status" data-value="{{ $remarks->remark }}" href="#">
                     {{ $remarks->remark }}
                   </a>
                   @endforeach
@@ -165,10 +165,18 @@
                   <td>{{ $instructors->formatted_date }}</td>
                   <td>{{ $instructors->formatted_time }}</td>
                   <td>{{ $instructors->courseCode }}</td>
-                  <td>{{ $instructors->course }}-{{ $instructors->section }}</td>
+                  <td>{{ $instructors->course }} - {{ $instructors->year }}{{ $instructors->section }}</td>
                   <td>{{ $instructors->instFirstName }} {{ $instructors->instLastName }}</td>
                   <td>{{ $instructors->userID }}</td>
-                  <td class="fw-bold">{{ $instructors->remark }}</td>
+                  <td>
+                    @if($instructors->remark == 'Present')
+                    <span class="badge badge-success">Present</span>
+                    @elseif($instructors->remark == 'Absent')
+                    <span class="badge badge-danger">Absent</span>
+                    @elseif($instructors->remark == 'Late')
+                    <span class="badge badge-warning">Late</span>
+                    @endif
+                  </td>
                   <th>
                     <!-- Example single primary button -->
                     <div class="dropdown d-inline-block">
@@ -260,7 +268,7 @@
                 <ul id="editIDError"></ul>
                 <div class="form-group">
                   <label>Instructor ID</label>
-                  <input type="text" class="updateUserID form-control border border-dark border border-dark" id="edit_instructorID" name="update_instructorID">
+                  <input type="text" class="updateUserID form-control border border-dark border border-dark" id="edit_instructorID" name="update_instructorID" readonly>
                  
                 </div>
               </div>
@@ -293,4 +301,28 @@
     </div>
   </div>
 
+  <script>
+    const instIDDropdown = `<i class="mdi mdi-alpha-i-box"></i> Instructor ID`;
+    const instStatusDropdown = `<i class="mdi mdi-alpha-r-box"></i> Remark`;
+    document.addEventListener("DOMContentLoaded", function() {
+      document.querySelectorAll('.remark-item').forEach(function(item) {
+        item.addEventListener('click', function(e) {
+          e.preventDefault();
+          document.getElementById('instStatusDropdown').innerHTML = `<i class="mdi mdi-alpha-r-box"></i> ${this.textContent}`;
+        });
+      });
+      document.querySelectorAll('.id-item').forEach(function(item) {
+        item.addEventListener('click', function(e) {
+          e.preventDefault();
+          document.getElementById('instIDDropdown').innerHTML = `<i class="mdi mdi-alpha-i-box"></i> ${this.textContent}`;
+        });
+      });
+    });
+    $("#resetBtn").on("click", function (e) {
+        e.preventDefault();
+        // Reset the dropdown button to its default UI
+        document.getElementById("instIDDropdown").innerHTML = instIDDropdown;
+        document.getElementById("instStatusDropdown").innerHTML = instStatusDropdown;
+    });
+  </script>
   @include('footer')
