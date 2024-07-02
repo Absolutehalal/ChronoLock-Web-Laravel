@@ -55,7 +55,7 @@ class UserController extends Controller
         $tblUsers = User::orderBy('id', 'desc')->take(15)->get(); // This will fetch only 15 users
         $countTotalUsers = User::where('userType', '!=', 'Admin')->count(); //Count the users except the Admin userType
         $countStudents = User::where('userType', 'Student')->count();
-        $countInstructor = User::where('userType', 'Faculty')->count();
+        $countFaculty = User::where('userType', 'Faculty')->count();
     
         // $countRFID = User::count();
 
@@ -63,7 +63,7 @@ class UserController extends Controller
             'tblUsers' => $tblUsers,
             'countTotalUsers' => $countTotalUsers,
             'countStudents' => $countStudents,
-            'countInstructor' => $countInstructor
+            'countFaculty' => $countFaculty
         ]);
     }
 
@@ -386,19 +386,6 @@ class UserController extends Controller
 
 
     //instructor functions
-
-    //index page
-    public function instructorIndex()
-    {
-        return view('instructor-dashboard');
-    }
-
-    //class record
-    public function classRecordManagement()
-    {
-        return view('instructor-class-record');
-    }
-
     //schedule
     public function instructorScheduleManagement()
     {

@@ -147,8 +147,19 @@
 
               <div class="col-lg-6">
                 <div class="form-group">
-                  <label>Program</label>
-                  <input type="text" class="form-control border border-dark" id=" " placeholder="Program">
+                  <label>Schedule</label>  
+                  
+                      
+                  <select class="form-select form-control border border-dark" aria-label="Default select example" id="schedule" name="schedule">
+                    
+                     <option selected value="" hidden>---Select Schedule---</option>
+                    @foreach($schedules as $schedule)
+                      @csrf 
+                    <option value="{{$schedule -> courseCode}}"> {{$schedule -> courseCode}} </option>
+                   
+                  @endforeach
+                  </select>
+                    
                 </div>
               </div>
 

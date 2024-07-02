@@ -110,8 +110,8 @@
                   <i class="mdi mdi-account-group"></i>
                 </div>
                 <div class="text-center">
-                  <span class="h2 d-block"> {{ $countInstructor }} </span>
-                  <p>Total Instructors</p>
+                  <span class="h2 d-block"> {{ $countFaculty }} </span>
+                  <p>Total Faculty</p>
                 </div>
               </div>
             </div>

@@ -6,6 +6,7 @@ use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\UserLogController;
 use App\Http\Middleware\CheckGoogleAuth;
+use App\Http\Controllers\ScheduleController;
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
@@ -65,7 +66,7 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
 
     //--------END student attendance Management ROUTES-----------
 
-    //--------START instructor attendance Management ROUTES---------  
+    //--------START Admin instructor attendance Management ROUTES---------  
 
     Route::get('/instructorAttendanceManagementPage', [AttendanceController::class, 'instructorAttendanceManagement'])->name('instructorAttendanceManagement');
     Route::get('/editInstructorAttendance/{id}', [AttendanceController::class,'editInstructorAttendance'])->name('editAttendance');
@@ -76,7 +77,7 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
 
 
 
-     //--------END instructor attendance Management ROUTES-----------
+     //--------END Admin instructor attendance Management ROUTES-----------
 
 
    
@@ -90,8 +91,13 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
 
 
 // INSTRUCTOR MIDDLEWARE
-Route::group(['middleware' => ['auth', 'instructor']], function () {
-Route::get('/instructorDashboard', [UserController::class, 'instructorIndex'])->name('instructorIndex');
-Route::get('/instructorClassRecord', [UserController::class, 'classRecordManagement'])->name('classRecordManagement');
+Route::group(['middleware' => ['auth', 'faculty']], function () {
+Route::get('/instructorDashboard', [ScheduleController::class, 'instructorIndex'])->name('instructorIndex');
+Route::get('/instructorClassRecord', [ScheduleController::class, 'classRecordManagement'])->name('classRecordManagement');
+
+ //--------START instructor classlist ROUTES---------  
+Route::get('/instructorClassSchedules', [ScheduleController::class, 'classSchedules'])->name('classSchedules');
+Route::post('/instructorClassSchedules', [ScheduleController::class, 'addClassList'])->name('addClassList');
+Route::get('/editInstructorClassList/{id}', [ScheduleController::class,'editInstructorClass'])->name('editInstructorClass');
 Route::get('/instructorSchedule', [UserController::class, 'instructorScheduleManagement'])->name('instructorScheduleManagement');
 });

@@ -29,6 +29,13 @@
                         </a>
                     </li>
                     <li>
+                        <a class="sidenav-item-link" href="{{route('classSchedules')}}">
+                            <i class="mdi mdi-file-document-box-multiple"></i>
+                            <span class="nav-text" data-toggle="tooltip" title="Class Record">ERP
+                                Schedules</span>
+                        </a>
+                    </li>
+                    <li>
                         <a class="sidenav-item-link" href="{{route('classRecordManagement')}}">
                             <i class="mdi mdi-file-document-box-multiple"></i>
                             <span class="nav-text" data-toggle="tooltip" title="Class Record">Class

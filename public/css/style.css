@@ -18232,4 +18232,17 @@ html[dir="rtl"] .sidebar li > a .caret:before {
 .error{
   color:red;
 }
+
+.schedule{
+    width: 120px;
+    height: 120px;
+}
+.input{
+  font    : .9em/1.5em "handwriting", sans-serif;
+  border  : none;
+  padding : 0 10px;
+  margin  : 0;
+  text-align: center;
+  background: none;
+}
 /*# sourceMappingURL=style.css.map */
