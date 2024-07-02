@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\FacultyAttendanceExport;
 use App\Exports\StudentAttendanceExport;
+
 class AttendanceController extends Controller
 {
     // INSTRUCTOR ATTENDANCE FUNCTION
@@ -356,7 +357,7 @@ class AttendanceController extends Controller
             }
         }
 
-        public function editStudentAttendance(){
+        public function editStudentAttendance($id){
             $attendance = Attendance::find($id);
             if ($attendance) {
                 return response()->json([

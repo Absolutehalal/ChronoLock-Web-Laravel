@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert;
 
-class Instructor
+class Student
 {
     /**
      * Handle an incoming request.
@@ -17,7 +17,7 @@ class Instructor
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::check() && Auth::user()->userType == 'Instructor') {
+        if (Auth::check() && Auth::user()->userType == 'Student') {
             return $next($request);
         }
 

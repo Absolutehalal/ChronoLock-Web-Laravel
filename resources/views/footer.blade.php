@@ -134,7 +134,8 @@
 <script src="plugins/jvectormap/jquery-jvectormap-world-mill.js"></script>
 <script src="plugins/jvectormap/jquery-jvectormap-us-aea.js"></script>
 
-
+<script src="plugins/circle-progress/circle-progress.js"></script>
+                    
 <script src="js/mono.js"></script>
 <script src="js/chart.js"></script>
 <script src="js/map.js"></script>
