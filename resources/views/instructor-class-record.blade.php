@@ -61,17 +61,6 @@
                 <div class="card card-default">
                     <div class="card-header">
                         <h1>My Class Record</h1>
-                        <div class="row">
-                            <div class="col-xl-12 col-md-12 d-flex justify-content-end">
-                                <!-- Sort button -->
-                                <div class="dropdown d-inline-block border border-dark rounded">
-                                    <button class="btn btn-primary fw-bold" type="button"  data-toggle="modal" data-target="#exampleModalForm">
-                                        <i class=" mdi mdi-file-plus"></i>
-                                        Create Class Record
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                     <div class="card-body ">
 
@@ -132,83 +121,6 @@
     </div>
     </div>
 
-    <div class="modal fade" id="exampleModalForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalFormTitle" aria-hidden="true">
-    <div class="modal-dialog "  role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalFormTitle">Create Class Record</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <form>
-            <div class="row">
 
-              <div class="col-lg-6">
-                <div class="form-group">
-                  <label>Schedule</label>  
-                  
-                      
-                  <select class="form-select form-control border border-dark" aria-label="Default select example" id="schedule" name="schedule">
-                    
-                     <option selected value="" hidden>---Select Schedule---</option>
-                    @foreach($schedules as $schedule)
-                      @csrf 
-                    <option value="{{$schedule -> courseCode}}"> {{$schedule -> courseCode}} </option>
-                   
-                  @endforeach
-                  </select>
-                    
-                </div>
-              </div>
-
-              <div class="col-lg-6">
-                <div class="form-group">
-                  <label>Year & Section</label>
-                  <input type="text" class="form-control border border-dark" id=" " placeholder="Year & Section">
-                </div>
-              </div>
-
-              <div class="col-lg-6">
-                <div class="form-group">
-                  <label>Course</label>
-                  <input type="text" class="form-control border border-dark" id=" " placeholder="Enter Course">
-                </div>
-              </div>
-
-              <div class="col-lg-6">
-                <div class="form-group">
-                  <label>Course Code</label>
-                  <input type="text" class="form-control border border-dark" id=" " placeholder="Enter Course Code">
-                </div>
-              </div>
-
-              <div class="col-lg-6">
-                <div class="form-group">
-                  <label>Course Name</label>
-                  <input type="text" class="form-control border border-dark" id=" " placeholder="Enter Course Name">
-                </div>
-              </div>
-
-              
-              <div class="col-lg-6">
-                <div class="form-group">
-                  <label>Instructor Name</label>
-                  <input type="text" class="form-control border border-dark" id=" " placeholder="ex. Edward L. Sotto">
-                </div>
-              </div>
-
-
-            </div>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-danger btn-pill" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary btn-pill">Save</button>
-        </div>
-      </div>
-    </div>
-  </div>
 
   @include('footer')

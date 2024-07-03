@@ -16,24 +16,59 @@ class ScheduleController extends Controller
     //index page
     public function instructorIndex()
     {
-        return view('instructor-dashboard');
+        $id = Auth::id();
+        $userID =DB::table('users')->where('id', $id)->value('idNumber');
+
+        $classes = DB::table('class_lists')
+        ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
+        ->where('schedules.userID', '=', $userID)
+        ->get();
+
+        return view('instructor-dashboard', ['classes' => $classes]);
     }
     
     //class record
     public function classRecordManagement()
     {
-        $schedules = DB::table('schedules')
+        $id = Auth::id();
+        $userID =DB::table('users')->where('id', $id)->value('idNumber');
+
+        $classes = DB::table('class_lists')
+        ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
+        ->where('schedules.userID', '=', $userID)
         ->get();
-        return view('instructor-class-record', ['schedules' => $schedules]);
+
+        return view('instructor-class-record', ['classes' => $classes]);
     }
 
     public function classSchedules()
     {
+        $id = Auth::id();
+        $userID =DB::table('users')->where('id', $id)->value('idNumber');
+
+        $classes = DB::table('class_lists')
+        ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
+        ->where('schedules.userID', '=', $userID)
+        ->get();
+
         $schedules = DB::table('schedules')
         ->get();
-        return view('instructor-class-schedules', ['schedules' => $schedules]);
+
+        return view('instructor-class-schedules', ['schedules' => $schedules, 'classes' => $classes]);
     }
 
+    public function instructorScheduleManagement()
+    {
+        $id = Auth::id();
+        $userID =DB::table('users')->where('id', $id)->value('idNumber');
+
+        $classes = DB::table('class_lists')
+        ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
+        ->where('schedules.userID', '=', $userID)
+        ->get();
+
+        return view('instructor-schedule', ['classes' => $classes]);
+    }
     public function editInstructorClass($id){
         
         $schedule = Schedule::find($id);
@@ -48,16 +83,6 @@ class ScheduleController extends Controller
             ]);
         }
     }
-
-
-
-
-
-
-
-
-
-
 
     public function addClassList(Request $request)
     {
@@ -114,5 +139,18 @@ class ScheduleController extends Controller
                 ]);
             }
         }
+    }
+
+
+    public function getInstructorClass(){
+        $id = Auth::id();
+        $userID =DB::table('users')->where('id', $id)->value('idNumber');
+
+        $classes = ClassList::select('course','year','section','userID')
+        ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
+        ->where('schedules.userID', '=', $userID)
+        ->get();
+        return view('instructorSideNav', ['classes' => $classes]);
+
     }
 }

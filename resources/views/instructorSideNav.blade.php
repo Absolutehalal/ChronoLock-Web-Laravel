@@ -58,17 +58,16 @@
                     <li class="has-sub">
                         <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#users" aria-expanded="false" aria-controls="users">
                             <i class="mdi mdi-alpha-s-box"></i>
-                            <span class="nav-text" data-toggle="tooltip" title="Attendance">BSIS 1A</span> <b class="caret"></b>
+                            <span class="nav-text" data-toggle="tooltip" title="Attendance">My Class List</span> <b class="caret"></b>
                         </a>
                         <ul class="collapse" id="users" data-parent="#sidebar-menu">
                             <div class="sub-menu">
+                            @foreach($classes as $classes)
+                            @csrf
                                 <li>
-                                    <a href="">Class Attendance</a>
+                                    <a href="">{{$classes->course}}-{{$classes->year}}{{$classes->section}}</a>
                                 </li>
-
-                                <li>
-                                    <a href="">Class List</a>
-                                </li>
+                            @endforeach
                     </li>
             </div>
         </div>

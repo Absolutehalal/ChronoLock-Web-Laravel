@@ -95,9 +95,12 @@ Route::group(['middleware' => ['auth', 'faculty']], function () {
 Route::get('/instructorDashboard', [ScheduleController::class, 'instructorIndex'])->name('instructorIndex');
 Route::get('/instructorClassRecord', [ScheduleController::class, 'classRecordManagement'])->name('classRecordManagement');
 
- //--------START instructor classlist ROUTES---------  
+ //--------START instructor classlist  ROUTES---------  
 Route::get('/instructorClassSchedules', [ScheduleController::class, 'classSchedules'])->name('classSchedules');
 Route::post('/instructorClassSchedules', [ScheduleController::class, 'addClassList'])->name('addClassList');
 Route::get('/editInstructorClassList/{id}', [ScheduleController::class,'editInstructorClass'])->name('editInstructorClass');
-Route::get('/instructorSchedule', [UserController::class, 'instructorScheduleManagement'])->name('instructorScheduleManagement');
+//button
+Route::get('/getInstructorClass', [ScheduleController::class,'getInstructorClass'])->name('getInstructorClass');
+// button
+Route::get('/instructorSchedule', [ScheduleController::class, 'instructorScheduleManagement'])->name('instructorScheduleManagement');
 });

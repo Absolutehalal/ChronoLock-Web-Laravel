@@ -387,10 +387,6 @@ class UserController extends Controller
 
     //instructor functions
     //schedule
-    public function instructorScheduleManagement()
-    {
-        return view('instructor-schedule');
-    }
     public function instructorAttendanceGeneration()
     {
         return view('admin-instructorAttendance-generation');
