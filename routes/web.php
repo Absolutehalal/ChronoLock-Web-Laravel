@@ -99,8 +99,5 @@ Route::get('/instructorClassRecord', [ScheduleController::class, 'classRecordMan
 Route::get('/instructorClassSchedules', [ScheduleController::class, 'classSchedules'])->name('classSchedules');
 Route::post('/instructorClassSchedules', [ScheduleController::class, 'addClassList'])->name('addClassList');
 Route::get('/editInstructorClassList/{id}', [ScheduleController::class,'editInstructorClass'])->name('editInstructorClass');
-//button
-Route::get('/getInstructorClass', [ScheduleController::class,'getInstructorClass'])->name('getInstructorClass');
-// button
 Route::get('/instructorSchedule', [ScheduleController::class, 'instructorScheduleManagement'])->name('instructorScheduleManagement');
 });

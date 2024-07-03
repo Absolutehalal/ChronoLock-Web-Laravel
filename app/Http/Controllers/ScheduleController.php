@@ -142,15 +142,5 @@ class ScheduleController extends Controller
     }
 
 
-    public function getInstructorClass(){
-        $id = Auth::id();
-        $userID =DB::table('users')->where('id', $id)->value('idNumber');
-
-        $classes = ClassList::select('course','year','section','userID')
-        ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
-        ->where('schedules.userID', '=', $userID)
-        ->get();
-        return view('instructorSideNav', ['classes' => $classes]);
-
-    }
+   
 }
