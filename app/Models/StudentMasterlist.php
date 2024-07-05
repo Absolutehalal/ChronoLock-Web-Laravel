@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Student_Masterlist extends Model
+class StudentMasterlist extends Model
 {
     use HasFactory;
     protected $primaryKey = 'MIT_ID';

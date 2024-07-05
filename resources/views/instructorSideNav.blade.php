@@ -1,4 +1,5 @@
 <script defer src="js/activePage.js"></script>
+
 <!-- ====================================
     ——— WRAPPER
     ===================================== -->
@@ -65,7 +66,7 @@
                             @foreach($classes as $classes)
                             @csrf
                                 <li>
-                                    <a href="">{{$classes->course}}-{{$classes->year}}{{$classes->section}}</a>
+                                    <a class="section" href="{{route('instructorClassAttendance')}}" >{{$classes->course}}-{{$classes->year}}{{$classes->section}}</a>
                                 </li>
                             @endforeach
                     </li>

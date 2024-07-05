@@ -100,4 +100,6 @@ Route::get('/instructorClassSchedules', [ScheduleController::class, 'classSchedu
 Route::post('/instructorClassSchedules', [ScheduleController::class, 'addClassList'])->name('addClassList');
 Route::get('/editInstructorClassList/{id}', [ScheduleController::class,'editInstructorClass'])->name('editInstructorClass');
 Route::get('/instructorSchedule', [ScheduleController::class, 'instructorScheduleManagement'])->name('instructorScheduleManagement');
+Route::get('/instructorClassAttendance', [ScheduleController::class, 'instructorClassAttendance'])->name('instructorClassAttendance');
+Route::get('/instructorClassList/{id}', [ScheduleController::class, 'instructorClassList'])->name('instructorClassList');
 });

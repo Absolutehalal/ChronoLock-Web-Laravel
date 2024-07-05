@@ -90,7 +90,7 @@
                                                 Actions
                                             </button>
                                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                <a class="dropdown-item  type="button" data-toggle="modal" data-target="#exampleModalForm"">
+                                                <a class="dropdown-item"  type="button" data-toggle="modal" data-target="#exampleModalForm"">
                                                     <i class="mdi mdi-circle-edit-outline text-warning"></i>
                                                     Edit</a>
                                                 <a class="dropdown-item">

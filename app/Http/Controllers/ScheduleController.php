@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\Schedule;
 use App\Models\ClassList;
+use App\Models\StudentMasterlist;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -142,5 +143,31 @@ class ScheduleController extends Controller
     }
 
 
+   public function instructorClassAttendance(){
+    $id = Auth::id();
+    $userID =DB::table('users')->where('id', $id)->value('idNumber');
+
+    $classes = DB::table('class_lists')
+    ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
+    ->where('schedules.userID', '=', $userID)
+    ->get();
+
    
+
+    
+
+    return view('instructor-class-attendance',['classes' => $classes]);
+   }
+
+   public function instructorClassList(){
+    $id = Auth::id();
+    $userID =DB::table('users')->where('id', $id)->value('idNumber');
+
+    $classes = DB::table('class_lists')
+    ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
+    ->where('schedules.userID', '=', $userID)
+    ->get();
+
+    return view('instructor-classList',['classes' => $classes]);
+   }
 }
