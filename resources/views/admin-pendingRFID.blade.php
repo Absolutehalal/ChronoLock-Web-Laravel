@@ -26,7 +26,7 @@
     });
     NProgress.start();
   </script>
-    @include('adminSideNav')
+  @include('adminSideNav')
   <!-- ====================================
       ——— PAGE WRAPPER
       ===================================== -->
@@ -45,9 +45,11 @@
           <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
               <li class="breadcrumb-item">
-                <a href="index.php">Dashboard</a></li>
+                <a href="index.php">Dashboard</a>
+              </li>
               <li class="breadcrumb-item active">
-                <a href="admin-pendingrfid.php"> Pending RFID Request</a></li>
+                <a href="admin-pendingrfid.php"> Pending RFID Request</a>
+              </li>
             </ol>
           </nav>
 
@@ -66,7 +68,7 @@
               <div class="col-xl-12 col-md-12 d-flex justify-content-end">
                 <!-- Sort button -->
                 <div class="dropdown d-inline-block ">
-                  <button class="btn btn-primary btn-sm fw-bold" type="button" data-toggle="modal" data-target="#modal-add-event">
+                  <button class="btn btn-primary btn-sm fw-bold" type="button" data-toggle="modal" data-target="#exampleModalForm">
                     <i class=" mdi mdi-calendar-plus"></i>
                     ADD RFID
                   </button>
@@ -186,26 +188,7 @@
     </div>
   </div>
 
-  <!-- Footer -->
-  <!-- <footer class="footer mt-auto">
-          <div class="copyright bg-white">
-            <p>
-              &copy; <span id="copy-year"></span> Copyright Mono Dashboard
-              Bootstrap Template by
-              <a
-                class="text-primary"
-                href="http://www.iamabdus.com/"
-                target="_blank"
-                >Abdus</a
-              >.
-            </p>
-          </div>
-          <script>
-            var d = new Date();
-            var year = d.getFullYear();
-            document.getElementById("copy-year").innerHTML = year;
-          </script>
-        </footer> -->
+ 
   </div>
   </div>
 

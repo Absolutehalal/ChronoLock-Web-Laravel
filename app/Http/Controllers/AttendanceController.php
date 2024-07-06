@@ -431,9 +431,9 @@ class AttendanceController extends Controller
             }
         }
 
-        public function deleteStudentAttendance($id){
+        public function deleteStudentAttendance($id) {
             $attendance = Attendance::findOrFail($id);
-            $deletedID =DB::table('attendances')->where('attendanceID', $id)->value('attendanceID');
+            $deletedID = DB::table('attendances')->where('attendanceID', $id)->value('attendanceID');
             $idNumber = DB::table('attendances')->where('attendanceID', $deletedID)->value('userID');
             $attendanceDate = DB::table('attendances')->where('attendanceID', $deletedID)->value('date');
             $attendanceTime = DB::table('attendances')->where('attendanceID', $deletedID)->value('time');   
@@ -445,9 +445,7 @@ class AttendanceController extends Controller
             if ($attendance) {
                 $attendance->delete();
 
-                     // Start Logs
-            
-           
+            // Start Logs          
 
               $ID = Auth::id();
               $userID =DB::table('users')->where('id', $ID)->value('idNumber');

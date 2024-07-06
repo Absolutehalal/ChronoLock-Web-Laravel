@@ -59,6 +59,18 @@
         <div class="card card-default shadow">
           <div class="card-header">
             <h1>RFID Accounts</h1>
+
+            <div class="row">
+              <div class="col-xl-12 col-md-12 d-flex justify-content-end">
+                <!-- Sort button -->
+                <div class="dropdown d-inline-block ">
+                  <button class="btn btn-primary btn-sm fw-bold" type="button" data-toggle="modal" data-target="#exampleModalForm">
+                    <i class=" mdi mdi-calendar-plus"></i>
+                    ADD RFID
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
           <div class="card-body col-md-12">
             <table id="exampleTable" class="table table-bordered table-hover no-wrap" style="width:100%">
@@ -126,20 +138,22 @@
           </button>
         </div>
         <div class="modal-body">
-          <form>
+          <form id="userForm">
+            @csrf
             <div class="row">
 
               <div class="col-lg-6">
                 <div class="form-group">
                   <label>Name</label>
-                  <input type="text" class="form-control border border-dark" id="exampleInputRFID" placeholder="ex. Sotto, Edward L.">
+                  <input type="text" class="form-control border border-dark" id="name" name="name" placeholder="ex. Sotto, Edward L.">
+                  <ul id="nameList" class="list-group"></ul>
                 </div>
               </div>
 
               <div class="col-lg-6">
                 <div class="form-group">
                   <label>RFID Code</label>
-                  <input type="text" class="form-control border border-dark" id="exampleInputRFID" placeholder="Enter RFID Code">
+                  <input type="text" class="form-control border border-dark" id="rfidCode" name="rfidCode" placeholder="Enter RFID Code">
                 </div>
               </div>
 
@@ -193,5 +207,60 @@
       </div>
     </div>
   </div>
+
+  <script>
+    // RFID REGISTRATION
+    $(document).ready(function() {
+      $('#rfidCode').focus();
+
+      // Restrict input to 10 digits integer only
+      $('#rfidCode').on('input', function() {
+        this.value = this.value.replace(/\D/g, '').substring(0, 10);
+      });
+    });
+  </script>
+
+  <script>
+    $(document).ready(function() {
+      $('#name').on('keyup', function() {
+        var query = $(this).val();
+        if (query.length > 0) {
+          $.ajax({
+            url: "{{ route('autocomplete') }}",
+            type: "GET",
+            data: {
+              'query': query
+            },
+            success: function(data) {
+              $('#nameList').empty();
+              if (data.length > 0) {
+                data.forEach(function(item) {
+                  $('#nameList').append('<li class="list-group-item">' + item.name + '</li>');
+                });
+              } else {
+                $('#nameList').append('<li class="list-group-item">No results found</li>');
+              }
+            }
+          });
+        } else {
+          $('#nameList').empty();
+        }
+      });
+
+      $(document).on('click', 'li', function() {
+        $('#name').val($(this).text());
+        $('#nameList').empty();
+      });
+    });
+  </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      $('#exampleModalForm').on('hidden.bs.modal', function() {
+        $('#userForm')[0].reset();
+      });
+    });
+  </script>
+
 
   @include('footer')

@@ -6,6 +6,8 @@ use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\UserLogController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\RfidController;
+
 use App\Http\Middleware\CheckGoogleAuth;
 use Illuminate\Support\Facades\Auth;
 
@@ -29,15 +31,14 @@ Route::group(['middleware' => ['auth']], function () {
 // ADMIN MIDDLEWARE -----ADMIN ROUTES------
 Route::group(['middleware' => ['auth', 'admin']], function () 
 {
-    Route::get('/adminPage', [UserController::class, 'index'])->name('index');
+    Route::get('/adminPage', [UserController::class, 'index'])->name('admin.index');
     // Route::get('/adminPage', [UserController::class, 'index'])->name('index')->middleware(['auth', 'admin']);
-    Route::get('/pendingRFIDPage', [UserController::class, 'pendingRFID'])->name('pendingRFID');
-    Route::post('/userManagementPage/import', [UserController::class, 'import_excel'])->name('user.import');
-
 
     //--------START userManagement ROUTES---------
 
     Route::get('/userManagementPage', [UserController::class, 'userManagement'])->name('userManagement');
+    Route::post('/userManagementPage/import', [UserController::class, 'import_excel'])->name('user.import');
+
     // Route::get('/fetchUsers', [UserController::class, 'fetchUsers'])->name('fetchUsers'); => reserve
     // Route::put('/userManagementPage/{user}/update', [UserController::class, 'updateUser'])->name('updateUser'); => deletable but pasiguro
     Route::post('/userManagementPage', [UserController::class, 'addUser'])->name('addUser');
@@ -79,8 +80,10 @@ Route::group(['middleware' => ['auth', 'admin']], function ()
 
     //--------END instructor attendance Management ROUTES-----------
 
+    Route::get('/pendingRFIDPage', [RfidController::class, 'pendingRFID'])->name('pendingRFID');
+    Route::get('/RFIDManagementPage', [RfidController::class, 'RFIDManagement'])->name('RFIDManagement');
+    Route::get('/autocomplete', [RfidController::class, 'autocomplete'])->name('autocomplete');
 
-    Route::get('/RFIDManagementPage', [UserController::class, 'RFIDManagement'])->name('RFIDManagement');
     Route::get('/logsPage', [UserLogController::class, 'logs'])->name('logs');
     Route::get('/reportGenerationPage', [UserController::class, 'reportGeneration'])->name('reportGeneration');
 });

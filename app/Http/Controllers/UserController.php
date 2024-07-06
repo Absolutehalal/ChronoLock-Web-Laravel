@@ -59,7 +59,7 @@ class UserController extends Controller
     
         // $countRFID = User::count();
 
-        return view('index', [
+        return view('admin.index', [
             'tblUsers' => $tblUsers,
             'countTotalUsers' => $countTotalUsers,
             'countStudents' => $countStudents,
@@ -69,10 +69,7 @@ class UserController extends Controller
 
 
     //pending RFID page
-    public function pendingRFID()
-    {
-        return view('admin-pendingRFID');
-    }
+    
 
     //user management page
     public function userManagement()
@@ -268,6 +265,7 @@ class UserController extends Controller
             ]);
         }
     }
+
     public function deleteUser($id)
     {
         $user = User::findOrFail($id);
@@ -301,6 +299,7 @@ class UserController extends Controller
             ]);
         }
     }
+
     public function forceDelete($id)
     {
         $user = User::withTrashed()->findOrFail($id);
@@ -365,6 +364,7 @@ class UserController extends Controller
 
         return redirect('/userManagementPage');
     }
+
     //schedule management page
     public function adminScheduleManagement()
     {
@@ -372,18 +372,13 @@ class UserController extends Controller
     }
 
     //RFID management page
-    public function RFIDManagement()
-    {
-        return view('admin-RFIDAccount');
-    }
+    
 
     //report generation page
     public function reportGeneration()
     {
         return view('admin-report-generation');
     }
-
-
 
     //instructor functions
 
