@@ -76,7 +76,7 @@ class UserController extends Controller
     {
         $users = User::all()
         ->where('userType', '!=', 'Admin');
-        return view('admin-user-management', ['users' => $users]);
+        return view('admin.admin-user-management', ['users' => $users]);
     }
 
     // public function fetchUsers(){ => reserve
@@ -325,7 +325,7 @@ class UserController extends Controller
         $archiveUsers = User::onlyTrashed()->get();
 
 
-        return view('admin-user-archive', [
+        return view('admin.admin-user-archive', [
             'archiveUsers' => $archiveUsers
         ]);
     }
@@ -368,39 +368,7 @@ class UserController extends Controller
     //schedule management page
     public function adminScheduleManagement()
     {
-        return view('admin-schedule');
+        return view('admin.admin-schedule');
     }
-
-    //RFID management page
     
-
-    //report generation page
-    public function reportGeneration()
-    {
-        return view('admin-report-generation');
-    }
-
-    //instructor functions
-
-    //index page
-    public function instructorIndex()
-    {
-        return view('instructor-dashboard');
-    }
-
-    //class record
-    public function classRecordManagement()
-    {
-        return view('instructor-class-record');
-    }
-
-    //schedule
-    public function instructorScheduleManagement()
-    {
-        return view('instructor-schedule');
-    }
-    public function instructorAttendanceGeneration()
-    {
-        return view('admin-instructorAttendance-generation');
-    }
 }

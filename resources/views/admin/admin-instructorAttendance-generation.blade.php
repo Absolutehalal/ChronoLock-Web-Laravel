@@ -27,7 +27,7 @@
     });
     NProgress.start();
   </script>
-  @include('adminSideNav')
+  @include('admin.adminSideNav')
   <!-- ====================================
       ——— PAGE WRAPPER
       ===================================== -->
@@ -46,9 +46,9 @@
           <!-- Navigation -->
           <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-              <li class="breadcrumb-item"><a href="index.php">Dashboard</a></li>
-              <li class="breadcrumb-item active"><a href="instructor-attendance-generation">Report Generation</a></li>
-              <li class="breadcrumb-item active"><a href="instructor-attendance-generation">Instructor Attendance</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('index') }}">Dashboard</a></li>
+              <li class="breadcrumb-item active"><a href="{{ route('instructorAttendanceGeneration') }}">Report Generation</a></li>
+              <li class="breadcrumb-item active"><a href="{{ route('instructorAttendanceGeneration') }}">Student Attendance</a></li>
             </ol>
           </nav>
 
@@ -196,7 +196,7 @@
       document.querySelectorAll('.remark-item').forEach(function(item) {
         item.addEventListener('click', function(e) {
           e.preventDefault();
-          document.getElementById('instructorRemarksButton').innerHTML = <i class="mdi mdi-alpha-r-box"></i> ${this.textContent};
+          document.getElementById('instructorRemarksButton').innerHTML = `<i class="mdi mdi-alpha-r-box"></i> ${this.textContent}`;
           document.getElementById('selected_remarks').value = this.getAttribute('data-value');
         });
       });
@@ -204,7 +204,7 @@
       document.querySelectorAll('.id-item').forEach(function(item) {
         item.addEventListener('click', function(e) {
           e.preventDefault();
-          document.getElementById('instructorIDButton').innerHTML = <i class="mdi mdi-alpha-i-box"></i> ${this.textContent};
+          document.getElementById('instructorIDButton').innerHTML = `<i class="mdi mdi-alpha-i-box"></i> ${this.textContent}`;
           document.getElementById('selected_id').value = this.getAttribute('data-value');
         });
       });

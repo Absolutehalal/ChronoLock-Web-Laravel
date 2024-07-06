@@ -61,7 +61,7 @@
     });
     NProgress.start();
   </script>
-    @include('adminSideNav')
+    @include('admin.adminSideNav')
   <!-- ====================================
       ——— PAGE WRAPPER
       ===================================== -->

@@ -11,16 +11,16 @@
 
 <head>
   <meta charset="utf-8" />
+  <meta name="csrf-token" content="{{ csrf_token() }}" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  
-  <!-- Ajax Instructor Attendance -->
-  <script defer src="js/instructorEditAttendance.js"></script>
 
-  <title>ChronoLock Admin-Instructor Attendance</title>
+  <!-- Ajax Student Attendance -->
+  <script defer src="js/studentEditAttendance.js"></script>
+  
+  <title>ChronoLock Admin-Student Attendance</title>
 
   @include('head')
-
 </head>
 
 <body class="navbar-fixed sidebar-fixed" id="body">
@@ -30,7 +30,8 @@
     });
     NProgress.start();
   </script>
-  @include('adminSideNav')
+
+  @include('admin.adminSideNav')
   <!-- ====================================
       ——— PAGE WRAPPER
       ===================================== -->
@@ -49,9 +50,9 @@
           <!-- Navigation -->
           <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-              <li class="breadcrumb-item"><a href="index.php">Dashboard</a></li>
-              <li class="breadcrumb-item active"><a href="admin-instattendance.php">Attendance</a></li>
-              <li class="breadcrumb-item active"><a href="admin-instattendance.php">Instructor Attendance</a></li>
+              <li class="breadcrumb-item"><a href="{{ route('index') }}">Dashboard</a></li>
+              <li class="breadcrumb-item active"><a href="{{ route('studentAttendanceManagement') }}">Attendance</a></li>
+              <li class="breadcrumb-item active"><a href="{{ route('studentAttendanceManagement') }}">Student Attendance</a></li>
             </ol>
           </nav>
 
@@ -60,49 +61,69 @@
             <p class="text-center date-time mb-3" id="liveDateTime">Your Date and Time</p>
           </div>
         </div>
+
         <!-- DROPRDOWN NAV -->
 
         <div class="row">
           <div class="col-xl-9 col-md-9">
+            <!-- Example single primary button -->
 
-          <div class="dropdown d-inline-block mb-3">
-              <form method="GET" action="{{ route('instructorAttendanceManagement') }}">
-                <button class="btn btn-primary btn-sm dropdown-toggle fw-bold" type="button" id="instIDDropdown" data-toggle="dropdown" aria-expanded="false">
-                  <i class="mdi mdi-alpha-i-box"></i>
-                  Instructor ID
+            <div class="dropdown d-inline-block mb-3">
+              <form method="GET" action="{{ route('studentAttendanceManagement') }}">
+                <button class="btn btn-primary btn-sm dropdown-toggle fw-bold" type="button" id="yearDropdown" data-toggle="dropdown" aria-expanded="false">
+                  <i class="mdi mdi-developer-board"></i>
+                  Year & Section
                 </button>
-                <div class="dropdown-menu scrollable-dropdown" aria-labelledby="instIDDropdown">
-                @foreach($instructorsID as $instructorID)
+                <div class="dropdown-menu scrollable-dropdown" aria-labelledby="yearDropdown">
+                  @foreach($studentYears as $studentYears)
                   @csrf
-                  <a class="dropdown-item id-item filter-inst-id" data-value="{{ $instructorID->userID }}" href="#">
-                  {{ $instructorID->userID }}-{{ $instructorID->instFirstName }}  {{ $instructorID->instLastName }}
+                  <a class="dropdown-item year-item filter-year" data-value="{{ $studentYears->year }}-{{ $studentYears->section }}" href="#">
+                    {{ $studentYears->year }}-{{ $studentYears->section }}
                   </a>
                   @endforeach
                 </div>
-                <input type="hidden" name="instructorID" id="selectedInstID">
+                <input type="hidden" name="year" id="selectedYear">
               </form>
             </div>
 
             <div class="dropdown d-inline-block mb-3">
-              <form method="GET" action="{{ route('instructorAttendanceManagement') }}">
-                <button class="btn btn-primary btn-sm dropdown-toggle fw-bold" type="button" id="instStatusDropdown" data-toggle="dropdown" aria-expanded="false">
+              <form method="GET" action="{{ route('studentAttendanceManagement') }}">
+                <button class="btn btn-primary btn-sm dropdown-toggle fw-bold" type="button" id="courseDropdown" data-toggle="dropdown" aria-expanded="false">
+                  <i class="mdi mdi-alpha-c-box"></i>
+                  Course
+                </button>
+                <div class="dropdown-menu scrollable-dropdown" aria-labelledby="courseDropdown">
+                  @foreach($studentCourses as $studentCourses)
+                  @csrf
+                  <a class="dropdown-item course-item filter-course" data-value="{{ $studentCourses->course }}" href="#">
+                    {{ $studentCourses->course }}
+                  </a>
+                  @endforeach
+                </div>
+                <input type="hidden" name="course" id="selectedCourse">
+              </form>
+            </div>
+
+            <div class="dropdown d-inline-block mb-3">
+              <form method="GET" action="{{ route('studentAttendanceManagement') }}">
+                <button class="btn btn-primary btn-sm dropdown-toggle fw-bold" type="button" id="statusDropdown" data-toggle="dropdown" aria-expanded="false">
                   <i class="mdi mdi-alpha-s-box"></i>
                   Remark
                 </button>
-                <div class="dropdown-menu scrollable-dropdown" aria-labelledby="instStatusDropdown">
-                @foreach($remarks as $remarks)
+                <div class="dropdown-menu scrollable-dropdown" aria-labelledby="statusDropdown">
+                  @foreach($studentRemarks as $studentRemarks)
                   @csrf
-                  <a class="dropdown-item remark-item filter-inst-status" data-value="{{ $remarks->remark }}" href="#">
-                    {{ $remarks->remark }}
+                  <a class="dropdown-item remark-item filter-status" data-value="{{ $studentRemarks->remark }}" href="#">
+                    {{ $studentRemarks->remark }}
                   </a>
                   @endforeach
                 </div>
-                <input type="hidden" name="instructorStatus" id="selectedInstStatus">
+                <input type="hidden" name="status" id="selectedStatus">
               </form>
             </div>
 
             <div class="dropdown d-inline-block mb-3">
-              <div class="input-group date " id="datepicker">
+              <div class="input-group date" id="datepicker">
                 <input type="datetime-local" class="form-control border border-primary" placeholder="Date" id="selectedDate">
                 <div class="input-group-append">
                   <div class="input-group text-light btn btn-primary btn-sm" id="dateIcon">
@@ -122,16 +143,27 @@
                 </div>
               </div>
             </div>
+            <!-- <div class="dropdown d-inline-block mb-3 ">
+              <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+                <i class="mdi mdi-timer"></i>
+                Date
+              </button>
+            </div> -->
 
+            <!-- <div class="dropdown d-inline-block mb-3">
+              <button id="mini-status-range" type="button" class="dropdown-toggle btn btn-primary">
+                <i class="mdi mdi-calendar"></i>
+                <span id="datepicker" class="date-holder text-light"></span>
+              </button>
+            </div> -->
           </div>
 
-
           <div class="col-xl-3 col-md-3 d-flex justify-content-end">
-            <!-- Reset button -->
-            <div class="d-inline-block mb-3 ">
+            <!-- Sort button -->
+            <div class="dropdown d-inline-block mb-3 ">
               <button class="btn btn-warning btn-sm fw-bold" id="resetBtn" type="button">
                 <i class="mdi mdi-alpha-r-box"></i>
-                Reset
+                RESET
               </button>
             </div>
           </div>
@@ -139,10 +171,9 @@
         </div>
         <!-- END -->
 
-
         <div class="card card-default shadow">
           <div class="card-header">
-            <h1>Instructor Realtime Attendance</h1>
+            <h1>Student Realtime Attendance</h1>
           </div>
           <div class="card-body ">
             <table id="AttendanceTable" class="table table-bordered table-hover no-wrap" style="width:100%">
@@ -150,30 +181,30 @@
                 <tr>
                   <th>Date</th>
                   <th>Time</th>
-                  <th>Course Code</th>
-                  <th>Course & Section</th>
-                  <th>Instructor Name</th>
-                  <th>Instructor ID</th>
+                  <th>Student Name</th>
+                  <th>Student ID</th>
+                  <th>Course</th>
+                  <th>Year & Section</th>
                   <th>Remarks</th>
                   <th>Action</th>
                 </tr>
               </thead>
               <tbody>
-              @foreach($instructors as $instructors)
+                @foreach($students as $students)
                 @csrf
                 <tr>
-                  <td>{{ $instructors->formatted_date }}</td>
-                  <td>{{ $instructors->formatted_time }}</td>
-                  <td>{{ $instructors->courseCode }}</td>
-                  <td>{{ $instructors->course }} - {{ $instructors->year }}{{ $instructors->section }}</td>
-                  <td>{{ $instructors->instFirstName }} {{ $instructors->instLastName }}</td>
-                  <td>{{ $instructors->userID }}</td>
+                  <td>{{ $students->formatted_date }}</td>
+                  <td>{{ $students->formatted_time }}</td>
+                  <td>{{ $students->firstName }} {{ $students->lastName }}</td>
+                  <td>{{ $students->idNumber }}</td>
+                  <td>{{ $students->course }}</td>
+                  <td>{{ $students->year }}-{{ $students->section }}</td>
                   <td>
-                    @if($instructors->remark == 'Present')
+                    @if($students->remark == 'Present')
                     <span class="badge badge-success">Present</span>
-                    @elseif($instructors->remark == 'Absent')
+                    @elseif($students->remark == 'Absent')
                     <span class="badge badge-danger">Absent</span>
-                    @elseif($instructors->remark == 'Late')
+                    @elseif($students->remark == 'Late')
                     <span class="badge badge-warning">Late</span>
                     @endif
                   </td>
@@ -184,34 +215,33 @@
                         Actions
                         </button>
                       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <button class="dropdown-item editAttendanceBtn" type="button" data-toggle="modal" data-target="#updateAttendanceModal" value="{{$instructors->attendanceID}}">
+                        <button class="dropdown-item editAttendanceBtn" type="button" data-toggle="modal" data-target="#updateAttendanceModal" value="{{$students->attendanceID}}">
                           <i class="mdi mdi-circle-edit-outline text-warning"></i>
                           Edit</button>
-                        <button class="dropdown-item deleteAttendanceBtn" type="button" data-toggle="modal" data-target="#deleteAttendanceModal" value="{{$instructors->attendanceID}}">
+                        <button class="dropdown-item deleteAttendanceBtn" type="button" data-toggle="modal" data-target="#deleteAttendanceModal" value="{{$students->attendanceID}}">
                           <i class="mdi mdi-trash-can text-danger"></i>
                           Delete</button>
                       </div>
                     </div>
                   </th>
+
                 </tr>
                 @endforeach
+
               </tbody>
             </table>
-
           </div>
         </div>
-
       </div>
     </div>
   </div>
 
-
- <!-- Delete Attendance Modal -->
+  <!-- Delete Attendance Modal -->
  <div class="modal fade" id="deleteAttendanceModal" tabindex="-1" role="dialog" aria-labelledby="deleteAttendance" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="deleteAttendance" style="text-align:center;">Delete Instructor Attendance</h5>
+          <h5 class="modal-title" id="deleteAttendance" style="text-align:center;">Delete Student Attendance</h5>
           <button type="button" class="close" id="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -225,7 +255,7 @@
               <i class="fa-solid fa-trash-can text-danger" style="text-align:center; font-size:50px; padding:1rem;"></i>
             </div>
             <div class="row">
-              <h4 style="text-align:center;"> Are you sure you want to delete this Instructor Attendance?</h4>
+              <h4 style="text-align:center;"> Are you sure you want to delete this Student Attendance?</h4>
             </div>
         </div> <!-- Modal Boday End-->
 
@@ -242,14 +272,12 @@
   </div>
   </div>
 
-
-
-<!-- Update Attendance Modal -->
+  <!-- Update Attendance Modal -->
   <div class="modal fade" id="updateAttendanceModal" tabindex="-1" role="dialog" aria-labelledby="updateAttendance" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="updateAttendance">Edit Instructor Attendance</h5>
+          <h5 class="modal-title" id="updateAttendance">Edit Student Attendance</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -267,8 +295,8 @@
               <div class="col-lg-6">
                 <ul id="editIDError"></ul>
                 <div class="form-group">
-                  <label>Instructor ID</label>
-                  <input type="text" class="updateUserID form-control border border-dark border border-dark" id="edit_instructorID" name="update_instructorID" readonly>
+                  <label>Student ID</label>
+                  <input type="text" class="updateUserID form-control border border-dark border border-dark" id="edit_studentID" name="update_studentID">
                  
                 </div>
               </div>
@@ -302,27 +330,38 @@
   </div>
 
   <script>
-    const instIDDropdown = `<i class="mdi mdi-alpha-i-box"></i> Instructor ID`;
-    const instStatusDropdown = `<i class="mdi mdi-alpha-r-box"></i> Remark`;
+    const yearDropdown = `<i class="mdi mdi-developer-board"></i> Year & Section`;
+    const courseDropdown = `<i class="mdi mdi-alpha-c-box"></i> Course`;
+    const statusDropdown = `<i class="mdi mdi-alpha-r-box"></i> Remark`;
     document.addEventListener("DOMContentLoaded", function() {
+      document.querySelectorAll('.year-item').forEach(function(item) {
+        item.addEventListener('click', function(e) {
+          e.preventDefault();
+          document.getElementById('yearDropdown').innerHTML = `<i class="mdi mdi-developer-board"></i> ${this.textContent}`;
+        });
+      });
+      document.querySelectorAll('.course-item').forEach(function(item) {
+        item.addEventListener('click', function(e) {
+          e.preventDefault();
+          document.getElementById('courseDropdown').innerHTML = `<i class="mdi mdi-alpha-c-box"></i> ${this.textContent}`;
+        });
+      });
       document.querySelectorAll('.remark-item').forEach(function(item) {
         item.addEventListener('click', function(e) {
           e.preventDefault();
-          document.getElementById('instStatusDropdown').innerHTML = `<i class="mdi mdi-alpha-r-box"></i> ${this.textContent}`;
-        });
-      });
-      document.querySelectorAll('.id-item').forEach(function(item) {
-        item.addEventListener('click', function(e) {
-          e.preventDefault();
-          document.getElementById('instIDDropdown').innerHTML = `<i class="mdi mdi-alpha-i-box"></i> ${this.textContent}`;
+          document.getElementById('statusDropdown').innerHTML = `<i class="mdi mdi-alpha-r-box"></i> ${this.textContent}`;
         });
       });
     });
     $("#resetBtn").on("click", function (e) {
         e.preventDefault();
-        // Reset the dropdown button to its default UI
-        document.getElementById("instIDDropdown").innerHTML = instIDDropdown;
-        document.getElementById("instStatusDropdown").innerHTML = instStatusDropdown;
+        document.getElementById("yearDropdown").innerHTML = yearDropdown;
+        document.getElementById("courseDropdown").innerHTML = courseDropdown;
+        document.getElementById("statusDropdown").innerHTML = statusDropdown;
     });
   </script>
+
+
+
+
   @include('footer')

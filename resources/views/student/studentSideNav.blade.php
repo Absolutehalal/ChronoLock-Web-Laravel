@@ -12,7 +12,7 @@
     <div id="sidebar" class="sidebar sidebar-with-footer">
       <!-- Aplication Brand -->
       <div class="app-brand">
-        <a href="{{route('index')}}">
+        <a href="{{ route('studentIndex') }}">
           <img src="images/logo.png" alt="Mono" />
           <span class="brand-name">ChronoLock</span>
         </a>
@@ -25,7 +25,7 @@
           <li class="section-title">Dashboard</li>
 
           <li>
-            <a class="sidenav-item-link" href="{{route('studentIndex')}}">
+            <a class="sidenav-item-link" href="{{ route('studentIndex') }}">
               <i class="mdi mdi-disqus-outline"></i>
               <span class="nav-text" data-toggle="tooltip" title="Student Dashboard">Student Dashboard</span>
             </a>
@@ -46,7 +46,7 @@
           <li class="section-title">My Class Schedules</li>
 
           <li>
-            <a class="sidenav-item-link" href="{{route('pendingRFID')}}">
+            <a class="sidenav-item-link" href="">
               <i class="mdi mdi-folder-clock-outline"></i>
               <span class="nav-text" data-toggle="tooltip" title="Subject Here">ITEC 222</span>
             </a>

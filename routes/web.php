@@ -7,6 +7,7 @@ use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\UserLogController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\RfidController;
+use App\Http\Controllers\FacultyController;
 
 use App\Http\Middleware\CheckGoogleAuth;
 use Illuminate\Support\Facades\Auth;
@@ -31,7 +32,7 @@ Route::group(['middleware' => ['auth']], function () {
 // ADMIN MIDDLEWARE -----ADMIN ROUTES------
 Route::group(['middleware' => ['auth', 'admin']], function () 
 {
-    Route::get('/adminPage', [UserController::class, 'index'])->name('admin.index');
+    Route::get('/adminPage', [UserController::class, 'index'])->name('index');
     // Route::get('/adminPage', [UserController::class, 'index'])->name('index')->middleware(['auth', 'admin']);
 
     //--------START userManagement ROUTES---------
@@ -89,14 +90,17 @@ Route::group(['middleware' => ['auth', 'admin']], function ()
 });
 
 
-
-// INSTRUCTOR MIDDLEWARE
+// FACULTY MIDDLEWARE
 Route::group(['middleware' => ['auth', 'faculty']], function () 
 {
-    Route::get('/instructorDashboard', [UserController::class, 'instructorIndex'])->name('instructorIndex');
-    Route::get('/instructorClassRecord', [UserController::class, 'classRecordManagement'])->name('classRecordManagement');
-    Route::get('/instructorSchedule', [UserController::class, 'instructorScheduleManagement'])->name('instructorScheduleManagement');
+    Route::get('/instructorDashboard', [FacultyController::class, 'instructorIndex'])->name('instructorIndex');
+    Route::get('/instructorClassRecord', [FacultyController::class, 'classRecordManagement'])->name('classRecordManagement');
+    Route::get('/instructorSchedule', [FacultyController::class, 'instructorScheduleManagement'])->name('instructorScheduleManagement');
 });
 
-Route::get('/student-dashboard', [StudentController::class, 'studentIndex'])->name('studentIndex');
-Route::get('/student-view-schedule', [StudentController::class, 'studentViewSchedule'])->name('studentViewSchedule');
+Route::group(['middleware' => ['auth', 'student']], function () 
+{
+    Route::get('/student-dashboard', [StudentController::class, 'studentIndex'])->name('studentIndex');
+    Route::get('/student-view-schedule', [StudentController::class, 'studentViewSchedule'])->name('studentViewSchedule');
+});
+

@@ -27,7 +27,7 @@
     NProgress.start();
   </script>
   @include('sweetalert::alert')
-  @include('adminSideNav')
+  @include('admin.adminSideNav')
   <!-- ====================================
       ——— PAGE WRAPPER
       ===================================== -->
@@ -45,8 +45,9 @@
           <!-- Navigation -->
           <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-              <li class="breadcrumb-item"><a href="index.php">Dashboard</a></li>
-              <li class="breadcrumb-item active"><a href="admin-user-management.php">User Management</a></li>
+              <!-- <i class="mdi mdi-home"></i> -->
+              <li class="breadcrumb-item"><a href="{{ route('index') }}">Dashboard</a></li>
+              <li class="breadcrumb-item active"><a href="{{ route('userManagement') }}">User Management</a></li>
             </ol>
           </nav>
 
@@ -416,7 +417,7 @@
           'email': $(email).val(),
           'password': $(password).val(),
         }
-       
+
         $.ajaxSetup({
           headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -486,7 +487,7 @@
                 text: "Email already Exist. Please use a another Email.",
               });
 
-            }else if (response.status == 300) {
+            } else if (response.status == 300) {
               $('#firstNameError').html("");
               $('#lastNameError').html("");
               $('#userTypeError').html("");

@@ -26,7 +26,7 @@
     });
     NProgress.start();
   </script>
-  @include('adminSideNav')
+  @include('admin.adminSideNav')
   <!-- ====================================
       ——— PAGE WRAPPER
       ===================================== -->
@@ -44,11 +44,12 @@
           <!-- Navigation -->
           <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
+              <!-- <i class="mdi mdi-home"></i> -->
               <li class="breadcrumb-item">
-                <a href="index.php">Dashboard</a>
+                <a href="{{ route('index') }}">Dashboard</a>
               </li>
               <li class="breadcrumb-item active">
-                <a href="admin-pendingrfid.php"> Pending RFID Request</a>
+                <a href="{{ route('pendingRFID') }}"> Pending RFID Request</a>
               </li>
             </ol>
           </nav>
@@ -188,7 +189,7 @@
     </div>
   </div>
 
- 
+
   </div>
   </div>
 

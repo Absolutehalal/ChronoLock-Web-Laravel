@@ -26,7 +26,7 @@
     });
     NProgress.start();
   </script>
-  @include('adminSideNav')
+  @include('admin.adminSideNav')
   <!-- ====================================
       ——— PAGE WRAPPER
       ===================================== -->
@@ -44,8 +44,8 @@
           <!-- Navigation -->
           <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-              <li class="breadcrumb-item"><a href="index.php">Dashboard</a></li>
-              <li class="breadcrumb-item active"><a href="admin-rfidaccount.php">RFID Accounts</a></li>
+              <li class="breadcrumb-item"><a href="{{ route('index') }}">Dashboard</a></li>
+              <li class="breadcrumb-item active"><a href="{{ route('RFIDManagement') }}">RFID Accounts</a></li>
             </ol>
           </nav>
 
@@ -65,7 +65,7 @@
                 <!-- Sort button -->
                 <div class="dropdown d-inline-block ">
                   <button class="btn btn-primary btn-sm fw-bold" type="button" data-toggle="modal" data-target="#exampleModalForm">
-                    <i class=" mdi mdi-calendar-plus"></i>
+                    <i class=" mdi mdi-plus-box"></i>
                     ADD RFID
                   </button>
                 </div>

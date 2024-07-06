@@ -9,12 +9,12 @@ class RfidController extends Controller
 {
     public function pendingRFID()
     {
-        return view('admin-pendingRFID');
+        return view('admin.admin-pendingRFID');
     }
 
     public function RFIDManagement()
     {
-        return view('admin-RFIDAccount');
+        return view('admin.admin-RFIDAccount');
     }
 
     public function autocomplete(Request $request)

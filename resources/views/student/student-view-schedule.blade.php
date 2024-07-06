@@ -32,7 +32,7 @@
     @include('sweetalert::alert')
 
 
-    @include('studentSideNav')
+    @include('student.studentSideNav')
     <!-- ====================================
       ——— PAGE WRAPPER
       ===================================== -->
@@ -50,8 +50,8 @@
                     <!-- Navigation -->
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="/student-dashboard">Dashboard</a></li>
-                            <li class="breadcrumb-item"><a href="/student-view-schedule">View Schedule</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('studentIndex') }}">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('studentViewSchedule') }}">View Schedule</a></li>
                         </ol>
                     </nav>
 

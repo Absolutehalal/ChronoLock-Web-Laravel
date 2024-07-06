@@ -61,7 +61,8 @@
           <!-- Navigation -->
           <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-              <li class="breadcrumb-item"><a href="admin.index">Dashboard</a></li>
+            <!-- <i class="mdi mdi-home"></i> -->
+            <li class="breadcrumb-item"><a href="{{ route('index') }}">Dashboard</a></li>
             </ol>
           </nav>
 

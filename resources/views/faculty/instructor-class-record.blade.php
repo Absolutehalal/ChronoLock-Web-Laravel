@@ -26,7 +26,7 @@
         });
         NProgress.start();
     </script>
-    @include('instructorSideNav')
+    @include('faculty.instructorSideNav')
     <!-- ====================================
       ——— PAGE WRAPPER
       ===================================== -->
