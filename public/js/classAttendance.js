@@ -3,15 +3,15 @@ $(document).on('click', '.section', function(e) {
 
     var id = $('.section').val();
 
-    $.ajaxSetup({
-      headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-      }
-    });
-
     $.ajax({
       type: "GET",
-      url: "/instructorClassAttendance/" + id,
+      url: "/instructorClassAttendance/"+id,
       dataType: "json",
+      success: function(response) {
+        if (response.status == 200) {
+    
+          
+        
+      }}
     });
 });

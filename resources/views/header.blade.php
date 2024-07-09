@@ -63,7 +63,7 @@
                                     <div class="media media-sm bg-warning-10 p-4 mb-0">
                                         <div class="media-sm-wrapper">
                                             <a href="user-profile.html">
-                                                <img src="images/user/user-sm-02.jpg" alt="User Image" />
+                                                <img src="{{asset('images/user/user-sm-02.jpg')}}" alt="User Image" />
                                             </a>
                                         </div>
                                         <div class="media-body">
@@ -100,7 +100,7 @@
                                     <div class="media media-sm p-4 mb-0">
                                         <div class="media-sm-wrapper">
                                             <a href="user-profile.html">
-                                                <img src="images/user/user-sm-03.jpg" alt="User Image" />
+                                                <img src="{{asset('images/user/user-sm-03.jpg')}}" alt="User Image" />
                                             </a>
                                         </div>
                                         <div class="media-body">
@@ -160,7 +160,7 @@
                                     <div class="media media-sm p-4 mb-0">
                                         <div class="media-sm-wrapper">
                                             <a href="user-profile.html">
-                                                <img src="images/user/user-sm-01.jpg" alt="User Image" />
+                                                <img src="{{asset('images/user/user-sm-01.jpg')}}" alt="User Image" />
                                             </a>
                                         </div>
                                         <div class="media-body">
@@ -178,7 +178,7 @@
                                     <div class="media media-sm p-4 mb-0">
                                         <div class="media-sm-wrapper">
                                             <a href="user-profile.html">
-                                                <img src="images/user/user-sm-03.jpg" alt="User Image" />
+                                                <img src="{{asset('images/user/user-sm-03.jpg')}}" alt="User Image" />
                                             </a>
                                         </div>
                                         <div class="media-body">
@@ -197,7 +197,7 @@
                                     <div class="media media-sm bg-warning-10 p-4 mb-0">
                                         <div class="media-sm-wrapper">
                                             <a href="user-profile.html">
-                                                <img src="images/user/user-sm-02.jpg" alt="User Image" />
+                                                <img src="{{asset('images/user/user-sm-02.jpg')}}" alt="User Image" />
                                             </a>
                                         </div>
                                         <div class="media-body">
@@ -217,7 +217,7 @@
                                     <div class="media media-sm p-4 mb-0">
                                         <div class="media-sm-wrapper">
                                             <a href="user-profile.html">
-                                                <img src="images/user/user-sm-04.jpg" alt="User Image" />
+                                                <img src="{{asset('images/user/user-sm-04.jpg')}}" alt="User Image" />
                                             </a>
                                         </div>
                                         <div class="media-body">

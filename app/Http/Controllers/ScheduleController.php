@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\Attendance;
 use App\Models\Schedule;
 use App\Models\ClassList;
 use App\Models\StudentMasterlist;
@@ -143,31 +144,49 @@ class ScheduleController extends Controller
     }
 
 
-   public function instructorClassAttendance(){
-    $id = Auth::id();
-    $userID =DB::table('users')->where('id', $id)->value('idNumber');
+   public function instructorClassAttendance($id){
+
+    $studentID =DB::table('student_masterlists')->where('classID', $id)->value('userID');
+
+    $studAttendances = StudentMasterlist::select('date', 'time', 'firstName','lastName', 'idNumber', 'course','year', 'section', 'remark')
+    ->join('users', 'student_masterlists.userID', '=', 'users.idNumber')
+    ->join('class_lists', 'student_masterlists.classID', '=', 'class_lists.classID')
+    ->join('attendances', 'student_masterlists.classID', '=', 'attendances.classID')
+    ->where('attendances.userID', '=', $studentID )
+    ->where('attendances.classID', '=', $id)
+    ->get();
+
+    $students=StudentMasterlist::select('firstName','lastName', 'idNumber', 'course','year', 'section', 'status')
+    ->join('users', 'student_masterlists.userID', '=', 'users.idNumber')
+    ->join('class_lists', 'student_masterlists.classID', '=', 'class_lists.classID')
+    ->where('student_masterlists.classID', '=', $id)
+    ->distinct()
+    ->get();
+
+
+    $ID = Auth::id();
+    $userID =DB::table('users')->where('id', $ID)->value('idNumber');
 
     $classes = DB::table('class_lists')
     ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
     ->where('schedules.userID', '=', $userID)
     ->get();
-
-   
-
+ 
+       
     
 
-    return view('instructor-class-attendance',['classes' => $classes]);
+    return view('instructor-class-attendance',['classes' => $classes, 'studAttendances' => $studAttendances, 'students' => $students]);
    }
 
-   public function instructorClassList(){
-    $id = Auth::id();
-    $userID =DB::table('users')->where('id', $id)->value('idNumber');
+//    public function instructorClassList(){
+//     $id = Auth::id();
+//     $userID =DB::table('users')->where('id', $id)->value('idNumber');
 
-    $classes = DB::table('class_lists')
-    ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
-    ->where('schedules.userID', '=', $userID)
-    ->get();
+//     $classes = DB::table('class_lists')
+//     ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
+//     ->where('schedules.userID', '=', $userID)
+//     ->get();
 
-    return view('instructor-classList',['classes' => $classes]);
-   }
+//     return view('instructor-classList',['classes' => $classes]);
+//    }
 }

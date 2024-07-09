@@ -1,4 +1,8 @@
-<script defer src="js/activePage.js"></script>
+  <!-- csrf-token -->
+  <!-- <meta name="csrf-token" content="{{ csrf_token() }}">
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script> -->
+<script defer src="{{asset('js/activePage.js')}}"></script>
+<!-- <script defer src="js/classAttendance.js"></script> -->
 
 <!-- ====================================
     ——— WRAPPER
@@ -12,7 +16,7 @@
             <!-- Aplication Brand -->
             <div class="app-brand">
                 <a href="{{route('instructorIndex')}}">
-                    <img src="images/logo.png" alt="Mono" />
+                    <img src="{{asset('images/logo.png')}}" alt="Mono" />
                     <span class="brand-name">ChronoLock</span>
                 </a>
             </div>
@@ -66,7 +70,7 @@
                             @foreach($classes as $classes)
                             @csrf
                                 <li>
-                                    <a class="section" href="{{route('instructorClassAttendance')}}" >{{$classes->course}}-{{$classes->year}}{{$classes->section}}</a>
+                                    <a class="section" href="{{ route('instructorClassAttendance', ['id' => $classes->classID]) }}">{{$classes->course}}-{{$classes->year}}{{$classes->section}}</a>
                                 </li>
                             @endforeach
                     </li>
