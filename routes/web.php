@@ -94,12 +94,17 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
 Route::group(['middleware' => ['auth', 'faculty']], function () {
 Route::get('/instructorDashboard', [ScheduleController::class, 'instructorIndex'])->name('instructorIndex');
 Route::get('/instructorClassRecord', [ScheduleController::class, 'classRecordManagement'])->name('classRecordManagement');
-
- //--------START instructor classlist  ROUTES---------  
-Route::get('/instructorClassSchedules', [ScheduleController::class, 'classSchedules'])->name('classSchedules');
+Route::get('/instructorSchedule', [ScheduleController::class, 'instructorScheduleManagement'])->name('instructorScheduleManagement');
+ //--------START instructor classlist  ROUTES---------
 Route::post('/instructorClassSchedules', [ScheduleController::class, 'addClassList'])->name('addClassList');
 Route::get('/editInstructorClassList/{id}', [ScheduleController::class,'editInstructorClass'])->name('editInstructorClass');
-Route::get('/instructorSchedule', [ScheduleController::class, 'instructorScheduleManagement'])->name('instructorScheduleManagement');
-Route::get('/instructorClassAttendance/{id}', [ScheduleController::class, 'instructorClassAttendance'])->name('instructorClassAttendance');
-// Route::get('/instructorClassList/{id}', [ScheduleController::class, 'instructorClassList'])->name('instructorClassList');
+Route::get('/instructorClassSchedules', [ScheduleController::class, 'classSchedules'])->name('classSchedules');
+//--------End instructor classlist  ROUTES---------
+
+//--------START instructor class Attendance and List  ROUTES---------
+Route::get('/instructorClassAttendanceAndList/{id}', [ScheduleController::class, 'instructorClassAttendanceAndList'])->name('instructorClassAttendanceAndList');
+Route::get('/instructorEditStudentAttendance/{id}', [ScheduleController::class, 'instructorEditStudentAttendance'])->name('instructorEditStudentAttendance');
+Route::put('/instructorUpdateStudentAttendance/{id}', [ScheduleController::class, 'instructorUpdateStudentAttendance'])->name('instructorUpdateStudentAttendance');
+Route::delete('/instructorDeleteStudentAttendance/{id}', [ScheduleController::class, 'instructorDeleteStudentAttendance'])->name('instructorDeleteStudentAttendance');
+//--------END instructor class Attendance and List  ROUTES---------
 });

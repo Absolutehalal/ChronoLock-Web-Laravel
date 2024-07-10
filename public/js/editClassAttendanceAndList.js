@@ -1,0 +1,179 @@
+$(document).ready(function() {
+$(document).on('click', '.editAttendanceBtn', function(e) {
+    e.preventDefault();
+
+    var id = $(this).val();
+  
+    $.ajax({
+      type: "GET",
+      url: "/instructorEditStudentAttendance/"+id,
+      dataType: "json",
+      success: function(response) {
+        if (response.status == 404) {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "No Attendance Record Found!!!",
+          });
+          $("#studentUpdateAttendanceModal .close").click()
+        } else {
+          //  console.log(response.attendance);
+          $('#attendanceID').val(response.attendance.attendanceID);
+          $('#edit_studentID').val(response.attendance.userID);
+          $('#edit_Remark').val(response.attendance.remark); 
+        }
+      }
+    });
+    });
+
+
+
+
+    $(document).on('click', '.updateAttendance', function(e) {
+      e.preventDefault();
+  
+      $(this).text('Updating..');
+      var attendanceID = $('#attendanceID').val();
+      // alert(attendanceID);
+  
+      var data = {
+        'updateUserID': $('.updateUserID').val(),
+        'updateRemark': $('.updateRemark').val(),
+       
+      }
+     console.log(data);
+      $.ajaxSetup({
+            headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+          });
+  
+      $.ajax({
+            type:"PUT",
+            url:"/instructorUpdateStudentAttendance/" + attendanceID,
+            data: data,
+            dataType: "json",
+            success: function(response) {
+          // console.log(response);
+          if (response.status == 400) {
+            $('#editIDError').html("");
+            $('#editIDError').addClass('error');
+            $('#editRemarkError').html("");
+            $('#editRemarkError').addClass('error');
+            $.each(response.errors.updateUserID, function(key, err_value) {
+              $('#editIDError').append('<li>' + err_value + '</li>');
+            });
+            $.each(response.errors.updateRemark, function(key, err_value) {
+              $('#editRemarkError').append('<li>' + err_value + '</li>');
+            });
+            $('.updateAttendance').text('Update');
+  
+          } else if((response.status == 404)){
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: "No Attendance Record Found!!!",
+            });
+            $("#studentUpdateAttendanceModal .close").click()
+            // console.log(response.message);
+          }else if ((response.status == 200)) {
+            $('#editIDError').html("");
+            $('#editRemarkError').html("");
+            Swal.fire({
+              icon: "success",
+              title: "Successful",
+              text: "Attendance Successfully Updated!",
+            });
+            // console.log(response.attendance);
+            $('.updateAttendance').text('Update');
+            $("#studentUpdateAttendanceModal .close").click()
+          location.reload();
+          // setTimeout(function(){
+          //     window.location.reload();
+          //  }, 5000);
+          }
+        }
+      });
+    });
+
+
+
+    $(document).on('click', '.deleteAttendanceBtn', function() {
+      var id = $(this).val(); 
+      $('#deleteAttendanceID').val(id);
+    });
+  
+  
+  
+    $(document).on('click', '.deleteAttendance', function(e) {
+      e.preventDefault();
+  
+      $(this).text('Deleting..');
+      var id = $('#deleteAttendanceID').val();
+  
+      $.ajaxSetup({
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+      });
+  
+      $.ajax({
+        type: "DELETE",
+        url: "/instructorDeleteStudentAttendance/" + id,
+        dataType: "json",
+        success: function(response) {
+          // console.log(response);
+          if (response.status == 404) {
+            $('.deleteAttendance').text('Delete');
+            $("#deleteAttendanceModal .close").click()
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: "No Attendance Found",
+            });
+  
+          } else {
+            $('.deleteAttendance').text('Delete');
+            $("#studentDeleteAttendanceModal .close").click()
+            Swal.fire({
+              icon: "success",
+              title: "Successful",
+              text: "Attendance Deleted",
+              buttons: false,
+            });
+            location.reload();
+          }
+        }
+      });
+    });
+
+
+
+
+    $(document).on('click', '.editAttendanceBtn', function(e) {
+      e.preventDefault();
+  
+      var id = $(this).val();
+    
+      $.ajax({
+        type: "GET",
+        url: "/instructorEditStudentAttendance/"+id,
+        dataType: "json",
+        success: function(response) {
+          if (response.status == 404) {
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: "No Attendance Record Found!!!",
+            });
+            $("#studentUpdateAttendanceModal .close").click()
+          } else {
+            //  console.log(response.attendance);
+            $('#attendanceID').val(response.attendance.attendanceID);
+            $('#edit_studentID').val(response.attendance.userID);
+            $('#edit_Remark').val(response.attendance.remark); 
+          }
+        }
+      });
+      });
+});

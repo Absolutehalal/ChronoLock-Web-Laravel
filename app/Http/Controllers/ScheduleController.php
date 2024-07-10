@@ -144,22 +144,24 @@ class ScheduleController extends Controller
     }
 
 
-   public function instructorClassAttendance($id){
+   public function instructorClassAttendanceAndList($id){
 
-    $studentID =DB::table('student_masterlists')->where('classID', $id)->value('userID');
+    $decode = base64_decode($id);
 
-    $studAttendances = StudentMasterlist::select('date', 'time', 'firstName','lastName', 'idNumber', 'course','year', 'section', 'remark')
+    $studAttendances = DB::table('student_masterlists') 
     ->join('users', 'student_masterlists.userID', '=', 'users.idNumber')
     ->join('class_lists', 'student_masterlists.classID', '=', 'class_lists.classID')
-    ->join('attendances', 'student_masterlists.classID', '=', 'attendances.classID')
-    ->where('attendances.userID', '=', $studentID )
-    ->where('attendances.classID', '=', $id)
+    ->join('attendances', function (JoinClause $join) {
+    $join->on('student_masterlists.classID', '=', 'attendances.classID');
+    $join->on('student_masterlists.userID', '=', 'attendances.userID');
+    })
+    ->where('attendances.classID', '=', $decode)
     ->get();
 
     $students=StudentMasterlist::select('firstName','lastName', 'idNumber', 'course','year', 'section', 'status')
     ->join('users', 'student_masterlists.userID', '=', 'users.idNumber')
     ->join('class_lists', 'student_masterlists.classID', '=', 'class_lists.classID')
-    ->where('student_masterlists.classID', '=', $id)
+    ->where('student_masterlists.classID', '=', $decode)
     ->distinct()
     ->get();
 
@@ -175,18 +177,126 @@ class ScheduleController extends Controller
        
     
 
-    return view('instructor-class-attendance',['classes' => $classes, 'studAttendances' => $studAttendances, 'students' => $students]);
+    return view('instructor-class-attendanceAndList',['classes' => $classes, 'studAttendances' => $studAttendances, 'students' => $students]);
    }
 
-//    public function instructorClassList(){
-//     $id = Auth::id();
-//     $userID =DB::table('users')->where('id', $id)->value('idNumber');
 
-//     $classes = DB::table('class_lists')
-//     ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
-//     ->where('schedules.userID', '=', $userID)
-//     ->get();
+   public function instructorEditStudentAttendance($id)
+   {
 
-//     return view('instructor-classList',['classes' => $classes]);
-//    }
+       $attendance = Attendance::find($id);
+       if ($attendance) {
+           return response()->json([
+               'status' => 200,
+               'attendance' => $attendance,
+           ]);
+       } else {
+           return response()->json([
+               'status' => 404,
+           ]);
+       }
+   }
+
+
+   public function instructorUpdateStudentAttendance(Request $request, $id)
+   {
+       $validator = Validator::make($request->all(), [
+           'updateUserID' => 'required',
+           'updateRemark' => 'required',
+       ]);
+       if ($validator->fails()) {
+           return response()->json([
+               'status' => 400,
+               'errors' => $validator->messages()
+           ]);
+          }else{ 
+              $attendance = Attendance::find($id);
+              $updatedID =DB::table('attendances')->where('attendanceID', $id)->value('AttendanceID');
+              $remark = DB::table('attendances')->where('attendanceID', $updatedID)->value('remark');  
+              $attendanceDate = DB::table('attendances')->where('attendanceID', $updatedID)->value('date');
+              $attendanceTime = DB::table('attendances')->where('attendanceID', $updatedID)->value('time');  
+              $idNumber = DB::table('attendances')->where('attendanceID', $updatedID)->value('userID');    
+              if ($attendance) {
+                   $attendance->userID = $request->input('updateUserID');
+                   $attendance->remark = $request->input('updateRemark');
+                   $attendance->update();
+
+              // Start Logs   
+              $userType =DB::table('attendances')
+              ->join('users', 'attendances.userID', '=', 'users.idNumber')
+              ->where('attendanceID', $updatedID)
+              ->value('userType');
+
+              $inputRemark =  $request->input('updateRemark');
+              $id = Auth::id();
+              $userID =DB::table('users')->where('id', $id)->value('idNumber');
+              date_default_timezone_set("Asia/Manila");
+              $date = date("Y-m-d");
+              $time = date("H:i:s");
+              if(($inputRemark == $remark)){
+                  $action = "Attempt update on $idNumber attendance last $attendanceDate $attendanceTime";
+              }else {
+                  $action = "Updated $idNumber-$userType attendance on $attendanceDate $attendanceTime";
+              }
+              DB::table('user_logs')->insert([
+                  'userID' => $userID,
+                  'action' => $action,
+                  'date' => $date,
+                  'time' => $time,
+              ]);
+              // END Logs
+
+                   return response()->json([
+                      'status' => 200,
+                  ]);
+                 
+               }else{
+                  return response()->json([
+                      'status'=>404,
+                      'message'=>'No Attendance Found.'
+                  ]);
+               }
+       }
+      }
+
+      public function instructorDeleteStudentAttendance($id)
+      {
+          $attendance = Attendance::findOrFail($id);
+          $deletedID =DB::table('attendances')->where('attendanceID', $id)->value('attendanceID');
+          $idNumber = DB::table('attendances')->where('attendanceID', $deletedID)->value('userID');
+          $attendanceDate = DB::table('attendances')->where('attendanceID', $deletedID)->value('date');
+          $attendanceTime = DB::table('attendances')->where('attendanceID', $deletedID)->value('time');    
+          $userType =DB::table('attendances')
+            ->join('users', 'attendances.userID', '=', 'users.idNumber')
+            ->where('attendanceID', $deletedID)
+            ->value('userType');
+
+          if ($attendance) {
+              $attendance->delete();
+
+               // Start Logs
+          
+        
+            $ID = Auth::id();
+            $userID =DB::table('users')->where('id', $ID)->value('idNumber');
+            date_default_timezone_set("Asia/Manila");
+            $date = date("Y-m-d");
+            $time = date("H:i:s");
+            $action = "Deleted $idNumber-$userType attendance on $attendanceDate $attendanceTime ";
+            DB::table('user_logs')->insert([
+                'userID' => $userID,
+                'action' => $action,
+                'date' => $date,
+                'time' => $time,
+            ]);
+            // END Logs
+              return response()->json([
+                  'status' => 200,
+              ]);
+          } else {
+              return response()->json([
+                  'status' => 404,
+              ]);
+          }
+      }
 }

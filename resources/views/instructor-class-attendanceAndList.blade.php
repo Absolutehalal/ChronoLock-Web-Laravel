@@ -5,8 +5,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <title>Class Attendance</title>
+   <!-- Ajax Student Attendance -->
+   <script defer src="{{asset('js/editClassAttendanceAndList.js')}}"></script>
 
+  <title>Class Attendance & List</title>
+  
   @include('head')
 </head>
 
@@ -178,6 +181,7 @@
                             </thead>
                             <tbody>
                             @foreach ($studAttendances as $studAttendance)
+                            @csrf
                                 <tr>
                                     <td> {{$studAttendance->date}} </td>
                                     <td> {{$studAttendance->time}} </td>
@@ -187,20 +191,21 @@
                                     <td>{{$studAttendance->year}}-{{$studAttendance->section}} </td>
                                     <td>{{$studAttendance->remark}}</td>
                                     <th>
-                                        <!-- Example single primary button -->
-                                        <div class="dropdown d-inline-block">
-                                            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
-                                                Actions
-                                            </button>
-                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                <a class="dropdown-item" type="button" data-toggle="modal" data-target="#exampleModalForm"">
-                                                    <i class="mdi mdi-circle-edit-outline text-warning"></i>
-                                                    Edit</a>
-                                                <a class="dropdown-item">
-                                                    <i class="mdi mdi-trash-can text-danger"></i>
-                                                    Delete</a>
-                                            </div>
+
+                                   <!-- Example single primary button -->
+                    <div class="dropdown d-inline-block">
+                      <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+                        Actions
+                        </button>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <button class="dropdown-item editAttendanceBtn" type="button" data-toggle="modal" data-target="#studentUpdateAttendanceModal" value="{{$studAttendance->attendanceID}}">
+                                            <i class="mdi mdi-circle-edit-outline text-warning"></i>
+                                            Edit</button>
+                                          <button class="dropdown-item deleteAttendanceBtn" type="button" data-toggle="modal" data-target="#studentDeleteAttendanceModal" value="{{$studAttendance->attendanceID}}">
+                                            <i class="mdi mdi-trash-can text-danger"></i>
+                                            Delete</button>
                                         </div>
+                                      </div>
                                     </th>
                                 </tr>
                                 @endforeach
@@ -211,6 +216,7 @@
                     </div>
                 </div>
             </div>
+            
     
         
   
@@ -295,6 +301,7 @@
                             </thead>
                             <tbody>
                             @foreach ($students as $student)
+                            @csrf
                                 <tr>
                                     <td>{{$student->firstName}} {{$student->lastName}}</td>
                                     <td>{{$student->idNumber}}</td>
@@ -308,7 +315,7 @@
                                                 Actions
                                             </button>
                                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                <a class="dropdown-item"  type="button" data-toggle="modal" data-target="#exampleModalForm"">
+                                                <a class="dropdown-item"  type="button" data-toggle="modal" data-target="#exampleModalForm">
                                                     <i class="mdi mdi-circle-edit-outline text-warning"></i>
                                                     Edit</a>
                                                 <a class="dropdown-item">
@@ -328,6 +335,96 @@
             </div>
             </div>    
    
+    <!-- Delete Attendance Modal -->
+ <div class="modal fade" id="studentDeleteAttendanceModal" tabindex="-1" role="dialog" aria-labelledby="deleteAttendance" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteAttendance" style="text-align:center;">Delete Student Attendance</h5>
+          <button type="button" class="close" id="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form method="post">
+            @csrf
+            @method('delete')
+            <input type="hidden" id="deleteAttendanceID" class="id form-control ">
+            <div class="row">
+              <i class="fa-solid fa-trash-can text-danger" style="text-align:center; font-size:50px; padding:1rem;"></i>
+            </div>
+            <div class="row">
+              <h4 style="text-align:center;"> Are you sure you want to delete this Student Attendance?</h4>
+            </div>
+        </div> <!-- Modal Boday End-->
 
+        <!-- Modal Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary btn-pill" id="close" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-danger btn-pill deleteAttendance">Delete</button>
+        </div>
 
-@include('footer')
+        </form>
+
+      </div>
+    </div>
+  </div>
+  </div>
+
+<!-- Update Attendance Modal -->
+<div class="modal fade" id="studentUpdateAttendanceModal" tabindex="-1" role="dialog" aria-labelledby="studentAttendance" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="studentAttendance">Edit Student Attendance</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+
+          <ul id="attendanceError"></ul>
+
+          <form method="post">
+          @csrf
+          @method('put')
+            <input type="hidden" id="attendanceID" class="id form-control ">
+
+            <div class="row">
+              <div class="col-lg-6">
+                <ul id="editIDError"></ul>
+                <div class="form-group">
+                  <label>Student ID</label>
+                  <input type="text" class="updateUserID form-control border border-dark border border-dark" id="edit_studentID" name="update_studentID" readonly>
+                </div>
+              </div>
+              
+              <div class="col-lg-6">
+                <ul id="editRemarkError"></ul>
+                <div class="form-group">
+                  <label>Remark</label>
+                  <select class="updateRemark form-select form-control border border-dark" aria-label="Default select example" id="edit_Remark" name="update_Remark">
+                  <option selected hidden></option>
+                    <option value="Present">Present</option>
+                    <option value="Absent">Absent</option>
+                    <option value="Late">Late</option>
+                  </select>
+                </div>
+              </div>
+
+           <!-- Modal Boday End-->
+
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger btn-pill" id="updateClose" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary btn-pill updateAttendance">Update</button>
+            </div>
+
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+            @include('footer')

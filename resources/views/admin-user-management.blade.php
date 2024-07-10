@@ -368,7 +368,8 @@
 
 
     $(document).ready(function() {
-      //   function fetchUsers() { --------------reserve--------------
+      // fetchUsers();
+      //   function fetchUsers(){
 
       // $.ajax({
       //     type: "GET",
@@ -377,8 +378,9 @@
       //     success: function (response) {
       //       $('tbody').html("");
       //                 $.each(response.users, function (key, item) {
+                        
       //                     $('tbody').append('<tr>\
-      //               <td class="dtr-control dt-type-numeric sorting_1" tabindex="0">' + item.id + '</td>\
+      //               <td>' + item.id + '</td>\
       //               <td>' + item.firstName + '</td>\
       //               <td>' + item.lastName + '</td>\
       //               <td>' + item.userType + '</td>\
@@ -404,8 +406,7 @@
       //             }
 
       //         });
-      //         window.location.href = "{{route('userManagement')}}";
-      //     }    -------------- reserve end ----------------
+      //       }
       $(document).on('click', '.addUser', function(e) {
         e.preventDefault();
         $(this).text('Sending..');

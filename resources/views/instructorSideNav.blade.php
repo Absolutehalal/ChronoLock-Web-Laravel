@@ -1,8 +1,6 @@
-  <!-- csrf-token -->
-  <!-- <meta name="csrf-token" content="{{ csrf_token() }}">
-<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script> -->
+
 <script defer src="{{asset('js/activePage.js')}}"></script>
-<!-- <script defer src="js/classAttendance.js"></script> -->
+
 
 <!-- ====================================
     ——— WRAPPER
@@ -70,7 +68,7 @@
                             @foreach($classes as $classes)
                             @csrf
                                 <li>
-                                    <a class="section" href="{{ route('instructorClassAttendance', ['id' => $classes->classID]) }}">{{$classes->course}}-{{$classes->year}}{{$classes->section}}</a>
+                                    <a class="section" href="{{ route('instructorClassAttendanceAndList',  [ base64_encode( $classes->classID)]) }}">{{$classes->course}}-{{$classes->year}}{{$classes->section}}</a>
                                 </li>
                             @endforeach
                     </li>
