@@ -236,6 +236,7 @@
     </div>
   </div>
 
+
   <!-- Delete User Modal -->
   <div class="modal fade" id="deleteUserModal" tabindex="-1" role="dialog" aria-labelledby="deleteUser" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -271,6 +272,7 @@
     </div>
   </div>
   </div>
+  
 
   <!-- Update User Modal -->
   <div class="modal fade" id="updateUserModal" tabindex="-1" role="dialog" aria-labelledby="updateUser" aria-hidden="true">
@@ -286,7 +288,7 @@
 
           <ul id="userError"></ul>
 
-          <!-- <form method="post" action="{{route('updateUser', ['user' =>$user])}}"> -->
+      
           <form method="post">
             @csrf
             @method('put')
@@ -299,7 +301,7 @@
                 <div class="form-group">
                   <label>First Name</label>
                   <input type="text" class="updateFirstName form-control border border-dark border border-dark" id="edit_firstName" name="updateFirstName" placeholder="Enter New First Name">
-                  <!-- value="{{ $user->firstName }}" -->
+            
                 </div>
               </div>
 
@@ -308,7 +310,7 @@
                 <div class="form-group">
                   <label>Last Name</label>
                   <input type="text" class="updateLastName form-control border border-dark border border-dark" id="edit_lastName" name="updateLastName" placeholder="Enter New Last Name">
-                  <!-- value="{{ $user->lastName }}" -->
+               
                 </div>
               </div>
 
@@ -317,7 +319,7 @@
                 <div class="form-group">
                   <label>User Type</label>
                   <select class="updateUserType form-select form-control border border-dark" aria-label="Default select example" id="edit_userType" name="updateUserType">
-                    <!-- <option selected  value="{{ $user->userType }}" hidden>{{ $user->userType }}</option> -->
+              
                     <option selected hidden></option>
                     <option value="Lab-in-Charge">Lab-in-Charge</option>
                     <option value="Technician">Technician</option>
@@ -332,7 +334,7 @@
                 <div class="form-group">
                   <label>Email</label>
                   <input type="text" class="updateEmail form-control border border-dark" id="edit_email" name="updateEmail" placeholder="ex. chrono@my.cspc.edu.ph">
-                  <!-- value="{{ $user->email }}" -->
+             
                 </div>
               </div>
 
@@ -341,7 +343,7 @@
                 <div class="form-group">
                   <label>User ID Number</label>
                   <input type="text" class="userIdNumber form-control border border-dark" id="edit_userId_no" name="userIdNumber" placeholder="Enter User ID">
-                  <!-- value="{{$user->google_id}}" -->
+               
                 </div>
               </div>
             </div> <!-- Modal Boday End-->

@@ -1,4 +1,16 @@
 $(document).ready(function() {
+
+
+  $('.nav-link').on('click', function (e) {
+    localStorage.setItem('activeTab', $(this).attr('href'));
+    $(this).tab('show');
+});
+
+var activeTab = localStorage.getItem('activeTab');
+        if (activeTab) {
+            $('#pills-tab button[href="' + activeTab + '"]').tab('show');
+        }
+        
 $(document).on('click', '.editAttendanceBtn', function(e) {
     e.preventDefault();
 
@@ -150,30 +162,146 @@ $(document).on('click', '.editAttendanceBtn', function(e) {
 
 
 
-    $(document).on('click', '.editAttendanceBtn', function(e) {
+    $(document).on('click', '.editListBtn', function(e) {
       e.preventDefault();
   
-      var id = $(this).val();
+      var listID = $(this).val();
     
       $.ajax({
         type: "GET",
-        url: "/instructorEditStudentAttendance/"+id,
+        url: "/instructorEditStudentList/"+listID,
         dataType: "json",
         success: function(response) {
           if (response.status == 404) {
             Swal.fire({
               icon: "error",
               title: "Oops...",
-              text: "No Attendance Record Found!!!",
+              text: "No Student Record Found!!!",
             });
-            $("#studentUpdateAttendanceModal .close").click()
+            $("#studentUpdateListModal .close").click()
           } else {
             //  console.log(response.attendance);
-            $('#attendanceID').val(response.attendance.attendanceID);
-            $('#edit_studentID').val(response.attendance.userID);
-            $('#edit_Remark').val(response.attendance.remark); 
+            $('#listID').val(response.record.MIT_ID);
+            $('#edit_studentListID').val(response.record.userID);
+            $('#edit_Status').val(response.record.status); 
           }
         }
       });
+      });
+
+      $(document).on('click', '.updateList', function(e) {
+        e.preventDefault();
+   
+        $(this).text('Updating..');
+        var recordID = $('#listID').val();
+        // alert(attendanceID);
+    
+        var data = {
+          'updateListUserID': $('.updateListUserID').val(),
+          'updateStatus': $('.updateStatus').val(),
+         
+        }
+       console.log(data);
+        $.ajaxSetup({
+              headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+              }
+            });
+    
+        $.ajax({
+              type:"PUT",
+              url:"/instructorUpdateStudentList/" + recordID,
+              data: data,
+              dataType: "json",
+              success: function(response) {
+            // console.log(response);
+            if (response.status == 400) {
+              $('#editListIDError').html("");
+              $('#editListIDError').addClass('error');
+              $('#editStatusError').html("");
+              $('#editStatusError').addClass('error');
+              $.each(response.errors.updateListUserID, function(key, err_value) {
+                $('#editListIDError').append('<li>' + err_value + '</li>');
+              });
+              $.each(response.errors.updateStatus, function(key, err_value) {
+                $('#editStatusError').append('<li>' + err_value + '</li>');
+              });
+              $('.updateList').text('Update');
+    
+            } else if((response.status == 404)){
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "No Student Record Found!!!",
+              });
+              $("#studentUpdateListModal .close").click()
+              // console.log(response.message);
+            }else if ((response.status == 200)) {
+              $('#editListIDError').html("");
+              $('#editStatusError').html("");
+              Swal.fire({
+                icon: "success",
+                title: "Successful",
+                text: "Student Record Successfully Updated!",
+              });
+              // console.log(response.attendance);
+              $('.updateList').text('Update');
+              $("#studentUpdateListModal .close").click();
+              location.reload();
+            // setTimeout(function(){
+            //     window.location.reload();
+            //  }, 5000);
+            }
+          }
+        });
+      });
+
+
+      $(document).on('click', '.deleteListBtn', function() {
+        var id = $(this).val(); 
+        $('#deleteListID').val(id);
+      });
+    
+    
+    
+      $(document).on('click', '.deleteStudentRecordList', function(e) {
+        e.preventDefault();
+    
+        $(this).text('Deleting..');
+        var id = $('#deleteListID').val();
+    
+        $.ajaxSetup({
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
+        });
+    
+        $.ajax({
+          type: "DELETE",
+          url: "/instructorDeleteStudentList/" + id,
+          dataType: "json",
+          success: function(response) {
+            // console.log(response);
+            if (response.status == 404) {
+              $('.deleteStudentRecordList').text('Delete');
+              $("#studentDeleteListModal .close").click()
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "No Student Record Found",
+              });
+    
+            } else {
+              $('.deleteStudentRecordList').text('Delete');
+              $("#studentDeleteListModal .close").click()
+              Swal.fire({
+                icon: "success",
+                title: "Successful",
+                text: "Student Record Deleted",
+              });
+              location.reload();
+            }
+          }
+        });
       });
 });

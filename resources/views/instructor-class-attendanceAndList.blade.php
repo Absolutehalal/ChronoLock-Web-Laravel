@@ -91,16 +91,16 @@
   <div class="card-footer card-profile-footer">
   <ul class="nav nav-pills mb-3 justify-content-center" id="pills-tab" role="tablist">
     <li class="nav-item" role="presentation">
-      <button class="nav-link active" id="pills-attendance-tab" data-bs-toggle="pill" data-bs-target="#pills-attendance" type="button" role="tab" aria-controls="pills-attendance" aria-selected="true">Attendance</button>
+      <button class="nav-link" id="pills-attendance-tab" data-bs-toggle="pill" href="attendanceTab" data-bs-target="#pills-attendance" type="button" role="tab" aria-controls="pills-attendance" aria-selected="true">Attendance</button>
     </li>
     <li class="nav-item" role="presentation">
-      <button class="nav-link" id="pills-classList-tab" data-bs-toggle="pill" data-bs-target="#pills-classList" type="button" role="tab" aria-controls="pills-classList" aria-selected="false">Class List</button>
+      <button class="nav-link" id="pills-classList-tab" data-bs-toggle="pill"  href="listTab" data-bs-target="#pills-classList" type="button" role="tab" aria-controls="pills-classList" aria-selected="false">Class List</button>
     </li>
   </ul>
 
 
 <div class="tab-content" id="pills-tabContent">
-  <div class="tab-pane fade show active" id="pills-attendance" role="tabpanel" aria-labelledby="pills-attendance-tab">
+  <div class="tab-pane fade" id="pills-attendance" role="tabpanel" aria-labelledby="pills-attendance-tab">
 
 <div class="row">
   <div class="col-xl-3 col-md-6">
@@ -309,20 +309,19 @@
                                     <td>{{$student->year}}-{{$student->section}}</td>
                                     <td>{{$student->status}}</td>
                                     <th>
-                                        <!-- Example single primary button -->
-                                        <div class="dropdown d-inline-block">
-                                            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
-                                                Actions
-                                            </button>
-                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                <a class="dropdown-item"  type="button" data-toggle="modal" data-target="#exampleModalForm">
-                                                    <i class="mdi mdi-circle-edit-outline text-warning"></i>
-                                                    Edit</a>
-                                                <a class="dropdown-item">
-                                                    <i class="mdi mdi-trash-can text-danger"></i>
-                                                    Delete</a>
-                                            </div>
+                                    <div class="dropdown d-inline-block">
+                                        <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+                                          Actions
+                                        </button>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                          <button class="dropdown-item editListBtn" type="button" data-toggle="modal" data-target="#studentUpdateListModal" value="{{$student->MIT_ID}}">
+                                            <i class="mdi mdi-circle-edit-outline text-warning"></i>
+                                            Edit</button>
+                                          <button class="dropdown-item deleteListBtn" type="button" data-toggle="modal" data-target="#studentDeleteListModal" value="{{$student->MIT_ID}}">
+                                            <i class="mdi mdi-trash-can text-danger"></i>
+                                            Delete</button>
                                         </div>
+                                      </div>
                                     </th>
                                 </tr>
                                 @endforeach
@@ -425,6 +424,101 @@
         </div>
       </div>
     </div>
+  </div>
+  </div>
+
+  
+  <!-- Update List Modal -->
+<div class="modal fade" id="studentUpdateListModal" tabindex="-1" role="dialog" aria-labelledby="studentList" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="studentList">Edit Student Record</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+
+          <ul id="ListError"></ul>
+
+          <form method="post">
+          @csrf
+          @method('put')
+            <input type="hidden" id="listID" class="listID form-control ">
+
+            <div class="row">
+              <div class="col-lg-6">
+                <ul id="editListIDError"></ul>
+                <div class="form-group">
+                  <label>Student ID</label>
+                  <input type="text" class="updateListUserID form-control border border-dark border border-dark" id="edit_studentListID" name="update_studentListID" readonly>
+                </div>
+              </div>
+              
+              <div class="col-lg-6">
+                <ul id="editStatusError"></ul>
+                <div class="form-group">
+                  <label>Status</label>
+                  <select class="updateStatus form-select form-control border border-dark" aria-label="Default select example" id="edit_Status" name="update_Status">
+                  <option selected hidden></option>
+                    <option value="Regular">Regular</option>
+                    <option value="Irregular">Irregular</option>
+                    <option value="Drop">Drop</option>
+                  </select>
+                </div>
+              </div>
+
+           <!-- Modal Boday End-->
+
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger btn-pill" id="updateClose" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary btn-pill updateList">Update</button>
+            </div>
+
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+   <!-- Delete Attendance Modal -->
+ <div class="modal fade" id="studentDeleteListModal" tabindex="-1" role="dialog" aria-labelledby="deleteStudentList" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteStudentList" style="text-align:center;">Delete Student Attendance</h5>
+          <button type="button" class="close" id="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form method="post">
+            @csrf
+            @method('delete')
+            <input type="hidden" id="deleteListID" class="id form-control ">
+            <div class="row">
+              <i class="fa-solid fa-trash-can text-danger" style="text-align:center; font-size:50px; padding:1rem;"></i>
+            </div>
+            <div class="row">
+              <h4 style="text-align:center;"> Are you sure you want to delete this Student in your Class List?</h4>
+            </div>
+        </div> <!-- Modal Boday End-->
+
+        <!-- Modal Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary btn-pill" id="close" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-danger btn-pill deleteStudentRecordList">Delete</button>
+        </div>
+
+        </form>
+
+      </div>
+    </div>
+  </div>
   </div>
 
             @include('footer')

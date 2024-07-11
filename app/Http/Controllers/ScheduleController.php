@@ -54,6 +54,7 @@ class ScheduleController extends Controller
         ->get();
 
         $schedules = DB::table('schedules')
+        ->where('schedules.status', '=', 'unscheduled')
         ->get();
 
         return view('instructor-class-schedules', ['schedules' => $schedules, 'classes' => $classes]);
@@ -101,7 +102,7 @@ class ScheduleController extends Controller
         $scheduleID = $request->get('scheduleID');
         $inputUserID = $request->get('userID');
         $userID =DB::table('schedules')->where('scheduleID', $scheduleID)->value('userID');
-       
+        $schedule = Schedule::find($scheduleID);
         if ($validator->fails()) {
             return response()->json([
                 'status' => 400,
@@ -121,7 +122,8 @@ class ScheduleController extends Controller
                 $classList->semester = $request->input('semester');
                 $classList->enrollmentKey = $request->input('enrollmentKey');
                 $classList->save();
-
+                $schedule->status = 'Has Schedule';
+                $schedule->update();
                 // Start Logs
                 $id = Auth::id();
                 $userID =DB::table('users')->where('id', $id)->value('idNumber');
@@ -158,7 +160,7 @@ class ScheduleController extends Controller
     ->where('attendances.classID', '=', $decode)
     ->get();
 
-    $students=StudentMasterlist::select('firstName','lastName', 'idNumber', 'course','year', 'section', 'status')
+    $students=DB::table('student_masterlists')
     ->join('users', 'student_masterlists.userID', '=', 'users.idNumber')
     ->join('class_lists', 'student_masterlists.classID', '=', 'class_lists.classID')
     ->where('student_masterlists.classID', '=', $decode)
@@ -299,4 +301,125 @@ class ScheduleController extends Controller
               ]);
           }
       }
+
+
+
+
+      public function instructorEditStudentList($id)
+      {
+   
+          $record = StudentMasterlist::find($id);
+          if ($record) {
+              return response()->json([
+                  'status' => 200,
+                  'record' => $record,
+              ]);
+          } else {
+              return response()->json([
+                  'status' => 404,
+              ]);
+          }
+      }
+
+
+
+
+      public function instructorUpdateStudentList(Request $request, $id)
+      {
+          $validator = Validator::make($request->all(), [
+              'updateListUserID' => 'required',
+              'updateStatus' => 'required',
+          ]);
+          if ($validator->fails()) {
+              return response()->json([
+                  'status' => 400,
+                  'errors' => $validator->messages()
+              ]);
+             }else{ 
+                 $record = StudentMasterlist::find($id);
+                 $updatedID =DB::table('student_masterlists')->where('MIT_ID', $id)->value('MIT_ID');
+                 $status = DB::table('student_masterlists')->where('MIT_ID', $updatedID)->value('status');
+                 $idNumber = DB::table('student_masterlists')->where('MIT_ID', $updatedID)->value('userID');
+                 if ($record) {
+                      $record->userID = $request->input('updateListUserID');
+                      $record->status = $request->input('updateStatus');
+                      $record->update();
+   
+                 // Start Logs   
+                 $userType =DB::table('student_masterlists')
+                 ->join('users', 'student_masterlists.userID', '=', 'users.idNumber')
+                 ->where('MIT_ID', $updatedID)
+                 ->value('userType');
+   
+                 $inputStatus =  $request->input('updateStatus');
+                 $id = Auth::id();
+                 $userID =DB::table('users')->where('id', $id)->value('idNumber');
+                 date_default_timezone_set("Asia/Manila");
+                 $date = date("Y-m-d");
+                 $time = date("H:i:s");
+                 if(($inputStatus == $status)){
+                     $action = "Attempt update on $idNumber status";
+                 }else {
+                     $action = "Updated $idNumber-$userType status";
+                 }
+                 DB::table('user_logs')->insert([
+                     'userID' => $userID,
+                     'action' => $action,
+                     'date' => $date,
+                     'time' => $time,
+                 ]);
+                 // END Logs
+   
+                      return response()->json([
+                         'status' => 200,
+                     ]);
+                    
+                  }else{
+                     return response()->json([
+                         'status'=>404,
+                         'message'=>'No Student Record Found.'
+                     ]);
+                  }
+          }
+         }
+
+
+         public function instructorDeleteStudentList($id)
+         {
+             $record = StudentMasterlist::findOrFail($id);
+             $deletedID =DB::table('student_masterlists')->where('MIT_ID', $id)->value('MIT_ID');
+             $idNumber = DB::table('student_masterlists')->where('MIT_ID', $deletedID)->value('userID');
+             $userType =DB::table('student_masterlists')
+               ->join('users', 'student_masterlists.userID', '=', 'users.idNumber')
+               ->where('MIT_ID', $deletedID)
+               ->value('userType');
+   
+             if ($record) {
+                 $record->delete();
+   
+                  // Start Logs
+             
+           
+               $ID = Auth::id();
+               $userID =DB::table('users')->where('id', $ID)->value('idNumber');
+               date_default_timezone_set("Asia/Manila");
+               $date = date("Y-m-d");
+               $time = date("H:i:s");
+               $action = "Deleted $idNumber-$userType record";
+               DB::table('user_logs')->insert([
+                   'userID' => $userID,
+                   'action' => $action,
+                   'date' => $date,
+                   'time' => $time,
+               ]);
+               // END Logs
+                 return response()->json([
+                     'status' => 200,
+                 ]);
+             } else {
+                 return response()->json([
+                     'status' => 404,
+                 ]);
+             }
+         }
 }
