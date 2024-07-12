@@ -104,9 +104,9 @@
                         <form>
                             @csrf
                             <div class="input-group mb-3">
-                                <a href="{{route('login.google')}}" class="btn btn-lg btn-light w-100 fs-6">
+                            <a href="{{route('login.google')}}" class="btn btn-lg btn-primary w-100 fs-6 shadow-lg">
                                     <img src="images/google.png" style="width:20px" class="me-2">
-                                    <small class="text-dark">Sign In with Google</small>
+                                    <small class="text-light">Sign In with Google</small>
                                 </a>
                             </div>
                         </form>

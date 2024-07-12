@@ -148,6 +148,16 @@ class GoogleAuthController extends Controller
 
                     return redirect()->intended('/instructorDashboard');
                     
+                } elseif ($existingUser->userType === 'Student') {
+                    // If user exists, log them in
+                   Auth::login($existingUser, true);
+
+                   Alert::success('Success', 'Login successful.')
+                       ->autoClose(3000)
+                       ->timerProgressBar()
+                       ->showCloseButton();
+
+                   return redirect()->intended('/student-dashboard');
                 } else {
                     Alert::warning('401', 'Unauthorized Access.')
                         ->autoClose(10000)

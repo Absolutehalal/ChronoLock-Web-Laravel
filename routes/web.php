@@ -7,6 +7,9 @@ use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\UserLogController;
 use App\Http\Middleware\CheckGoogleAuth;
 use App\Http\Controllers\ScheduleController;
+use App\Http\Controllers\FacultyAttendanceAndListController;
+use App\Http\Controllers\StudentController;
+use App\Http\Controllers\RFIDController;
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
@@ -30,13 +33,14 @@ Route::group(['middleware' => ['auth']], function () {
 Route::group(['middleware' => ['auth', 'admin']], function () {
     Route::get('/adminPage', [UserController::class, 'index'])->name('index');
     // Route::get('/adminPage', [UserController::class, 'index'])->name('index')->middleware(['auth', 'admin']);
-    Route::get('/pendingRFIDPage', [UserController::class,'pendingRFID'])->name('pendingRFID');
-    Route::post('/userManagementPage/import', [UserController::class, 'import_excel'])->name('user.import');
+    // Route::get('/pendingRFIDPage', [UserController::class,'pendingRFID'])->name('pendingRFID');
+
 
 
     //--------START userManagement ROUTES---------
 
     Route::get('/userManagementPage', [UserController::class, 'userManagement'])->name('userManagement');
+    Route::post('/userManagementPage/import', [UserController::class, 'import_excel'])->name('user.import');
     // Route::get('/fetchUsers', [UserController::class, 'fetchUsers'])->name('fetchUsers'); => reserve
     // Route::put('/userManagementPage/{user}/update', [UserController::class, 'updateUser'])->name('updateUser'); => deletable but pasiguro
     Route::post('/userManagementPage', [UserController::class, 'addUser'])->name('addUser');
@@ -55,7 +59,7 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     
     Route::get('/scheduleManagementPage', [UserController::class, 'adminScheduleManagement'])->name('adminScheduleManagement');
 
-     //--------START student attendance Management ROUTES---------  
+     //--------START Admin student attendance Management ROUTES---------  
 
     Route::get('/studentAttendanceManagementPage', [AttendanceController::class, 'studentAttendanceManagement'])->name('studentAttendanceManagement');
     Route::get('/editStudentAttendance/{id}', [AttendanceController::class,'editStudentAttendance'])->name('editStudentAttendance');
@@ -64,7 +68,7 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     Route::get('/student-attendance-generation', [AttendanceController::class, 'studentAttendanceGeneration'])->name('studentAttendanceGeneration');
     Route::get('/student-attendance-export', [AttendanceController::class, 'studentAttendanceExport'])->name('studentAttendanceExport');
 
-    //--------END student attendance Management ROUTES-----------
+    //--------END Admin student attendance Management ROUTES-----------
 
     //--------START Admin instructor attendance Management ROUTES---------  
 
@@ -80,9 +84,11 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
      //--------END Admin instructor attendance Management ROUTES-----------
 
 
-   
+     Route::get('/pendingRFIDPage', [RFIDController::class, 'pendingRFID'])->name('pendingRFID');
+     Route::get('/RFIDManagementPage', [RFIDController::class, 'RFIDManagement'])->name('RFIDManagement');
+     Route::get('/autocomplete', [RFIDController::class, 'autocomplete'])->name('autocomplete');
 
-    Route::get('/RFIDManagementPage', [UserController::class, 'RFIDManagement'])->name('RFIDManagement');
+   
     Route::get('/logsPage', [UserLogController::class, 'logs'])->name('logs');
     Route::get('/reportGenerationPage', [UserController::class, 'reportGeneration'])->name('reportGeneration');
 });
@@ -102,13 +108,21 @@ Route::get('/instructorClassSchedules', [ScheduleController::class, 'classSchedu
 //--------End instructor edit create classlist  ROUTES---------
 
 //--------START instructor class Attendance and List  ROUTES---------
-Route::get('/instructorClassAttendanceAndList/{id}', [ScheduleController::class, 'instructorClassAttendanceAndList'])->name('instructorClassAttendanceAndList');
-Route::get('/instructorEditStudentAttendance/{id}', [ScheduleController::class, 'instructorEditStudentAttendance'])->name('instructorEditStudentAttendance');
-Route::put('/instructorUpdateStudentAttendance/{id}', [ScheduleController::class, 'instructorUpdateStudentAttendance'])->name('instructorUpdateStudentAttendance');
-Route::delete('/instructorDeleteStudentAttendance/{id}', [ScheduleController::class, 'instructorDeleteStudentAttendance'])->name('instructorDeleteStudentAttendance');
+Route::get('/instructorClassAttendanceAndList/{id}', [FacultyAttendanceAndListController::class, 'instructorClassAttendanceAndList'])->name('instructorClassAttendanceAndList');
+Route::get('/instructorEditStudentAttendance/{id}', [FacultyAttendanceAndListController::class, 'instructorEditStudentAttendance'])->name('instructorEditStudentAttendance');
+Route::put('/instructorUpdateStudentAttendance/{id}', [FacultyAttendanceAndListController::class, 'instructorUpdateStudentAttendance'])->name('instructorUpdateStudentAttendance');
+Route::delete('/instructorDeleteStudentAttendance/{id}', [FacultyAttendanceAndListController::class, 'instructorDeleteStudentAttendance'])->name('instructorDeleteStudentAttendance');
 
-Route::get('/instructorEditStudentList/{id}', [ScheduleController::class, 'instructorEditStudentList'])->name('instructorEditStudentList');
-Route::put('/instructorUpdateStudentList/{id}', [ScheduleController::class, 'instructorUpdateStudentList'])->name('instructorUpdateStudentList');
-Route::delete('/instructorDeleteStudentList/{id}', [ScheduleController::class, 'instructorDeleteStudentList'])->name('instructorDeleteStudentList');
+Route::get('/instructorEditStudentList/{id}', [FacultyAttendanceAndListController::class, 'instructorEditStudentList'])->name('instructorEditStudentList');
+Route::put('/instructorUpdateStudentList/{id}', [FacultyAttendanceAndListController::class, 'instructorUpdateStudentList'])->name('instructorUpdateStudentList');
+Route::delete('/instructorDeleteStudentList/{id}', [FacultyAttendanceAndListController::class, 'instructorDeleteStudentList'])->name('instructorDeleteStudentList');
 //--------END instructor class Attendance and List  ROUTES---------
+});
+
+
+
+Route::group(['middleware' => ['auth', 'student']], function () 
+{
+    Route::get('/student-dashboard', [StudentController::class, 'studentIndex'])->name('studentIndex');
+    Route::get('/student-view-schedule', [StudentController::class, 'studentViewSchedule'])->name('studentViewSchedule');
 });

@@ -44,7 +44,7 @@ class AttendanceController extends Controller
             ->distinct()
             ->get();
 
-        return view('admin-instructorAttendance', ['instructors' => $instructors, 'instructorsID' =>   $instructorsID, 'remarks' =>   $remarks]);
+            return view('admin.admin-instructorAttendance', ['instructors' => $instructors, 'instructorsID' => $instructorsID, 'remarks' => $remarks]);
     }
 
     public function instructorAttendanceGeneration(Request $request)
@@ -100,7 +100,7 @@ class AttendanceController extends Controller
         // Store the filtered query in the session
         session(['attendance_query' => $query->toSql(), 'attendance_bindings' => $query->getBindings()]);
 
-        return view('admin-instructorAttendance-generation', $data);
+        return view('admin.admin-instructorAttendance-generation', $data);
     }
 
     public function instructorAttendanceExport(Request $request)
@@ -153,7 +153,7 @@ class AttendanceController extends Controller
             ->where('users.userType', '=', 'Student')
             ->get();
 
-        return view('admin-studentAttendance', ['students' => $students, 'studentCourses' => $studentCourses, 'studentYears' => $studentYears, 'studentRemarks' =>   $studentRemarks]);
+            return view('admin.admin-studentAttendance', ['students' => $students, 'studentCourses' => $studentCourses, 'studentYears' => $studentYears, 'studentRemarks' => $studentRemarks]);
     }
 
     public function studentAttendanceGeneration(Request $request)
@@ -223,7 +223,7 @@ class AttendanceController extends Controller
         // Store the filtered query in the session
         session(['attendance_query' => $query->toSql(), 'attendance_bindings' => $query->getBindings()]);
 
-        return view('admin-studentAttendance-generation', $data);
+        return view('admin.admin-studentAttendance-generation', $data);
     }
 
     public function studentAttendanceExport(Request $request)
@@ -356,7 +356,7 @@ class AttendanceController extends Controller
             }
         }
 
-        public function editStudentAttendance(){
+        public function editStudentAttendance($id){
             $attendance = Attendance::find($id);
             if ($attendance) {
                 return response()->json([

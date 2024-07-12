@@ -11,13 +11,13 @@
 
 <head>
   <meta charset="utf-8" />
-  <meta name="csrf-token" content="{{ csrf_token() }}" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <title>ChronoLock Admin-Student Attendance Generation</title>
+  <title>ChronoLock Admin-Instructor Attendance Generation</title>
 
   @include('head')
+
 </head>
 
 <body class="navbar-fixed sidebar-fixed" id="body">
@@ -27,8 +27,7 @@
     });
     NProgress.start();
   </script>
-
-  @include('adminSideNav')
+  @include('admin.adminSideNav')
   <!-- ====================================
       ——— PAGE WRAPPER
       ===================================== -->
@@ -47,9 +46,9 @@
           <!-- Navigation -->
           <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-              <li class="breadcrumb-item"><a href="index.php">Dashboard</a></li>
-              <li class="breadcrumb-item active"><a href="admin-studattendance.php">Report Generation</a></li>
-              <li class="breadcrumb-item active"><a href="admin-studattendance">Student Attendance</a></li>
+              <li class="breadcrumb-item"><a href="{{ route('index') }}">Dashboard</a></li>
+              <li class="breadcrumb-item active"><a href="{{ route('instructorAttendanceGeneration') }}">Report Generation</a></li>
+              <li class="breadcrumb-item active"><a href="{{ route('instructorAttendanceGeneration') }}">Student Attendance</a></li>
             </ol>
           </nav>
 
@@ -58,50 +57,35 @@
             <p class="text-center date-time mb-3" id="liveDateTime">Your Date and Time</p>
           </div>
         </div>
-
         <!-- DROPRDOWN NAV -->
 
         <div class="row">
           <div class="col-xl-9 col-md-9">
-            <!-- Example single primary button -->
 
-            <form action="{{ url('/student-attendance-generation') }}" method="GET">
+            <form action="{{ url('/instructor-attendance-generation') }}" method="GET">
 
               <div class="dropdown d-inline-block">
-                <button class="btn btn-primary btn-sm dropdown-toggle fw-bold" type="button" id="studentYearsButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
-                  <i class="mdi mdi-developer-board"></i> Year & Section
+                <button class="btn btn-primary btn-sm dropdown-toggle fw-bold" type="button" id="instructorIDButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+                  <i class="mdi mdi-alpha-i-box"></i> Instructor ID
                 </button>
-                <div class="dropdown-menu" aria-labelledby="studentYearsButton">
-                  @foreach ($studentYears as $studentYear)
-                  <a class="dropdown-item year-item @if ($selected_years == $studentYear->year . '-' . $studentYear->section) active @endif" href="#" data-value="{{ $studentYear->year }}">
-                    {{ $studentYear->year }}-{{ $studentYear->section }}
+                <div class="dropdown-menu scrollable-dropdown" aria-labelledby="instructorIDButton">
+                  @foreach($instructorID as $instructorID)
+                  @csrf
+                  <a class="dropdown-item id-item @if ($instructorID == $instructorID->userID) active @endif" data-value="{{ $instructorID->userID }}" href="#">
+                    {{ $instructorID->userID }} - {{ $instructorID->instFirstName }} {{ $instructorID->instLastName }}
                   </a>
                   @endforeach
                 </div>
-                <input type="hidden" name="selected_years" id="selected_year" value="">
-              </div>
-
-
-              <div class="dropdown d-inline-block">
-                <button class="btn btn-primary btn-sm dropdown-toggle fw-bold" type="button" id="studentCoursesButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
-                  <i class="mdi mdi-alpha-c-box"></i> Course
-                </button>
-                <div class="dropdown-menu scrollable-dropdown" aria-labelledby="studentCoursesButton">
-                  @foreach ($studentCourses as $course)
-                  <a class="dropdown-item course-item @if ($course == $course->course) active @endif" href="#" data-value="{{ $course->course }}">
-                    {{ $course->course }}
-                  </a>
-                  @endforeach
-                </div>
-                <input type="hidden" name="selected_courses" id="selected_courses" value="">
+                <input type="hidden" name="selected_id" id="selected_id" value="">
               </div>
 
               <div class="dropdown d-inline-block">
-                <button class="btn btn-primary btn-sm dropdown-toggle fw-bold" type="button" id="studentRemarksButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+                <button class="btn btn-primary btn-sm dropdown-toggle fw-bold" type="button" id="instructorRemarksButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
                   <i class="mdi mdi-alpha-r-box"></i> Remarks
                 </button>
-                <div class="dropdown-menu" aria-labelledby="studentRemarksButton">
-                  @foreach ($studentRemarks as $remarks)
+                <div class="dropdown-menu scrollable-dropdown" aria-labelledby="instructorRemarksButton">
+                  @foreach ($instructorRemarks as $remarks)
+                  @csrf
                   <a class="dropdown-item remark-item @if ($remarks == $remarks->remark) active @endif" href="#" data-value="{{ $remarks->remark }}">
                     {{ $remarks->remark }}
                   </a>
@@ -109,7 +93,6 @@
                 </div>
                 <input type="hidden" name="selected_remarks" id="selected_remarks" value="">
               </div>
-
 
               <div class="dropdown d-inline-block mb-2">
                 <div class="input-group" id="month-picker">
@@ -123,10 +106,6 @@
               </div>
 
 
-              <!-- <div class="dropdown d-inline-block mb-3">
-                <input class="form-control" type="search" name="q" value="" placeholder="Search Here" autocomplete="false" id="selectedCourse">
-              </div> -->
-
           </div>
 
 
@@ -139,7 +118,7 @@
             </div>
             </form>
 
-            <form action="{{ url('/student-attendance-generation')}}" method="GET">
+            <form action="{{ url('/instructor-attendance-generation')}}" method="GET">
               <div class="dropdown d-inline-block mb-3 ">
                 <button class="btn btn-warning btn-sm fw-bold" type="submit">
                   <i class="mdi mdi-alpha-r-box"></i>
@@ -149,17 +128,16 @@
             </form>
 
           </div>
-
         </div>
         <!-- END -->
 
+
         <div class="card card-default shadow">
           <div class="card-header">
-            <h1>Student Attendance Report</h1>
+            <h1>Instructor Attendance Report</h1>
 
             <div class="d-inline-block mb-3 ms-2">
-              <form action="{{ url('/student-attendance-export') }}" method="GET">
-                <!-- <input type="text" class="form-control border border-primary" id="exportDate" name="selectedDate" value="{{ Request()->date }}"> -->
+              <form action="{{ url('/instructor-attendance-export') }}" method="GET">
                 <button class="btn btn-info btn-sm fw-bold" id="exportButton" type="submit">
                   <i class="mdi mdi-file-download"></i>
                   Export
@@ -174,28 +152,29 @@
                 <tr>
                   <th>Date</th>
                   <th>Time</th>
-                  <th>Student Name</th>
-                  <th>Student ID</th>
-                  <th>Course</th>
-                  <th>Year & Section</th>
+                  <th>Course Code</th>
+                  <th>Course & Section</th>
+                  <th>Instructor Name</th>
+                  <th>Instructor ID</th>
                   <th>Remarks</th>
                 </tr>
               </thead>
               <tbody>
-                @foreach ($studentDetails as $student)
+                @foreach($instructorDetails as $instructors)
+                @csrf
                 <tr>
-                  <td>{{ date('F j, Y', strtotime($student->date)) }}</td>
-                  <td>{{ date('h:i A', strtotime($student->time)) }}</td>
-                  <td>{{ $student->firstName }} {{ $student->lastName }}</td>
-                  <td>{{ $student->idNumber }}</td>
-                  <td>{{ $student->course }}</td>
-                  <td>{{ $student->year }}-{{ $student->section }}</td>
+                  <td>{{ date('F j, Y', strtotime($instructors->date)) }}</td>
+                  <td>{{ date('h:i A', strtotime($instructors->time)) }}</td>
+                  <td>{{ $instructors->courseCode }}</td>
+                  <td>{{ $instructors->course }} - {{ $instructors->year }}{{ $instructors->section }}</td>
+                  <td>{{ $instructors->instFirstName }} {{ $instructors->instLastName }}</td>
+                  <td>{{ $instructors->userID }}</td>
                   <td>
-                    @if($student->remark == 'Present')
+                    @if($instructors->remark == 'Present')
                     <span class="badge badge-success">Present</span>
-                    @elseif($student->remark == 'Absent')
+                    @elseif($instructors->remark == 'Absent')
                     <span class="badge badge-danger">Absent</span>
-                    @elseif($student->remark == 'Late')
+                    @elseif($instructors->remark == 'Late')
                     <span class="badge badge-warning">Late</span>
                     @endif
                   </td>
@@ -203,46 +182,33 @@
                 @endforeach
               </tbody>
             </table>
+
           </div>
         </div>
-        <!-- END -->
-
-
-
 
       </div>
     </div>
   </div>
 
-
-  </div>
-  </div>
-
-  </div>
-
   <script>
     document.addEventListener("DOMContentLoaded", function() {
-      document.querySelectorAll('.course-item').forEach(function(item) {
-        item.addEventListener('click', function(e) {
-          e.preventDefault();
-          document.getElementById('studentCoursesButton').innerHTML = `<i class="mdi mdi-alpha-c-box"></i> ${this.textContent}`;
-          document.getElementById('selected_courses').value = this.getAttribute('data-value');
-        });
-      });
-      document.querySelectorAll('.year-item').forEach(function(item) {
-        item.addEventListener('click', function(e) {
-          e.preventDefault();
-          document.getElementById('studentYearsButton').innerHTML = `<i class="mdi mdi-developer-board"></i> ${this.textContent}`;
-          document.getElementById('selected_year').value = this.getAttribute('data-value');
-        });
-      });
+
       document.querySelectorAll('.remark-item').forEach(function(item) {
         item.addEventListener('click', function(e) {
           e.preventDefault();
-          document.getElementById('studentRemarksButton').innerHTML = `<i class="mdi mdi-alpha-r-box"></i> ${this.textContent}`;
+          document.getElementById('instructorRemarksButton').innerHTML = `<i class="mdi mdi-alpha-r-box"></i> ${this.textContent}`;
           document.getElementById('selected_remarks').value = this.getAttribute('data-value');
         });
       });
+
+      document.querySelectorAll('.id-item').forEach(function(item) {
+        item.addEventListener('click', function(e) {
+          e.preventDefault();
+          document.getElementById('instructorIDButton').innerHTML = `<i class="mdi mdi-alpha-i-box"></i> ${this.textContent}`;
+          document.getElementById('selected_id').value = this.getAttribute('data-value');
+        });
+      });
+
     });
   </script>
 
@@ -265,7 +231,6 @@
       });
     });
   </script>
-
 
 
   @include('footer')

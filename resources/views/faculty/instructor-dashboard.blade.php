@@ -41,7 +41,7 @@
 
     <div id="toast"></div>
 
-    @include('instructorSideNav')
+    @include('faculty.instructorSideNav')
     <!-- ====================================
       ——— PAGE WRAPPER
       ===================================== -->

@@ -42,7 +42,7 @@
 
   <div id="toast"></div>
 
-  @include('adminSideNav')
+  @include('admin.adminSideNav')
   <!-- ====================================
       ——— PAGE WRAPPER
       ===================================== -->
@@ -61,7 +61,8 @@
           <!-- Navigation -->
           <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-              <li class="breadcrumb-item"><a href="index.php">Dashboard</a></li>
+              <!-- <i class="mdi mdi-home"></i> -->
+              <li class="breadcrumb-item"><a href="{{ route('index') }}">Dashboard</a></li>
             </ol>
           </nav>
 

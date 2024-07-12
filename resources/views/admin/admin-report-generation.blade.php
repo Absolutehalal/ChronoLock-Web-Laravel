@@ -61,7 +61,7 @@
     });
     NProgress.start();
   </script>
-    @include('adminSideNav')
+    @include('admin.adminSideNav')
   <!-- ====================================
       ——— PAGE WRAPPER
       ===================================== -->
@@ -78,7 +78,7 @@
           <!-- Navigation -->
           <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-              <li class="breadcrumb-item"><a href="index.php">Dashbord</a></li>
+              <li class="breadcrumb-item"><a href="{{ route('index') }}">Dashbord</a></li>
               <li class="breadcrumb-item active"><a href="admin-report-generation.php">Report Generation</a></li>
             </ol>
           </nav>

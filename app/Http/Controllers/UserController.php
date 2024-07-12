@@ -59,7 +59,7 @@ class UserController extends Controller
     
         // $countRFID = User::count();
 
-        return view('index', [
+        return view('admin.index', [
             'tblUsers' => $tblUsers,
             'countTotalUsers' => $countTotalUsers,
             'countStudents' => $countStudents,
@@ -68,18 +68,12 @@ class UserController extends Controller
     }
 
 
-    //pending RFID page
-    public function pendingRFID()
-    {
-        return view('admin-pendingRFID');
-    }
-
     //user management page
     public function userManagement()
     {
         $users = User::all()
         ->where('userType', '!=', 'Admin');
-        return view('admin-user-management', ['users' => $users]);
+        return view('admin.admin-user-management', ['users' => $users]);
     }
 
     // public function fetchUsers(){ => reserve
@@ -326,7 +320,7 @@ class UserController extends Controller
         $archiveUsers = User::onlyTrashed()->get();
 
 
-        return view('admin-user-archive', [
+        return view('admin.admin-user-archive', [
             'archiveUsers' => $archiveUsers
         ]);
     }
@@ -368,20 +362,14 @@ class UserController extends Controller
     //schedule management page
     public function adminScheduleManagement()
     {
-        return view('admin-schedule');
+        return view('admin.admin-schedule');
     }
 
-    //RFID management page
-    public function RFIDManagement()
-    {
-        return view('admin-RFIDAccount');
-    }
-
-    //report generation page
-    public function reportGeneration()
-    {
-        return view('admin-report-generation');
-    }
+    // //report generation page
+    // public function reportGeneration()
+    // {
+    //     return view('admin-report-generation');
+    // }
 
 
 
