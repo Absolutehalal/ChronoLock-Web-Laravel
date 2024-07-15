@@ -15,7 +15,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   
   <!-- Ajax Instructor Attendance -->
-  <script defer src="js/instructorEditAttendance.js"></script>
+  <script defer src="js/adminEditInstructorAttendance.js"></script>
 
   <title>ChronoLock Admin-Instructor Attendance</title>
 

@@ -10,6 +10,8 @@ use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\FacultyAttendanceAndListController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\RFIDController;
+use App\Http\Controllers\StudentMasterListController;
+
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
@@ -124,5 +126,6 @@ Route::delete('/instructorDeleteStudentList/{id}', [FacultyAttendanceAndListCont
 Route::group(['middleware' => ['auth', 'student']], function () 
 {
     Route::get('/student-dashboard', [StudentController::class, 'studentIndex'])->name('studentIndex');
-    Route::get('/student-view-schedule', [StudentController::class, 'studentViewSchedule'])->name('studentViewSchedule');
+    Route::get('/student-view-schedule', [ScheduleController::class, 'studentViewSchedule'])->name('studentViewSchedule');
+    Route::get('/studentEditSchedule/{id}', [StudentMasterListController::class, 'studentEditSchedule'])->name('studentEditSchedule');
 });

@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
    <!-- Ajax Student Attendance -->
-   <script defer src="{{asset('js/editClassAttendanceAndList.js')}}"></script>
+   <script defer src="{{asset('js/instructorEditStudentClassAttendanceAndList.js')}}"></script>
 
   <title>Class Attendance & List</title>
   

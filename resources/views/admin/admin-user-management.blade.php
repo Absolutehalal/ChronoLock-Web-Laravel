@@ -471,12 +471,17 @@
                 icon: "success",
                 title: "Success",
                 text: "User Created",
-              });
-              $('.addUser').text('Save');
+                confirmButtonText: "OK"
+}).then((result) => {
+  if (result.isConfirmed) {
+      $('.addUser').text('Save');
               $("#addUserModal .close").click()
 
               // fetchUsers(); -----------reserve-------------
-              window.location.href = "{{route('userManagement')}}", 4000;
+              window.location.href = "{{route('userManagement')}}";
+  }
+              });
+           
             } else if (response.status == 100) {
               $('#firstNameError').html("");
               $('#lastNameError').html("");

@@ -10,10 +10,11 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class ScheduleController extends Controller
 {
-  //instructor functions
+  //-----------Start instructor functions-----------
 
     //index page
     public function instructorIndex()
@@ -144,6 +145,24 @@ class ScheduleController extends Controller
             }
         }
     }
+   // -----------End instructor functions-----------
 
+ // -----------Start student functions-----------
+    
+   public function studentViewSchedule() {
 
+    $schedules = DB::table('schedules')
+    ->join('class_lists', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
+    ->join('users', 'users.idNumber', '=', 'schedules.userID')
+    ->get();
+
+    
+    foreach ($schedules as $schedule) {
+        $schedule->startTime = Carbon::parse($schedule->startTime)->format('g:i A');
+        $schedule->endTime = Carbon::parse($schedule->endTime)->format('g:i A');
+    }
+
+    return view('student.student-view-schedule',['schedules' => $schedules]);
+}
+// -----------End student functions-----------
 }

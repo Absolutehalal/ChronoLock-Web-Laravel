@@ -1,6 +1,6 @@
 $(document).ready(function() {
 
-    $(document).on('click', '.editClassSchedule', function(e) {
+    $(document).on('click', '.editERPSchedule', function(e) {
         e.preventDefault();
         var id = $(this).val();
         // console.log(userID);

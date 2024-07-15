@@ -10,7 +10,4 @@ class StudentController extends Controller
         return view('student.student-dashboard');
     }
 
-    public function studentViewSchedule() {
-        return view('student.student-view-schedule');
-    }
 }

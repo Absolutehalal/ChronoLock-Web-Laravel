@@ -59,7 +59,7 @@
                 @csrf
       <div class="col-lg-6 col-xl-6">
         <div class="card card-default p-4">
-          <button href="javascript:0" class="editClassSchedule media text-secondary " data-toggle="modal" data-target="#scheduleModal" value="{{$schedule->scheduleID}}">
+          <button href="javascript:0" class="editERPSchedule media text-secondary " data-toggle="modal" data-target="#scheduleModal" value="{{$schedule->scheduleID}}">
             <img src="images/scheduleIcon.png" class="mr-3 img-fluid rounded schedule" alt="Avatar Image">
             
             <div class="media-body">
@@ -91,7 +91,7 @@
 </div>
 
 
-<!-- Contact Modal -->
+<!-- Schedule Modal -->
 <div class="modal fade" id="scheduleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
   aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
