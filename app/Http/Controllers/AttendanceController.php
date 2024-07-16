@@ -153,7 +153,11 @@ class AttendanceController extends Controller
             ->where('users.userType', '=', 'Student')
             ->get();
 
-            return view('admin.admin-studentAttendance', ['students' => $students, 'studentCourses' => $studentCourses, 'studentYears' => $studentYears, 'studentRemarks' => $studentRemarks]);
+            return view('admin.admin-studentAttendance', [
+                'students' => $students, 
+                'studentCourses' => $studentCourses, 
+                'studentYears' => $studentYears, 
+                'studentRemarks' => $studentRemarks]);
     }
 
     public function studentAttendanceGeneration(Request $request)

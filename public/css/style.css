@@ -5542,7 +5542,7 @@ a.badge-secondary.focus {
 }
 
 .badge-success {
-    color: #000000;
+    color: #ffffff;
     background-color: #0acb8e;
 }
 a.badge-success:hover,
@@ -7290,7 +7290,7 @@ button.bg-smoke:focus {
 }
 
 .rounded-circle {
-    border-radius: 50% !important;
+    border-radius: 30% !important;
 }
 
 .rounded-pill {
@@ -12549,7 +12549,7 @@ button {
     flex-basis: 100%;
 }
 .card-default .card-header-bg {
-    height: 200px;
+    height: 80px;
     background-position: top;
     background-size: cover;
     background-repeat: no-repeat;
@@ -14194,6 +14194,7 @@ label {
 
 .sidebar .sidebar-inner > li > a:hover {
     color: #ffffff;
+    font-weight: bold;
 }
 
 .sidebar .sidebar-inner > li > a.active {

@@ -9,8 +9,8 @@ class ClassList extends Model
 {
     use HasFactory;
     protected $primaryKey = 'classID';
- 
-    protected $fillable = [ 
+
+    protected $fillable = [
         'scheduleID',
         'course',
         'year',
@@ -19,5 +19,8 @@ class ClassList extends Model
         'enrollmentKey',
     ];
 
-    
+    public function schedule()
+    {
+        return $this->belongsTo(Schedule::class, 'scheduleID'); 
+    }
 }

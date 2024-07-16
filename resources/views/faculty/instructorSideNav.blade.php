@@ -1,4 +1,3 @@
-
 <script defer src="{{asset('js/activePage.js')}}"></script>
 
 
@@ -33,16 +32,16 @@
                     </li>
                     <li>
                         <a class="sidenav-item-link" href="{{route('classSchedules')}}">
-                            <i class="mdi mdi-file-document-box-multiple"></i>
-                            <span class="nav-text" data-toggle="tooltip" title="Class Record">ERP
+                            <i class="mdi mdi-calendar-check"></i>
+                            <span class="nav-text" data-toggle="tooltip" title="ERP Schedules">ERP
                                 Schedules</span>
                         </a>
                     </li>
                     <li>
-                        <a class="sidenav-item-link" href="{{route('classRecordManagement')}}">
+                        <a class="sidenav-item-link" href="{{route('classListManagement')}}">
                             <i class="mdi mdi-file-document-box-multiple"></i>
-                            <span class="nav-text" data-toggle="tooltip" title="Class Record">Class
-                                Record</span>
+                            <span class="nav-text" data-toggle="tooltip" title="Class List">Class
+                                List</span>
                         </a>
                     </li>
                     <li>
@@ -61,16 +60,16 @@
                     <li class="has-sub">
                         <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#users" aria-expanded="false" aria-controls="users">
                             <i class="mdi mdi-alpha-s-box"></i>
-                            <span class="nav-text" data-toggle="tooltip" title="Attendance">My Class List</span> <b class="caret"></b>
+                            <span class="nav-text" data-toggle="tooltip" title="My Class List">My Class List</span> <b class="caret"></b>
                         </a>
                         <ul class="collapse" id="users" data-parent="#sidebar-menu">
                             <div class="sub-menu">
-                            @foreach($classes as $classes)
-                            @csrf
+                                @foreach($classes as $classes)
+                                @csrf
                                 <li>
-                                    <a class="section" href="{{ route('instructorClassAttendanceAndList',  [ base64_encode( $classes->classID)]) }}">{{$classes->course}}-{{$classes->year}}{{$classes->section}}</a>
+                                    <a class="section" href="{{ route('instructorClassAttendanceAndList',  [ base64_encode( $classes->classID)]) }}">{{$classes->course}} - {{$classes->year}}{{$classes->section}}</a>
                                 </li>
-                            @endforeach
+                                @endforeach
                     </li>
             </div>
         </div>

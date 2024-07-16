@@ -141,6 +141,8 @@
 <script src="{{asset('js/map.js')}}"></script>
 <script src="{{asset('js/custom.js')}}"></script>
 
+<script src="{{asset('js/pieChart.js')}}"></script>
+
 <script src="{{asset('plugins/fullcalendar/core-4.3.1/main.min.js')}}"></script>
 <script src="{{asset('plugins/fullcalendar/daygrid-4.3.0/main.min.js')}}"></script>
 <script src="{{asset('js/calendar.js')}}"></script>
