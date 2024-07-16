@@ -516,17 +516,18 @@ if (horBarChart1 !== null) {
 }
 
 /*======== 7. HORIZONTAL BAR CHART2 ========*/
+
 var horBarChart2 = document.querySelector("#horizontal-bar-chart2");
 if (horBarChart2 !== null) {
   var options = {
     chart: {
-      height: 350,
+      height: 335,
       type: "bar",
       toolbar: {
         show: false,
       },
     },
-    colors: ["#9e6de0", "#faafca"],
+    colors: ["#007bff", "#faafca"],
     plotOptions: {
       bar: {
         horizontal: true,
@@ -542,7 +543,7 @@ if (horBarChart2 !== null) {
       horizontalAlign: "right",
       markers: {
         width: 20,
-        height: 5,
+        height: 3,
         radius: 0,
       },
     },
@@ -558,9 +559,6 @@ if (horBarChart2 !== null) {
       {
         data: [44, 55, 41, 64, 22, 43, 21],
       },
-      {
-        data: [53, 32, 33, 52, 13, 44, 32],
-      },
     ],
     xaxis: {
       categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
@@ -572,7 +570,7 @@ if (horBarChart2 !== null) {
       },
       y: {
         title: {
-          formatter: (seriesName) => "Sales",
+          formatter: (seriesName) => "Student Per Section",
         },
       },
     },
@@ -2370,32 +2368,33 @@ if (donutChart2 !== null) {
 }
 
 /*======== 13. PIE CHART ========*/
-var SimplePieChart = document.querySelector("#simple-pie-chart");
-if (SimplePieChart !== null) {
-  var simplePieChartOptions = {
-    chart: {
-      width: 300,
-      type: "pie",
-    },
-    colors: ["#9e6de0", "#46c79e", "#fd5190"],
-    labels: ["First Data", "Second Data", "Third Data"],
-    legend: {
-      position: "top",
-      horizontalAlign: "left",
-      markers: {
-        radius: 0,
-      },
-    },
-    series: [65, 25, 10],
-  };
 
-  var simpleplePieChartRander = new ApexCharts(
-    SimplePieChart,
-    simplePieChartOptions
-  );
+// var SimplePieChart = document.querySelector("#simple-pie-chart");
+// if (SimplePieChart !== null) {
+//   var simplePieChartOptions = {
+//     chart: {
+//       width: 300,
+//       type: "pie",
+//     },
+//     colors: ["#31ce3c", "#e9e300", "#cc0000"],
+//     labels: ["Regular", "Irregular", "Drop"],
+//     legend: {
+//       position: "top",
+//       horizontalAlign: "center",
+//       markers: {
+//         radius: 0,
+//       },
+//     },
+//     series: [65, 25, 10],
+//   };
 
-  simpleplePieChartRander.render();
-}
+//   var simpleplePieChartRander = new ApexCharts(
+//     SimplePieChart,
+//     simplePieChartOptions
+//   );
+
+//   simpleplePieChartRander.render();
+// }
 
 /*======== 14. RADER CHART ========*/
 var SimpleRaderChart = document.querySelector("#simple-rader-chart");

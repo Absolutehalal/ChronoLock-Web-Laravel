@@ -19,7 +19,8 @@ class AttendanceController extends Controller
     {
         $instructors = DB::table('attendances') 
         ->join('users', 'attendances.userID', '=', 'users.idNumber')
-        ->join('schedules', 'attendances.userID', '=', 'schedules.userID')
+        ->join('class_lists', 'attendances.classID', '=', 'class_lists.classID')
+        ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
         ->where('users.userType', '=', 'Faculty')
         ->get();
 

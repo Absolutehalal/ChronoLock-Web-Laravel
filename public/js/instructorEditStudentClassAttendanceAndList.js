@@ -32,7 +32,7 @@ $(document).on('click', '.editAttendanceBtn', function(e) {
           //  console.log(response.attendance);
           $('#attendanceID').val(response.attendance.attendanceID);
           $('#edit_studentID').val(response.attendance.userID);
-          $('#edit_Remark').val(response.attendance.remark); 
+          $('#edit_remark').val(response.attendance.remark); 
         }
       }
     });
@@ -151,7 +151,8 @@ $(document).on('click', '.editAttendanceBtn', function(e) {
               icon: "success",
               title: "Successful",
               text: "Attendance Deleted",
-              buttons: false,
+              timer: 5000,
+              timerProgressBar: true
             });
             location.reload();
           }
@@ -177,6 +178,8 @@ $(document).on('click', '.editAttendanceBtn', function(e) {
               icon: "error",
               title: "Oops...",
               text: "No Student Record Found!!!",
+              timer: 5000,
+              timerProgressBar: true
             });
             $("#studentUpdateListModal .close").click()
           } else {
@@ -233,6 +236,8 @@ $(document).on('click', '.editAttendanceBtn', function(e) {
                 icon: "error",
                 title: "Oops...",
                 text: "No Student Record Found!!!",
+                timer: 5000,
+                timerProgressBar: true
               });
               $("#studentUpdateListModal .close").click()
               // console.log(response.message);
@@ -243,6 +248,8 @@ $(document).on('click', '.editAttendanceBtn', function(e) {
                 icon: "success",
                 title: "Successful",
                 text: "Student Record Successfully Updated!",
+                timer: 5000,
+                timerProgressBar: true
               });
               // console.log(response.attendance);
               $('.updateList').text('Update');
@@ -289,6 +296,8 @@ $(document).on('click', '.editAttendanceBtn', function(e) {
                 icon: "error",
                 title: "Oops...",
                 text: "No Student Record Found",
+                timer: 5000,
+                timerProgressBar: true
               });
     
             } else {
@@ -298,6 +307,8 @@ $(document).on('click', '.editAttendanceBtn', function(e) {
                 icon: "success",
                 title: "Successful",
                 text: "Student Record Deleted",
+                timer: 5000,
+                timerProgressBar: true
               });
               location.reload();
             }

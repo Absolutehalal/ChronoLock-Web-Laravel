@@ -17,12 +17,15 @@ $(document).ready(function() {
                 icon: "error",
                 title: "Oops...",
                 text: "No Schedule Record Found!!!",
+                timer: 5000,
+                timerProgressBar: true
               });
               $("#scheduleModal .close").click()
             } else {
               //  console.log(response.attendance);
               $('#scheduleID').val(response.schedule.scheduleID); 
-              $('#courseCode').val(response.schedule.courseCode); 
+              $('#courseCode').val(response.schedule.courseCode);
+              $('#courseName').val(response.schedule.courseName); 
               $('#program').val(response.schedule.course); 
               $('#year').val(response.schedule.year); 
               $('#section').val(response.schedule.section); 
@@ -135,7 +138,10 @@ $(document).ready(function() {
                 icon: "error",
                 title: "Oops...",
                 text: "Invalid Schedule. This Schedule is not for you!!!",
+                timer: 5000,
+                timerProgressBar: true
               });
+
 
             }
           }

@@ -19,5 +19,8 @@ class ClassList extends Model
         'enrollmentKey',
     ];
 
-    
+    public function schedule()
+    {
+        return $this->belongsTo(Schedule::class, 'scheduleID'); 
+    }
 }

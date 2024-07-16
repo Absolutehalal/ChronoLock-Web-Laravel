@@ -15,8 +15,6 @@ return new class extends Migration
             $table->id('attendanceID');
             $table->string('userID')->nullable();
             $table->foreign('userID')->references('idNumber')->on('users')->cascadeOnUpdate();
-            $table->unsignedBigInteger('scheduleID');
-            $table->foreign('scheduleID')->references('scheduleID')->on('class_lists')->cascadeOnUpdate();
             $table->unsignedBigInteger('classID')->nullable();
             $table->foreign('classID')->references('classID')->on('class_lists')->cascadeOnUpdate();
             $table->date('date');

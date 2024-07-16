@@ -24,4 +24,8 @@ class Schedule extends Model
         'endDate',
         'day'
     ];
+    public function classList()
+    {
+        return $this->belongsTo(ClassList::class);
+    }
 }

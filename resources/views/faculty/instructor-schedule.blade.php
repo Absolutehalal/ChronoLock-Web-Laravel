@@ -44,8 +44,8 @@
                     <!-- Navigation -->
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="inst-dashboard.php">Dashboard</a></li>
-                            <li class="breadcrumb-item active"><a href="inst-schedule.php">My Schedule</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('instructorIndex') }}">Dashboard</a></li>
+                            <li class="breadcrumb-item active"><a href="{{ route('instructorScheduleManagement') }}">My Schedule</a></li>
                         </ol>
                     </nav>
 

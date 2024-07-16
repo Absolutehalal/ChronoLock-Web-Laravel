@@ -101,8 +101,16 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
 // INSTRUCTOR MIDDLEWARE
 Route::group(['middleware' => ['auth', 'faculty']], function () {
 Route::get('/instructorDashboard', [UserController::class, 'instructorIndex'])->name('instructorIndex');
-Route::get('/instructorClassRecord', [ScheduleController::class, 'classRecordManagement'])->name('classRecordManagement');
+
 Route::get('/instructorSchedule', [ScheduleController::class, 'instructorScheduleManagement'])->name('instructorScheduleManagement');
+
+ //--------START Class List  ROUTES---------
+ Route::get('/instructorClassList', [ScheduleController::class, 'classListManagement'])->name('classListManagement');
+ Route::get('/edit-Class-List/{id}', [ScheduleController::class, 'editClassList'])->name('editClassList');
+ Route::put('/update-Class-List/{id}', [ScheduleController::class, 'updateClassList'])->name('updateClassList');
+ Route::delete('/delete-Class-List/{id}', [ScheduleController::class, 'deleteClassList'])->name('deleteClassList');
+ //--------END Class List  ROUTES---------
+
  //--------START instructor edit create classlist  ROUTES---------
 Route::post('/instructorClassSchedules', [ScheduleController::class, 'addClassList'])->name('addClassList');
 Route::get('/editInstructorClassList/{id}', [ScheduleController::class,'editInstructorClass'])->name('editInstructorClass');
