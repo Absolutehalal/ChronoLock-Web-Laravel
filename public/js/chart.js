@@ -2331,41 +2331,41 @@ if (donutChart1 !== null) {
 }
 
 /*======== 12.2 DONUT CHART 02 ========*/
-var donutChart2 = document.querySelector("#donut-chart-2");
-if (donutChart2 !== null) {
-  var donutChartOptions2 = {
-    chart: {
-      type: "donut",
-      height: 330,
-    },
+// var donutChart2 = document.querySelector("#donut-chart-2");
+// if (donutChart2 !== null) {
+//   var donutChartOptions2 = {
+//     chart: {
+//       type: "donut",
+//       height: 300,
+//     },
 
-    colors: ["#bb91f2", "#af81eb", "#9e6de0"],
-    labels: ["Desktop", "Tablet", "Mobile"],
-    series: [45, 30, 25],
-    legend: {
-      show: true,
-      position: "top",
-      horizontalAlign: "left",
-      markers: {
-        radius: 0,
-      },
-    },
-    dataLabels: {
-      enabled: false,
-    },
-    tooltip: {
-      y: {
-        formatter: function (val) {
-          return +val + "%";
-        },
-      },
-    },
-  };
+//     colors: ["#bb91f2", "#af81eb", "#9e6de0"],
+//     labels: ["Desktop", "Tablet", "Mobile"],
+//     series: [45, 30, 25],
+//     legend: {
+//       show: true,
+//       position: "top",
+//       horizontalAlign: "left",
+//       markers: {
+//         radius: 0,
+//       },
+//     },
+//     dataLabels: {
+//       enabled: false,
+//     },
+//     tooltip: {
+//       y: {
+//         formatter: function (val) {
+//           return +val + "%";
+//         },
+//       },
+//     },
+//   };
 
-  var randerDonutchart2 = new ApexCharts(donutChart2, donutChartOptions2);
+//   var randerDonutchart2 = new ApexCharts(donutChart2, donutChartOptions2);
 
-  randerDonutchart2.render();
-}
+//   randerDonutchart2.render();
+// }
 
 /*======== 13. PIE CHART ========*/
 

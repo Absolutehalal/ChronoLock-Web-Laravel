@@ -185,6 +185,7 @@
                   <h4 class="mb-2">Add Class List</h4>
 
                   <input type="hidden" id="scheduleID" name="scheduleID" class="id form-control ">
+                  
                   <ul id="userIDError"></ul>
                   <div class="form-group">
                     <label>User ID</label>

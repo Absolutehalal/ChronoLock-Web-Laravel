@@ -47,7 +47,7 @@
           <!-- Navigation -->
           <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ route('index') }}">Dashboard</a></li>
+              <li class="breadcrumb-item"><a href="{{ route('index') }}">Dashboard</a></li>
               <li class="breadcrumb-item active"><a href="{{ route('studentAttendanceGeneration') }}">Report Generation</a></li>
               <li class="breadcrumb-item active"><a href="{{ route('studentAttendanceGeneration') }}">Student Attendance</a></li>
             </ol>
@@ -225,22 +225,28 @@
       document.querySelectorAll('.course-item').forEach(function(item) {
         item.addEventListener('click', function(e) {
           e.preventDefault();
-          document.getElementById('studentCoursesButton').innerHTML = `<i class="mdi mdi-alpha-c-box"></i> ${this.textContent}`;
-          document.getElementById('selected_courses').value = this.getAttribute('data-value');
+          document.getElementById('studentCoursesButton').innerHTML =
+            `<i class="mdi mdi-alpha-c-box"></i> ${this.textContent}`;
+          document.getElementById('selected_courses').value = this.getAttribute(
+            'data-value');
         });
       });
       document.querySelectorAll('.year-item').forEach(function(item) {
         item.addEventListener('click', function(e) {
           e.preventDefault();
-          document.getElementById('studentYearsButton').innerHTML = `<i class="mdi mdi-developer-board"></i> ${this.textContent}`;
-          document.getElementById('selected_year').value = this.getAttribute('data-value');
+          document.getElementById('studentYearsButton').innerHTML =
+            `<i class="mdi mdi-developer-board"></i> ${this.textContent}`;
+          document.getElementById('selected_year').value = this.getAttribute(
+            'data-value');
         });
       });
       document.querySelectorAll('.remark-item').forEach(function(item) {
         item.addEventListener('click', function(e) {
           e.preventDefault();
-          document.getElementById('studentRemarksButton').innerHTML = `<i class="mdi mdi-alpha-r-box"></i> ${this.textContent}`;
-          document.getElementById('selected_remarks').value = this.getAttribute('data-value');
+          document.getElementById('studentRemarksButton').innerHTML =
+            `<i class="mdi mdi-alpha-r-box"></i> ${this.textContent}`;
+          document.getElementById('selected_remarks').value = this.getAttribute(
+            'data-value');
         });
       });
     });

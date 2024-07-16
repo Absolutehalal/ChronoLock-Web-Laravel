@@ -29,26 +29,29 @@ class ScheduleController extends Controller
 
         // PIE CHART
         $statuses = DB::table('student_masterlists')
-            ->select('status')
-            ->get();
+        ->select(DB::raw('status, COUNT(*) as count'))
+        ->whereIn('status', ['REGULAR', 'IRREGULAR', 'DROP'])
+        ->groupBy('status')
+        ->get();
 
-        $statusCounts = [
-            'REGULAR' => 0,
-            'DROP' => 0,
-            'IRREGULAR' => 0,
-        ];
 
-        foreach ($statuses as $status) {
-            if (isset($statusCounts[$status->status])) {
-                $statusCounts[$status->status]++;
-            }
-        }
+        // $statusCounts = [
+        //     'REGULAR' => 30,
+        //     'IRREGULAR' => 5,
+        //     'DROP' => 1,
+        // ];
+
+        // foreach ($statuses as $status) {
+        //     if (isset($statusCounts[$status->status])) {
+        //         $statusCounts[$status->status]++;
+        //     }
+        // }
         // PIE CHART
 
         return view('faculty.instructor-dashboard', [
             'classes' => $classes,
             'statuses' => $statuses,
-            'statusCounts' => $statusCounts,
+            
         ]);
     }
 

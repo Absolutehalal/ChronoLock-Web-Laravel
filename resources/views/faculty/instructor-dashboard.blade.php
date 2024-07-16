@@ -91,7 +91,7 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <div id="simple-pie-chart" class="d-flex justify-content-center"></div>
+                            <div id="donut-chart-2" class="d-flex justify-content-center"></div>
                         </div>
                     </div>
                 </div>
@@ -197,7 +197,7 @@
 
 
     <script type="text/javascript">
-        var _labels = ['REGULAR', 'DROP', 'IRREGULAR'];
+        var _labels = ['REGULAR', 'IRREGULAR', 'DROP'];
         var _series = JSON.parse('{!! json_encode($statusCounts) !!}');
     </script>
 

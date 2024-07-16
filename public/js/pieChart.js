@@ -1,26 +1,62 @@
-var SimplePieChart = document.querySelector("#simple-pie-chart");
-if (SimplePieChart !== null) {
-  var simplePieChartOptions = {
+// var SimplePieChart = document.querySelector("#simple-pie-chart");
+// if (SimplePieChart !== null) {
+//   var simplePieChartOptions = {
+//     chart: {
+//       width: 300,
+//       type: "pie",
+//     },
+//     colors: ["#31ce3c", "#cc0000", "#e9e300"], // REGULAR, DROP, IRREGULAR
+//     labels: _labels,
+//     legend: {
+//       position: "top",
+//       horizontalAlign: "center",
+//       markers: {
+//         radius: 0,
+//       },
+//     },
+//     series: [_series.REGULAR, _series.DROP, _series.IRREGULAR],
+//   };
+
+//   var simpleplePieChartRander = new ApexCharts(
+//     SimplePieChart,
+//     simplePieChartOptions
+//   );
+
+//   simpleplePieChartRander.render();
+// }
+
+var donutChart2 = document.querySelector("#donut-chart-2");
+if (donutChart2 !== null) {
+  var donutChartOptions2 = {
     chart: {
-      width: 300,
       type: "pie",
+      height: 300,
     },
-    colors: ["#31ce3c", "#cc0000", "#e9e300"], // REGULAR, DROP, IRREGULAR
+
+    colors: ["#31ce3c", "#e9e300", "#cc0000"], // REGULAR, DROP, IRREGULAR
     labels: _labels,
+    series:  [_series.REGULAR, _series.IRREGULAR, _series.DROP],
     legend: {
+      show: true,
       position: "top",
       horizontalAlign: "center",
       markers: {
         radius: 0,
       },
     },
-    series: [_series.REGULAR, _series.DROP, _series.IRREGULAR],
+    dataLabels: {
+      enabled: true,
+    },
+    tooltip: {
+      y: {
+        formatter: function (val) {
+          return + val;
+        },
+      },
+    },
   };
 
-  var simpleplePieChartRander = new ApexCharts(
-    SimplePieChart,
-    simplePieChartOptions
-  );
+  var randerDonutchart2 = new ApexCharts(donutChart2, donutChartOptions2);
 
-  simpleplePieChartRander.render();
+  randerDonutchart2.render();
 }

@@ -81,14 +81,14 @@ class FacultyAttendanceExport implements FromCollection, WithHeadings, ShouldAut
         return [
             AfterSheet::class => function (AfterSheet $event) {
                 // Merge cells for the title
-                $event->sheet->mergeCells('A1:H1');
+                $event->sheet->mergeCells('A1:I1');
                 $event->sheet->setCellValue('A1', 'Faculty Attendance Report');
 
                 // Set the row height for the heading
                 $event->sheet->getRowDimension(1)->setRowHeight(60);
 
                 // Apply styles to the title
-                $event->sheet->getStyle('A1:H1')->applyFromArray([
+                $event->sheet->getStyle('A1:I1')->applyFromArray([
                     'font' => [
                         'bold' => true,
                         'size' => 30,

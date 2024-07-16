@@ -99,7 +99,7 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
 // INSTRUCTOR MIDDLEWARE
 Route::group(['middleware' => ['auth', 'faculty']], function () {
     Route::get('/instructorDashboard', [ScheduleController::class, 'instructorIndex'])->name('instructorIndex');
-
+ 
     Route::get('/instructorSchedule', [ScheduleController::class, 'instructorScheduleManagement'])->name('instructorScheduleManagement');
 
     //--------START Class List  ROUTES---------
