@@ -87,9 +87,9 @@
                   <i class="mdi mdi-alpha-c-box"></i> Course
                 </button>
                 <div class="dropdown-menu scrollable-dropdown" aria-labelledby="studentCoursesButton">
-                  @foreach ($studentCourses as $course)
-                  <a class="dropdown-item course-item @if ($course == $course->course) active @endif" href="#" data-value="{{ $course->course }}">
-                    {{ $course->course }}
+                  @foreach ($studentPrograms as $studentPrograms)
+                  <a class="dropdown-item course-item @if ($studentPrograms == $studentPrograms->program) active @endif" href="#" data-value="{{ $studentPrograms->program }}">
+                    {{ $studentPrograms->program }}
                   </a>
                   @endforeach
                 </div>

@@ -397,8 +397,7 @@ class UserController extends Controller
 
     //-------Start Student functions-------
     public function studentIndex() {
-
-
+        
         return view('student.student-dashboard');
         
     }

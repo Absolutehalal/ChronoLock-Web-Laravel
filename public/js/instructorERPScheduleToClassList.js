@@ -26,7 +26,7 @@ $(document).ready(function() {
               $('#scheduleID').val(response.schedule.scheduleID); 
               $('#courseCode').val(response.schedule.courseCode);
               $('#courseName').val(response.schedule.courseName); 
-              $('#program').val(response.schedule.course); 
+              $('#program').val(response.schedule.program); 
               $('#year').val(response.schedule.year); 
               $('#section').val(response.schedule.section); 
               

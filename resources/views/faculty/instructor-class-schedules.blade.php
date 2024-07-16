@@ -77,7 +77,7 @@
                       <li class="d-flex">
                         <i class="mdi mdi-group mr-1"></i>
                         <label class="mr-1">Program:</label>
-                        <span class="text-dark">{{ $schedule->course }}</span>
+                        <span class="text-dark">{{ $schedule->program }}</span>
                       </li>
                       <li class="d-flex">
                         <i class="mdi mdi-alpha-s-box mr-1"></i>
@@ -100,7 +100,7 @@
     </div>
 
 
-    <!-- Contact Modal -->
+    <!-- Schedule Modal -->
     <div class="modal fade" id="scheduleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">

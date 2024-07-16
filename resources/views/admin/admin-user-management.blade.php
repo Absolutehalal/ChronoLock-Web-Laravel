@@ -480,6 +480,12 @@
               // fetchUsers(); -----------reserve-------------
               window.location.href = "{{route('userManagement')}}";
   }
+  
+  // $('.addUser').text('Save');
+  //             $("#addUserModal .close").click()
+
+  //             // fetchUsers(); -----------reserve-------------
+  //             setTimeout(function () { location.reload(1); }, 1000);
               });
            
             } else if (response.status == 100) {

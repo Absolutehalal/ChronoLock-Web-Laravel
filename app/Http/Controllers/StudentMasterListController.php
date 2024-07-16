@@ -12,7 +12,7 @@ class StudentMasterListController extends Controller
 {
     public function studentEditSchedule($id){
 
-        $classList = ClassList::select('classID','class_lists.course','class_lists.year','class_lists.section','instFirstName','instLastName','avatar','startTime','endTime')
+        $classList = ClassList::select('classID','program','year','section','instFirstName','instLastName','avatar','startTime','endTime')
             ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
             ->join('users', 'users.idNumber', '=', 'schedules.userID')
             ->find($id);

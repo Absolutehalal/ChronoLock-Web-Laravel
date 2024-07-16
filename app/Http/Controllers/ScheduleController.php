@@ -210,9 +210,6 @@ class ScheduleController extends Controller
             }else {
                 $classList = new ClassList;
                 $classList->scheduleID = $request->input('scheduleID');
-                $classList->course = $request->input('program');
-                $classList->year = $request->input('year');
-                $classList->section = $request->input('section');
                 $classList->semester = $request->input('semester');
                 $classList->enrollmentKey = $request->input('enrollmentKey');
                 $classList->save();

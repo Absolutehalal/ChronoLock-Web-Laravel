@@ -86,7 +86,7 @@
                                         <li class="d-flex">
                                         <i class="mdi mdi-group mr-1"></i>
                                         <label class="mr-1">Program:</label>
-                                            <span>{{$schedule->course}}</span>
+                                            <span>{{$schedule->program}}</span>
                                         </li>
 
                                         <li class="d-flex">

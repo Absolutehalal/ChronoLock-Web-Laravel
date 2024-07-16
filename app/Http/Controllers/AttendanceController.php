@@ -58,7 +58,7 @@ class AttendanceController extends Controller
         // REMARKS
         $data['selected_remarks'] = $request->query('selected_remarks');
 
-        $data['instructorRemarks'] = Attendance::select('attendances.remark')
+        $data['instructorRemarks'] = Attendance::select('remark')
             ->join('users', 'attendances.userID', '=', 'users.idNumber')
             ->distinct()
             ->where('users.userType', '=', 'Faculty')
@@ -93,7 +93,7 @@ class AttendanceController extends Controller
         }
 
         if ($data['selected_remarks']) {
-            $query->where('attendances.remark', $data['selected_remarks']);
+            $query->where('remark', $data['selected_remarks']);
         };
 
         if ($data['selected_id']) {
@@ -172,7 +172,7 @@ class AttendanceController extends Controller
         // Course
         $data['selected_courses'] = $request->query('selected_courses');
 
-        $data['studentCourses'] = Attendance::select('program')
+        $data['studentPrograms'] = Attendance::select('program')
             ->join('users', 'attendances.userID', '=', 'users.idNumber')
             ->join('class_lists', 'attendances.classID', '=', 'class_lists.classID')
             ->join('schedules', 'schedules.scheduleID', '=', 'class_lists.scheduleID')
@@ -202,7 +202,7 @@ class AttendanceController extends Controller
             ->orderByRaw("FIELD(attendances.remark, 'PRESENT', 'ABSENT', 'LATE')")
             ->get();
 
-        $query = Attendance::select('users.*', 'class_lists.*', 'attendances.*','.schedules*')
+        $query = Attendance::select('users.*', 'class_lists.*', 'attendances.*','schedules.*')
             ->join('users', 'attendances.userID', '=', 'users.idNumber')
             ->join('class_lists', 'attendances.classID', '=', 'class_lists.classID')
             ->join('schedules', 'schedules.scheduleID', '=', 'class_lists.scheduleID')
