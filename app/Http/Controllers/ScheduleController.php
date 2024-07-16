@@ -16,20 +16,7 @@ class ScheduleController extends Controller
 {
   //-----------Start instructor functions-----------
 
-    //index page
-    public function instructorIndex()
-    {
-        $id = Auth::id();
-        $userID =DB::table('users')->where('id', $id)->value('idNumber');
 
-        $classes = DB::table('class_lists')
-        ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
-        ->where('schedules.userID', '=', $userID)
-        ->get();
-
-        return view('faculty.instructor-dashboard', ['classes' => $classes]);
-    }
-    
     //class record
     public function classRecordManagement()
     {
@@ -160,9 +147,18 @@ class ScheduleController extends Controller
     foreach ($schedules as $schedule) {
         $schedule->startTime = Carbon::parse($schedule->startTime)->format('g:i A');
         $schedule->endTime = Carbon::parse($schedule->endTime)->format('g:i A');
-    }
 
-    return view('student.student-view-schedule',['schedules' => $schedules]);
+    }
+    $id = Auth::id();
+    $userID =DB::table('users')->where('id', $id)->value('idNumber');
+
+    $classSchedules = DB::table('student_masterlists')
+    ->join('class_lists', 'class_lists.classID', '=', 'student_masterlists.classID')
+    ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
+    ->where('student_masterlists.userID', '=', $userID)
+    ->get();
+
+    return view('student.student-view-schedule',['schedules' => $schedules, 'classSchedules' => $classSchedules]);
 }
 // -----------End student functions-----------
 }

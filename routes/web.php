@@ -100,7 +100,7 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
 
 // INSTRUCTOR MIDDLEWARE
 Route::group(['middleware' => ['auth', 'faculty']], function () {
-Route::get('/instructorDashboard', [ScheduleController::class, 'instructorIndex'])->name('instructorIndex');
+Route::get('/instructorDashboard', [UserController::class, 'instructorIndex'])->name('instructorIndex');
 Route::get('/instructorClassRecord', [ScheduleController::class, 'classRecordManagement'])->name('classRecordManagement');
 Route::get('/instructorSchedule', [ScheduleController::class, 'instructorScheduleManagement'])->name('instructorScheduleManagement');
  //--------START instructor edit create classlist  ROUTES---------
@@ -125,7 +125,11 @@ Route::delete('/instructorDeleteStudentList/{id}', [FacultyAttendanceAndListCont
 
 Route::group(['middleware' => ['auth', 'student']], function () 
 {
-    Route::get('/student-dashboard', [StudentController::class, 'studentIndex'])->name('studentIndex');
+    Route::get('/student-dashboard', [UserController::class, 'studentIndex'])->name('studentIndex');
+
+   
     Route::get('/student-view-schedule', [ScheduleController::class, 'studentViewSchedule'])->name('studentViewSchedule');
     Route::get('/studentEditSchedule/{id}', [StudentMasterListController::class, 'studentEditSchedule'])->name('studentEditSchedule');
+    Route::post('/student-view-schedule', [StudentMasterListController::class, 'enroll'])->name('enroll'); 
+    Route::get('/overlayValue/{id}', [StudentMasterListController::class, 'overlayValue'])->name('overlayValue');
 });

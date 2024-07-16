@@ -373,10 +373,34 @@ class UserController extends Controller
 
 
 
-    //instructor functions
-    //schedule
+    //-------Start instructor functions-------
+    //index page
+
+    public function instructorIndex()
+    {
+        $id = Auth::id();
+        $userID =DB::table('users')->where('id', $id)->value('idNumber');
+
+        $classes = DB::table('class_lists')
+        ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
+        ->where('schedules.userID', '=', $userID)
+        ->get();
+
+        return view('faculty.instructor-dashboard', ['classes' => $classes]);
+    }
+
     public function instructorAttendanceGeneration()
     {
         return view('admin-instructorAttendance-generation');
     }
+    //-------End instructor functions-------
+
+    //-------Start Student functions-------
+    public function studentIndex() {
+
+
+        return view('student.student-dashboard');
+        
+    }
+    //-------End Student functions-------
 }

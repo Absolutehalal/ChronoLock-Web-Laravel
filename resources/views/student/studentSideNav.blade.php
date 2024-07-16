@@ -43,22 +43,24 @@
           <!-- Horizontal line with custom class -->
           <hr class="my-2 custom-hr">
 
-          <li class="section-title">My Class Schedules</li>
+          <li class="section-title">Classes</li>
 
-          <li>
-            <a class="sidenav-item-link" href="">
-              <i class="mdi mdi-folder-clock-outline"></i>
-              <span class="nav-text" data-toggle="tooltip" title="Subject Here">ITEC 222</span>
-            </a>
-          </li>
-
-      </ul>
-      </li>
-
-
-      </ul>
+          <li class="has-sub">
+                        <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#users" aria-expanded="false" aria-controls="users">
+                            <i class="mdi mdi-folder-multiple-outline"></i>
+                            <span class="nav-text" data-toggle="tooltip" title="Attendance">My Class Schedules</span> <b class="caret"></b>
+                        </a>
+                        <ul class="collapse" id="users" data-parent="#sidebar-menu">
+                            <div class="sub-menu">
+                            @foreach($classSchedules as $classSchedule)
+                            @csrf
+                                <li>
+                                <a class="section" href="">{{$classSchedule->courseCode}}</a>
+                                </li>
+                            @endforeach
+                    </li>
     </div>
-
+    </div>
     <div class="sidebar-footer">
     <div class="sidebar-footer-content">
         <ul class="d-flex">

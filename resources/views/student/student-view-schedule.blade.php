@@ -75,7 +75,7 @@
                                         </div>
 
                                         <h5 class="card-title">{{$schedule->instFirstName }} {{$schedule->instLastName }}</h5>
-    </button>
+                                   
 
                                     <ul class="list-unstyled d-inline-block mb-5">
                                         <li class="d-flex mb-1">
@@ -138,6 +138,8 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="overlay" id=overlayLabel></div>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -184,7 +186,11 @@
                                                         <form method="post">
                                                         @csrf
                                                         @method('post')
+
+                                                        <ul id="classIDError"></ul>
                                                         <input type="hidden" id="classID" name="classID" class="id form-control ">
+
+                                                        <ul id="enrollmentKeyError"></ul>
                                                         <input type="text" class="form-control border border-dark border border-dark" placeholder="Enter Enrollment Key" id="enrollmentKey" name="enrollmentKey">
                                                         <button type="submit" class="btn btn-primary btn-pill btn-lg my-4 createMasterList">Enroll</button>
     </form>
@@ -201,7 +207,7 @@
                                                 </div>
 
                                                 <div class="text-center pb-4">
-                                                    <ul id="yearError"></ul>
+                                                  
                                                     <h6 class="pb-2">Year & Section</h6>
                                                     <div class="form-group">
                                                     <input type="text" class="input form-control" id="yearAndSection" name="yearAndSection" readonly>
