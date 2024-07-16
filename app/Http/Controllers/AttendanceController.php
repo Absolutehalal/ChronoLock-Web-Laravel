@@ -138,7 +138,7 @@ class AttendanceController extends Controller
             $student->formatted_time = Carbon::parse($student->time)->format('g:i A');
         }
 
-        $studentCourses = Attendance::select('program')
+        $studentPrograms = Attendance::select('program')
             ->join('users', 'attendances.userID', '=', 'users.idNumber')
             ->join('class_lists', 'attendances.classID', '=', 'class_lists.classID')
             ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
@@ -161,7 +161,7 @@ class AttendanceController extends Controller
             ->where('users.userType', '=', 'Student')
             ->get();
 
-            return view('admin.admin-studentAttendance', ['students' => $students, 'studentCourses' => $studentCourses, 'studentYears' => $studentYears, 'studentRemarks' => $studentRemarks]);
+            return view('admin.admin-studentAttendance', ['students' => $students, 'studentPrograms' => $studentPrograms, 'studentYears' => $studentYears, 'studentRemarks' => $studentRemarks]);
     }
 
     public function studentAttendanceGeneration(Request $request)
@@ -172,9 +172,10 @@ class AttendanceController extends Controller
         // Course
         $data['selected_courses'] = $request->query('selected_courses');
 
-        $data['studentCourses'] = Attendance::select('class_lists.course')
+        $data['studentCourses'] = Attendance::select('program')
             ->join('users', 'attendances.userID', '=', 'users.idNumber')
             ->join('class_lists', 'attendances.classID', '=', 'class_lists.classID')
+            ->join('schedules', 'schedules.scheduleID', '=', 'class_lists.scheduleID')
             ->where('users.userType', 'Student')
             ->distinct()
             ->get();
@@ -183,9 +184,10 @@ class AttendanceController extends Controller
         // Year
         $data['selected_years'] = $request->query('selected_years');
 
-        $data['studentYears'] = Attendance::select('class_lists.year', 'class_lists.section')
+        $data['studentYears'] = Attendance::select('year', 'section')
             ->join('users', 'attendances.userID', '=', 'users.idNumber')
             ->join('class_lists', 'attendances.classID', '=', 'class_lists.classID')
+            ->join('schedules', 'schedules.scheduleID', '=', 'class_lists.scheduleID')
             ->where('users.userType', '=', 'Student')
             ->distinct()
             ->get();
@@ -200,9 +202,10 @@ class AttendanceController extends Controller
             ->orderByRaw("FIELD(attendances.remark, 'PRESENT', 'ABSENT', 'LATE')")
             ->get();
 
-        $query = Attendance::select('users.*', 'class_lists.*', 'attendances.*')
+        $query = Attendance::select('users.*', 'class_lists.*', 'attendances.*','.schedules*')
             ->join('users', 'attendances.userID', '=', 'users.idNumber')
             ->join('class_lists', 'attendances.classID', '=', 'class_lists.classID')
+            ->join('schedules', 'schedules.scheduleID', '=', 'class_lists.scheduleID')
             ->where('users.userType', '=', 'Student')
             ->orderBy('date');
 
@@ -214,15 +217,15 @@ class AttendanceController extends Controller
         }
 
         if ($data['selected_courses']) {
-            $query->where('class_lists.course', $data['selected_courses']);
+            $query->where('program', $data['selected_courses']);
         };
 
         if ($data['selected_years']) {
-            $query->where('class_lists.year', $data['selected_years']);
+            $query->where('year', $data['selected_years']);
         };
 
         if ($data['selected_remarks']) {
-            $query->where('attendances.remark', $data['selected_remarks']);
+            $query->where('remark', $data['selected_remarks']);
         };
 
 

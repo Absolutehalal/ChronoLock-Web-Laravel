@@ -93,10 +93,10 @@
                   Course
                 </button>
                 <div class="dropdown-menu scrollable-dropdown" aria-labelledby="courseDropdown">
-                  @foreach($studentCourses as $studentCourses)
+                  @foreach($studentPrograms as $studentPrograms)
                   @csrf
-                  <a class="dropdown-item course-item filter-course" data-value="{{ $studentCourses->course }}" href="#">
-                    {{ $studentCourses->course }}
+                  <a class="dropdown-item course-item filter-course" data-value="{{ $studentPrograms->program }}" href="#">
+                    {{ $studentPrograms->program }}
                   </a>
                   @endforeach
                 </div>
