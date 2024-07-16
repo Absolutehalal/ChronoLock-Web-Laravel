@@ -97,7 +97,7 @@ class UserLogController extends Controller
           ->distinct()
           ->get();
 
-         return view('admin-logs',  ['adminLogs' => $adminLogs, 
+         return view('admin.admin-logs',  ['adminLogs' => $adminLogs, 
                                    'labInChargeLogs' =>$labInChargeLogs, 
                                    'technicianLogs' => $technicianLogs, 
                                    'facultyLogs' => $facultyLogs, 

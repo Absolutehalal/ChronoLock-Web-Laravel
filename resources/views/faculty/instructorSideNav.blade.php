@@ -68,7 +68,7 @@
                             @foreach($classes as $classes)
                             @csrf
                                 <li>
-                                    <a class="section" href="{{ route('instructorClassAttendanceAndList',  [ base64_encode( $classes->classID)]) }}">{{$classes->course}}-{{$classes->year}}{{$classes->section}}</a>
+                                    <a class="section" href="{{ route('instructorClassAttendanceAndList',  [ base64_encode( $classes->classID)]) }}">{{$classes->program}}-{{$classes->year}}{{$classes->section}}</a>
                                 </li>
                             @endforeach
                     </li>

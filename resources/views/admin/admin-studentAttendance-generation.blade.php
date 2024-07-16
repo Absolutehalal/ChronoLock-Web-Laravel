@@ -176,7 +176,7 @@
                   <th>Time</th>
                   <th>Student Name</th>
                   <th>Student ID</th>
-                  <th>Course</th>
+                  <th>Program</th>
                   <th>Year & Section</th>
                   <th>Remarks</th>
                 </tr>
@@ -188,7 +188,7 @@
                   <td>{{ date('h:i A', strtotime($student->time)) }}</td>
                   <td>{{ $student->firstName }} {{ $student->lastName }}</td>
                   <td>{{ $student->idNumber }}</td>
-                  <td>{{ $student->course }}</td>
+                  <td>{{ $student->program }}</td>
                   <td>{{ $student->year }}-{{ $student->section }}</td>
                   <td>
                     @if($student->remark == 'Present')

@@ -73,7 +73,7 @@
                 <div class="nav-link">
                   <span class="text-dark d-block">Course:</span>
                   @foreach ($classListData as $classTime)
-                  <span class="h5 d-block"> {{ $classTime->course }} </span>
+                  <span class="h5 d-block"> {{ $classTime->program }} </span>
                   @endforeach
                 </div>
               </li>
@@ -413,7 +413,7 @@
         <tr>
           <th>Student Name</th>
           <th>Student ID</th>
-          <th>Course</th>
+          <th>Program</th>
           <th>Year & Section</th>
           <th>Status</th>
           <th>Actions</th>
@@ -425,7 +425,7 @@
         <tr>
           <td>{{$student->firstName}} {{$student->lastName}}</td>
           <td>{{$student->idNumber}}</td>
-          <td>{{$student->course}}</td>
+          <td>{{$student->program}}</td>
           <td>{{$student->year}}-{{$student->section}}</td>
           <td>
             @if($student->status == 'Regular')

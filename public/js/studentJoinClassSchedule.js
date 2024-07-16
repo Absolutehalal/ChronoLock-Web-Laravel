@@ -52,7 +52,7 @@ $(document).ready(function() {
             
               $('#instFirstNameAndLastName').val(response.classList.instFirstName+" "+response.classList.instLastName);
               $('#classID').val(response.classList.classID);
-              $('#program').val(response.classList.course);
+              $('#program').val(response.classList.program);
               $('#yearAndSection').val(response.classList.year+response.classList.section);
               $('#startTimeAndEndTime').val(startTime+"-"+ endTime);
               document.getElementById('instructorAvatar').src = response.classList.avatar;

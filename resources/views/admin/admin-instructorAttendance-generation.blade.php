@@ -153,8 +153,9 @@
                   <th>Date</th>
                   <th>Time</th>
                   <th>Course Code</th>
-                  <th>Course & Section</th>
-                  <th>Instructor Name</th>
+                  <th>Course Name</th>
+                  <th>Program & Section</th>
+                  <th>Instructor</th>
                   <th>Instructor ID</th>
                   <th>Remarks</th>
                 </tr>
@@ -166,7 +167,8 @@
                   <td>{{ date('F j, Y', strtotime($instructors->date)) }}</td>
                   <td>{{ date('h:i A', strtotime($instructors->time)) }}</td>
                   <td>{{ $instructors->courseCode }}</td>
-                  <td>{{ $instructors->course }} - {{ $instructors->year }}{{ $instructors->section }}</td>
+                  <td>{{ $instructors->courseName }}</td>
+                  <td>{{ $instructors->program }} - {{ $instructors->year }}{{ $instructors->section }}</td>
                   <td>{{ $instructors->instFirstName }} {{ $instructors->instLastName }}</td>
                   <td>{{ $instructors->userID }}</td>
                   <td>

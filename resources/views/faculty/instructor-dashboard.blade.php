@@ -166,8 +166,5 @@
     </div>
     </div>
     </div>
-    <script type="text/javascript">
-        var _labels = ['REGULAR', 'DROP', 'IRREGULAR'];
-        var _series = JSON.parse('{!! json_encode($statusCounts) !!}');
-    </script>
+    
     @include('footer')

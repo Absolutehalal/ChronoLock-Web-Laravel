@@ -64,7 +64,7 @@ class FacultyAttendanceAndListController extends Controller
         $classes = DB::table('class_lists')
             ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
             ->where('schedules.userID', '=', $userID)
-            ->orderBy('schedules.course', 'DESC')
+            ->orderBy('program', 'DESC')
             ->get();
         // Class List
 

@@ -40,12 +40,13 @@ class StudentMasterListController extends Controller
             'classID' => 'required',
         ]);
         $classID = $request->get('classID');
+        $scheduleID =DB::table('class_lists')->where('classID', $classID)->value('scheduleID');
         $inputEnrollmentKey = $request->get('enrollmentKey');
         $enrollmentKey =DB::table('class_lists')->where('classID', $classID)->value('enrollmentKey');
 
-        $course =DB::table('class_lists')->where('classID', $classID)->value('course');
-        $year =DB::table('class_lists')->where('classID', $classID)->value('year');
-        $section =DB::table('class_lists')->where('classID', $classID)->value('section');
+        $program =DB::table('schedules')->where('scheduleID', $scheduleID)->value('program');
+        $year =DB::table('schedules')->where('scheduleID', $scheduleID)->value('year');
+        $section =DB::table('schedules')->where('scheduleID', $scheduleID)->value('section');
 
         $id = Auth::id();
         $userID =DB::table('users')->where('id', $id)->value('idNumber');
@@ -71,7 +72,7 @@ class StudentMasterListController extends Controller
                 date_default_timezone_set("Asia/Manila");
                 $date = date("Y-m-d");
                 $time = date("H:i:s");
-                $action = "Joined to $course-$year$section schedule";
+                $action = "Joined to $program-$year$section schedule";
                 DB::table('user_logs')->insert([
                     'userID' => $userID,
                     'action' => $action,

@@ -59,7 +59,7 @@
             @csrf
             <div class="col-lg-6 col-xl-6">
               <div class="card card-default shadow p-4">
-                <button href="javascript:0" class="editClassSchedule media text-secondary" data-toggle="modal" data-target="#scheduleModal" value="{{$schedule->scheduleID}}">
+                <button href="javascript:0" class="editERPSchedule media text-secondary" data-toggle="modal" data-target="#scheduleModal" value="{{$schedule->scheduleID}}">
                   <img src="images/scheduleIcon.png" class="mr-3 mt-4 img-fluid rounded schedule" alt="Avatar Image">
                   <div class="media-body">
                     <h3 class="mt-0 mb-2 text-dark d-flex">Instructor: {{ $schedule->instFirstName }} {{ $schedule->instLastName }}</h3>

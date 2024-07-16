@@ -397,8 +397,14 @@ class UserController extends Controller
 
     //-------Start Student functions-------
     public function studentIndex() {
-        
-        return view('student.student-dashboard');
+        $id = Auth::id();
+        $userID =DB::table('users')->where('id', $id)->value('idNumber');
+        $classSchedules = DB::table('student_masterlists')
+    ->join('class_lists', 'class_lists.classID', '=', 'student_masterlists.classID')
+    ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
+    ->where('student_masterlists.userID', '=', $userID)
+    ->get();
+        return view('student.student-dashboard',['classSchedules' => $classSchedules]);
         
     }
     //-------End Student functions-------

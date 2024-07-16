@@ -3,7 +3,7 @@ $(document).ready(function() {
     $(document).on('click', '.editERPSchedule', function(e) {
         e.preventDefault();
         var id = $(this).val();
-        // console.log(userID);
+        console.log(id);
         // // alert(userID);
    
 

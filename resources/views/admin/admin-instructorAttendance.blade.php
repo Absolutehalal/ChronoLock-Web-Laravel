@@ -152,7 +152,7 @@
                   <th>Time</th>
                   <th>Course Code</th>
                   <th>Program & Section</th>
-                  <th>Instructor Name</th>
+                  <th>Instructor</th>
                   <th>Instructor ID</th>
                   <th>Remarks</th>
                   <th>Action</th>

@@ -43,7 +43,8 @@ class FacultyAttendanceExport implements FromCollection, WithHeadings, ShouldAut
             $attendance->firstName . ' ' . $attendance->lastName,
             $attendance->userID,
             $attendance->courseCode,
-            $attendance->course . ' - ' . $attendance->year . $attendance->section,
+            $attendance->courseName,
+            $attendance->program . ' - ' . $attendance->year . $attendance->section,
             $formattedDate,
             $formattedTime,
             $remark,
@@ -57,8 +58,9 @@ class FacultyAttendanceExport implements FromCollection, WithHeadings, ShouldAut
             'No',
             'Name',
             'User ID',
-            'Course',
-            'Course & Section',
+            'Course Code',
+            'Course Name',
+            'Program & Section',
             'Date',
             'Time',
             'Remark',
@@ -68,7 +70,7 @@ class FacultyAttendanceExport implements FromCollection, WithHeadings, ShouldAut
 
     public function title(): string
     {
-        return 'Student Attendance Report';
+        return 'Instructor Attendance Report';
     }
 
     public function startCell(): string
