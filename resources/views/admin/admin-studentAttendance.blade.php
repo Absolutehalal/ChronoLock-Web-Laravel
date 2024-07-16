@@ -183,7 +183,7 @@
                   <th>Time</th>
                   <th>Student Name</th>
                   <th>Student ID</th>
-                  <th>Course</th>
+                  <th>Program</th>
                   <th>Year & Section</th>
                   <th>Remarks</th>
                   <th>Action</th>
@@ -197,7 +197,7 @@
                   <td>{{ $students->formatted_time }}</td>
                   <td>{{ $students->firstName }} {{ $students->lastName }}</td>
                   <td>{{ $students->idNumber }}</td>
-                  <td>{{ $students->course }}</td>
+                  <td>{{ $students->program }}</td>
                   <td>{{ $students->year }}-{{ $students->section }}</td>
                   <td>
                     @if($students->remark == 'Present')

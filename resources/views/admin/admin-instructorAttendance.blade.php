@@ -151,7 +151,7 @@
                   <th>Date</th>
                   <th>Time</th>
                   <th>Course Code</th>
-                  <th>Course & Section</th>
+                  <th>Program & Section</th>
                   <th>Instructor Name</th>
                   <th>Instructor ID</th>
                   <th>Remarks</th>
@@ -165,7 +165,7 @@
                   <td>{{ $instructors->formatted_date }}</td>
                   <td>{{ $instructors->formatted_time }}</td>
                   <td>{{ $instructors->courseCode }}</td>
-                  <td>{{ $instructors->course }} - {{ $instructors->year }}{{ $instructors->section }}</td>
+                  <td>{{ $instructors->program }} - {{ $instructors->year }}{{ $instructors->section }}</td>
                   <td>{{ $instructors->instFirstName }} {{ $instructors->instLastName }}</td>
                   <td>{{ $instructors->userID }}</td>
                   <td>

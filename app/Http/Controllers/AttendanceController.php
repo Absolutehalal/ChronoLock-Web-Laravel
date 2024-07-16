@@ -38,8 +38,10 @@ class AttendanceController extends Controller
             ->get();
 
         $instructorsID = Attendance::select('attendances.userID', 'instFirstName', 'instLastName')
-            ->join('schedules', 'attendances.userID', '=', 'schedules.userID')
+            
             ->join('users', 'attendances.userID', '=', 'users.idNumber')
+            ->join('class_lists', 'attendances.classID', '=', 'class_lists.classID')
+            ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
             ->orderBy('instFirstName')
             ->where('users.userType', '=', 'Faculty')
             ->distinct()
@@ -67,17 +69,19 @@ class AttendanceController extends Controller
         $data['selected_id'] = $request->query('selected_id');
 
         $data['instructorID'] = Attendance::select('attendances.userID', 'instFirstName', 'instLastName')
-            ->join('schedules', 'attendances.userID', '=', 'schedules.userID')
+            
             ->join('users', 'attendances.userID', '=', 'users.idNumber')
+            ->join('class_lists', 'attendances.classID', '=', 'class_lists.classID')
+            ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
             ->orderBy('instFirstName')
             ->where('users.userType', '=', 'Faculty')
             ->distinct()
             ->get();
 
         $query = Attendance::select('attendances.*', 'schedules.*', 'users.*', 'class_lists.*')
-            ->join('schedules', 'attendances.userID', '=', 'schedules.userID')
             ->join('users', 'attendances.userID', '=', 'users.idNumber')
             ->join('class_lists', 'attendances.classID', '=', 'class_lists.classID')
+            ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
             ->where('users.userType', '=', 'Faculty')
             ->orderBy('date');
 
@@ -123,6 +127,7 @@ class AttendanceController extends Controller
         $students = DB::table('attendances')
             ->join('users', 'attendances.userID', '=', 'users.idNumber')
             ->join('class_lists', 'attendances.classID', '=', 'class_lists.classID')
+            ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
             ->where('users.userType', '=', 'Student')
             ->orderBy('date')
             ->get();
@@ -133,9 +138,10 @@ class AttendanceController extends Controller
             $student->formatted_time = Carbon::parse($student->time)->format('g:i A');
         }
 
-        $studentCourses = Attendance::select('class_lists.course')
+        $studentCourses = Attendance::select('program')
             ->join('users', 'attendances.userID', '=', 'users.idNumber')
             ->join('class_lists', 'attendances.classID', '=', 'class_lists.classID')
+            ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
             ->where('users.userType', '=', 'Student')
             ->distinct()
             ->get();
@@ -143,6 +149,7 @@ class AttendanceController extends Controller
         $studentYears = Attendance::select('year', 'section')
             ->join('users', 'attendances.userID', '=', 'users.idNumber')
             ->join('class_lists', 'attendances.classID', '=', 'class_lists.classID')
+            ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
             ->where('users.userType', '=', 'Student')
             ->distinct()
             ->get();
