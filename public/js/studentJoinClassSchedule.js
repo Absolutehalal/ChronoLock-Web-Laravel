@@ -1,29 +1,32 @@
 $(document).ready(function() {
 
-  $(document).on('mouseover', '.editClassSchedule', function(e) {
-    e.preventDefault();
+  // $(document).on('mouseover', '.editClassSchedule', function(e) {
+  //   e.preventDefault();
 
-    var id = $(this).val();
+  //   var id = $(this).val();
 
-    $.ajax({
-      type: "GET",
-      url: "/overlayValue/"+id,
-      dataType: "json",
-      success: function(response) {
-        if (response.status == 404) {
-          document.getElementById("overlayLabel").innerText="Get Access";
-          $("#overlayLabel").css("color", "#FF0000");
-        } else {
-          document.getElementById("overlayLabel").innerText="Enrolled";
-          $("#overlayLabel").css("color", "#31ce3c");
-        }
-      }
-    });
-    });
+  //   $.ajax({
+  //     type: "GET",
+  //     url: "/overlayValue/"+id,
+  //     dataType: "json",
+  //     success: function(response) {
+        
+  //       if (response.status == 404) {
+  //         $('.overlay').text('Get Access');
+  //         $(".overlay").css("color", "#8B0000");
+  //       } else {
+  //         $('.overlay').text('Enrolled');
+  //         $(".overlay").css("color", "#31ce3c");
+  //       }
+  //     }
+  //   });
+  //   });
 
-  
-
-
+  //   $(document).on('mouseout', '.editClassSchedule', function(e) {
+  //     e.preventDefault();
+  //           $('.overlay').text('');
+  //           $(".overlay").css("color", "#FFFFFF");
+  //   })
 
     $(document).on('click', '.editClassSchedule', function(e) {
         e.preventDefault();

@@ -241,12 +241,14 @@ class ScheduleController extends Controller
     
    public function studentViewSchedule() {
 
-    $schedules = DB::table('schedules')
-    ->join('class_lists', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
+    $schedules = DB::table('class_lists')
+    ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
     ->join('users', 'users.idNumber', '=', 'schedules.userID')
     ->get();
+   
+   
 
-    
+
     foreach ($schedules as $schedule) {
         $schedule->startTime = Carbon::parse($schedule->startTime)->format('g:i A');
         $schedule->endTime = Carbon::parse($schedule->endTime)->format('g:i A');
@@ -261,7 +263,7 @@ class ScheduleController extends Controller
     ->where('student_masterlists.userID', '=', $userID)
     ->get();
 
-    return view('student.student-view-schedule',['schedules' => $schedules, 'classSchedules' => $classSchedules]);
+    return view('student.student-view-schedule',['schedules' => $schedules, 'classSchedules' => $classSchedules, 'userID' => $userID]);
 }
 // -----------End student functions-----------
 }

@@ -74,8 +74,8 @@
                                             <img src="{{$schedule->avatar }}" class="img-fluid rounded-circle d-inline-block" alt="Avatar Image">
                                         </div>
 
-                                        <h5 class="card-title">{{$schedule->instFirstName }} {{$schedule->instLastName }}</h5>
-                                   
+                                        <h5 class="card-title">{{$schedule->instFirstName }} {{$schedule->instLastName }} </h5>
+                                      
 
                                     <ul class="list-unstyled d-inline-block mb-5">
                                         <li class="d-flex mb-1">
@@ -138,13 +138,29 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="overlay" id=overlayLabel></div>
+                                @php
+                                    $classID=$schedule->classID;
+                                    $link= mysqli_connect("localhost","root","");
+                                    mysqli_select_db($link, "chronolock");
+                                    $query = "SELECT * FROM student_masterlists WHERE userID ='$userID' AND classID ='$classID'";
+                                    $result = mysqli_query($link,$query); 
+                               @endphp
+                             
+                                    @if (mysqli_num_rows($result) === 1 ) 
+                                       <div class="overlay" style="color: #31ce3c">Enrolled</div>
+                                    @else
+                                        <div class="overlay" style="color: #FF7F7F">Get Access</div>
+                                    
+                                    @endif
+                                    
+                                    
                                         </button>
                                     </div>
                                 </div>
                             </div>
                             @endforeach
                         </div>
+
 
                     <!-- Contact Modal -->
                     <div class="modal fade" id="join-class-schedule-modal" tabindex="-1" role="dialog" aria-labelledby="joinClass" aria-hidden="true">
@@ -178,7 +194,7 @@
                                             <div class="profile-content-left px-4">
                                                 <div class="card text-center px-0 border-0">
                                                     <div class="card-img mx-auto">
-                                                        <img class="rounded-circle" id="instructorAvatar" alt="user image">
+                                                        <img class="rounded-circle" id="instructorAvatar" alt="Instructor Profile">
                                                     </div>
 
                                                     <div class="card-body">

@@ -87,25 +87,5 @@ class StudentMasterListController extends Controller
         }
     }
 
-    public function overlayValue($id){
-        $ID = Auth::id();
-        $userID =DB::table('users')->where('id', $ID)->value('idNumber');
-        $MIT_ID =DB::table('student_masterlists')->where('classID', '=', $id)->where('userID','=', $userID)->value('MIT_ID');
-
-        $validation = StudentMasterlist::select('classID')
-        ->find($MIT_ID);
-
-       
-        if ($validation) {
-            return response()->json([
-                'status' => 200,
-                'validation' => $validation,
-            ]);
-        } else {
-            return response()->json([
-                'status' => 404,
-            ]);
-        }
-
-    }
+  
 }

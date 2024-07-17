@@ -139,5 +139,7 @@ Route::group(['middleware' => ['auth', 'student']], function ()
     Route::get('/student-view-schedule', [ScheduleController::class, 'studentViewSchedule'])->name('studentViewSchedule');
     Route::get('/studentEditSchedule/{id}', [StudentMasterListController::class, 'studentEditSchedule'])->name('studentEditSchedule');
     Route::post('/student-view-schedule', [StudentMasterListController::class, 'enroll'])->name('enroll'); 
-    Route::get('/overlayValue/{id}', [StudentMasterListController::class, 'overlayValue'])->name('overlayValue');
+
+    Route::get('/student-view-attendance', [AttendanceController::class, 'studentViewAttendance'])->name('studentViewAttendance');
+  
 });

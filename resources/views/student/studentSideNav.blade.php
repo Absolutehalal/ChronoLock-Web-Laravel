@@ -55,7 +55,7 @@
                             @foreach($classSchedules as $classSchedule)
                             @csrf
                                 <li>
-                                <a class="section" href="">{{$classSchedule->courseCode}}</a>
+                                <a class="section" href="{{route('studentViewAttendance')}}">{{$classSchedule->courseCode}}</a>
                                 </li>
                             @endforeach
                     </li>
