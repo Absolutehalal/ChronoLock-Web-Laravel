@@ -45,7 +45,7 @@
           <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="{{ route('studentIndex') }}">Dashboard</a></li>
-              <li class="breadcrumb-item active"><a href="{{ route('studentViewAttendance') }}">My Attendance</a></li>
+              <li class="breadcrumb-item active"><a href="{{ route('studentViewAttendance', request()->route('id')) }}">My Attendance</a></li>
             </ol>
           </nav>
 
@@ -59,61 +59,40 @@
         <div class="col-xl-8">
         <div class="card card-default shadow">
           <div class="card-header">
-            <h1>Student Realtime Attendance</h1>
+@if($h1=='')           
+<h1> My Attendance</h1>
+@else
+<h1> My @php echo $h1 @endphp Attendance</h1>
+@endif            
           </div>
           <div class="card-body" style=" overflow-x:auto;">
             <table  class="table table-bordered table-hover " >
               <thead class="table-dark">
                 <tr>
-                  <th>Hi</th>
-                  <th>Hi</th>
-                  <th>Hi</th>
-                  <th>Hi</th>
-                  <th>Hi</th>
-                  <th>Hi</th>
-                  <th>Hi</th>
-                  <th>Hi</th>
-                  <th>Hi</th>
-                  <th>Hi</th>
-                
-                
-                 
+                  <th>Date</th>
+                  <th>Time</th>
+                  <th>Instructor</th>
+                  <th>Program</th>
+                  <th>Year & Section</th> 
+                  <th>Course</th>
+                  <th>Status</th>
+                  <th>Remark</th>
                 </tr>
               </thead>
               <tbody>
-                
+                @foreach($myAttendances as $myAttendance)
                 <tr>
-                  <td>cell</td>
-                  <td>cell</td>
-                  <td>cell</td>
-                  <td>cell</td>
-                  <td>cell</td>
-                  <td>cell</td>
-                  <td>cell</td>
-                  <td>cell</td>
-                 
-                  <td>
-                 cell
-                  </td>
-                  <th>
-                    <!-- Example single primary button -->
-                    <div class="dropdown d-inline-block">
-                      <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
-                        Actions
-                        </button>
-                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <button class="dropdown-item editAttendanceBtn" type="button" data-toggle="modal" data-target="#updateAttendanceModal" value="">
-                          <i class="mdi mdi-circle-edit-outline text-warning"></i>
-                          Edit</button>
-                        <button class="dropdown-item deleteAttendanceBtn" type="button" data-toggle="modal" data-target="#deleteAttendanceModal" value="">
-                          <i class="mdi mdi-trash-can text-danger"></i>
-                          Delete</button>
-                      </div>
-                    </div>
-                  </th>
+                  <td>{{$myAttendance->date}}</td>
+                  <td>{{$myAttendance->time}}</td>
+                  <td>{{$myAttendance->instFirstName}} {{$myAttendance->instLastName}}</td>
+                  <td>{{$myAttendance->program}}</td>
+                  <td>{{$myAttendance->year}}-{{$myAttendance->section}}</td>
+                  <td>{{$myAttendance->courseCode}}-{{$myAttendance->courseName}}</td>
+                  <td>{{$myAttendance->status}}</td>
+                  <td>{{$myAttendance->remark}}</td>
 
                 </tr>
-                
+                @endforeach
               </tbody>
             </table>
           </div>
@@ -188,4 +167,6 @@
       </div>
     </div>
   </div>
+
+
   @include('footer')

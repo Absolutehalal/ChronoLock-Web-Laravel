@@ -486,17 +486,37 @@ class AttendanceController extends Controller
 
 
         //---------------START STUDENT ATTENDANCES FUNCTIONS------------
-        public function studentViewAttendance(){
-            $id = Auth::id();
-            $userID =DB::table('users')->where('id', $id)->value('idNumber');
+        public function studentViewAttendance($id){
+
+            $decode = base64_decode($id);
+
+            $ID = Auth::id();
+            $userID =DB::table('users')->where('id', $ID)->value('idNumber');
+
             $classSchedules = DB::table('student_masterlists')
             ->join('class_lists', 'class_lists.classID', '=', 'student_masterlists.classID')
             ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
             ->where('student_masterlists.userID', '=', $userID)
             ->get();
 
-            
-            return view ('student.student-attendance',['classSchedules' => $classSchedules]);
+            $myAttendances = DB::table('student_masterlists') 
+            ->join('users', 'student_masterlists.userID', '=', 'users.idNumber')
+            ->join('class_lists', 'class_lists.classID', '=', 'student_masterlists.classID')
+            ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
+            ->join('attendances', function (JoinClause $join) {
+                $join->on('student_masterlists.classID', '=', 'attendances.classID');
+                $join->on('student_masterlists.userID', '=', 'attendances.userID');
+            })
+            ->where('attendances.classID', '=', $decode)
+            ->where('users.userType', '=', 'Student')
+            ->get();
+
+            $h1 =  DB::table('class_lists')
+            ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
+            ->where('class_lists.classID', '=', $decode)
+            ->value('courseName');
+
+            return view ('student.student-attendance', ['classSchedules' => $classSchedules, 'myAttendances' => $myAttendances, 'h1' => $h1]);
         }
         //---------------END STUDENT ATTENDANCES FUNCTIONS------------
 }

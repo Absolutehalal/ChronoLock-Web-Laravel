@@ -399,7 +399,8 @@ class UserController extends Controller
     public function studentIndex() {
         $id = Auth::id();
         $userID =DB::table('users')->where('id', $id)->value('idNumber');
-        $classSchedules = DB::table('student_masterlists')
+
+    $classSchedules = DB::table('student_masterlists')
     ->join('class_lists', 'class_lists.classID', '=', 'student_masterlists.classID')
     ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
     ->where('student_masterlists.userID', '=', $userID)

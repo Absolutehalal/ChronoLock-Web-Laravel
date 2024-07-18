@@ -28,11 +28,22 @@ $(document).ready(function() {
   //           $(".overlay").css("color", "#FFFFFF");
   //   })
 
-    $(document).on('click', '.editClassSchedule', function(e) {
+    $(document).on('pointerup', '.editClassSchedule', function(e) {
         e.preventDefault();
-    
+   
         var id = $(this).val();
-      
+        var hideID = btoa(id);
+        let classState = $(this).find(".overlay").text();
+        var state = console.log(classState);
+        if(classState =="Enrolled"){
+       $('#join-class-schedule-modal').on('show.bs.modal', function (e) {
+             e.preventDefault();
+});
+        window.location.href = "/student-view-attendance/"+ hideID
+
+        }else{
+         
+           
         $.ajax({
           type: "GET",
           url: "/studentEditSchedule/"+id,
@@ -62,12 +73,17 @@ $(document).ready(function() {
             }
           }
         });
+        }
         });
 
 
 
-
-
+        $(document).on('click', '.editClassSchedule', function(e) {
+          e.preventDefault();
+          $('#join-class-schedule-modal').on('show.bs.modal', function (e) {
+            e.returnValue = true;
+      });
+    });
 
         $(document).on('click', '.createMasterList', function(e) {
           e.preventDefault();

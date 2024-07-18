@@ -26,7 +26,7 @@ return new class extends Migration
             $table->time('endTime')->nullable();
             $table->date('startDate')->nullable();
             $table->date('endDate')->nullable();
-            $table->string('status')->nullable();
+            $table->string('scheduleStatus')->nullable();
             $table->string('day')->nullable();
 
             $table->timestamps();

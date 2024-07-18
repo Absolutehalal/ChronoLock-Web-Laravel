@@ -140,6 +140,6 @@ Route::group(['middleware' => ['auth', 'student']], function ()
     Route::get('/studentEditSchedule/{id}', [StudentMasterListController::class, 'studentEditSchedule'])->name('studentEditSchedule');
     Route::post('/student-view-schedule', [StudentMasterListController::class, 'enroll'])->name('enroll'); 
 
-    Route::get('/student-view-attendance', [AttendanceController::class, 'studentViewAttendance'])->name('studentViewAttendance');
+    Route::get('/student-view-attendance/{id}', [AttendanceController::class, 'studentViewAttendance'])->name('studentViewAttendance');
   
 });

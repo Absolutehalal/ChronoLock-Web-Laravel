@@ -257,6 +257,8 @@ class ScheduleController extends Controller
     $id = Auth::id();
     $userID =DB::table('users')->where('id', $id)->value('idNumber');
 
+
+
     $classSchedules = DB::table('student_masterlists')
     ->join('class_lists', 'class_lists.classID', '=', 'student_masterlists.classID')
     ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
