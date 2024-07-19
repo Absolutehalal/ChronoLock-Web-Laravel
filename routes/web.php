@@ -43,6 +43,7 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
 
     Route::get('/userManagementPage', [UserController::class, 'userManagement'])->name('userManagement');
     Route::post('/userManagementPage/import', [UserController::class, 'import_excel'])->name('user.import');
+   
     // Route::get('/fetchUsers', [UserController::class, 'fetchUsers'])->name('fetchUsers'); => reserve
     // Route::put('/userManagementPage/{user}/update', [UserController::class, 'updateUser'])->name('updateUser'); => deletable but pasiguro
     Route::post('/userManagementPage', [UserController::class, 'addUser'])->name('addUser');
@@ -59,7 +60,10 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
 
     //--------END userManagement ROUTES-----------
     
-    Route::get('/scheduleManagementPage', [UserController::class, 'adminScheduleManagement'])->name('adminScheduleManagement');
+    //--------START schedule Management Routes----------
+    Route::get('/scheduleManagementPage', [UserController::class, 'adminScheduleManagement'])->name('adminScheduleManagement'); 
+    Route::post('/scheduleManagementPage/import', [ScheduleController::class, 'import_schedule'])->name('schedule.import');
+    //--------END schedule Management Routes----------
 
      //--------START Admin student attendance Management ROUTES---------  
 

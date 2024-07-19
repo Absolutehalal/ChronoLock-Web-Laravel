@@ -520,7 +520,7 @@
 
       });
 
-      $(document).on('click', '.editBtn', function(e) {
+      $(document).on('mouseover', '.editBtn', function(e) {
         e.preventDefault();
         var id = $(this).val();
         // console.log(userID);
@@ -657,7 +657,7 @@
           }
         });
       });
-      $(document).on('click', '.deleteBtn', function() {
+      $(document).on('mouseover', '.deleteBtn', function() {
         var id = $(this).val();
         $('#deleteID').val(id);
       });

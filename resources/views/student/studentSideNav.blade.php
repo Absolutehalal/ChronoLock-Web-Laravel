@@ -13,7 +13,7 @@
       <!-- Aplication Brand -->
       <div class="app-brand">
         <a href="{{ route('studentIndex') }}">
-          <img src="images/logo.png" alt="Mono" />
+          <img src="{{asset('images/logo.png')}}" alt="Mono" />
           <span class="brand-name">ChronoLock</span>
         </a>
       </div>

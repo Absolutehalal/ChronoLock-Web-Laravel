@@ -53,12 +53,33 @@
             <p class="text-center date-time mb-3" id="liveDateTime">Your Date and Time</p>
           </div>
         </div>
+        <div class="row">
+          <div class="col-md-9 d-flex justify-content-start mb-2">
+            <form action="{{ route('schedule.import') }}" method="post" enctype="multipart/form-data">
+              @csrf
 
+              <div class="dropdown d-inline-block mr-2">
+                <button class="btn btn-primary btn-sm fw-bold" type="submit">
+                  <i class="mdi mdi-file-check"></i>
+                  Import
+                </button>
+              </div>
 
+              <div class="dropdown d-inline-block">
+                <div class="custom-file rounded">
+                  <input type="file" class="custom-file-input" id="excel-file" name="excel-file" required>
+                  <label class="custom-file-label" for="excel-file">Choose file</label>
+                  <div class="invalid-feedback">Example invalid custom file feedback</div>
+                </div>
+              </div>
+            </form>
+          </div>
+  </div>
         <div class="card card-default shadow">
           <div class="card-header card-header-border-bottom d-flex justify-content-between align-items-center">
             <h1>Schedule</h1>
             <div class="row">
+
               <div class="col-xl-12 col-md-12 d-flex justify-content-end">
                 <!-- Sort button -->
                 <div class="dropdown d-inline-block mb-3 mr-3">

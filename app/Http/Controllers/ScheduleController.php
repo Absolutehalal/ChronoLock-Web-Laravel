@@ -4,16 +4,64 @@ namespace App\Http\Controllers;
 use App\Models\Attendance;
 use App\Models\Schedule;
 use App\Models\ClassList;
+use App\Imports\ScheduleImport;
 use App\Models\StudentMasterlist;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 use Carbon\Carbon;
+
+
 
 class ScheduleController extends Controller
 {
+//-----------Start Admin functions-----------
+
+public function import_schedule(Request $request)
+{
+    try {
+
+        // Validate the incoming request to ensure a file is present
+        $request->validate([
+            'excel-file' => 'required|file|mimes:xls,xlsx'
+        ]);
+
+        // Create a new instance of the import class
+        $import = new ScheduleImport;
+
+        // Import the file using Laravel Excel
+        Excel::import($import, $request->file('excel-file'));
+
+        toast('Import successfully.', 'success')->autoClose(3000)->timerProgressBar()->showCloseButton();
+
+        // Redirect back to the form page
+        return redirect()->intended('/scheduleManagementPage');
+    // } catch(\PDOException $a){
+    //     toast('success.', 'error')->autoClose(3000)->timerProgressBar()->showCloseButton();
+       
+    //     // return redirect()->intended('/scheduleManagementPage');
+    // }
+    }catch (\Exception $e) {
+
+        toast('Import failed.', 'error')->autoClose(3000)->timerProgressBar()->showCloseButton();
+        echo $e;
+    }
+}
+
+
+//-----------END Admin functions-----------
+
+
+
+
+
+
+
+
+
   //-----------Start instructor functions-----------
 
 
