@@ -1,7 +1,7 @@
 
   $(document).ready(function() {
 
-$(document).on('click', '.editAttendanceBtn', function(e) {
+$(document).on('mouseover', '.editAttendanceBtn', function(e) {
     e.preventDefault();
     var id = $(this).val();
     // console.log(userID);
@@ -99,7 +99,7 @@ $(document).on('click', '.editAttendanceBtn', function(e) {
   });
 
 
-  $(document).on('click', '.deleteAttendanceBtn', function() {
+  $(document).on('mouseover', '.deleteAttendanceBtn', function() {
     var id = $(this).val(); 
     $('#deleteAttendanceID').val(id);
   });

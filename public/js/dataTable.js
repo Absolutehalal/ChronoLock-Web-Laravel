@@ -240,9 +240,48 @@ studentTable.on("draw", function () {
 
 // End Logs Table------------
 
+//----Start Class List Table-----
+
+var studentListTable = $("#studentListTable").DataTable({
+    // scrollX: true,
+    // "searching": false, order: [[0, 'asc']],
+    rowReorder: true,
+    pagingType: "simple_numbers",
+    responsive: true,
+    rowReorder: {
+        selector: "td:nth-child(2)",
+    },
+    // stateSave: false,
+    mark: true,
+    language: {
+        searchPlaceholder: "Search Here",
+    },
 });
 
-$(document).ready(function () {
+// Highlight search term
+studentListTable.on("draw", function () {
+    var body = $(studentListTable.table().body());
+    var searchTerm = studentListTable.search();
+
+    // Clear previous highlights
+    body.unmark();
+
+    if (searchTerm) {
+        // Highlight new search term in specific columns (excluding the Actions column)
+        body.find("td").each(function () {
+            var cell = $(this);
+            // Highlight in all columns except the last one (assuming it's the Actions column)
+            if (!cell.hasClass("action-cell")) {
+                cell.mark(searchTerm);
+            }
+        });
+    }
+});
+
+
+//----End Class List Table-----
+
+
     // Initialize DataTable
     var attendanceTable = $("#AttendanceTable").DataTable({
         // scrollX: true,
@@ -515,6 +554,23 @@ $(".filter-student-id").on("click", function (e) {
 
         // Toggle active class for visual indication
         $(".filter-status").removeClass("active");
+        $(this).addClass("active");
+    });
+
+// Class Lists Status
+    $(".filter-student-status").on("click", function (e) {
+        e.preventDefault();
+        var studentStatus = $(this).data("value");
+
+        // Update the selected status in a hidden input (if needed)
+        $("#selectedStudentStatus").val(studentStatus);
+
+        // Filter DataTable based on the selected status
+       
+        studentListTable.column(4).search("^" + studentStatus + "$", true, false).draw();
+
+        // Toggle active class for visual indication
+        $(".filter-student-status").removeClass("active");
         $(this).addClass("active");
     });
 

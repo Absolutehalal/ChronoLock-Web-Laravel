@@ -19,6 +19,7 @@ class FacultyAttendanceAndListController extends Controller
         $studAttendances = DB::table('student_masterlists')
             ->join('users', 'student_masterlists.userID', '=', 'users.idNumber')
             ->join('class_lists', 'student_masterlists.classID', '=', 'class_lists.classID')
+            ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
             ->join('attendances', function (JoinClause $join) {
                 $join->on('student_masterlists.classID', '=', 'attendances.classID');
                 $join->on('student_masterlists.userID', '=', 'attendances.userID');
@@ -30,6 +31,7 @@ class FacultyAttendanceAndListController extends Controller
         $students = DB::table('student_masterlists')
             ->join('users', 'student_masterlists.userID', '=', 'users.idNumber')
             ->join('class_lists', 'student_masterlists.classID', '=', 'class_lists.classID')
+            ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
             ->where('student_masterlists.classID', '=', $decode)
             ->where('users.userType', '=', 'Student')
             ->distinct()
@@ -45,7 +47,7 @@ class FacultyAttendanceAndListController extends Controller
         $studentRemarks = Attendance::select('remark')
             ->join('users', 'attendances.userID', '=', 'users.idNumber')
             ->distinct()
-            ->orderByRaw("FIELD(attendances.remark, 'PRESENT', 'ABSENT', 'LATE')")
+            ->orderByRaw("FIELD(remark, 'PRESENT', 'ABSENT', 'LATE')")
             ->where('users.userType', '=', 'Student')
             ->get();
 

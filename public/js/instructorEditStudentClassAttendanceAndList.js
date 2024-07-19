@@ -11,7 +11,7 @@ var activeTab = localStorage.getItem('activeTab');
             $('#pills-tab button[href="' + activeTab + '"]').tab('show');
         }
         
-$(document).on('click', '.editAttendanceBtn', function(e) {
+$(document).on('mouseover', '.editAttendanceBtn', function(e) {
     e.preventDefault();
 
     var id = $(this).val();
@@ -110,7 +110,7 @@ $(document).on('click', '.editAttendanceBtn', function(e) {
 
 
 
-    $(document).on('click', '.deleteAttendanceBtn', function() {
+    $(document).on('mouseover', '.deleteAttendanceBtn', function() {
       var id = $(this).val(); 
       $('#deleteAttendanceID').val(id);
     });
@@ -163,7 +163,7 @@ $(document).on('click', '.editAttendanceBtn', function(e) {
 
 
 
-    $(document).on('click', '.editListBtn', function(e) {
+    $(document).on('mouseover', '.editListBtn', function(e) {
       e.preventDefault();
   
       var listID = $(this).val();
@@ -264,7 +264,7 @@ $(document).on('click', '.editAttendanceBtn', function(e) {
       });
 
 
-      $(document).on('click', '.deleteListBtn', function() {
+      $(document).on('mouseover', '.deleteListBtn', function() {
         var id = $(this).val(); 
         $('#deleteListID').val(id);
       });

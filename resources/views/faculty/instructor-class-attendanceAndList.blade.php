@@ -245,7 +245,7 @@
                     <div class="card-body ">
 
 
-                        <table id="example" class="table table-bordered table-hover" style="width:100%">
+                        <table id="AttendanceTable" class="table table-bordered table-hover" style="width:100%">
                             <thead class="table-dark">
                                 <tr>
                                     <th>Date</th>
@@ -266,7 +266,7 @@
                           <td>{{ date('h:i A', strtotime($studAttendance->time)) }}</td>
                           <td>{{$studAttendance->firstName}} {{$studAttendance->lastName}}</td>
                           <td>{{$studAttendance->idNumber}}</td>
-                          <td>{{$studAttendance->course}}</td>
+                          <td>{{$studAttendance->program}}</td>
                           <td>{{$studAttendance->year}}-{{$studAttendance->section}} </td>
                           <td>
                             @if($studAttendance->remark == 'Present')
@@ -371,19 +371,19 @@
     <!-- Sort button -->
     <div class="dropdown d-inline-block mb-3">
       <form method="GET" action="">
-        <button class="btn btn-primary btn-sm dropdown-toggle fw-bold" type="button" id="statusDropdown" data-toggle="dropdown" aria-expanded="false">
+        <button class="btn btn-primary btn-sm dropdown-toggle fw-bold" type="button" id="studentStatusDropdown" data-toggle="dropdown" aria-expanded="false">
           <i class="mdi mdi-alpha-s-box"></i>
           Status
         </button>
-        <div class="dropdown-menu scrollable-dropdown" aria-labelledby="statusDropdown">
+        <div class="dropdown-menu scrollable-dropdown" aria-labelledby="studentStatusDropdown">
           @foreach($studentStatus as $studentStatus)
           @csrf
-          <a class="dropdown-item status-item filter-status" data-value="{{ $studentStatus->status }}" href="#">
+          <a class="dropdown-item status-item filter-student-status" data-value="{{ $studentStatus->status }}" href="#">
             {{ $studentStatus->status }}
           </a>
           @endforeach
         </div>
-        <input type="hidden" name="status" id="selectedStatus">
+        <input type="hidden" name="studentStatus" id="selectedStudentStatus">
       </form>
     </div>
   </div>
@@ -408,7 +408,7 @@
   <div class="card-body ">
 
 
-    <table id="exampleTable" class="table table-bordered table-hover no-wrap" style="width:100%">
+    <table id="studentListTable" class="table table-bordered table-hover no-wrap" style="width:100%">
       <thead class="table-dark">
         <tr>
           <th>Student Name</th>
@@ -651,7 +651,7 @@
 
 <script>
 const remarkDropdown = `<i class="mdi mdi-alpha-r-box"></i> Remark`;
-const statusDropdown = `<i class="mdi mdi-alpha-s-box"></i> Status`;
+const studentStatusDropdown = `<i class="mdi mdi-alpha-s-box"></i> Status`;
 document.addEventListener("DOMContentLoaded", function() {
 document.querySelectorAll('.remark-item').forEach(function(item) {
 item.addEventListener('click', function(e) {
@@ -662,7 +662,7 @@ document.getElementById('remarkDropdown').innerHTML = `<i class="mdi mdi-alpha-r
 document.querySelectorAll('.status-item').forEach(function(item) {
 item.addEventListener('click', function(e) {
 e.preventDefault();
-document.getElementById('statusDropdown').innerHTML = `<i class="mdi mdi-alpha-s-box"></i> ${this.textContent}`;
+document.getElementById('studentStatusDropdown').innerHTML = `<i class="mdi mdi-alpha-s-box"></i> ${this.textContent}`;
 });
 });
 });
@@ -672,7 +672,7 @@ document.getElementById("remarkDropdown").innerHTML = remarkDropdown;
 });
 $("#resetButton").on("click", function(e) {
 e.preventDefault();
-document.getElementById("statusDropdown").innerHTML = statusDropdown;
+document.getElementById("studentStatusDropdown").innerHTML = studentStatusDropdown;
 });
 </script>
 

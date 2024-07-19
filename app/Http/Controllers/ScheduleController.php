@@ -61,49 +61,40 @@ class ScheduleController extends Controller
             ]);
         } else {
             $classList = ClassList::find($id);
-            // $updatedID = DB::table('class_lists')->where('classID', $id)->value('classID');
-            // $semester = DB::table('class_lists')->where('classID', $updatedID)->value('semester');
-            // $enrollmentKey = DB::table('class_lists')->where('classID', $updatedID)->value('enrollmentKey');
-            // $idNumber = DB::table('class_lists')->where('classID', $updatedID)->value('userID');
+            $scheduleID = DB::table('class_lists')->where('classID', $id)->value('scheduleID');
+            $courseCode = DB::table('schedules')->where('scheduleID', $scheduleID)->value('courseCode');
+            $courseName = DB::table('schedules')->where('scheduleID', $scheduleID)->value('courseName');
+
+            $semester = DB::table('class_lists')->where('classID', $id)->value('semester');
+            $enrollmentKey = DB::table('class_lists')->where('classID', $id)->value('enrollmentKey');
 
             if ($classList) {
                 $classList->semester = $request->input('updateSemester');
                 $classList->enrollmentKey = $request->input('updateEnrollmentKey');
                 $classList->update();
 
-                // Start Logs   
-                // $userType = DB::table('class_lists')
-                // ->join('users', 'student_masterlists.userID', '=', 'users.idNumber')
-                //     ->where('classID', $updatedID)
-                //     ->value('userType');
+                // Start Logs
+                $inputSemester = $request->input('updateSemester');
+                $inputEnrollmentKey=  $request->input('updateEnrollmentKey');
 
-                // $inputSemester =  $request->input('updateSemester');
-                // $inputEnrollmentKey=  $request->input('updateEnrollmentKey');
+                $id = Auth::id();
+                $userID = DB::table('users')->where('id', $id)->value('idNumber');
+                date_default_timezone_set("Asia/Manila");
+                $date = date("Y-m-d");
+                $time = date("H:i:s");
 
-                // $id = Auth::id();
-                // $userID = DB::table('users')->where('id', $id)->value('idNumber');
-                // date_default_timezone_set("Asia/Manila");
-                // $date = date("Y-m-d");
-                // $time = date("H:i:s");
+                if (($inputSemester == $semester)&&($enrollmentKey == $inputEnrollmentKey)) {
+                    $action = "Attempt update on $courseCode - $courseName";
+                } else {
+                    $action = "Updated $courseCode-$courseName Class List";
+                }
 
-                // if (($inputSemester == $semester)) {
-                //     $action = "Attempt update on $idNumber semester";
-                // } else {
-                //     $action = "Updated $idNumber-$userType semester";
-                // }
-
-                // if (($inputEnrollmentKey == $enrollmentKey)) {
-                //     $action = "Attempt update on $idNumber enrollment key";
-                // } else {
-                //     $action = "Updated $idNumber-$userType enrollment key";
-                // }   
-
-                // DB::table('user_logs')->insert([
-                //     'userID' => $userID,
-                //     'action' => $action,
-                //     'date' => $date,
-                //     'time' => $time,
-                // ]);
+                DB::table('user_logs')->insert([
+                    'userID' => $userID,
+                    'action' => $action,
+                    'date' => $date,
+                    'time' => $time,
+                ]);
                 // END Logs
 
                 return response()->json([
@@ -120,11 +111,37 @@ class ScheduleController extends Controller
 
     public function deleteClassList($id)
     {
+        
         $record = ClassList::find($id);
-
+        $deletedID=DB::table('class_lists')->where('classID', $id)->value('scheduleID');
+        $program = DB::table('schedules')->where('scheduleID', $deletedID)->value('program');
+        $year = DB::table('schedules')->where('scheduleID', $deletedID)->value('year');
+        $section = DB::table('schedules')->where('scheduleID', $deletedID)->value('section');
+        $courseCode = DB::table('schedules')->where('scheduleID', $deletedID)->value('courseCode');
+        $courseName = DB::table('schedules')->where('scheduleID', $deletedID)->value('courseName');
+        $schedule = Schedule::find($deletedID);
         if ($record) {
 
             $record->delete();
+            $schedule->scheduleStatus = 'unscheduled';
+            $schedule->update();
+
+                 // Start Logs
+            
+          
+                 $ID = Auth::id();
+                 $userID =DB::table('users')->where('id', $ID)->value('idNumber');
+                 date_default_timezone_set("Asia/Manila");
+                 $date = date("Y-m-d");
+                 $time = date("H:i:s");
+                 $action = "Deleted  $program-$year$section Class Lists ($courseCode-$courseName)";
+                 DB::table('user_logs')->insert([
+                     'userID' => $userID,
+                     'action' => $action,
+                     'date' => $date,
+                     'time' => $time,
+                 ]);
+                 // END Logs
 
             return response()->json([
                 'status' => 200,
@@ -148,7 +165,7 @@ class ScheduleController extends Controller
         ->get();
 
         $schedules = DB::table('schedules')
-        ->where('schedules.status', '=', 'unscheduled')
+        ->where('schedules.scheduleStatus', '=', 'unscheduled')
         ->get();
 
         return view('faculty.instructor-class-schedules', ['schedules' => $schedules, 'classes' => $classes]);
@@ -213,7 +230,7 @@ class ScheduleController extends Controller
                 $classList->semester = $request->input('semester');
                 $classList->enrollmentKey = $request->input('enrollmentKey');
                 $classList->save();
-                $schedule->status = 'Has Schedule';
+                $schedule->scheduleStatus = 'Has Schedule';
                 $schedule->update();
                 // Start Logs
                 $id = Auth::id();

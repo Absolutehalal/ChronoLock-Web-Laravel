@@ -15,7 +15,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <!-- Ajax edit Class List -->
-  <script defer src="{{asset('js/editClassList.js')}}"></script>
+  <script defer src="{{asset('js/instructorEditClassList.js')}}"></script>
 
     <title>ChronoLock Instructor-Class Record</title>
 
@@ -70,7 +70,7 @@
                             <thead class="table-dark">
                                 <tr>
                                     <th>#</th>
-                                    <th>Course</th>
+                                    <th>Program</th>
                                     <th>Year & Section</th>
                                     <th>Course Code</th>
                                     <th>Course Name</th>
@@ -83,7 +83,7 @@
                                 @foreach ($classes as $classes)
                                 <tr>
                                     <td>{{ $classes->classID }}</td>
-                                    <td>{{ $classes->course }}</td>
+                                    <td>{{ $classes->program }}</td>
                                     <td>{{ $classes->year }}-{{ $classes->section }}</td>
                                     <td>{{ $classes->courseCode }}</td>
                                     <td>{{ $classes->courseName }}</td>
@@ -143,8 +143,8 @@
                             <div class="col-lg-6">
                                 <ul id="editCourseError"></ul>
                                 <div class="form-group">
-                                    <label>Course</label>
-                                    <input type="text" class="updateCourse form-control border border-dark" id="edit_course" name="update_course" readonly>
+                                    <label>Program</label>
+                                    <input type="text" class="updateProgram form-control border border-dark" id="edit_program" name="update_program" readonly>
                                 </div>
                             </div>
                             <div class="col-lg-6">
@@ -203,7 +203,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="deleteClassList" style="text-align:center;">Delete Student Attendance</h5>
+                    <h5 class="modal-title" id="deleteClassList" style="text-align:center;">Delete Class List</h5>
                     <button type="button" class="close" id="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -217,7 +217,7 @@
                             <i class="fa-solid fa-trash-can text-danger" style="text-align:center; font-size:50px; padding:1rem;"></i>
                         </div>
                         <div class="row">
-                            <h4 style="text-align:center;"> Are you sure you want to delete this in your Class List?</h4>
+                            <h4 style="text-align:center;"> Are you sure you want to delete this Class?</h4>
                         </div>
                 </div> <!-- Modal Boday End-->
 
@@ -236,4 +236,4 @@
 
 
 
-  @include('footer')
+ 

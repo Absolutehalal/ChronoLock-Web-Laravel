@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreign('userID')->references('idNumber')->on('users')->cascadeOnUpdate();
             $table->string('status')->nullable();
             $table->unsignedBigInteger('classID')->nullable();
-            $table->foreign('classID')->references('classID')->on('class_lists')->cascadeOnUpdate();
+            $table->foreign('classID')->references('classID')->on('class_lists')->cascadeOnUpdate()->cascadeOnDelete();
             $table->timestamps();
         });
     }

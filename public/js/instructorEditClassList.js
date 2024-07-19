@@ -1,6 +1,6 @@
 $(document).ready(function () {
     // EDIT CLASS LIST
-    $(document).on("click", ".editClassListBtn", function (e) {
+    $(document).on("mouseover", ".editClassListBtn", function (e) {
         e.preventDefault();
 
         var id = $(this).val();
@@ -22,8 +22,8 @@ $(document).ready(function () {
                 } else {
                     // console.log(response.classList);
                     $("#classListUpdateID").val(response.classList.classID);
-                    $("#edit_course").val(response.classList.course);
-                    $("#edit_yearSection").val(response.classList.year + "-" + response.classList.section);
+                    $("#edit_program").val(response.schedule.program);
+                    $("#edit_yearSection").val(response.schedule.year + "-" + response.schedule.section);
                     $("#edit_courseCode").val(response.schedule.courseCode);
                     $("#edit_courseName").val(response.schedule.courseName);
                     $("#edit_semester").val(response.classList.semester);
@@ -112,7 +112,7 @@ $(document).ready(function () {
 
 
     // DELETE CLASS LIST
-    $(document).on("click", ".deleteClassListBtn", function () {
+    $(document).on("mouseover", ".deleteClassListBtn", function () {
         var id = $(this).val();
         $("#deleteClassListID").val(id);
     });

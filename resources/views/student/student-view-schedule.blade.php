@@ -69,7 +69,7 @@
                         <div class="col-lg-6 col-xl-4 col-xxl-3">
                             <div class="card card-default shadow mt-7">
                                 <div class="card-body text-center">
-                                    <button class="editClassSchedule mb-2" href="javascript:void(0)" data-toggle="modal" data-target="#join-class-schedule-modal" value="{{$schedule->classID}}">
+                                    <button class="editClassSchedule mb-2" href="javascript:void(0)" data-target="#join-class-schedule-modal" value="{{$schedule->classID}}">
                                         <div class="image mb-3 d-inline-flex mt-n8">
                                             <img src="{{$schedule->avatar }}" class="img-fluid rounded-circle d-inline-block" alt="Avatar Image">
                                         </div>
@@ -161,8 +161,7 @@
                             @endforeach
                         </div>
 
-
-                    <!-- Contact Modal -->
+                    <!-- Schedule Modal -->
                     <div class="modal fade" id="join-class-schedule-modal" tabindex="-1" role="dialog" aria-labelledby="joinClass" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered modal-md" role="document">
                             <div class="modal-content">
@@ -183,7 +182,7 @@
                                         </div>
                                     </div>
 
-                                    <button type="button" class="btn-close-icon" data-dismiss="modal" aria-label="Close">
+                                    <button type="button" class="btn-close-icon"onclick="$('#join-class-schedule-modal').modal('hide');" aria-label="Close">
                                         <i class="mdi mdi-close"></i>
                                     </button>
                                 </div>

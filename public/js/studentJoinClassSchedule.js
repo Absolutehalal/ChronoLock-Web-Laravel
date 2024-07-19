@@ -1,49 +1,33 @@
 $(document).ready(function() {
 
-  // $(document).on('mouseover', '.editClassSchedule', function(e) {
-  //   e.preventDefault();
-
-  //   var id = $(this).val();
-
-  //   $.ajax({
-  //     type: "GET",
-  //     url: "/overlayValue/"+id,
-  //     dataType: "json",
-  //     success: function(response) {
-        
-  //       if (response.status == 404) {
-  //         $('.overlay').text('Get Access');
-  //         $(".overlay").css("color", "#8B0000");
-  //       } else {
-  //         $('.overlay').text('Enrolled');
-  //         $(".overlay").css("color", "#31ce3c");
-  //       }
-  //     }
-  //   });
-  //   });
-
-  //   $(document).on('mouseout', '.editClassSchedule', function(e) {
-  //     e.preventDefault();
-  //           $('.overlay').text('');
-  //           $(".overlay").css("color", "#FFFFFF");
-  //   })
-
     $(document).on('pointerup', '.editClassSchedule', function(e) {
         e.preventDefault();
-   
+
+     
+
         var id = $(this).val();
         var hideID = btoa(id);
         let classState = $(this).find(".overlay").text();
-        var state = console.log(classState);
+        console.log(classState);
         if(classState =="Enrolled"){
-       $('#join-class-schedule-modal').on('show.bs.modal', function (e) {
-             e.preventDefault();
-});
-        window.location.href = "/student-view-attendance/"+ hideID
+        
+          Swal.fire({
+            title: 'Redirecting...',
+            html: 'Please wait...',
+            allowEscapeKey: false,
+            allowOutsideClick: false,
+            timer:2000,
+            didOpen: () => {
+              Swal.showLoading()
+            }
+          });
 
-        }else{
-         
-           
+       window.location.href = "/student-view-attendance/"+ hideID
+
+        }else if(classState =="Get Access"){
+        target = $(".editClassSchedule").attr('data-target');
+          $(target).modal('show');
+    
         $.ajax({
           type: "GET",
           url: "/studentEditSchedule/"+id,
@@ -54,6 +38,7 @@ $(document).ready(function() {
                 icon: "error",
                 title: "Oops...",
                 text: "No Class Schedule Found!!!",
+                
               });
               $("#join-class-schedule-modal .close").click()
             } else {
@@ -75,15 +60,6 @@ $(document).ready(function() {
         });
         }
         });
-
-
-
-        $(document).on('click', '.editClassSchedule', function(e) {
-          e.preventDefault();
-          $('#join-class-schedule-modal').on('show.bs.modal', function (e) {
-            e.returnValue = true;
-      });
-    });
 
         $(document).on('click', '.createMasterList', function(e) {
           e.preventDefault();
