@@ -12,16 +12,18 @@ class Schedule extends Model
 
     protected $fillable = [
         'courseCode',
+        'courseName',
         'userID',
         'instFirstName',
         'instLastName',
-        'course',
+        'program',
         'section',
         'year',
         'startTime',
         'endTime',
         'startDate',
         'endDate',
+        'scheduleStatus',
         'day'
     ];
     public function classList()

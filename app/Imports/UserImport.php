@@ -93,7 +93,7 @@ class UserImport implements ToCollection, ToModel, WithHeadingRow
         } 
         else {
             // Create new user
-            return User::create([
+             User::create([
                 'firstName' => $row['firstname'],
                 'lastName'  => $row['lastname' ],
                 'email'     => $row['email'    ],

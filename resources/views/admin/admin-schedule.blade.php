@@ -47,7 +47,6 @@
             <li class="breadcrumb-item active"><a href="{{ route('adminScheduleManagement') }}">Schedule</a></li>
             </ol>
           </nav>
-
           <!-- Live Date and Time -->
           <div>
             <p class="text-center date-time mb-3" id="liveDateTime">Your Date and Time</p>

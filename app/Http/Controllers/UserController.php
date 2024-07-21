@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Attendance;
+use App\Models\Schedule;
 
 
 use Illuminate\Http\Request;
@@ -362,6 +363,8 @@ class UserController extends Controller
     //schedule management page
     public function adminScheduleManagement()
     {
+       
+      
         return view('admin.admin-schedule');
     }
 

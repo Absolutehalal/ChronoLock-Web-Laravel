@@ -6,6 +6,7 @@ use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\ToModel;
 use App\Models\Schedule;
+use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -14,12 +15,13 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\Importable;
 
 
-
+$GLOBALS["status1"]=null;
+$GLOBALS["status"]= null;
 class ScheduleImport implements ToCollection, ToModel, WithHeadingRow
 {
 
     use Importable;
-
+    
     private $current = 0;
 
     private $errors = [];
@@ -33,21 +35,36 @@ class ScheduleImport implements ToCollection, ToModel, WithHeadingRow
 
     public function model(array $row)
     {
+       
+        
         // Find Schedule by courseCode
         $existingSchedule = Schedule::where('courseCode', $row['coursecode'])->first();
-        $existingUserID =DB::table('users')->where('idNumber', $row['uid'])->value('idNumber');
-        if($existingUserID===""){
-            return redirect(route('adminScheduleManagement'))->with('success', 'bobo');
-        //     toast('User Does Not Exist!!!!', 'error')->autoClose(3000)->timerProgressBar()->showCloseButton();
-        //    alert('bobo');
-        }else{
-            // toast('User Does Not Exist!!!!.', 'error')->showConfirmButton('Confirm', '#aaa')->showCancelButton($btnText = 'Cancel', $btnColor = '#3085d6')->showCloseButton();
+        $existingID =  Schedule::select('userID')
+        ->where('userID',  $row['userid'])->where('courseCode', $row['coursecode'])
+        ->first();
+        $changeInstructorID =  Schedule::select('userID')->where('userID', '!=', $row['userid'] )->get();
+       
+            if($changeInstructorID->isNotEmpty()){
+                $GLOBALS["status"]="String";
+            }
+
+        if($existingID){
+            $GLOBALS["status1"]="String";
+        }
+
             if ($existingSchedule) {
-            // Update existing schedule
+                if(($GLOBALS["status1"] == "String") && ($GLOBALS["status"] == "String")){
+                    Alert::warning('Warning', 'Warning!! Instructor Assigned to an existing Schedule was Changed and Updated some Schedule');
+                }  else if(($GLOBALS["status"] == null)){
+                    Alert::warning('Warning', 'Updated Schedule');
+                 } else if($GLOBALS["status"]=="String"){
+                    Alert::warning('Warning', 'Warning!! Instructor Assigned to an existing Schedule was Updated');
+                 }
+
             $existingSchedule->update([
                 'courseCode' => $row['coursecode'], // 'database name'  => $row['excel file header']
                 'courseName'  => $row['coursename' ],
-                'userID'  => $row['uid'      ],
+                'userID'  => $row['userid'      ],
                 'instFirstName'  => $row['instructorfirstname'     ],
                 'instLastName'  => $row['instructorlastname'     ],
                 'program'  => $row['program'     ],
@@ -62,7 +79,7 @@ class ScheduleImport implements ToCollection, ToModel, WithHeadingRow
             // Start Logs
              $id = Auth::id();
              $userID =DB::table('users')->where('id', $id)->value('idNumber');
-             $courseCode =  $row['CourseCode'];
+             $courseCode =  $row['coursecode'];
              date_default_timezone_set("Asia/Manila");
              $date = date("Y-m-d");
              $time = date("H:i:s");
@@ -74,16 +91,15 @@ class ScheduleImport implements ToCollection, ToModel, WithHeadingRow
                  'time' => $time,
              ]);
              // END Logs
+
             return $existingSchedule; // Return the updated schedule
 
-           
-        } 
-        else {
+        }else {
             // Create new user
-            return Schedule::create([
+           Schedule::create([
                 'courseCode' => $row['coursecode'], // 'database name'  => $row['excel file header']
                 'courseName'  => $row['coursename' ],
-                'userID'  => $row['uid'      ],
+                'userID'  => $row['userid'      ],
                 'instFirstName'  => $row['instructorfirstname'     ],
                 'instLastName'  => $row['instructorlastname'     ],
                 'program'  => $row['program'     ],
@@ -91,12 +107,11 @@ class ScheduleImport implements ToCollection, ToModel, WithHeadingRow
                 'year'  => $row['year'     ],
                 'startTime'  => $row['starttime'     ],
                 'endTime'  => $row['endtime'     ],
-                'startDate'  => date("Y-m-d", $row['startdate'     ]),
-                'endDate'  => date("Y-m-d", $row['startdate'     ]),
-                'scheduleStatus'  => 'unscheduled',
+                'startDate'  => $row['startdate'     ],
+                'endDate'  => $row['enddate'     ],
+                'scheduleStatus'  => "unscheduled",
                 'day' => $row['day'     ],
-                
-             
+
             ]);
               // Start Logs
               $id = Auth::id();
@@ -116,7 +131,7 @@ class ScheduleImport implements ToCollection, ToModel, WithHeadingRow
         }
     }
 
-}
+
     public function getErrors()
     {
         return $this->errors;

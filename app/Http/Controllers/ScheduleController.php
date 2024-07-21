@@ -35,19 +35,18 @@ public function import_schedule(Request $request)
         // Import the file using Laravel Excel
         Excel::import($import, $request->file('excel-file'));
 
-        toast('Import successfully.', 'success')->autoClose(3000)->timerProgressBar()->showCloseButton();
+        toast('Import successfully.', 'success')->autoClose(5000)->timerProgressBar()->showCloseButton();
 
         // Redirect back to the form page
         return redirect()->intended('/scheduleManagementPage');
-    // } catch(\PDOException $a){
-    //     toast('success.', 'error')->autoClose(3000)->timerProgressBar()->showCloseButton();
-       
-    //     // return redirect()->intended('/scheduleManagementPage');
-    // }
+    } catch(\PDOException $a){
+        toast('Fix Excel File Data', 'warning')->footer('A User in Excel File Does not Exist!!!')->autoClose(5000)->timerProgressBar()->showCloseButton();
+        return redirect()->intended('/scheduleManagementPage');
+    
     }catch (\Exception $e) {
 
         toast('Import failed.', 'error')->autoClose(3000)->timerProgressBar()->showCloseButton();
-        echo $e;
+        return redirect()->intended('/scheduleManagementPage');
     }
 }
 
