@@ -143,6 +143,7 @@
 
 <script src="{{asset('plugins/fullcalendar/core-4.3.1/main.min.js')}}"></script>
 <script src="{{asset('plugins/fullcalendar/daygrid-4.3.0/main.min.js')}}"></script>
+<script src="{{asset('plugins/daterangepicker/moment.min.js')}}"></script>
 <script src="{{asset('js/calendar.js')}}"></script>
 
 <script src="{{asset('plugins/prism/prism.js')}}"></script>
