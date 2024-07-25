@@ -38,7 +38,7 @@ $(document).ready(function() {
                 icon: "error",
                 title: "Oops...",
                 text: "No Class Schedule Found!!!",
-                
+
               });
               $("#join-class-schedule-modal .close").click()
             } else {

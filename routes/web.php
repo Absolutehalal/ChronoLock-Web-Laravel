@@ -62,6 +62,9 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     
     //--------START schedule Management Routes----------
     Route::get('/scheduleManagementPage', [UserController::class, 'adminScheduleManagement'])->name('adminScheduleManagement'); 
+    Route::get('/getSchedules', [UserController::class, 'getSchedules'])->name('getSchedules'); 
+    Route::post('/createMakeUpSchedule', [UserController::class, 'createSchedule'])->name('createSchedule'); 
+    Route::get('/createMakeUpSchedule/{id}', [UserController::class, 'editRegularSchedule'])->name('editRegularSchedule'); 
     Route::post('/scheduleManagementPage/import', [ScheduleController::class, 'import_schedule'])->name('schedule.import');
     //--------END schedule Management Routes----------
 

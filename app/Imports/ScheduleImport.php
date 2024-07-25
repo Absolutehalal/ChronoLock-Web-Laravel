@@ -60,6 +60,22 @@ class ScheduleImport implements ToCollection, ToModel, WithHeadingRow
                  } else if($GLOBALS["status"]=="String"){
                     Alert::warning('Warning', 'Warning!! Instructor Assigned to an existing Schedule was Updated');
                  }
+                 if($row['day'     ]=="Sunday"){
+                    $day = 0;
+                 }else if($row['day'     ]=="Monday"){
+                    $day = 1;
+                 }else if($row['day'     ]=="Tuesday"){
+                    $day = 2;
+                 }else if($row['day'     ]=="Wednesday"){
+                    $day = 3;
+                 }else if($row['day'     ]=="Thursday"){
+                    $day = 4;
+                 }else if($row['day'     ]=="Friday"){
+                    $day = 5;
+                 }else if($row['day'     ]=="Saturday"){
+                    $day = 6;
+                 }
+                 
 
             $existingSchedule->update([
                 'courseCode' => $row['coursecode'], // 'database name'  => $row['excel file header']
@@ -74,7 +90,7 @@ class ScheduleImport implements ToCollection, ToModel, WithHeadingRow
                 'endTime'  => $row['endtime'     ],
                 'startDate'  => $row['startdate'     ],
                 'endDate'  => $row['enddate'     ],
-                'day' => $row['day'     ],
+                'day' => $day,
                 ]);  
             // Start Logs
              $id = Auth::id();
@@ -96,6 +112,22 @@ class ScheduleImport implements ToCollection, ToModel, WithHeadingRow
 
         }else {
             // Create new user
+
+            if($row['day'     ]=="Sunday"){
+                $day = 0;
+             }else if($row['day'     ]=="Monday"){
+                $day = 1;
+             }else if($row['day'     ]=="Tuesday"){
+                $day = 2;
+             }else if($row['day'     ]=="Wednesday"){
+                $day = 3;
+             }else if($row['day'     ]=="Thursday"){
+                $day = 4;
+             }else if($row['day'     ]=="Friday"){
+                $day = 5;
+             }else if($row['day'     ]=="Saturday"){
+                $day = 6;
+             }
            Schedule::create([
                 'courseCode' => $row['coursecode'], // 'database name'  => $row['excel file header']
                 'courseName'  => $row['coursename' ],
@@ -110,7 +142,7 @@ class ScheduleImport implements ToCollection, ToModel, WithHeadingRow
                 'startDate'  => $row['startdate'     ],
                 'endDate'  => $row['enddate'     ],
                 'scheduleStatus'  => "unscheduled",
-                'day' => $row['day'     ],
+                'day' => $day,
 
             ]);
               // Start Logs

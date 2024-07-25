@@ -12913,9 +12913,12 @@ code {
 .full-calendar .fc-event {
     border: 1px solid transparent;
 }
-.full-calendar .fc-event,
-.full-calendar .fc-event-dot {
+.full-calendar .fc-event {
+    cursor: pointer;
+}
+.full-calendar .fc-event:hover{
     background-color: #04082e;
+   
     cursor: pointer;
 }
 .full-calendar .fc-button-primary {
@@ -12950,12 +12953,52 @@ code {
     background-color: #ffffff;
     border-color: #04082e;
 }
+.full-calendar .fc-dayGridWeek-button {
+    color: #000000;
+    background-color: #ffffff;
+    border-color: #000000;
+}
+.full-calendar .fc-dayGridWeek-button {
+    box-shadow: none !important;
+}
+.full-calendar .fc-dayGridWeek-button:hover {
+    color: #ffffff;
+    background-color: #000000;
+    border-color: #ffffff;
+}
+.full-calendar .fc-dayGridDay-button {
+    color: #000000;
+    background-color: #ffffff;
+    border-color: #000000;
+}
+.full-calendar .fc-dayGridDay-button {
+    box-shadow: none !important;
+}
+.full-calendar .fc-dayGridDay-button:hover {
+    color: #ffffff;
+    background-color: #000000;
+    border-color: #ffffff;
+}
+
+.full-calendar .fc-dayGridMonth-button {
+    color: #000000;
+    background-color: #ffffff;
+    border-color: #000000;
+}
+.full-calendar .fc-dayGridMonth-button {
+    box-shadow: none !important;
+}
+.full-calendar .fc-dayGridMonth-button:hover {
+    color: #ffffff;
+    background-color: #000000;
+    border-color: #ffffff;
+}
 .full-calendar .fc-button:disabled {
     opacity: 1;
 }
 .full-calendar .fc-button-primary:not(:disabled).fc-button-active,
 .full-calendar .fc-button-primary:not(:disabled):active {
-    background-color: transparent;
+    background-color: #000000;
     border-color: #ddd;
 }
 .full-calendar .fc td,
@@ -18270,4 +18313,6 @@ html[dir="rtl"] .sidebar li > a .caret:before {
   .card:hover .overlay {
     opacity: 1;
   }
+
+
 /*# sourceMappingURL=style.css.map */

@@ -52,6 +52,7 @@
             <p class="text-center date-time mb-3" id="liveDateTime">Your Date and Time</p>
           </div>
         </div>
+       
         <div class="row">
           <div class="col-md-9 d-flex justify-content-start mb-2">
             <form action="{{ route('schedule.import') }}" method="post" enctype="multipart/form-data">
@@ -95,8 +96,9 @@
                 </div>
               </div>
             </div>
+  </div>
             <div class="card-body">
-              <div class=" full-calendar mb-5">
+              <div class="full-calendar mb-5">
                 <div id="calendar"></div>
               </div>
             </div>
@@ -112,7 +114,71 @@
   </div>
   </div>
 
+  <div class="modal fade" id="makeUpScheduleModal" tabindex="-1" role="dialog" aria-labelledby="MakeUpSchedule" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="MakeUpSchedule">Make Up Schedule</h5>
+          <button type="button" class="close" onclick="$('#makeUpScheduleModal').modal('hide');" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form method="post" action="{{route('createSchedule')}}">
+            @csrf
+            @method('post')
 
+            <div class="row">
+              <div class="col-lg-12">
+                <ul id="titleError"></ul>
+                <div class="form-group">
+                  <label>Schedule Title</label>
+                  <input type="text" class="scheduleTitle form-control border border-dark border border-dark" id="scheduleTitle" name="scheduleTitle" placeholder="Enter Title" />
+                </div>
+              </div>
+
+              <div class="col-lg-6">
+              <ul id="startTimeError"></ul>
+                <div class="dropdown d-inline-block mb-3">
+                <label>Start Time</label>
+                <div class="input-group date" id="timepicker">
+                  <input type="datetime-local" class="startTime form-control border border-primary" placeholder="Time" id="selectedTime" name="startTime">
+                  <div class="input-group-append">
+                    <div class="input-group text-light btn btn-primary btn-sm" id="timeIcon">
+                      <i class="mdi mdi-clock "></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              </div>
+              <div class="col-lg-6">
+              <ul id="endTimeError"></ul>
+              <div class="dropdown d-inline-block mb-3">
+                <label>End Time</label>
+                <div class="input-group date" id="timepicker">
+                  <input type="datetime-local" class="endTime form-control border border-primary" placeholder="Time" id="selectedTime" name="endTime">
+                  <div class="input-group-append">
+                    <div class="input-group text-light btn btn-primary btn-sm" id="timeIcon">
+                      <i class="mdi mdi-clock "></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              </div>
+            </div> <!-- Modal Boday End-->
+
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger btn-pill" onclick="$('#makeUpScheduleModal').modal('hide');">Close</button>
+              <button type="submit" class="btn btn-primary btn-pill addMakeUpSchedule">Create</button>
+            </div>
+
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
   <!-- Add Event Button  -->
   <div class="modal fade" id="modal-add-event" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -135,19 +201,16 @@
             </div>
 
             <div class="row">
-              <div class="col-lg-6">
-                <div class="form-group">
-                  <label for="firstName">Date</label>
-                  <div class="input-group mb-2">
-                    <div class="input-group-prepend border border-dark">
-                      <span class="input-group-text py-1">
-                        <i class="mdi mdi-calendar-range"></i>
-                      </span>
-                    </div>
-                    <input type="text" class="form-control  border border-dark" name="dateRange" value="" placeholder="Date" />
+            <div class="dropdown d-inline-block mb-3">
+              <div class="input-group date" id="datepicker">
+                <input type="datetime-local" class="form-control border border-primary" placeholder="Date" id="selectedDate">
+                <div class="input-group-append">
+                  <div class="input-group text-light btn btn-primary btn-sm" id="dateIcon">
+                    <i class="mdi mdi-calendar "></i>
                   </div>
                 </div>
               </div>
+            </div>
 
               <div class="col-lg-6">
                 <div class="form-group">
@@ -180,6 +243,121 @@
   </div>
   </div>
 
+
+
+<!-- Update REGULAR SCHEDULE MODAL -->
+  <div class="modal fade" id="updateRegularScheduleModal" tabindex="-1" role="dialog" aria-labelledby="updateRegularSchedule" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="updateRegularSchedule">Edit Regular Schedule</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+
+         
+
+      
+          <form method="post">
+            @csrf
+            @method('put')
+          <ul id="regularScheduleError"></ul>
+            <input type="hidden" id="regularScheduleID" class="id form-control ">
+
+            <div class="row">
+              <div class="col-lg-6">
+                <ul id="editCourseCodeError"></ul>
+                <div class="form-group">
+                  <label>Course Code</label>
+                  <input type="text" class="updateCourseCode form-control border border-dark border border-dark" id="edit_course_code" name="updateCourseCode" placeholder="Enter New Course Code">
+            
+                </div>
+              </div>
+
+              <div class="col-lg-6">
+                <ul id="editCourseNameError"></ul>
+                <div class="form-group">
+                  <label>Course Name</label>
+                  <input type="text" class="updateCourseName form-control border border-dark border border-dark" id="edit_course_name" name="updateCourseName" placeholder="Enter New Course Name">
+               
+                </div>
+              </div>
+
+              <div class="col-lg-6">
+              <ul id="startTimeError"></ul>
+                <div class="dropdown d-inline-block mb-3">
+                <label>Start Time</label>
+                <div class="input-group date" id="timepicker">
+                  <input type="datetime-local" class="startTime form-control border border-primary" placeholder="Time" id="selectedTime" name="startTime">
+                  <div class="input-group-append">
+                    <div class="input-group text-light btn btn-primary btn-sm" id="timeIcon">
+                      <i class="mdi mdi-clock "></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              </div>
+
+              <div class="col-lg-6">
+              <ul id="endTimeError"></ul>
+              <div class="dropdown d-inline-block mb-3">
+                <label>End Time</label>
+                <div class="input-group date" id="timepicker">
+                  <input type="datetime-local" class="endTime form-control border border-primary" placeholder="Time" id="selectedTime" name="endTime">
+                  <div class="input-group-append">
+                    <div class="input-group text-light btn btn-primary btn-sm" id="timeIcon">
+                      <i class="mdi mdi-clock "></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              </div>
+
+              <div class="col-lg-6">
+              <ul id="startDateError"></ul>
+              <div class="dropdown d-inline-block mb-3">
+              <label>Start Date</label>
+              <div class="input-group date" id="datepicker">
+                <input type="datetime-local" class="startDate form-control border border-primary" placeholder="Date" id="selectedDate">
+                <div class="input-group-append">
+                  <div class="input-group text-light btn btn-primary btn-sm" id="dateIcon">
+                    <i class="mdi mdi-calendar "></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+            </div>
+
+            <div class="col-lg-6">
+              <ul id="endDateError"></ul>
+              <div class="dropdown d-inline-block mb-3">
+              <label>End Date</label>
+              <div class="input-group date" id="datepicker">
+                <input type="datetime-local" class="endDate form-control border border-primary" placeholder="Date" id="selectedDate">
+                <div class="input-group-append">
+                  <div class="input-group text-light btn btn-primary btn-sm" id="dateIcon">
+                    <i class="mdi mdi-calendar "></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+            </div>
+            </div> <!-- Modal Boday End-->
+
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger btn-pill" id="updateClose" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary btn-pill updateRegularSchedule">Update</button>
+            </div>
+
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
   <!-- Footer -->
   <!-- <footer class="footer mt-auto">
           <div class="copyright bg-white">

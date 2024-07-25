@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Attendance;
 use App\Models\Schedule;
+use App\Models\MakeUpSchedule;
 
 
 use Illuminate\Http\Request;
@@ -361,11 +362,112 @@ class UserController extends Controller
         return redirect('/userManagementPage');
     }
     //schedule management page
+    public function getSchedules(){
+        $ERPSchedules = array();
+        $schedule = Schedule::all();
+        $makeUpSchedule = MakeUpSchedule::all();
+        foreach($makeUpSchedule as $makeUpSchedule){
+            $ERPSchedules[] = [
+                'id'=>   $makeUpSchedule->MUS_ID,
+                'title' => $makeUpSchedule->title,
+                'startTime' => $makeUpSchedule->startTime,
+                'endTime' => $makeUpSchedule->endTime,
+                'startRecur' => $makeUpSchedule->startDate,
+                'endRecur' => $makeUpSchedule->endDate,
+                'color'=> 'red',
+                'description' => 'makeUpSchedule',
+            ];
+        }
+        foreach($schedule as $schedule){
+            $ERPSchedules[] = [
+                'id' =>  $schedule->scheduleID,
+                'title' => $schedule->courseName,
+                'startTime' => $schedule->startTime,
+                'endTime' => $schedule->endTime,
+                'startRecur' => $schedule->startDate,
+                'endRecur' => $schedule->endDate,
+                'daysOfWeek' => $schedule->day,
+                'color'=> 'green',
+                'description' => 'regularSchedule',
+            ];
+        }
+            return response()->json([
+                'status' => 200,
+                'ERPSchedules' => $ERPSchedules,
+            ]);
+
+    }
     public function adminScheduleManagement()
-    {
-       
-      
+    { 
+        // $user = Schedule::find(65);
+        // $users= Schedule::where('courseCode', 'ITEC222')->get();
         return view('admin.admin-schedule');
+    }
+
+    public function createSchedule(Request $request){
+        $validator = Validator::make($request->all(), [
+            'scheduleTitle' => 'required',
+            'startTime' => 'required',
+            'endTime' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 400,
+                'errors' => $validator->messages()
+            ]);
+        }else { 
+            $id = Auth::id();
+            $userID =DB::table('users')->where('id', $id)->value('idNumber');
+            $newSchedule = $request->input('scheduleTitle');
+          
+            $startTime=date("H:i:s", strtotime($request->input('startTime')));
+            $endTime=date("H:i:s", strtotime($request->input('endTime')));
+
+            $makeUpSchedule = new MakeUpSchedule;
+            $makeUpSchedule->title = $userID;
+            $makeUpSchedule->title = $request->input('scheduleTitle');
+            $makeUpSchedule->startTime = $startTime;
+            $makeUpSchedule->endTime = $endTime;
+            $makeUpSchedule->startDate = $request->start_date;
+            $makeUpSchedule->endDate = $request->end_date;
+            $makeUpSchedule->save();
+
+            // Start Logs
+            $userType =  $request->input('userType');
+            $email =  $request->input('email');
+           
+            date_default_timezone_set("Asia/Manila");
+            $date = date("Y-m-d");
+            $time = date("H:i:s");
+            $action = "Added Make Up Schedule ($newSchedule)";
+            DB::table('user_logs')->insert([
+                'userID' => $userID,
+                'action' => $action,
+                'date' => $date,
+                'time' => $time,
+            ]);
+            // END Logs
+            return response()->json([
+                'status' => 200,
+            ]);
+        }
+    }
+    
+    public function editRegularSchedule($id)
+    {
+
+        $schedule = Schedule::find($id);
+        if ($schedule) {
+            return response()->json([
+                'status' => 200,
+                'schedule' => $schedule,
+            ]);
+        } else {
+            return response()->json([
+                'status' => 404,
+            ]);
+        }
     }
 
     // //report generation page
