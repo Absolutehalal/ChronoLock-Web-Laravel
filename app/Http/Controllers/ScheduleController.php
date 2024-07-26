@@ -259,7 +259,8 @@ public function import_schedule(Request $request)
         ]);
         $scheduleID = $request->get('scheduleID');
         $inputUserID = $request->get('userID');
-        $userID =DB::table('schedules')->where('scheduleID', $scheduleID)->value('userID');
+        $id = Auth::id();
+        $userID =DB::table('users')->where('id', $id)->value('idNumber');
         $schedule = Schedule::find($scheduleID);
         if ($validator->fails()) {
             return response()->json([
@@ -280,8 +281,6 @@ public function import_schedule(Request $request)
                 $schedule->scheduleStatus = 'Has Schedule';
                 $schedule->update();
                 // Start Logs
-                $id = Auth::id();
-                $userID =DB::table('users')->where('id', $id)->value('idNumber');
                 date_default_timezone_set("Asia/Manila");
                 $date = date("Y-m-d");
                 $time = date("H:i:s");

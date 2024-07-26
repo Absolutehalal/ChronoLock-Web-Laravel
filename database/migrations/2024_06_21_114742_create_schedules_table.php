@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('schedules', function (Blueprint $table) {
             $table->id('scheduleID');
-            $table->string('courseCode')->nullable();
+            $table->string('courseCode')->nullable()->unique();
             $table->string('courseName')->nullable();
             $table->string('userID')->nullable();
             $table->foreign('userID')->references('idNumber')->on('users')->cascadeOnUpdate();
@@ -26,9 +26,10 @@ return new class extends Migration
             $table->time('endTime')->nullable();
             $table->date('startDate')->nullable();
             $table->date('endDate')->nullable();
-            $table->string('scheduleStatus')->nullable();
             $table->string('day')->nullable();
-
+            $table->string('scheduleStatus')->nullable();
+            $table->string('scheduleTitle')->nullable()->unique();
+            $table->string('scheduleType')->nullable();
             $table->timestamps();
         });
     }

@@ -507,6 +507,21 @@ $(".filter-student-id").on("click", function (e) {
 
 //end student filter
 
+//start schedule faculty filter
+
+$(".filter-faculty-id").on("click", function (e) {
+    e.preventDefault();
+    var facultyID = $(this).data("value");
+
+    // Update the selected inst_name in a hidden input (if needed)
+    $("#selectedFacultyID").val(facultyID);
+
+    // Toggle active class for visual indication
+    $(".filter-faculty-id").removeClass("active");
+    $(this).addClass("active");
+});
+
+//end schedule faculty filter
     //ADMIN FILTERS END-------------
 
     // STUDENT FILTERS

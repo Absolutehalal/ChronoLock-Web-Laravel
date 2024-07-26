@@ -12918,7 +12918,6 @@ code {
 }
 .full-calendar .fc-event:hover{
     background-color: #04082e;
-   
     cursor: pointer;
 }
 .full-calendar .fc-button-primary {
@@ -12953,28 +12952,28 @@ code {
     background-color: #ffffff;
     border-color: #04082e;
 }
-.full-calendar .fc-dayGridWeek-button {
+.full-calendar .fc-timeGridWeek-button {
     color: #000000;
     background-color: #ffffff;
     border-color: #000000;
 }
-.full-calendar .fc-dayGridWeek-button {
+.full-calendar .fc-timeGridWeek-button {
     box-shadow: none !important;
 }
-.full-calendar .fc-dayGridWeek-button:hover {
+.full-calendar .fc-timeGridWeek-button:hover {
     color: #ffffff;
     background-color: #000000;
     border-color: #ffffff;
 }
-.full-calendar .fc-dayGridDay-button {
+.full-calendar .fc-timeGridDay-button {
     color: #000000;
     background-color: #ffffff;
     border-color: #000000;
 }
-.full-calendar .fc-dayGridDay-button {
+.full-calendar .fc-timeGridDay-button {
     box-shadow: none !important;
 }
-.full-calendar .fc-dayGridDay-button:hover {
+.full-calendar .fc-timeGridDay-button:hover {
     color: #ffffff;
     background-color: #000000;
     border-color: #ffffff;

@@ -63,8 +63,14 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     //--------START schedule Management Routes----------
     Route::get('/scheduleManagementPage', [UserController::class, 'adminScheduleManagement'])->name('adminScheduleManagement'); 
     Route::get('/getSchedules', [UserController::class, 'getSchedules'])->name('getSchedules'); 
-    Route::post('/createMakeUpSchedule', [UserController::class, 'createSchedule'])->name('createSchedule'); 
-    Route::get('/createMakeUpSchedule/{id}', [UserController::class, 'editRegularSchedule'])->name('editRegularSchedule'); 
+    Route::post('/createMakeUpSchedule', [UserController::class, 'createSchedule'])->name('createSchedule');
+    Route::post('/createRegularSchedule', [UserController::class, 'createRegularSchedule'])->name('createRegularSchedule');
+    Route::get('/editMakeUpSchedule/{id}', [UserController::class, 'editMakeUpSchedule'])->name('editMakeUpSchedule'); 
+    Route::put('/updateMakeUpSchedule/{id}', [UserController::class, 'updateMakeUpSchedule'])->name('updateMakeUpSchedule'); 
+    Route::get('/editRegularSchedule/{id}', [UserController::class, 'editRegularSchedule'])->name('editRegularSchedule'); 
+    Route::put('/updateRegularSchedule/{id}', [UserController::class, 'updateRegularSchedule'])->name('updateRegularSchedule'); 
+    Route::delete('/deleteRegularSchedule/{id}', [UserController::class, 'deleteRegularSchedule'])->name('deleteRegularSchedule');
+    Route::delete('/deleteMakeUpSchedule/{id}', [UserController::class, 'deleteMakeUpSchedule'])->name('deleteMakeUpSchedule');
     Route::post('/scheduleManagementPage/import', [ScheduleController::class, 'import_schedule'])->name('schedule.import');
     //--------END schedule Management Routes----------
 
@@ -138,7 +144,7 @@ Route::delete('/instructorDeleteStudentList/{id}', [FacultyAttendanceAndListCont
 
 
 
-Route::group(['middleware' => ['auth', 'student']], function () 
+Route::group(['middleware' => ['auth', 'student']], function ()
 {
     Route::get('/student-dashboard', [UserController::class, 'studentIndex'])->name('studentIndex');
 

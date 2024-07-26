@@ -499,6 +499,15 @@ class AttendanceController extends Controller
             ->where('student_masterlists.userID', '=', $userID)
             ->get();
 
+            $myClassmates = DB::table('student_masterlists') 
+            ->join('users', 'student_masterlists.userID', '=', 'users.idNumber')
+            ->join('class_lists', 'class_lists.classID', '=', 'student_masterlists.classID')
+            ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
+            ->where('student_masterlists.classID', '=', $decode)
+            ->where('userType', '=', 'Student')
+            ->where('idNumber', '!=', $userID)
+            ->get();
+
             $myAttendances = DB::table('student_masterlists') 
             ->join('users', 'student_masterlists.userID', '=', 'users.idNumber')
             ->join('class_lists', 'class_lists.classID', '=', 'student_masterlists.classID')
@@ -508,7 +517,7 @@ class AttendanceController extends Controller
                 $join->on('student_masterlists.userID', '=', 'attendances.userID');
             })
             ->where('attendances.classID', '=', $decode)
-            ->where('users.userType', '=', 'Student')
+            ->where('userType', '=', 'Student')
             ->get();
 
             $h1 =  DB::table('class_lists')
@@ -516,7 +525,12 @@ class AttendanceController extends Controller
             ->where('class_lists.classID', '=', $decode)
             ->value('courseName');
 
-            return view ('student.student-attendance', ['classSchedules' => $classSchedules, 'myAttendances' => $myAttendances, 'h1' => $h1]);
+            $programTitle =  DB::table('class_lists')
+            ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
+            ->where('class_lists.classID', '=', $decode)
+            ->value('program');
+
+            return view ('student.student-attendance', ['classSchedules' => $classSchedules, 'myAttendances' => $myAttendances, 'h1' => $h1 ,'myClassmates' =>$myClassmates ,'programTitle'=>$programTitle]);
         }
         //---------------END STUDENT ATTENDANCES FUNCTIONS------------
 }

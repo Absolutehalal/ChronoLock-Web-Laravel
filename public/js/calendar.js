@@ -32,7 +32,7 @@ $(document).ready(function() {
     headerToolbar: {
       left: 'prev,next today',
             center: 'title',
-            right: 'dayGridMonth,dayGridWeek,dayGridDay'
+            right: 'dayGridMonth,timeGridWeek,timeGridDay'
     },
     events: schedules,
     selectable: true,
@@ -40,6 +40,17 @@ $(document).ready(function() {
    
       var start_date= info.startStr;
       var end_date=  info.endStr;
+
+      var currentDate=moment().format('YYYY-MM-DD');
+      if(start_date<currentDate){
+        Swal.fire({
+          icon: "warning",
+          title: "Warning",
+          text: "You Can't Create Schedule in past dates",
+          timer: 3000,
+          timerProgressBar: true
+    })
+      }else{
     $("#makeUpScheduleModal").modal('toggle');
    
 
@@ -51,10 +62,14 @@ $(document).ready(function() {
      
       var data = {
         'scheduleTitle': $('.scheduleTitle').val(),
-        'startTime': $('.startTime').val(),
-        'endTime': $('.endTime').val(),
+        'program': $('.program').val(),
+        'year': $('.year').val(),
+        'section': $('.section').val(),
+        'makeUpScheduleStartTime': $('.makeUpScheduleStartTime').val(),
+        'makeUpScheduleEndTime': $('.makeUpScheduleEndTime').val(),
         start_date,
-        end_date
+        end_date,
+        'faculty': $('.faculty').val(),
       }
       // console.log(data)
 
@@ -75,34 +90,58 @@ $(document).ready(function() {
           if (response.status == 400) {
             $('#titleError').html("");
             $('#titleError').addClass('error');
+            $('#programError').html("");
+            $('#programError').addClass('error');
+            $('#yearError').html("");
+            $('#yearError').addClass('error');
+            $('#sectionError').html("");
+            $('#sectionError').addClass('error');
             $('#startTimeError').html("");
             $('#startTimeError').addClass('error');
             $('#endTimeError').html("");
             $('#endTimeError').addClass('error');
+            $('#facultyError').html("");
+            $('#facultyError').addClass('error');
 
             $.each(response.errors.scheduleTitle, function(key, err_value) {
               $('#titleError').append('<li>' + err_value + '</li>');
             });
-            $.each(response.errors.startTime, function(key, err_value) {
+            $.each(response.errors.program, function(key, err_value) {
+              $('#programError').append('<li>' + err_value + '</li>');
+            });
+            $.each(response.errors.year, function(key, err_value) {
+              $('#yearError').append('<li>' + err_value + '</li>');
+            });
+            $.each(response.errors.section, function(key, err_value) {
+              $('#sectionError').append('<li>' + err_value + '</li>');
+            });
+            $.each(response.errors.makeUpScheduleStartTime, function(key, err_value) {
               $('#startTimeError').append('<li>' + err_value + '</li>');
             });
-            $.each(response.errors.endTime, function(key, err_value) {
+            $.each(response.errors.makeUpScheduleEndTime, function(key, err_value) {
               $('#endTimeError').append('<li>' + err_value + '</li>');
+            });
+            $.each(response.errors.faculty, function(key, err_value) {
+              $('#facultyError').append('<li>' + err_value + '</li>');
             });
             $('.addMakeUpSchedule').text('Create');
           }else if (response.status == 200) {
             $('#titleError').html("");
+            $('#programError').html("");
+            $('#yearError').html("");
+            $('#sectionError').html("");
             $('#startTimeError').html("");
             $('#endTimeError').html("");
+            $('#facultyError').html("");
             Swal.fire({
               icon: "success",
               title: "Success",
-              text: "User Created",
+              text: "Make up Schedule Created",
               confirmButtonText: "OK"
         }).then((result) => {
       if (result.isConfirmed) {
        $('.addMakeUpSchedule').text('Create');
-            $("#addUserModal .close").click()
+            $("#makeUpScheduleModal .close").click()
 
             location.reload();
         }
@@ -111,23 +150,140 @@ $(document).ready(function() {
         }
         });
     });
-
+  }
   },
 
   eventClick: function(info) {
-    
+
     var scheduleType =info.event.extendedProps.description
-    var id = info.event.id
+    var id = info.event.id   
+
     if(scheduleType=="regularSchedule"){
-     $("#updateRegularScheduleModal").modal('toggle');
+    $("#decisionRegularScheduleModal").modal('toggle');
+    }else if (scheduleType=="makeUpSchedule"){
+      $("#decisionMakeUpScheduleModal").modal('toggle');
+    }
+  // -----------Start delete make up schedule-----------
+    $(document).on('click', '.deleteMakeUpSchedule', function(e) {
+      e.preventDefault();
+
+        $("#decisionMakeUpScheduleModal").modal('hide');
+
+      $(document).on('click', '.forceDeleteMakeUpSchedule', function(e) {
+        e.preventDefault();
+
+        $(this).text('Deleting..');
+
+        $.ajaxSetup({
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
+        });
+
+        $.ajax({
+          type: "DELETE",
+          url: "/deleteMakeUpSchedule/" + id,
+          dataType: "json",
+          success: function(response) {
+            // console.log(response);
+            if (response.status == 404) {
+              $('.forceDeleteMakeUpSchedule').text('Delete');
+              $("#deleteMakeUpScheduleModal .close").click()
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "No Make Up Schedule Found",
+              });
+
+            } else {
+              $('.forceDeleteMakeUpSchedule').text('Delete');
+              $("#deleteMakeUpScheduleModal .close").click()
+              Swal.fire({
+                icon: "success",
+                title: "Successful",
+                text: "Make Up Schedule Deleted",
+                confirmButtonText: "OK"
+          }).then((result) => {
+        if (result.isConfirmed) {
+              location.reload();
+          }
+      });
+            }
+          }
+        });
+      });
+
+    });
+  // -----------End delete make up schedule-----------
+
+    // -----------Start delete regular schedule-----------
+    $(document).on('click', '.deleteRegularSchedule', function(e) {
+      e.preventDefault();
+
+        $("#decisionRegularScheduleModal").modal('hide');
+
+      $(document).on('click', '.forceDeleteRegularSchedule', function(e) {
+        e.preventDefault();
+
+        $(this).text('Deleting..');
+
+        $.ajaxSetup({
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
+        });
+
+        $.ajax({
+          type: "DELETE",
+          url: "/deleteRegularSchedule/" + id,
+          dataType: "json",
+          success: function(response) {
+            // console.log(response);
+            if (response.status == 404) {
+              $('.forceDeleteRegularSchedule').text('Delete');
+              $("#deleteUserModal .close").click()
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "No Schedule Found",
+              });
+
+            } else {
+              $('.forceDeleteRegularSchedule').text('Delete');
+              $("#deleteRegularScheduleModal .close").click()
+              Swal.fire({
+                icon: "success",
+                title: "Successful",
+                text: "Schedule Deleted",
+                confirmButtonText: "OK"
+          }).then((result) => {
+        if (result.isConfirmed) {
+              location.reload();
+          }
+      });
+            }
+          }
+        });
+      });
+
+    });
+
+      // -----------End delete regular schedule-----------
 
 
+       // -----------Start edit regular schedule-----------
+    $(document).on('mouseover', '.editRegularSchedule', function(e) {
+      e.preventDefault();
+      
+      $(".editRegularSchedule").click(function(){
+        $("#decisionRegularScheduleModal").modal('hide');
+      })
 
       $.ajax({
         type: "GET",
-        url: "/createMakeUpSchedule/" + id,
+        url: "/editRegularSchedule/" + id,
         success: function(response) {
-          // console.log(response);
+          //  console.log(response.schedule.day);
           if (response.status == 404) {
             Swal.fire({
               icon: "error",
@@ -148,10 +304,11 @@ $(document).ready(function() {
 
             startTime=strtTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric',  hour12: true });
             endTime=ndTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric',  hour12: true });
-            
-            // console.log(response.student.name);
+
+             console.log(response.schedule);
             $('#edit_course_code').val(response.schedule.courseCode);
             $('#edit_course_name').val(response.schedule.courseName);
+            $('#edit_weekday').val(response.schedule.day);
             $('.startTime').val(startTime);
             $('.endTime').val(endTime);
             $('.startDate').val(startDate);
@@ -161,24 +318,24 @@ $(document).ready(function() {
         }
       });
 
-  
-
-
 
     $(document).on('click', '.updateRegularSchedule', function(e) {
       e.preventDefault();
 
       $(this).text('Updating..');
-      var id = $('#user_ID').val();
+      
       // alert(id);
 
       var data = {
-        'updateFirstName': $('.updateFirstName').val(),
-        'updateLastName': $('.updateLastName').val(),
-        'updateUserType': $('.updateUserType').val(),
-        'updateEmail': $('.updateEmail').val(),
-        'userIdNumber': $('.userIdNumber').val(),
+        'updateCourseCode': $('.updateCourseCode').val(),
+        'updateCourseName': $('.updateCourseName').val(),
+        'startTime': $('.startTime').val(),
+        'endTime': $('.endTime').val(),
+        'startDate': $('.startDate').val(),
+        'endDate': $('.endDate').val(),
+        'updateWeekDay': $('.updateWeekDay').val(),
       }
+      console.log(data)
       $.ajaxSetup({
         headers: {
           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -187,95 +344,211 @@ $(document).ready(function() {
 
       $.ajax({
         type: "PUT",
-        url: "/updateUser/" + id,
+        url: "/updateRegularSchedule/" +id,
         data: data,
         dataType: "json",
         success: function(response) {
           // console.log(response);
           if (response.status == 400) {
-            $('#editFirstNameError').html("");
-            $('#editFirstNameError').addClass('error');
-            $('#editLastNameError').html("");
-            $('#editLastNameError').addClass('error');
-            $('#editUserTypeError').html("");
-            $('#editUserTypeError').addClass('error');
-            $('#editEmailError').html("");
-            $('#editEmailError').addClass('error');
-            $('#editUserIdError').html("");
-            $('#editUserIdError').addClass('error');
-            $.each(response.errors.updateFirstName, function(key, err_value) {
-              $('#editFirstNameError').append('<li>' + err_value + '</li>');
+            $('#editCourseCodeError').html("");
+            $('#editCourseCodeError').addClass('error');
+            $('#editCourseNameError').html("");
+            $('#editCourseNameError').addClass('error');
+            $('#startTimeError').html("");
+            $('#startTimeError').addClass('error');
+            $('#endTimeError').html("");
+            $('#endTimeError').addClass('error');
+            $('#startDateError').html("");
+            $('#startDateError').addClass('error');
+            $('#endDateError').html("");
+            $('#endDateError').addClass('error');
+            $('#editWeekDayError').html("");
+            $('#editWeekDayError').addClass('error');
+            $.each(response.errors.updateCourseCode, function(key, err_value) {
+              $('#editCourseCodeError').append('<li>' + err_value + '</li>');
             });
-            $.each(response.errors.updateLastName, function(key, err_value) {
-              $('#editLastNameError').append('<li>' + err_value + '</li>');
+            $.each(response.errors.updateCourseName, function(key, err_value) {
+              $('#editCourseNameError').append('<li>' + err_value + '</li>');
             });
-            $.each(response.errors.updateUserType, function(key, err_value) {
-              $('#editUserTypeError').append('<li>' + err_value + '</li>');
+            $.each(response.errors.startTime, function(key, err_value) {
+              $('#startTimeError').append('<li>' + err_value + '</li>');
             });
-            $.each(response.errors.updateEmail, function(key, err_value) {
-              $('#editEmailError').append('<li>' + err_value + '</li>');
+            $.each(response.errors.endTime, function(key, err_value) {
+              $('#endTimeError').append('<li>' + err_value + '</li>');
             });
-            $.each(response.errors.userIdNumber, function(key, err_value) {
-              $('#editUserIdError').append('<li>' + err_value + '</li>');
+            $.each(response.errors.startDate, function(key, err_value) {
+              $('#startDateError').append('<li>' + err_value + '</li>');
             });
-            $('.updateUser').text('Update');
+            $.each(response.errors.endDate, function(key, err_value) {
+              $('#endDateError').append('<li>' + err_value + '</li>');
+            });
+            $.each(response.errors.updateWeekDay, function(key, err_value) {
+              $('#editWeekDayError').append('<li>' + err_value + '</li>');
+            });
+            $('.updateRegularSchedule').text('Update');
           } else if ((response.status == 200)) {
-            $('#editFirstNameError').html("");
-            $('#editLastNameError').html("");
-            $('#editUserTypeError').html("");
-            $('#editEmailError').html("");
-            $('#editUserIdError').html("");
+            $('#editCourseCodeError').html("");
+            $('#editCourseNameError').html("");
+            $('#startTimeError').html("");
+            $('#endTimeError').html("");
+            $('#startDateError').html("");
+            $('#endDateError').html("");
+            $('#editWeekDayError').html("");
             Swal.fire({
               icon: "success",
               title: "Successful",
-              text: "User Updated",
-              buttons: false,
-            });
+              text: "Regular Schedule Updated",
+              confirmButtonText: "OK"
+        }).then((result) => {
+      if (result.isConfirmed) {
+        $('.updateRegularSchedule').text('Update');
+            $("#updateRegularScheduleModal .close").click()
 
-            $('.updateUser').text('Update');
-            $("#updateUserModal .close").click()
+            location.reload();
+        }
+    });
 
-            // $('#updateUserModal').find('input').val('');
-
-            window.location.href = "{{route('userManagement')}}", 4000;
-          } else if ((response.status == 300)) {
-            $('#editFirstNameError').html("");
-            $('#editLastNameError').html("");
-            $('#editUserTypeError').html("");
-            $('#editEmailError').html("");
-            $('#editUserIdError').html("");
-            Swal.fire({
-              icon: "error",
-              title: "Oops...",
-              text: "Invalid email. Please use a CSPC email.",
-            });
-            $('.updateUser').text('Update');
-            $("#updateUserModal .close").click()
-          } else if ((response.status == 500)) {
-            $('#editFirstNameError').html("");
-            $('#editLastNameError').html("");
-            $('#editUserTypeError').html("");
-            $('#editEmailError').html("");
-            $('#editUserIdError').html("");
-            Swal.fire({
-              icon: "error",
-              title: "Oops...",
-              text: "Email already exist. Please use another email.",
-            });
-            $('.updateUser').text('Update');
-            $("#updateUserModal .close").click()
           }
         }
       });
     });
 
+      });
+ // -----------End edit regular schedule-----------
+
+ // -----------Start edit Make up schedule-----------
+
+ $(document).on('mouseover', '.editMakeUpSchedule', function(e) {
+  e.preventDefault();
+  
+  $(".editMakeUpSchedule").click(function(){
+    $("#decisionMakeUpScheduleModal").modal('hide');
+  })
+
+  $.ajax({
+    type: "GET",
+    url: "/editMakeUpSchedule/" + id,
+    success: function(response) {
+      //  console.log(response.schedule.day);
+      if (response.status == 404) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "No Make Up Schedule Found!!!",
+        });
+        $("#updateMakeUpScheduleModal .close").click()
+      } else {
+        var strtTime = new Date("0000, 1, 1"+" "+response.makeUpSchedule.startTime);
+        var ndTime = new Date("0000, 1, 1"+" "+response.makeUpSchedule.endTime);
+
+        startTime=strtTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric',  hour12: true });
+        endTime=ndTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric',  hour12: true });
+
+         console.log(response.makeUpSchedule);
+        $('#edit_schedule_title').val(response.makeUpSchedule.scheduleTitle);
+        $('#edit_schedule_program').val(response.makeUpSchedule.program);
+        $('#edit_schedule_year').val(response.makeUpSchedule.year);
+        $('#edit_schedule_section').val(response.makeUpSchedule.section);
+        $('.updateStartTime').val(startTime);
+        $('.updateEndTime').val(endTime);
+        $('#makeUpScheduleID').val(response.makeUpSchedule.scheduleID);
+      }
+    }
+  });
 
 
+$(document).on('click', '.updateMakeUpSchedule', function(e) {
+  e.preventDefault();
 
-       }else if(scheduleType=="makeUpSchedule"){
-        $("#modal-add-event").modal('toggle');
-       }
+  $(this).text('Updating..');
+  
+  // alert(id);
+
+  var data = {
+    'updateScheduleTitle': $('.updateScheduleTitle').val(),
+    'updateProgram': $('.updateProgram').val(),
+    'updateYear': $('.updateYear').val(),
+    'updateSection': $('.updateSection').val(),
+    'updateStartTime': $('.updateStartTime').val(),
+    'updateEndTime': $('.updateEndTime').val(),
   }
+  console.log(data)
+  $.ajaxSetup({
+    headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+  });
+
+  $.ajax({
+    type: "PUT",
+    url: "/updateMakeUpSchedule/" +id,
+    data: data,
+    dataType: "json",
+    success: function(response) {
+      // console.log(response);
+      if (response.status == 400) {
+        $('#editMakeUpScheduleTitleError').html("");
+        $('#editMakeUpScheduleTitleError').addClass('error');
+        $('#editProgramError').html("");
+        $('#editProgramError').addClass('error');
+        $('#editYearError').html("");
+        $('#editYearError').addClass('error');
+        $('#editSectionError').html("");
+        $('#editSectionError').addClass('error');
+        $('#editStartTimeError').html("");
+        $('#editStartTimeError').addClass('error');
+        $('#editEndTimeError').html("");
+        $('#editEndTimeError').addClass('error');
+        $.each(response.errors.updateScheduleTitle, function(key, err_value) {
+          $('#editCourseCodeError').append('<li>' + err_value + '</li>');
+        });
+        $.each(response.errors.updateProgram, function(key, err_value) {
+          $('#editCourseNameError').append('<li>' + err_value + '</li>');
+        });
+        $.each(response.errors.updateYear, function(key, err_value) {
+          $('#startTimeError').append('<li>' + err_value + '</li>');
+        });
+        $.each(response.errors.updateSection, function(key, err_value) {
+          $('#endTimeError').append('<li>' + err_value + '</li>');
+        });
+        $.each(response.errors.updateStartTime, function(key, err_value) {
+          $('#startDateError').append('<li>' + err_value + '</li>');
+        });
+        $.each(response.errors.updateEndTime, function(key, err_value) {
+          $('#endDateError').append('<li>' + err_value + '</li>');
+        });
+        $('.updateMakeUpSchedule').text('Update');
+      } else if ((response.status == 200)) {
+        $('#updateScheduleTitle').html("");
+        $('#updateProgram').html("");
+        $('#updateYear').html("");
+        $('#updateSection').html("");
+        $('#updateStartTime').html("");
+        $('#updateEndTime').html("");
+        $("#updateMakeUpScheduleModal .close").click()
+        $('.updateMakeUpSchedule').text('Update');
+        Swal.fire({
+          icon: "success",
+          title: "Successful",
+          text: "Make Up Schedule Updated",
+          confirmButtonText: "OK"
+    }).then((result) => {
+  if (result.isConfirmed) {
+        location.reload();
+    }
+});
+
+      }
+    }
+  });
+});
+
+  });
+
+
+  // -----------End edit Make up schedule-----------
+
+    }
 });
 
 calendar.render();

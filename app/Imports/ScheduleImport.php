@@ -141,8 +141,9 @@ class ScheduleImport implements ToCollection, ToModel, WithHeadingRow
                 'endTime'  => $row['endtime'     ],
                 'startDate'  => $row['startdate'     ],
                 'endDate'  => $row['enddate'     ],
+                'day' => $day, 
                 'scheduleStatus'  => "unscheduled",
-                'day' => $day,
+                'scheduleType'  => "regularSchedule",
 
             ]);
               // Start Logs

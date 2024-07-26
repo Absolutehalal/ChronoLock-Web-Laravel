@@ -103,58 +103,30 @@
                     <!-- Page Views  -->
                     <div class="card card-default" id="page-views">
                       <div class="card-header">
-                        <h2>Page Views</h2>
+                      @if($programTitle=='')\
+                      <h2>Classmates Enrolled</h2>
+@else
+<h2>@php echo ($programTitle) @endphp Classmates Enrolled</h2>
+@endif
                       </div>
                       <div class="card-body py-0" data-simplebar style="height: 392px;">
                         <table class="table table-borderless table-thead-border">
                           <thead>
                             <tr>
-                              <th  style="color: #000000;">Page</th>
-                              <th class="text-right px-3"  style="color: #000000;">Page Views</th>
-                              <th class="text-right"  style="color: #000000;">Avg Time</th>
+                              <th  style="color: #000000;">Name</th>
+                              <th class="text-right px-3"  style="color: #000000;">Yr. & Section</th>
+                              <th class="text-right"  style="color: #000000;">Status</th>
                             </tr>
                           </thead>
                           <tbody>
-                            <tr>
-                              <td class="text-primary"><a class="link" href="analytics.html">/analytics.html</a></td>
-                              <td class="text-right px-3">521</td>
-                              <td class="text-right">2m:14s</td>
-                            </tr>
-                            <tr>
-                              <td class="text-primary"><a class="link" href="email-inbox.html">/email-inbox.html</a></td>
-                              <td class="text-right px-3">356</td>
-                              <td class="text-right">2m:23s</td>
-                            </tr>
-                            <tr>
-                              <td class="text-primary"><a class="link" href="email-compose.html">/email-compose.html</a></td>
-                              <td class="text-right px-3">254</td>
-                              <td class="text-right">2m:2s</td>
-                            </tr>
-                            <tr>
-                              <td class="text-primary"><a class="link" href="charts-chartjs.html">/charts-chartjs.html</a></td>
-                              <td class="text-right px-3">126</td>
-                              <td class="text-right">1m:15s</td>
-                            </tr>
-                            <tr>
-                              <td class="text-primary"><a class="link" href="profile.html">/profile.html</a></td>
-                              <td class="text-right px-3">50</td>
-                              <td class="text-right">1m:7s</td>
-                            </tr>
-                            <tr>
-                              <td class="text-primary"><a class="link" href="general-widgets.html">/general-widgets.html</a></td>
-                              <td class="text-right px-3">50</td>
-                              <td class="text-right">2m:35s</td>
-                            </tr>
-                            <tr>
-                              <td class="text-primary"><a class="link" href="card.html">/card.html</a></td>
-                              <td class="text-right px-3">590</td>
-                              <td class="text-right">5m:55s</td>
-                            </tr>
-                            <tr>
-                              <td class="text-primary"><a class="link" href="email-inbox.html">/email-inbox.html</a></td>
-                              <td class="text-right px-3">29</td>
-                              <td class="text-right">8m:5s</td>
-                            </tr>
+                            
+                          @foreach($myClassmates as $myClassmates)
+                                <tr>
+                                  <td>{{$myClassmates->firstName}} {{$myClassmates->lastName}}</td>
+                                  <td>{{$myClassmates->year}}-{{$myClassmates->section}}</td>
+                                  <td>{{$myClassmates->status}}</td>
+                                </tr>
+                            @endforeach
                           </tbody>
                         </table>
                       </div>

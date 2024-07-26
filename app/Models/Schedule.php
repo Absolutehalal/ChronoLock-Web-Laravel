@@ -23,8 +23,10 @@ class Schedule extends Model
         'endTime',
         'startDate',
         'endDate',
+        'day',
         'scheduleStatus',
-        'day'
+        'scheduleTitle',
+        'scheduleType'
     ];
     public function classList()
     {
