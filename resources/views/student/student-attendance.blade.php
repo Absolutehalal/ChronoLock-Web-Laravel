@@ -26,7 +26,7 @@
     });
     NProgress.start();
   </script>
-    @include('student.studentSideNav')
+  @include('student.studentSideNav')
   <!-- ====================================
       ——— PAGE WRAPPER
       ===================================== -->
@@ -56,89 +56,89 @@
         </div>
 
         <div class="row">
-        <div class="col-xl-8">
-        <div class="card card-default shadow">
-          <div class="card-header">
-@if($h1=='')           
-<h1> My Attendance</h1>
-@else
-<h1> My @php echo $h1 @endphp Attendance</h1>
-@endif            
-          </div>
-          <div class="card-body" style=" overflow-x:auto;">
-            <table  class="table table-bordered table-hover " >
-              <thead class="table-dark">
-                <tr>
-                  <th>Date</th>
-                  <th>Time</th>
-                  <th>Instructor</th>
-                  <th>Program</th>
-                  <th>Year & Section</th> 
-                  <th>Course</th>
-                  <th>Status</th>
-                  <th>Remark</th>
-                </tr>
-              </thead>
-              <tbody>
-                @foreach($myAttendances as $myAttendance)
-                <tr>
-                  <td>{{$myAttendance->date}}</td>
-                  <td>{{$myAttendance->time}}</td>
-                  <td>{{$myAttendance->instFirstName}} {{$myAttendance->instLastName}}</td>
-                  <td>{{$myAttendance->program}}</td>
-                  <td>{{$myAttendance->year}}-{{$myAttendance->section}}</td>
-                  <td>{{$myAttendance->courseCode}}-{{$myAttendance->courseName}}</td>
-                  <td>{{$myAttendance->status}}</td>
-                  <td>{{$myAttendance->remark}}</td>
+          <div class="col-xl-8">
+            <div class="card card-default shadow">
+              <div class="card-header">
+                @if($h1=='')
+                <h1> My Attendance</h1>
+                @else
+                <h1> My @php echo $h1 @endphp Attendance</h1>
+                @endif
+              </div>
+              <div class="card-body" style=" overflow-x:auto;">
+                <table id="AttendanceTable" class="table table-bordered table-hover no wrap" style="width: 100%;">
+                  <thead class="table-dark">
+                    <tr>
+                      <th>Date</th>
+                      <th>Time</th>
+                      <th>Instructor</th>
+                      <th>Program</th>
+                      <th>Year & Section</th>
+                      <th>Course</th>
+                      <th>Status</th>
+                      <th>Remark</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @foreach($myAttendances as $myAttendance)
+                    <tr>
+                      <td>{{$myAttendance->date}}</td>
+                      <td>{{$myAttendance->time}}</td>
+                      <td>{{$myAttendance->instFirstName}} {{$myAttendance->instLastName}}</td>
+                      <td>{{$myAttendance->program}}</td>
+                      <td>{{$myAttendance->year}}-{{$myAttendance->section}}</td>
+                      <td>{{$myAttendance->courseCode}}-{{$myAttendance->courseName}}</td>
+                      <td>{{$myAttendance->status}}</td>
+                      <td>{{$myAttendance->remark}}</td>
 
-                </tr>
-                @endforeach
-              </tbody>
-            </table>
+                    </tr>
+                    @endforeach
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-4">
+
+            <!-- Page Views  -->
+            <div class="card card-default" id="page-views">
+              <div class="card-header">
+                @if($programTitle=='')\
+                <h2>Classmates Enrolled</h2>
+                @else
+                <h2>@php echo ($programTitle) @endphp Classmates Enrolled</h2>
+                @endif
+              </div>
+              <div class="card-body py-0" data-simplebar style="height: 392px;">
+                <table class="table table-borderless table-thead-border">
+                  <thead>
+                    <tr>
+                      <th style="color: #000000;">Name</th>
+                      <th class="text-right px-3" style="color: #000000;">Yr. & Section</th>
+                      <th class="text-right" style="color: #000000;">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+
+                    @foreach($myClassmates as $myClassmates)
+                    <tr>
+                      <td>{{$myClassmates->firstName}} {{$myClassmates->lastName}}</td>
+                      <td>{{$myClassmates->year}}-{{$myClassmates->section}}</td>
+                      <td>{{$myClassmates->status}}</td>
+                    </tr>
+                    @endforeach
+                  </tbody>
+                </table>
+              </div>
+              <div class="card-footer bg-white py-4">
+                <a href="#" class="text-uppercase">Audience Overview</a>
+              </div>
+            </div>
+
           </div>
         </div>
-        </div>
-        <div class="col-xl-4">
-                    
-                    <!-- Page Views  -->
-                    <div class="card card-default" id="page-views">
-                      <div class="card-header">
-                      @if($programTitle=='')\
-                      <h2>Classmates Enrolled</h2>
-@else
-<h2>@php echo ($programTitle) @endphp Classmates Enrolled</h2>
-@endif
-                      </div>
-                      <div class="card-body py-0" data-simplebar style="height: 392px;">
-                        <table class="table table-borderless table-thead-border">
-                          <thead>
-                            <tr>
-                              <th  style="color: #000000;">Name</th>
-                              <th class="text-right px-3"  style="color: #000000;">Yr. & Section</th>
-                              <th class="text-right"  style="color: #000000;">Status</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            
-                          @foreach($myClassmates as $myClassmates)
-                                <tr>
-                                  <td>{{$myClassmates->firstName}} {{$myClassmates->lastName}}</td>
-                                  <td>{{$myClassmates->year}}-{{$myClassmates->section}}</td>
-                                  <td>{{$myClassmates->status}}</td>
-                                </tr>
-                            @endforeach
-                          </tbody>
-                        </table>
-                      </div>
-                      <div class="card-footer bg-white py-4">
-                        <a href="#" class="text-uppercase">Audience Overview</a>
-                      </div>
-                    </div>
-
-                  </div>
       </div>
     </div>
-  </div>
 
 
-  @include('footer')
+    @include('footer')

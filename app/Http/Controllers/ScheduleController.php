@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Attendance;
 use App\Models\Schedule;
 use App\Models\ClassList;
@@ -18,42 +19,39 @@ use Carbon\Carbon;
 
 class ScheduleController extends Controller
 {
-//-----------Start Admin functions-----------
+    //-----------Start Admin functions-----------
 
-public function import_schedule(Request $request)
-{
-    try {
+    public function import_schedule(Request $request)
+    {
+        try {
 
-        // Validate the incoming request to ensure a file is present
-        $request->validate([
-            'excel-file' => 'required|file|mimes:xls,xlsx'
-        ]);
+            // Validate the incoming request to ensure a file is present
+            $request->validate([
+                'excel-file' => 'required|file|mimes:xls,xlsx'
+            ]);
 
-        // Create a new instance of the import class
-        $import = new ScheduleImport;
+            // Create a new instance of the import class
+            $import = new ScheduleImport;
 
-        // Import the file using Laravel Excel
-        Excel::import($import, $request->file('excel-file'));
+            // Import the file using Laravel Excel
+            Excel::import($import, $request->file('excel-file'));
 
-        toast('Import successfully.', 'success')->autoClose(5000)->timerProgressBar()->showCloseButton();
+            toast('Import successfully.', 'success')->autoClose(5000)->timerProgressBar()->showCloseButton();
 
-        // Redirect back to the form page
-        return redirect()->intended('/scheduleManagementPage');
-    } catch(\PDOException $a){
-        toast('Fix Excel File Data', 'warning')->footer('A User in Excel File Does not Exist!!!')->autoClose(5000)->timerProgressBar()->showCloseButton();
-        return redirect()->intended('/scheduleManagementPage');
-    
-    }catch (\Exception $e) {
+            // Redirect back to the form page
+            return redirect()->intended('/scheduleManagementPage');
+        } catch (\PDOException $a) {
+            toast('Fix Excel File Data', 'warning')->footer('A User in Excel File Does not Exist!!!')->autoClose(5000)->timerProgressBar()->showCloseButton();
+            return redirect()->intended('/scheduleManagementPage');
+        } catch (\Exception $e) {
 
-        toast('Import failed.', 'error')->autoClose(3000)->timerProgressBar()->showCloseButton();
-        return redirect()->intended('/scheduleManagementPage');
+            toast('Import failed.', 'error')->autoClose(3000)->timerProgressBar()->showCloseButton();
+            return redirect()->intended('/scheduleManagementPage');
+        }
     }
-}
 
 
-//-----------END Admin functions-----------
-
-
+    //-----------END Admin functions-----------
 
 
 
@@ -61,7 +59,9 @@ public function import_schedule(Request $request)
 
 
 
-  //-----------Start instructor functions-----------
+
+
+    //-----------Start instructor functions-----------
 
 
     //class record
@@ -122,7 +122,7 @@ public function import_schedule(Request $request)
 
                 // Start Logs
                 $inputSemester = $request->input('updateSemester');
-                $inputEnrollmentKey=  $request->input('updateEnrollmentKey');
+                $inputEnrollmentKey =  $request->input('updateEnrollmentKey');
 
                 $id = Auth::id();
                 $userID = DB::table('users')->where('id', $id)->value('idNumber');
@@ -130,7 +130,7 @@ public function import_schedule(Request $request)
                 $date = date("Y-m-d");
                 $time = date("H:i:s");
 
-                if (($inputSemester == $semester)&&($enrollmentKey == $inputEnrollmentKey)) {
+                if (($inputSemester == $semester) && ($enrollmentKey == $inputEnrollmentKey)) {
                     $action = "Attempt update on $courseCode - $courseName";
                 } else {
                     $action = "Updated $courseCode-$courseName Class List";
@@ -158,9 +158,9 @@ public function import_schedule(Request $request)
 
     public function deleteClassList($id)
     {
-        
+
         $record = ClassList::find($id);
-        $deletedID=DB::table('class_lists')->where('classID', $id)->value('scheduleID');
+        $deletedID = DB::table('class_lists')->where('classID', $id)->value('scheduleID');
         $program = DB::table('schedules')->where('scheduleID', $deletedID)->value('program');
         $year = DB::table('schedules')->where('scheduleID', $deletedID)->value('year');
         $section = DB::table('schedules')->where('scheduleID', $deletedID)->value('section');
@@ -173,22 +173,22 @@ public function import_schedule(Request $request)
             $schedule->scheduleStatus = 'unscheduled';
             $schedule->update();
 
-                 // Start Logs
-            
-          
-                 $ID = Auth::id();
-                 $userID =DB::table('users')->where('id', $ID)->value('idNumber');
-                 date_default_timezone_set("Asia/Manila");
-                 $date = date("Y-m-d");
-                 $time = date("H:i:s");
-                 $action = "Deleted  $program-$year$section Class Lists ($courseCode-$courseName)";
-                 DB::table('user_logs')->insert([
-                     'userID' => $userID,
-                     'action' => $action,
-                     'date' => $date,
-                     'time' => $time,
-                 ]);
-                 // END Logs
+            // Start Logs
+
+
+            $ID = Auth::id();
+            $userID = DB::table('users')->where('id', $ID)->value('idNumber');
+            date_default_timezone_set("Asia/Manila");
+            $date = date("Y-m-d");
+            $time = date("H:i:s");
+            $action = "Deleted  $program-$year$section Class Lists ($courseCode-$courseName)";
+            DB::table('user_logs')->insert([
+                'userID' => $userID,
+                'action' => $action,
+                'date' => $date,
+                'time' => $time,
+            ]);
+            // END Logs
 
             return response()->json([
                 'status' => 200,
@@ -204,16 +204,16 @@ public function import_schedule(Request $request)
     public function classSchedules()
     {
         $id = Auth::id();
-        $userID =DB::table('users')->where('id', $id)->value('idNumber');
+        $userID = DB::table('users')->where('id', $id)->value('idNumber');
 
         $classes = DB::table('class_lists')
-        ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
-        ->where('schedules.userID', '=', $userID)
-        ->get();
+            ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
+            ->where('schedules.userID', '=', $userID)
+            ->get();
 
         $schedules = DB::table('schedules')
-        ->where('schedules.scheduleStatus', '=', 'unscheduled')
-        ->get();
+            ->where('schedules.scheduleStatus', '=', 'unscheduled')
+            ->get();
 
         return view('faculty.instructor-class-schedules', ['schedules' => $schedules, 'classes' => $classes]);
     }
@@ -221,17 +221,18 @@ public function import_schedule(Request $request)
     public function instructorScheduleManagement()
     {
         $id = Auth::id();
-        $userID =DB::table('users')->where('id', $id)->value('idNumber');
+        $userID = DB::table('users')->where('id', $id)->value('idNumber');
 
         $classes = DB::table('class_lists')
-        ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
-        ->where('schedules.userID', '=', $userID)
-        ->get();
+            ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
+            ->where('schedules.userID', '=', $userID)
+            ->get();
 
         return view('faculty.instructor-schedule', ['classes' => $classes]);
     }
-    public function editInstructorClass($id){
-        
+    public function editInstructorClass($id)
+    {
+
         $schedule = Schedule::find($id);
         if ($schedule) {
             return response()->json([
@@ -260,7 +261,7 @@ public function import_schedule(Request $request)
         $scheduleID = $request->get('scheduleID');
         $inputUserID = $request->get('userID');
         $id = Auth::id();
-        $userID =DB::table('users')->where('id', $id)->value('idNumber');
+        $userID = DB::table('users')->where('id', $id)->value('idNumber');
         $schedule = Schedule::find($scheduleID);
         if ($validator->fails()) {
             return response()->json([
@@ -272,7 +273,7 @@ public function import_schedule(Request $request)
                 return response()->json([
                     'status' => 300,
                 ]);
-            }else {
+            } else {
                 $classList = new ClassList;
                 $classList->scheduleID = $request->input('scheduleID');
                 $classList->semester = $request->input('semester');
@@ -298,37 +299,37 @@ public function import_schedule(Request $request)
             }
         }
     }
-   // -----------End instructor functions-----------
+    // -----------End instructor functions-----------
 
- // -----------Start student functions-----------
-    
-   public function studentViewSchedule() {
+    // -----------Start student functions-----------
 
-    $schedules = DB::table('class_lists')
-    ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
-    ->join('users', 'users.idNumber', '=', 'schedules.userID')
-    ->get();
-   
-   
+    public function studentViewSchedule()
+    {
+
+        $schedules = DB::table('class_lists')
+            ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
+            ->join('users', 'users.idNumber', '=', 'schedules.userID')
+            ->get();
 
 
-    foreach ($schedules as $schedule) {
-        $schedule->startTime = Carbon::parse($schedule->startTime)->format('g:i A');
-        $schedule->endTime = Carbon::parse($schedule->endTime)->format('g:i A');
 
+
+        foreach ($schedules as $schedule) {
+            $schedule->startTime = Carbon::parse($schedule->startTime)->format('g:i A');
+            $schedule->endTime = Carbon::parse($schedule->endTime)->format('g:i A');
+        }
+        $id = Auth::id();
+        $userID = DB::table('users')->where('id', $id)->value('idNumber');
+
+
+
+        $classSchedules = DB::table('student_masterlists')
+            ->join('class_lists', 'class_lists.classID', '=', 'student_masterlists.classID')
+            ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
+            ->where('student_masterlists.userID', '=', $userID)
+            ->get();
+
+        return view('student.student-view-schedule', ['schedules' => $schedules, 'classSchedules' => $classSchedules, 'userID' => $userID]);
     }
-    $id = Auth::id();
-    $userID =DB::table('users')->where('id', $id)->value('idNumber');
-
-
-
-    $classSchedules = DB::table('student_masterlists')
-    ->join('class_lists', 'class_lists.classID', '=', 'student_masterlists.classID')
-    ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
-    ->where('student_masterlists.userID', '=', $userID)
-    ->get();
-
-    return view('student.student-view-schedule',['schedules' => $schedules, 'classSchedules' => $classSchedules, 'userID' => $userID]);
-}
-// -----------End student functions-----------
+    // -----------End student functions-----------
 }

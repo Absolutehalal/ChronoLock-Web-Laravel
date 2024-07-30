@@ -14,8 +14,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-   <!-- Ajax Student Attendance -->
-   <script defer src="js/addRegularSchedule.js"></script>
+  <!-- Ajax Student Attendance -->
+  <script defer src="js/addRegularSchedule.js"></script>
   <title>ChronoLock Admin-Schedule</title>
 
   @include('head')
@@ -45,8 +45,8 @@
           <!-- Navigation -->
           <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ route('index') }}">Dashboard</a></li>
-            <li class="breadcrumb-item active"><a href="{{ route('adminScheduleManagement') }}">Schedule</a></li>
+              <li class="breadcrumb-item"><a href="{{ route('index') }}">Dashboard</a></li>
+              <li class="breadcrumb-item active"><a href="{{ route('adminScheduleManagement') }}">Schedule</a></li>
             </ol>
           </nav>
           <!-- Live Date and Time -->
@@ -54,7 +54,7 @@
             <p class="text-center date-time mb-3" id="liveDateTime">Your Date and Time</p>
           </div>
         </div>
-       
+
         <div class="row">
           <div class="col-md-9 d-flex justify-content-start mb-2">
             <form action="{{ route('schedule.import') }}" method="post" enctype="multipart/form-data">
@@ -76,7 +76,7 @@
               </div>
             </form>
           </div>
-  </div>
+        </div>
         <div class="card card-default shadow">
           <div class="card-header card-header-border-bottom d-flex justify-content-between align-items-center">
             <h1>Schedule</h1>
@@ -98,17 +98,17 @@
                 </div>
               </div>
             </div>
-  </div>
-            <div class="card-body">
-              <div class="full-calendar mb-5">
-                <div id="calendar"></div>
-              </div>
+          </div>
+          <div class="card-body">
+            <div class="full-calendar mb-5">
+              <div id="calendar"></div>
             </div>
           </div>
         </div>
-
       </div>
+
     </div>
+  </div>
   </div>
   </div>
 
@@ -190,54 +190,54 @@
               </div>
 
               <div class="col-lg-6">
-              <ul id="startTimeError"></ul>
+                <ul id="startTimeError"></ul>
                 <div class="dropdown d-inline-block mb-3">
-                <label>Start Time</label>
-                <div class="input-group date" id="timepicker">
-                  <input type="datetime-local" class="makeUpScheduleStartTime form-control border border-primary" placeholder="Time" id="selectedTime" name="startTime">
-                  <div class="input-group-append">
-                    <div class="input-group text-light btn btn-primary btn-sm" id="timeIcon">
-                      <i class="mdi mdi-clock "></i>
+                  <label>Start Time</label>
+                  <div class="input-group date" id="timepicker">
+                    <input type="datetime-local" class="makeUpScheduleStartTime form-control border border-primary" placeholder="Time" id="selectedTime" name="startTime">
+                    <div class="input-group-append">
+                      <div class="input-group text-light btn btn-primary btn-sm" id="timeIcon">
+                        <i class="mdi mdi-clock "></i>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
               </div>
               <div class="col-lg-6">
-              <ul id="endTimeError"></ul>
-              <div class="dropdown d-inline-block mb-3">
-                <label>End Time</label>
-                <div class="input-group date" id="timepicker">
-                  <input type="datetime-local" class="makeUpScheduleEndTime form-control border border-primary" placeholder="Time" id="selectedTime" name="endTime">
-                  <div class="input-group-append">
-                    <div class="input-group text-light btn btn-primary btn-sm" id="timeIcon">
-                      <i class="mdi mdi-clock "></i>
+                <ul id="endTimeError"></ul>
+                <div class="dropdown d-inline-block mb-3">
+                  <label>End Time</label>
+                  <div class="input-group date" id="timepicker">
+                    <input type="datetime-local" class="makeUpScheduleEndTime form-control border border-primary" placeholder="Time" id="selectedTime" name="endTime">
+                    <div class="input-group-append">
+                      <div class="input-group text-light btn btn-primary btn-sm" id="timeIcon">
+                        <i class="mdi mdi-clock "></i>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
               </div>
               <label>Instructor</label>
               <div class="col-lg-6">
-              <ul id="facultyError"></ul>
-              <form method="GET" action="{{ route('adminScheduleManagement') }}">
+                <ul id="facultyError"></ul>
+                <form method="GET" action="{{ route('adminScheduleManagement') }}">
 
-                <button class="btn btn-primary btn-sm dropdown-toggle fw-bold" type="button" id="instIDDropdown" data-toggle="dropdown" aria-expanded="false">
-                  <i class="mdi mdi-alpha-i-box"></i>
-                  Instructor ID
-                </button>
-                <div class="dropdown-menu scrollable-dropdown" aria-labelledby="instIDDropdown">
-                @foreach($instructorsID as $instructorID)
-                  @csrf
-                  <a class="dropdown-item id-item filter-inst-id" data-value="{{ $instructorID->idNumber }}" href="#">
-                  {{ $instructorID->idNumber }}-{{ $instructorID->firstName }}  {{ $instructorID->lastName }}
-                  </a>
-                  @endforeach
-                </div>
-                <input type="hidden" class="faculty form-control" name="instructorID" id="selectedInstID">
-              </form>
-            </div>
-            
+                  <button class="btn btn-primary btn-sm dropdown-toggle fw-bold" type="button" id="instIDDropdown" data-toggle="dropdown" aria-expanded="false">
+                    <i class="mdi mdi-alpha-i-box"></i>
+                    Instructor ID
+                  </button>
+                  <div class="dropdown-menu scrollable-dropdown" aria-labelledby="instIDDropdown">
+                    @foreach($instructorsID as $instructorID)
+                    @csrf
+                    <a class="dropdown-item id-item filter-inst-id" data-value="{{ $instructorID->idNumber }}" href="#">
+                      {{ $instructorID->idNumber }}-{{ $instructorID->firstName }} {{ $instructorID->lastName }}
+                    </a>
+                    @endforeach
+                  </div>
+                  <input type="hidden" class="faculty form-control" name="instructorID" id="selectedInstID">
+                </form>
+              </div>
+
             </div> <!-- Modal Boday End-->
 
             <!-- Modal Footer -->
@@ -261,36 +261,34 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="decisionRegularSchedule" style="text-align:center;">Choose Action</h5>
-          <button type="button" class="close" id="close" data-dismiss="modal" aria-label="Close">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="$('#decisionRegularScheduleModal').modal('hide');">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-            <div class="row">
-              <i class="fa-solid fa-exclamation-circle" style="text-align:center; font-size:50px; padding:1rem;"></i>
-              <h4 style="text-align:center;">What Would you like to do?</h4>
-            </div>
-           
-            
-        <div class="d-flex justify-content-center mt-5">
-        <button class="btn btn-warning btn-pill mr-2 editRegularSchedule" type="button" data-toggle="modal" data-target="#updateRegularScheduleModal">
-                          <i class="mdi mdi-circle-edit-outline text-warning"></i>
-                          Edit Schedule</button>
-        <button class="btn btn-danger btn-pill deleteRegularSchedule" type="button" data-toggle="modal" data-target="#deleteRegularScheduleModal">
-                          <i class="mdi mdi-trash-can text-danger"></i>
-                          Delete Schedule</button>
-         
+          <div class="row">
+            <i class="fa-solid fa-exclamation-circle" style="text-align:center; font-size:50px; padding:1rem;"></i>
+            <h4 style="text-align:center;">What Would you like to do?</h4>
           </div>
-          </div> <!-- Modal Boday End-->
 
-        
+
+          <div class="d-flex justify-content-center mt-5">
+            <button class="btn btn-warning btn-pill mr-2 editRegularSchedule" type="button" data-toggle="modal" data-target="#updateRegularScheduleModal">
+              <i class="mdi mdi-circle-edit-outline text-light"></i>
+              Edit Schedule</button>
+            <button class="btn btn-danger btn-pill deleteRegularSchedule" type="button" data-toggle="modal" data-target="#deleteRegularScheduleModal">
+              <i class="mdi mdi-trash-can text-light"></i>
+              Delete Schedule</button>
+
+          </div>
+        </div> <!-- Modal Boday End-->
 
       </div>
     </div>
   </div>
-  </div>
-  
-<!-- Decision Make Up Schedule -->
+
+
+  <!-- Decision Make Up Schedule -->
   <div class="modal fade" id="decisionMakeUpScheduleModal" tabindex="-1" role="dialog" aria-labelledby="decisionMakeUpSchedule" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
@@ -301,24 +299,24 @@
           </button>
         </div>
         <div class="modal-body">
-            <div class="row">
-              <i class="fa-solid fa-exclamation-circle" style="text-align:center; font-size:50px; padding:1rem;"></i>
-              <h4 style="text-align:center;">What Would you like to do?</h4>
-            </div>
-           
-            
-        <div class="d-flex justify-content-center mt-5">
-        <button class="btn btn-warning btn-pill mr-2 editMakeUpSchedule" type="button" data-toggle="modal" data-target="#updateMakeUpScheduleModal">
-                          <i class="mdi mdi-circle-edit-outline text-warning"></i>
-                          Edit Schedule</button>
-        <button class="btn btn-danger btn-pill deleteMakeUpSchedule" type="button" data-toggle="modal" data-target="#deleteMakeUpScheduleModal">
-                          <i class="mdi mdi-trash-can text-danger"></i>
-                          Delete Schedule</button>
-         
+          <div class="row">
+            <i class="fa-solid fa-exclamation-circle" style="text-align:center; font-size:50px; padding:1rem;"></i>
+            <h4 style="text-align:center;">What Would you like to do?</h4>
           </div>
-          </div> <!-- Modal Boday End-->
 
-        
+
+          <div class="d-flex justify-content-center mt-5">
+            <button class="btn btn-warning btn-pill mr-2 editMakeUpSchedule" type="button" data-toggle="modal" data-target="#updateMakeUpScheduleModal">
+              <i class="mdi mdi-circle-edit-outline text-warning"></i>
+              Edit Schedule</button>
+            <button class="btn btn-danger btn-pill deleteMakeUpSchedule" type="button" data-toggle="modal" data-target="#deleteMakeUpScheduleModal">
+              <i class="mdi mdi-trash-can text-danger"></i>
+              Delete Schedule</button>
+
+          </div>
+        </div> <!-- Modal Boday End-->
+
+
 
       </div>
     </div>
@@ -331,7 +329,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="addRegularSchedule">Add Regular Schedule</h5>
-          <button type="button" class="close" data-dismiss="modal"  aria-label="Close">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -411,7 +409,7 @@
                 <div class="form-group">
                   <label>Day</label>
                   <select class="scheduleWeekDay form-select form-control border border-dark" aria-label="Default select example" name="scheduleWeekDay">
-                  <option selected value="" hidden>--Select Day--</option>
+                    <option selected value="" hidden>--Select Day--</option>
                     <option value="0">Sunday</option>
                     <option value="1">Monday</option>
                     <option value="2">Tuesday</option>
@@ -424,86 +422,86 @@
               </div>
 
               <div class="col-lg-3">
-              <ul id="scheduleStartTimeError"></ul>
+                <ul id="scheduleStartTimeError"></ul>
                 <div class="dropdown d-inline-block mb-3">
-                <label>Start Time</label>
-                <div class="input-group date" id="timepicker">
-                  <input type="datetime-local" class="scheduleStartTime form-control border border-primary" placeholder="Time" id="selectedTime" name="ScheduleStartTime">
-                  <div class="input-group-append">
-                    <div class="input-group text-light btn btn-primary btn-sm" id="timeIcon">
-                      <i class="mdi mdi-clock "></i>
+                  <label>Start Time</label>
+                  <div class="input-group date" id="timepicker">
+                    <input type="datetime-local" class="scheduleStartTime form-control border border-primary" placeholder="Time" id="selectedTime" name="ScheduleStartTime">
+                    <div class="input-group-append">
+                      <div class="input-group text-light btn btn-primary btn-sm" id="timeIcon">
+                        <i class="mdi mdi-clock "></i>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-              </div>
               <div class="col-lg-3">
-              <ul id="scheduleEndTimeError"></ul>
-              <div class="dropdown d-inline-block mb-3">
-                <label>End Time</label>
-                <div class="input-group date" id="timepicker">
-                  <input type="datetime-local" class="scheduleEndTime form-control border border-primary" placeholder="Time" id="selectedTime" name="ScheduleEndTime">
-                  <div class="input-group-append">
-                    <div class="input-group text-light btn btn-primary btn-sm" id="timeIcon">
-                      <i class="mdi mdi-clock "></i>
+                <ul id="scheduleEndTimeError"></ul>
+                <div class="dropdown d-inline-block mb-3">
+                  <label>End Time</label>
+                  <div class="input-group date" id="timepicker">
+                    <input type="datetime-local" class="scheduleEndTime form-control border border-primary" placeholder="Time" id="selectedTime" name="ScheduleEndTime">
+                    <div class="input-group-append">
+                      <div class="input-group text-light btn btn-primary btn-sm" id="timeIcon">
+                        <i class="mdi mdi-clock "></i>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
+
+              <div class="col-lg-3">
+                <ul id="scheduleStartDateError"></ul>
+                <div class="dropdown d-inline-block mb-3">
+                  <label>Start Date</label>
+                  <div class="input-group date" id="datepicker">
+                    <input type="datetime-local" class="scheduleStartDate form-control border border-primary" placeholder="Date" id="selectedDate">
+                    <div class="input-group-append">
+                      <div class="input-group text-light btn btn-primary btn-sm" id="dateIcon">
+                        <i class="mdi mdi-calendar "></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
 
               <div class="col-lg-3">
-              <ul id="scheduleStartDateError"></ul>
-              <div class="dropdown d-inline-block mb-3">
-              <label>Start Date</label>
-              <div class="input-group date" id="datepicker">
-                <input type="datetime-local" class="scheduleStartDate form-control border border-primary" placeholder="Date" id="selectedDate">
-                <div class="input-group-append">
-                  <div class="input-group text-light btn btn-primary btn-sm" id="dateIcon">
-                    <i class="mdi mdi-calendar "></i>
+                <ul id="scheduleEndDateError"></ul>
+                <div class="dropdown d-inline-block mb-3">
+                  <label>End Date</label>
+                  <div class="input-group date" id="datepicker">
+                    <input type="datetime-local" class="scheduleEndDate form-control border border-primary" placeholder="Date" id="selectedDate">
+                    <div class="input-group-append">
+                      <div class="input-group text-light btn btn-primary btn-sm" id="dateIcon">
+                        <i class="mdi mdi-calendar "></i>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            </div>
 
-            <div class="col-lg-3">
-              <ul id="scheduleEndDateError"></ul>
-              <div class="dropdown d-inline-block mb-3">
-              <label>End Date</label>
-              <div class="input-group date" id="datepicker">
-                <input type="datetime-local" class="scheduleEndDate form-control border border-primary" placeholder="Date" id="selectedDate">
-                <div class="input-group-append">
-                  <div class="input-group text-light btn btn-primary btn-sm" id="dateIcon">
-                    <i class="mdi mdi-calendar "></i>
-                  </div>
-                </div>
-              </div>
-            </div>
-            </div>
-
-            <label>Instructor</label>
+              <label>Instructor</label>
 
               <div class="col-lg-6">
                 <ul id="scheduleFacultyError"></ul>
-                  <form method="GET" action="{{ route('adminScheduleManagement') }}">
-                
-                    
-                        
-                      <button class="btn btn-primary btn-sm dropdown-toggle fw-bold" type="button" id="facultyIDDropdown" data-toggle="dropdown" aria-expanded="false">
-                        <i class="mdi mdi-alpha-i-box"></i>
-                        Instructor ID
-                      </button>
-                      <div class="dropdown-menu scrollable-dropdown" aria-labelledby="facultyIDDropdown">
-                        @foreach($instructorsID as $instructorID)
-                        @csrf
-                          <a class="dropdown-item id-faculty filter-faculty-id" data-value="{{ $instructorID->idNumber }}" href="#">
-                            {{ $instructorID->idNumber }}-{{ $instructorID->firstName }}  {{ $instructorID->lastName }}
-                          </a>
-                        @endforeach
-                      <input type="hidden" class="scheduleFaculty form-control" name="facultyID" id="selectedFacultyID">
-                    </div>
-                  </form>
+                <form method="GET" action="{{ route('adminScheduleManagement') }}">
+
+
+
+                  <button class="btn btn-primary btn-sm dropdown-toggle fw-bold" type="button" id="facultyIDDropdown" data-toggle="dropdown" aria-expanded="false">
+                    <i class="mdi mdi-alpha-i-box"></i>
+                    Instructor ID
+                  </button>
+                  <div class="dropdown-menu scrollable-dropdown" aria-labelledby="facultyIDDropdown">
+                    @foreach($instructorsID as $instructorID)
+                    @csrf
+                    <a class="dropdown-item id-faculty filter-faculty-id" data-value="{{ $instructorID->idNumber }}" href="#">
+                      {{ $instructorID->idNumber }}-{{ $instructorID->firstName }} {{ $instructorID->lastName }}
+                    </a>
+                    @endforeach
+                    <input type="hidden" class="scheduleFaculty form-control" name="facultyID" id="selectedFacultyID">
+                  </div>
+                </form>
               </div>
             </div> <!-- Modal Boday End-->
 
@@ -521,7 +519,7 @@
   </div>
 
 
-<!-- Update REGULAR SCHEDULE MODAL -->
+  <!-- Update REGULAR SCHEDULE MODAL -->
   <div class="modal fade" id="updateRegularScheduleModal" tabindex="-1" role="dialog" aria-labelledby="updateRegularSchedule" aria-hidden="true">
     <div class="modal-dialog modal-md" role="document">
       <div class="modal-content">
@@ -535,7 +533,7 @@
           <form method="post">
             @csrf
             @method('put')
-          <ul id="regularScheduleError"></ul>
+            <ul id="regularScheduleError"></ul>
             <input type="hidden" id="regularScheduleID" class="id form-control ">
 
             <div class="row">
@@ -544,7 +542,7 @@
                 <div class="form-group">
                   <label>Course Code</label>
                   <input type="text" class="updateCourseCode form-control border border-dark border border-dark" id="edit_course_code" name="updateCourseCode" placeholder="Enter New Course Code">
-            
+
                 </div>
               </div>
 
@@ -553,77 +551,77 @@
                 <div class="form-group">
                   <label>Course Name</label>
                   <input type="text" class="updateCourseName form-control border border-dark border border-dark" id="edit_course_name" name="updateCourseName" placeholder="Enter New Course Name">
-               
+
                 </div>
               </div>
 
               <div class="col-lg-6">
-              <ul id="startTimeError"></ul>
+                <ul id="startTimeError"></ul>
                 <div class="dropdown d-inline-block mb-3">
-                <label>Start Time</label>
-                <div class="input-group date" id="timepicker">
-                  <input type="datetime-local" class="startTime form-control border border-primary" placeholder="Time" id="selectedTime" name="startTime">
-                  <div class="input-group-append">
-                    <div class="input-group text-light btn btn-primary btn-sm" id="timeIcon">
-                      <i class="mdi mdi-clock "></i>
+                  <label>Start Time</label>
+                  <div class="input-group date" id="timepicker">
+                    <input type="datetime-local" class="startTime form-control border border-primary" placeholder="Time" id="selectedTime" name="startTime">
+                    <div class="input-group-append">
+                      <div class="input-group text-light btn btn-primary btn-sm" id="timeIcon">
+                        <i class="mdi mdi-clock "></i>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-              </div>
 
               <div class="col-lg-6">
-              <ul id="endTimeError"></ul>
-              <div class="dropdown d-inline-block mb-3">
-                <label>End Time</label>
-                <div class="input-group date" id="timepicker">
-                  <input type="datetime-local" class="endTime form-control border border-primary" placeholder="Time" id="selectedTime" name="endTime">
-                  <div class="input-group-append">
-                    <div class="input-group text-light btn btn-primary btn-sm" id="timeIcon">
-                      <i class="mdi mdi-clock "></i>
+                <ul id="endTimeError"></ul>
+                <div class="dropdown d-inline-block mb-3">
+                  <label>End Time</label>
+                  <div class="input-group date" id="timepicker">
+                    <input type="datetime-local" class="endTime form-control border border-primary" placeholder="Time" id="selectedTime" name="endTime">
+                    <div class="input-group-append">
+                      <div class="input-group text-light btn btn-primary btn-sm" id="timeIcon">
+                        <i class="mdi mdi-clock "></i>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
+
+              <div class="col-lg-6">
+                <ul id="startDateError"></ul>
+                <div class="dropdown d-inline-block mb-3">
+                  <label>Start Date</label>
+                  <div class="input-group date" id="datepicker">
+                    <input type="datetime-local" class="startDate form-control border border-primary" placeholder="Date" id="selectedDate">
+                    <div class="input-group-append">
+                      <div class="input-group text-light btn btn-primary btn-sm" id="dateIcon">
+                        <i class="mdi mdi-calendar "></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
 
               <div class="col-lg-6">
-              <ul id="startDateError"></ul>
-              <div class="dropdown d-inline-block mb-3">
-              <label>Start Date</label>
-              <div class="input-group date" id="datepicker">
-                <input type="datetime-local" class="startDate form-control border border-primary" placeholder="Date" id="selectedDate">
-                <div class="input-group-append">
-                  <div class="input-group text-light btn btn-primary btn-sm" id="dateIcon">
-                    <i class="mdi mdi-calendar "></i>
+                <ul id="endDateError"></ul>
+                <div class="dropdown d-inline-block mb-3">
+                  <label>End Date</label>
+                  <div class="input-group date" id="datepicker">
+                    <input type="datetime-local" class="endDate form-control border border-primary" placeholder="Date" id="selectedDate">
+                    <div class="input-group-append">
+                      <div class="input-group text-light btn btn-primary btn-sm" id="dateIcon">
+                        <i class="mdi mdi-calendar "></i>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            </div>
-
-            <div class="col-lg-6">
-              <ul id="endDateError"></ul>
-              <div class="dropdown d-inline-block mb-3">
-              <label>End Date</label>
-              <div class="input-group date" id="datepicker">
-                <input type="datetime-local" class="endDate form-control border border-primary" placeholder="Date" id="selectedDate">
-                <div class="input-group-append">
-                  <div class="input-group text-light btn btn-primary btn-sm" id="dateIcon">
-                    <i class="mdi mdi-calendar "></i>
-                  </div>
-                </div>
-              </div>
-            </div>
-            </div>
 
 
-            <div class="col-lg-6">
+              <div class="col-lg-6">
                 <ul id="editWeekDayError"></ul>
                 <div class="form-group">
                   <label>Day</label>
                   <select class="updateWeekDay form-select form-control border border-dark" aria-label="Default select example" id="edit_weekday" name="updateWeekDay">
-              
+
                     <option selected hidden></option>
                     <option value="0">Sunday</option>
                     <option value="1">Monday</option>
@@ -665,7 +663,7 @@
           <form method="post">
             @csrf
             @method('put')
-          <ul id="makeUpScheduleError"></ul>
+            <ul id="makeUpScheduleError"></ul>
             <input type="hidden" id="makeUpScheduleID" class="id form-control ">
 
             <div class="row">
@@ -674,7 +672,7 @@
                 <div class="form-group">
                   <label>Schedule Title</label>
                   <input type="text" class="updateScheduleTitle form-control border border-dark border border-dark" id="edit_schedule_title" name="updateScheduleTitle" placeholder="Enter New Schedule Title">
-            
+
                 </div>
               </div>
 
@@ -683,7 +681,7 @@
                 <div class="form-group">
                   <label>Program</label>
                   <select class="updateProgram form-select form-control border border-dark" id="edit_schedule_program" name="updateProgram">
-                  <option selected hidden></option>
+                    <option selected hidden></option>
                     <option value="BSIT">BSIT</option>
                     <option value="BSIS">BSIS</option>
                     <option value="BSCS">BSCS</option>
@@ -697,7 +695,7 @@
                 <div class="form-group">
                   <label>Year</label>
                   <select class="updateYear form-select form-control border border-dark" id="edit_schedule_year" name="updateYear">
-                  <option selected hidden></option>
+                    <option selected hidden></option>
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
@@ -711,7 +709,7 @@
                 <div class="form-group">
                   <label>Section</label>
                   <select class="updateSection form-select form-control border border-dark" id="edit_schedule_section" name="updateSection">
-                  <option selected hidden></option>
+                    <option selected hidden></option>
                     <option value="A">A</option>
                     <option value="B">B</option>
                     <option value="C">C</option>
@@ -727,33 +725,33 @@
               </div>
 
               <div class="col-lg-6">
-              <ul id="editStartTimeError"></ul>
+                <ul id="editStartTimeError"></ul>
                 <div class="dropdown d-inline-block mb-3">
-                <label>Start Time</label>
-                <div class="input-group date" id="timepicker">
-                  <input type="datetime-local" class="updateStartTime form-control border border-primary" placeholder="Time" id="selectedTime" name="updateStartTime">
-                  <div class="input-group-append">
-                    <div class="input-group text-light btn btn-primary btn-sm" id="timeIcon">
-                      <i class="mdi mdi-clock "></i>
+                  <label>Start Time</label>
+                  <div class="input-group date" id="timepicker">
+                    <input type="datetime-local" class="updateStartTime form-control border border-primary" placeholder="Time" id="selectedTime" name="updateStartTime">
+                    <div class="input-group-append">
+                      <div class="input-group text-light btn btn-primary btn-sm" id="timeIcon">
+                        <i class="mdi mdi-clock "></i>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
               </div>
 
               <div class="col-lg-6">
-              <ul id="editEndTimeError"></ul>
-              <div class="dropdown d-inline-block mb-3">
-                <label>End Time</label>
-                <div class="input-group date" id="timepicker">
-                  <input type="datetime-local" class="updateEndTime form-control border border-primary" placeholder="Time" id="selectedTime" name="updateEndTime">
-                  <div class="input-group-append">
-                    <div class="input-group text-light btn btn-primary btn-sm" id="timeIcon">
-                      <i class="mdi mdi-clock "></i>
+                <ul id="editEndTimeError"></ul>
+                <div class="dropdown d-inline-block mb-3">
+                  <label>End Time</label>
+                  <div class="input-group date" id="timepicker">
+                    <input type="datetime-local" class="updateEndTime form-control border border-primary" placeholder="Time" id="selectedTime" name="updateEndTime">
+                    <div class="input-group-append">
+                      <div class="input-group text-light btn btn-primary btn-sm" id="timeIcon">
+                        <i class="mdi mdi-clock "></i>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
               </div>
 
             </div> <!-- Modal Boday End-->
@@ -771,8 +769,8 @@
     </div>
   </div>
 
-   <!-- Delete Regular Schedule Modal -->
-   <div class="modal fade" id="deleteRegularScheduleModal" tabindex="-1" role="dialog" aria-labelledby="deleteRegularSchedule" aria-hidden="true">
+  <!-- Delete Regular Schedule Modal -->
+  <div class="modal fade" id="deleteRegularScheduleModal" tabindex="-1" role="dialog" aria-labelledby="deleteRegularSchedule" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -805,10 +803,10 @@
     </div>
   </div>
   </div>
-  
 
-    <!-- Delete Make Up Schedule Modal -->
-    <div class="modal fade" id="deleteMakeUpScheduleModal" tabindex="-1" role="dialog" aria-labelledby="deleteMakeUpSchedule" aria-hidden="true">
+
+  <!-- Delete Make Up Schedule Modal -->
+  <div class="modal fade" id="deleteMakeUpScheduleModal" tabindex="-1" role="dialog" aria-labelledby="deleteMakeUpSchedule" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -864,9 +862,8 @@
   </div>
   </div>
   <script>
-
     document.addEventListener("DOMContentLoaded", function() {
-    
+
 
       document.querySelectorAll('.id-faculty').forEach(function(item) {
         item.addEventListener('click', function(e) {
