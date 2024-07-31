@@ -26,7 +26,7 @@
     });
     NProgress.start();
   </script>
-    @include('admin.adminSideNav')
+  @include('admin.adminSideNav')
   <!-- ====================================
       ——— PAGE WRAPPER
       ===================================== -->
@@ -44,8 +44,8 @@
           <!-- Navigation -->
           <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-               <!-- <i class="mdi mdi-home"></i> -->
-               <li class="breadcrumb-item">
+              <!-- <i class="mdi mdi-home"></i> -->
+              <li class="breadcrumb-item">
                 <a href="{{ route('index') }}">Dashboard</a>
               </li>
               <li class="breadcrumb-item active">
@@ -69,7 +69,7 @@
               <div class="col-xl-12 col-md-12 d-flex justify-content-end">
                 <!-- Sort button -->
                 <div class="dropdown d-inline-block ">
-                <button class="btn btn-primary btn-sm fw-bold" type="button" data-toggle="modal" data-target="#exampleModalForm">
+                  <button class="btn btn-primary btn-sm fw-bold" type="button" data-toggle="modal" data-target="#pendingRFIDModal">
                     <i class=" mdi mdi-calendar-plus"></i>
                     ADD RFID
                   </button>
@@ -102,7 +102,7 @@
                         Options
                       </button>
                       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <button class="dropdown-item" data-toggle="modal" data-target="#exampleModalForm">
+                        <button class="dropdown-item" data-toggle="modal" data-target="#pendingRFIDModal">
                           <i class="mdi mdi-check text-info"></i>
                           Activate
                         </button>
@@ -128,36 +128,36 @@
   </div>
   </div>
 
-  <div class="modal fade" id="exampleModalForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalFormTitle" aria-hidden="true">
+  <div class="modal fade" id="pendingRFIDModal" tabindex="-1" role="dialog" aria-labelledby="pendingRFIDModal" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalFormTitle">Activate RFID</h5>
+          <h5 class="modal-title" id="pendingRFIDModal">Activate RFID</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          <form>
+          <form id="clearForm">
             <div class="row">
 
               <div class="col-lg-6">
                 <div class="form-group">
-                  <label for="exampleInputPassword1">RFID Code</label>
-                  <input type="text" class="form-control border border-dark border border-dark" id="exampleInputRFID" placeholder="RFID Code">
+                  <label for="rfid code">RFID Code</label>
+                  <input type="text" class="form-control border border-dark border border-dark" id="rfidCode" name="rfidCode" placeholder="RFID Code">
                 </div>
               </div>
 
               <div class="col-lg-6">
                 <div class="form-group">
-                  <label for="exampleInputUserType">User Type</label>
+                  <label for="user type">User Type</label>
                   <div>
                     <select class="form-select form-control border border-dark" aria-label="Default select example">
                       <option selected>Select User Type</option>
-                      <option value="1">Student</option>
-                      <option value="2">Instructor</option>
-                      <option value="3">Faculty & Staff</option>
-                      <option value="3">Student Aide</option>
+                      <option value="Student">Student</option>
+                      <option value="Faculty">Faculty</option>
+                      <option value="Lab-In-Charge">Lab-In-Charge</option>
+                      <option value="Lab Technician">Lab Technician</option>
                     </select>
                   </div>
                 </div>
@@ -166,15 +166,9 @@
 
               <div class="col-lg-6">
                 <div class="form-group">
-                  <label for="exampleInputPassword1">User ID</label>
-                  <input type="text" class="form-control border border-dark" id="exampleInputUser" placeholder="Enter User ID">
-                </div>
-              </div>
-
-              <div class="col-lg-6">
-                <div class="form-group">
-                  <label for="exampleInputPassword1">User Name</label>
-                  <input type="text" class="form-control border border-dark" id="exampleInputUser" placeholder="Enter User Name">
+                  <label for="user id">User ID</label>
+                  <input type="text" class="form-control border border-dark" id="userID" name="userID" placeholder="Enter User ID">
+                  <ul id="idNumberList" class="list-group" style="max-height: 100px; overflow-y: auto; margin-top: 5px;"></ul>
                 </div>
               </div>
 
@@ -182,15 +176,70 @@
           </form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-danger btn-pill" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-danger btn-pill" class="close" data-dismiss="modal">Close</button>
           <button type="button" class="btn btn-primary btn-pill">Save Changes</button>
         </div>
       </div>
     </div>
   </div>
 
-  
+
   </div>
   </div>
+
+
+  <script>
+    $(document).ready(function() {
+      $('#userID').on('keyup', function() {
+
+        $.ajaxSetup({
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
+        });
+
+        var query = $(this).val();
+        // console.log(query);
+
+        if (query.length > 0) {
+          $.ajax({
+            url: "{{ route('autocomplete') }}",
+            type: "GET",
+            data: {
+              'query': query
+            },
+            success: function(response) {
+              $('#idNumberList').empty();
+
+              if (response.number && response.number.length > 0) {
+                response.number.forEach(function(item) {
+                  $('#idNumberList').append('<li class="list-group-item" style="font-weight: bold; cursor:pointer; border: 1px solid #000; margin-bottom: 2px">' 
+                  + item.idNumber + '</li>');
+                });
+              } else {
+                $('#idNumberList').append('<li class="list-group-item" style="font-weight: bold; cursor:not-allowed; border: 1px solid #000; margin-bottom: 2px;pointer-events: none;">No results found</li>');
+              }
+            }
+          });
+        } else {
+          $('#idNumberList').empty();
+        }
+      });
+
+      $(document).on('click', 'li', function() {
+        $('#userID').val($(this).text());
+        $('#idNumberList').empty();
+      });
+    });
+  </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+      $('#pendingRFIDModal').on('hidden.bs.modal', function() {
+        $('#clearForm')[0].reset();
+        $('#idNumberList').empty();
+      });
+    });
+  </script>
 
   @include('footer')
