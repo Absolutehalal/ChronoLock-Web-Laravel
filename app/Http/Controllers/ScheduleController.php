@@ -260,6 +260,7 @@ class ScheduleController extends Controller
         ]);
         $scheduleID = $request->get('scheduleID');
         $inputUserID = $request->get('userID');
+        $assignedFacultyID = DB::table('schedules')->where('scheduleID', $scheduleID)->value('userID');
         $id = Auth::id();
         $userID = DB::table('users')->where('id', $id)->value('idNumber');
         $schedule = Schedule::find($scheduleID);
@@ -269,7 +270,7 @@ class ScheduleController extends Controller
                 'errors' => $validator->messages()
             ]);
         } else {
-            if ($inputUserID != $userID) {
+            if (($inputUserID != $userID)||($inputUserID!==$assignedFacultyID)) {
                 return response()->json([
                     'status' => 300,
                 ]);
