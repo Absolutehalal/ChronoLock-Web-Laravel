@@ -139,7 +139,7 @@
                                         @php
                                         $classID=$schedule->classID;
                                         $link= mysqli_connect("localhost","root","");
-                                        mysqli_select_db($link, "laravel");
+                                        mysqli_select_db($link, "chronolock");
                                         $query = "SELECT * FROM student_masterlists WHERE userID ='$userID' AND classID ='$classID'";
                                         $result = mysqli_query($link,$query);
                                         @endphp
