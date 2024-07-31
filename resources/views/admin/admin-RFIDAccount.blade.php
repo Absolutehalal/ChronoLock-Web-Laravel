@@ -63,7 +63,7 @@
               <div class="col-xl-12 col-md-12 d-flex justify-content-end">
                 <!-- Sort button -->
                 <div class="dropdown d-inline-block ">
-                  <button class="btn btn-primary btn-sm fw-bold" type="button" data-toggle="modal" data-target="#exampleModalForm">
+                  <button class="btn btn-primary btn-sm fw-bold" type="button" data-toggle="modal" data-target="#rfidAcco">
                     <i class=" mdi mdi-plus-box"></i>
                     ADD RFID
                   </button>
@@ -99,7 +99,7 @@
                         Actions
                       </button>
                       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <button class="dropdown-item" type="button" data-toggle="modal" data-target="#exampleModalForm">
+                        <button class="dropdown-item" type="button" data-toggle="modal" data-target="#rfidAcco">
                           <i class="mdi mdi-circle-edit-outline text-warning"></i>
                           Edit</button>
                         <button class="dropdown-item">
@@ -127,27 +127,27 @@
   </div>
   </div>
 
-  <div class="modal fade" id="exampleModalForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalFormTitle" aria-hidden="true">
+  <div class="modal fade" id="rfidAccountModal" tabindex="-1" role="dialog" aria-labelledby="rfidAccountModal" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalFormTitle">Add New User</h5>
+          <h5 class="modal-title" id="rfidAccountModal">Add New User</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-        <form id="userForm">
-        @csrf
+          <form id="clearForm">
+            @csrf
             <div class="row">
 
               <div class="col-lg-6">
                 <div class="form-group">
                   <label>Name</label>
                   <input type="text" class="form-control border border-dark" id="name" name="name" placeholder="ex. Sotto, Edward L.">
-                  <ul id="nameList" class="list-group"></ul>
                 </div>
               </div>
+
 
               <div class="col-lg-6">
                 <div class="form-group">
@@ -218,43 +218,11 @@
     });
   </script>
 
-  <script>
-    $(document).ready(function() {
-      $('#name').on('keyup', function() {
-        var query = $(this).val();
-        if (query.length > 0) {
-          $.ajax({
-            url: "{{ route('autocomplete') }}",
-            type: "GET",
-            data: {
-              'query': query
-            },
-            success: function(data) {
-              $('#nameList').empty();
-              if (data.length > 0) {
-                data.forEach(function(item) {
-                  $('#nameList').append('<li class="list-group-item">' + item.name + '</li>');
-                });
-              } else {
-                $('#nameList').append('<li class="list-group-item">No results found</li>');
-              }
-            }
-          });
-        } else {
-          $('#nameList').empty();
-        }
-      });
-      $(document).on('click', 'li', function() {
-        $('#name').val($(this).text());
-        $('#nameList').empty();
-      });
-    });
-  </script>
-
+  
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      $('#exampleModalForm').on('hidden.bs.modal', function() {
-        $('#userForm')[0].reset();
+      $('#rfidAcco').on('hidden.bs.modal', function() {
+        $('#clearForm')[0].reset();
       });
     });
   </script>

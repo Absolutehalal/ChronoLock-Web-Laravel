@@ -25,6 +25,8 @@ class GoogleAuthController extends Controller
                 return redirect('/adminPage');
             } elseif ($user->userType == 'Faculty') {
                 return redirect('/instructorDashboard');
+            } elseif ($user->userType == 'Student') {
+                return redirect('/student-dashboard');
             } else {
                 return redirect()->back(); // Redirect to a default page if usertype doesn't match
             }
@@ -83,6 +85,8 @@ class GoogleAuthController extends Controller
                 return redirect()->intended('/adminPage');
             } elseif ($user->userType === 'Faculty') {
                 return redirect()->intended('/instructorDashboard');
+            } elseif ($user->userType == 'Student') {
+                return redirect('/student-dashboard');
             }
         } else {
             // Authentication failed, return to login with an error messag
@@ -127,7 +131,7 @@ class GoogleAuthController extends Controller
 
                 // Check userType and redirect accordingly
                 if ($existingUser->userType === 'Admin') {
-                     // If user exists, log them in
+                    // If user exists, log them in
                     Auth::login($existingUser, true);
 
                     Alert::success('Success', 'Login successful.')
@@ -136,9 +140,8 @@ class GoogleAuthController extends Controller
                         ->showCloseButton();
 
                     return redirect()->intended('/adminPage');
-
                 } elseif ($existingUser->userType === 'Faculty') {
-                     // If user exists, log them in
+                    // If user exists, log them in
                     Auth::login($existingUser, true);
 
                     Alert::success('Success', 'Login successful.')
@@ -147,17 +150,16 @@ class GoogleAuthController extends Controller
                         ->showCloseButton();
 
                     return redirect()->intended('/instructorDashboard');
-                    
                 } elseif ($existingUser->userType === 'Student') {
                     // If user exists, log them in
-                   Auth::login($existingUser, true);
+                    Auth::login($existingUser, true);
 
-                   Alert::success('Success', 'Login successful.')
-                       ->autoClose(3000)
-                       ->timerProgressBar()
-                       ->showCloseButton();
+                    Alert::success('Success', 'Login successful.')
+                        ->autoClose(3000)
+                        ->timerProgressBar()
+                        ->showCloseButton();
 
-                   return redirect()->intended('/student-dashboard');
+                    return redirect()->intended('/student-dashboard');
                 } else {
                     Alert::warning('401', 'Unauthorized Access.')
                         ->autoClose(10000)
