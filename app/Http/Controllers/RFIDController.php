@@ -1,12 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\User;
 use Illuminate\Http\Request;
 
 class RFIDController extends Controller
 {
-     //pending RFID page
+    //pending RFID page
     public function pendingRFID()
     {
         return view('admin.admin-pendingRFID');
@@ -20,8 +21,12 @@ class RFIDController extends Controller
     public function autocomplete(Request $request)
     {
         $query = $request->get('query');
-        $results = User::where('accountName', 'LIKE', "%{$query}%")->get();
+        $number = User::where('idNumber', 'LIKE', "%{$query}%")->get(['idNumber']);
 
-        return response()->json($results);
+        if ($number->isNotEmpty()) {
+            return response()->json(['number' => $number]);
+        } else {
+            return response()->json(['status' => 400]);
+        }
     }
 }
