@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Rfid_temp extends Model
+class RfidAccount extends Model
 {
     use HasFactory;
-
     protected $fillable = [
         'RFID_Code',
+        'RFID_Status',
     ];
 }

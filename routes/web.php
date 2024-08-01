@@ -12,6 +12,7 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\RFIDController;
 use App\Http\Controllers\StudentMasterListController;
 
+
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
@@ -98,11 +99,18 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
 
     //--------END Admin instructor attendance Management ROUTES-----------
 
-
+    //--------START Admin Pending RFID ROUTES---------  
+    Route::get('/processPendingRFID/{id}', [RFIDController::class, 'processPendingRFID'])->name('processPendingRFID');
+    Route::put('/activatePendingRFID', [RFIDController::class, 'activatePendingRFID'])->name('activatePendingRFID');
+    Route::delete('/deletePendingRFID/{id}', [RFIDController::class, 'deletePendingRFID'])->name('deletePendingRFID');
     Route::get('/pendingRFIDPage', [RFIDController::class, 'pendingRFID'])->name('pendingRFID');
-    Route::get('/RFIDManagementPage', [RFIDController::class, 'RFIDManagement'])->name('RFIDManagement');
-    Route::get('/autocomplete', [RFIDController::class, 'autocomplete'])->name('autocomplete');
 
+    Route::put('/deactivateRFID/{id}', [RFIDController::class, 'deactivateRFID'])->name('deactivateRFID');
+    Route::put('/activateRFID/{id}', [RFIDController::class, 'activateRFID'])->name('activateRFID');
+    Route::get('/RFIDManagementPage', [RFIDController::class, 'RFIDManagement'])->name('RFIDManagement');
+    
+    Route::get('/autocomplete', [RFIDController::class, 'autocomplete'])->name('autocomplete');
+    //--------End Admin Pending RFID ROUTES---------  
 
     Route::get('/logsPage', [UserLogController::class, 'logs'])->name('logs');
     Route::get('/reportGenerationPage', [UserController::class, 'reportGeneration'])->name('reportGeneration');

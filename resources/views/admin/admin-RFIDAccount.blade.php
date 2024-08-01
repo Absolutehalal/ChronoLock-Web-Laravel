@@ -16,6 +16,8 @@
 
   <title>ChronoLock Admin-RFID Account</title>
 
+  <!-- Ajax RFID Account -->
+  <script defer src="js/adminRFIDAccountManagement.js"></script>
   @include('head')
 </head>
 
@@ -75,23 +77,24 @@
             <table id="exampleTable" class="table table-bordered table-hover no-wrap" style="width:100%">
               <thead class="table-dark">
                 <tr>
-                  <th>#</th>
+                  <th>User ID</th>
                   <th>Name</th>
                   <th>RFID Code</th>
                   <th>User Type</th>
-                  <th>Course</th>
-                  <th>Year & Section</th>
+                  <th>Status</th>
                   <th>Action</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>Lorzano, Ralph H.</td>
-                  <td>C21104744</td>
-                  <td>Student</td>
-                  <td>BSIS</td>
-                  <td>1A</td>
+                  @foreach($RFID_Accounts as $RFID_Account)
+                @csrf
+                  <td>{{ $RFID_Account->idNumber }}</td>
+                  <td>{{ $RFID_Account->firstName }} {{ $RFID_Account->lastName }}</td>
+                  <td>{{ $RFID_Account->RFID_Code }}</td>
+                  <td>{{ $RFID_Account->userType }} </td>
+                  <td>{{ $RFID_Account->RFID_Status }} </td>
+
+
                   <th>
                     <!-- Example single primary button -->
                     <div class="dropdown d-inline-block">
@@ -99,17 +102,39 @@
                         Actions
                       </button>
                       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <button class="dropdown-item" type="button" data-toggle="modal" data-target="#exampleModalForm">
-                          <i class="mdi mdi-circle-edit-outline text-warning"></i>
-                          Edit</button>
-                        <button class="dropdown-item">
-                          <i class="mdi mdi-trash-can text-danger"></i>
-                          Delete</button>
+                                        @php
+                                        $RFID_ID=$RFID_Account->id;
+                                        $link= mysqli_connect("localhost","root","");
+                                        mysqli_select_db($link, "chronolock");
+                                        $query = "SELECT * FROM rfid_accounts WHERE id ='$RFID_ID'";
+                                        $result = mysqli_query($link,$query);
+                                        $row =  mysqli_fetch_assoc($result);
+                                        $status = $row['RFID_Status'];
+                                        @endphp
+
+                                        @if (mysqli_num_rows($result) === 1 )
+                                          
+                                            @if ($status == "Activated" )
+                                            <button class="dropdown-item deactivateBtn" type="button" data-toggle="modal" data-target="#deactivateRFIDModal" value="{{ $RFID_Account->id }}">
+                                            <i class="mdi mdi-close text-danger"></i>
+                                            Deactivate</button>
+                                            @elseif ($status == "Deactivated" )
+                                            <button class="dropdown-item activateBtn" type="button" data-toggle="modal" data-target="#activateRFIDModal" value="{{ $RFID_Account->id }}">
+                                            <i class="mdi mdi-check text-info"></i>
+                                            Activate</button>
+                                            @endif
+                                        @endif
+                                        <button class="dropdown-item blacklistBtn" type="button" data-toggle="modal" data-target="#blacklistRFIDModal" value="{{ $RFID_Account->RFID_Code }}">
+                                            
+                                            <i class="fa fa-ban"></i>
+                                            Blacklist</button>
+
+                      
                       </div>
                     </div>
                   </th>
-                </tr>
-
+             
+                @endforeach
               </tbody>
             </table>
 
@@ -127,7 +152,82 @@
   </div>
   </div>
 
-  <div class="modal fade" id="exampleModalForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalFormTitle" aria-hidden="true">
+
+
+  <!-- Activation Modal -->
+  <div class="modal fade" id="activateRFIDModal" tabindex="-1" role="dialog" aria-labelledby="activateRFID" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="activateRFID" style="text-align:center;">Activate</h5>
+          <button type="button" class="close" id="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form method="post">
+            @csrf
+            @method('delete')
+            <input type="hidden" id="activateRFID_ID" class="id form-control ">
+            <div class="row">
+              <i class="mdi mdi-check text-info" style="text-align:center; font-size:50px; padding:1rem;"></i>
+            </div>
+            <div class="row">
+              <h4 style="text-align:center;"> Activate RFID?</h4>
+            </div>
+        </div> <!-- Modal Boday End-->
+
+        <!-- Modal Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-danger btn-pill" id="close" data-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-outline-info btn-pill activate"></i>Activate</button>
+        </div>
+
+        </form>
+
+      </div>
+    </div>
+  </div>
+  </div>
+
+
+   <!-- Deactivation Modal -->
+   <div class="modal fade" id="deactivateRFIDModal" tabindex="-1" role="dialog" aria-labelledby="deactivateRFID" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deactivateRFID" style="text-align:center;">Deactivate</h5>
+          <button type="button" class="close" id="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form method="post">
+            @csrf
+            @method('delete')
+            <input type="hidden" id="deactivateRFID_ID" class="id form-control ">
+            <div class="row">
+              <i class="mdi mdi-close text-danger" style="text-align:center; font-size:50px; padding:1rem;"></i>
+            </div>
+            <div class="row">
+              <h4 style="text-align:center;"> Deactivate RFID?</h4>
+            </div>
+        </div> <!-- Modal Boday End-->
+       
+        <!-- Modal Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-info btn-pill" id="close" data-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-outline-danger btn-pill deactivate"></i>Deactivate</button>
+        </div>
+
+        </form>
+
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <!-- <div class="modal fade" id="exampleModalForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalFormTitle" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -205,9 +305,9 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
 
-  <script>
+  <!-- <script>
     // RFID REGISTRATION
     $(document).ready(function() {
       $('#rfidCode').focus();
@@ -257,6 +357,6 @@
         $('#userForm')[0].reset();
       });
     });
-  </script>
+  </script> -->
 
   @include('footer')
