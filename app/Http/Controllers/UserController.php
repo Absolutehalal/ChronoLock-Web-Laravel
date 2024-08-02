@@ -381,7 +381,7 @@ class UserController extends Controller
             } else if ($schedule->scheduleType == 'regularSchedule') {
                 $ERPSchedules[] = [
                     'id' =>  $schedule->scheduleID,
-                    'title' => $schedule->courseName,
+                    'title' => $schedule->courseName." ".$schedule->instFirstName." ".$schedule->instLastName,
                     'startTime' => $schedule->startTime,
                     'endTime' => $schedule->endTime,
                     'startRecur' => $schedule->startDate,
