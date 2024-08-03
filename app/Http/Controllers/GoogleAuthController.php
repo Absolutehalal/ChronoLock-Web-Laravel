@@ -121,7 +121,7 @@ class GoogleAuthController extends Controller
             // }
 
             // Find user by Google ID
-            $existingUser = User::where('google_id', $googleUser->email)->first();
+            $existingUser = User::where('email', $googleUser->email)->first();
 
             if ($existingUser) {
 
@@ -142,7 +142,6 @@ class GoogleAuthController extends Controller
                      if ($existingUser->accountName === Null){
                         $existingUser->update([
                             'google_id' => $googleUser->id,
-                        ], [
                             'accountName' => $googleUser->name,
                             'avatar' => $googleUser->getAvatar(),
                         ]);  
@@ -162,12 +161,11 @@ class GoogleAuthController extends Controller
                     if ($existingUser->accountName === Null){
                         $existingUser->update([
                             'google_id' => $googleUser->id,
-                        ], [
                             'accountName' => $googleUser->name,
                             'avatar' => $googleUser->getAvatar(),
                         ]);  
                      }
-                     
+
                     // If user exists, log them in
                    Auth::login($existingUser, true);
 
