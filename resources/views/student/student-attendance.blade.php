@@ -101,7 +101,7 @@
           <div class="col-xl-4">
 
             <!-- Page Views  -->
-            <div class="card card-default" id="page-views">
+            <div class="card card-default shadow" id="page-views">
               <div class="card-header">
                 @if($programTitle=='')\
                 <h2>Classmates Enrolled</h2>
@@ -110,16 +110,16 @@
                 @endif
               </div>
               <div class="card-body py-0" data-simplebar style="height: 392px;">
-                <table class="table table-borderless table-thead-border">
-                  <thead>
+                <table class="table table-bordered table-hover no wrap mt-1">
+                  <thead class="table-dark text-center">
                     <tr>
-                      <th style="color: #000000;">Name</th>
-                      <th class="text-right px-3" style="color: #000000;">Yr. & Section</th>
-                      <th class="text-right" style="color: #000000;">Status</th>
+                      <th>Name</th>
+                      <th>Yr. & Sec.</th>
+                      <th>Status</th>
                     </tr>
                   </thead>
-                  <tbody>
 
+                  <tbody class="text-center">
                     @foreach($myClassmates as $myClassmates)
                     <tr>
                       <td>{{$myClassmates->firstName}} {{$myClassmates->lastName}}</td>

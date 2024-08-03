@@ -86,54 +86,54 @@
                 </tr>
               </thead>
               <tbody>
-                  @foreach($RFID_Accounts as $RFID_Account)
+                @foreach($RFID_Accounts as $RFID_Account)
                 @csrf
-                  <td>{{ $RFID_Account->idNumber }}</td>
-                  <td>{{ $RFID_Account->firstName }} {{ $RFID_Account->lastName }}</td>
-                  <td>{{ $RFID_Account->RFID_Code }}</td>
-                  <td>{{ $RFID_Account->userType }} </td>
-                  <td>{{ $RFID_Account->RFID_Status }} </td>
+                <td>{{ $RFID_Account->idNumber }}</td>
+                <td>{{ $RFID_Account->firstName }} {{ $RFID_Account->lastName }}</td>
+                <td>{{ $RFID_Account->RFID_Code }}</td>
+                <td>{{ $RFID_Account->userType }} </td>
+                <td>{{ $RFID_Account->RFID_Status }} </td>
 
 
-                  <th>
-                    <!-- Example single primary button -->
-                    <div class="dropdown d-inline-block">
-                      <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
-                        Actions
-                      </button>
-                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        @php
-                                        $RFID_ID=$RFID_Account->id;
-                                        $link= mysqli_connect("localhost","root","");
-                                        mysqli_select_db($link, "chronolock");
-                                        $query = "SELECT * FROM rfid_accounts WHERE id ='$RFID_ID'";
-                                        $result = mysqli_query($link,$query);
-                                        $row =  mysqli_fetch_assoc($result);
-                                        $status = $row['RFID_Status'];
-                                        @endphp
+                <th>
+                  <!-- Example single primary button -->
+                  <div class="dropdown d-inline-block">
+                    <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+                      Actions
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                      @php
+                      $RFID_ID = $RFID_Account->id;
+                      $link= mysqli_connect("sql12.freesqldatabase.com","sql12722804","vjfsx3yAZK");
+                      mysqli_select_db($link, "sql12722804");
+                      $query = "SELECT * FROM rfid_accounts WHERE id = '$RFID_ID'";
+                      $result = mysqli_query($link,$query);
+                      $row = mysqli_fetch_assoc($result);
+                      $status = $row['RFID_Status'];
+                      @endphp
 
-                                        @if (mysqli_num_rows($result) === 1 )
-                                          
-                                            @if ($status == "Activated" )
-                                            <button class="dropdown-item deactivateBtn" type="button" data-toggle="modal" data-target="#deactivateRFIDModal" value="{{ $RFID_Account->id }}">
-                                            <i class="mdi mdi-close text-danger"></i>
-                                            Deactivate</button>
-                                            @elseif ($status == "Deactivated" )
-                                            <button class="dropdown-item activateBtn" type="button" data-toggle="modal" data-target="#activateRFIDModal" value="{{ $RFID_Account->id }}">
-                                            <i class="mdi mdi-check text-info"></i>
-                                            Activate</button>
-                                            @endif
-                                        @endif
-                                        <button class="dropdown-item blacklistBtn" type="button" data-toggle="modal" data-target="#blacklistRFIDModal" value="{{ $RFID_Account->RFID_Code }}">
-                                            
-                                            <i class="fa fa-ban"></i>
-                                            Blacklist</button>
+                      @if (mysqli_num_rows($result) === 1 )
 
-                      
-                      </div>
+                      @if ($status == "Activated" )
+                      <button class="dropdown-item deactivateBtn" type="button" data-toggle="modal" data-target="#deactivateRFIDModal" value="{{ $RFID_Account->id }}">
+                        <i class="mdi mdi-close text-danger"></i>
+                        Deactivate</button>
+                      @elseif ($status == "Deactivated" )
+                      <button class="dropdown-item activateBtn" type="button" data-toggle="modal" data-target="#activateRFIDModal" value="{{ $RFID_Account->id }}">
+                        <i class="mdi mdi-check text-info"></i>
+                        Activate</button>
+                      @endif
+                      @endif
+                      <button class="dropdown-item blacklistBtn" type="button" data-toggle="modal" data-target="#blacklistRFIDModal" value="{{ $RFID_Account->RFID_Code }}">
+
+                        <i class="fa fa-ban"></i>
+                        Blacklist</button>
+
+
                     </div>
-                  </th>
-             
+                  </div>
+                </th>
+
                 @endforeach
               </tbody>
             </table>
@@ -191,8 +191,8 @@
   </div>
 
 
-   <!-- Deactivation Modal -->
-   <div class="modal fade" id="deactivateRFIDModal" tabindex="-1" role="dialog" aria-labelledby="deactivateRFID" aria-hidden="true">
+  <!-- Deactivation Modal -->
+  <div class="modal fade" id="deactivateRFIDModal" tabindex="-1" role="dialog" aria-labelledby="deactivateRFID" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -213,7 +213,7 @@
               <h4 style="text-align:center;"> Deactivate RFID?</h4>
             </div>
         </div> <!-- Modal Boday End-->
-       
+
         <!-- Modal Footer -->
         <div class="modal-footer">
           <button type="button" class="btn btn-outline-info btn-pill" id="close" data-dismiss="modal">Cancel</button>
