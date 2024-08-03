@@ -88,6 +88,7 @@
               <tbody>
                   @foreach($RFID_Accounts as $RFID_Account)
                 @csrf
+                <tr>
                   <td>{{ $RFID_Account->idNumber }}</td>
                   <td>{{ $RFID_Account->firstName }} {{ $RFID_Account->lastName }}</td>
                   <td>{{ $RFID_Account->RFID_Code }}</td>
@@ -102,38 +103,22 @@
                         Actions
                       </button>
                       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        @php
-                                        $RFID_ID=$RFID_Account->id;
-                                        $link= mysqli_connect("localhost","root","");
-                                        mysqli_select_db($link, "chronolock");
-                                        $query = "SELECT * FROM rfid_accounts WHERE id ='$RFID_ID'";
-                                        $result = mysqli_query($link,$query);
-                                        $row =  mysqli_fetch_assoc($result);
-                                        $status = $row['RFID_Status'];
-                                        @endphp
 
-                                        @if (mysqli_num_rows($result) === 1 )
-                                          
-                                            @if ($status == "Activated" )
-                                            <button class="dropdown-item deactivateBtn" type="button" data-toggle="modal" data-target="#deactivateRFIDModal" value="{{ $RFID_Account->id }}">
-                                            <i class="mdi mdi-close text-danger"></i>
-                                            Deactivate</button>
-                                            @elseif ($status == "Deactivated" )
-                                            <button class="dropdown-item activateBtn" type="button" data-toggle="modal" data-target="#activateRFIDModal" value="{{ $RFID_Account->id }}">
-                                            <i class="mdi mdi-check text-info"></i>
-                                            Activate</button>
-                                            @endif
-                                        @endif
-                                        <button class="dropdown-item blacklistBtn" type="button" data-toggle="modal" data-target="#blacklistRFIDModal" value="{{ $RFID_Account->RFID_Code }}">
-                                            
-                                            <i class="fa fa-ban"></i>
-                                            Blacklist</button>
-
-                      
+                            @if ($RFID_Account->RFID_Status == "Activated")
+                            <button class="dropdown-item deactivateBtn" type="button" data-toggle="modal" data-target="#deactivateRFIDModal" value="{{ $RFID_Account->id }}">
+                                <i class="mdi mdi-close text-danger"></i>
+                                Deactivate
+                            </button>
+                            @elseif ($RFID_Account->RFID_Status == "Deactivated")
+                            <button class="dropdown-item activateBtn" type="button" data-toggle="modal" data-target="#activateRFIDModal" value="{{ $RFID_Account->id }}">
+                                <i class="mdi mdi-check text-info"></i>
+                                Activate
+                            </button>
+                            @endif
                       </div>
                     </div>
                   </th>
-             
+  </tr>
                 @endforeach
               </tbody>
             </table>

@@ -135,15 +135,16 @@ class RFIDController extends Controller
  // End pending RFID page
 
 // Start RFID Account Management
-    public function RFIDManagement()
-    {
-        $RFID_Accounts = DB::table('rfid_accounts') 
+public function RFIDManagement()
+{
+    $RFID_Accounts = DB::table('rfid_accounts')
         ->join('users', 'rfid_accounts.RFID_Code', '=', 'users.RFID_Code')
         ->where('userType', '!=', 'Admin')
+        ->select('users.idNumber', 'users.firstName', 'users.lastName', 'rfid_accounts.RFID_Code', 'users.userType', 'rfid_accounts.RFID_Status','rfid_accounts.id')
         ->get();
-        return view('admin.admin-RFIDAccount',['RFID_Accounts'=>$RFID_Accounts]);
-    }
 
+    return view('admin.admin-RFIDAccount', ['RFID_Accounts' => $RFID_Accounts]);
+}
     public function deactivateRFID($id){
         $RFID_Account = RfidAccount::find($id);
       

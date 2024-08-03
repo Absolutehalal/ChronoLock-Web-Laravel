@@ -94,6 +94,7 @@
               <tbody>
               @foreach($pendingRFID as $pendingRFID)
                @csrf
+               <tr>
                   <td>{{ $pendingRFID->id }}</td>
                   <td>{{ $pendingRFID->RFID_Code }}</td>
                   <th>
@@ -114,7 +115,8 @@
                         </button>
                       </div>
                     </div>
-                  </th>
+                  </th> 
+  </tr>
                 @endforeach
               </tbody>
             </table>
