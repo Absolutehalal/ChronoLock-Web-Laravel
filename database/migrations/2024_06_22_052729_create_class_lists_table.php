@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id('classID');
             $table->unsignedBigInteger('scheduleID')->unique();
             $table->foreign('scheduleID')->references('scheduleID')->on('schedules');
-            $table->string('semester');
-            $table->string('enrollmentKey');
+            $table->string('semester', 50);
+            $table->string('enrollmentKey', 50);
             // $table->primary(['classID', 'scheduleID']);
             $table->timestamps();
         });

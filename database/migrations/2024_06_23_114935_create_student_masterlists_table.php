@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('student_masterlists', function (Blueprint $table) {
             $table->id('MIT_ID');
-            $table->string('userID');
+            $table->string('userID', 50);
             $table->foreign('userID')->references('idNumber')->on('users')->cascadeOnUpdate();
-            $table->string('status')->nullable();
+            $table->string('status', 50)->nullable();
             $table->unsignedBigInteger('classID')->nullable();
             $table->foreign('classID')->references('classID')->on('class_lists')->cascadeOnUpdate()->cascadeOnDelete();
             $table->timestamps();

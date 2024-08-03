@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('rfid_temps', function (Blueprint $table) {
             $table->id();
-            $table->string('RFID_Code')->unique();
+            $table->string('RFID_Code', 50)->unique();
             $table->timestamps();
         });
     }

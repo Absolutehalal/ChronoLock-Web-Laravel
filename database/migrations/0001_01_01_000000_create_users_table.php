@@ -14,16 +14,16 @@ return new class extends Migration
        
         Schema::create('users', function (Blueprint $table) {
             $table->id('id');
-            $table->string('accountName')->nullable();
-            $table->string('firstName')->nullable();
-            $table->string('lastName')->nullable();
-            $table->string('email')->unique();
-            $table->string('idNumber')->nullable()->unique();
-            $table->string('userType')->nullable();
-            $table->string('password')->nullable()->unique();
-            $table->string('avatar')->nullable();
-            $table->string('google_id')->nullable();
-            $table->string('RFID_Code')->nullable()->unique();
+            $table->string('accountName', 50)->nullable();
+            $table->string('firstName', 50)->nullable();
+            $table->string('lastName', 50)->nullable();
+            $table->string('email', 50)->unique();
+            $table->string('idNumber', 50)->nullable()->unique();
+            $table->string('userType', 50)->nullable();
+            $table->string('password', 100)->nullable()->unique();
+            $table->string('avatar', 100)->nullable();
+            $table->string('google_id', 50)->nullable();
+            $table->string('RFID_Code', 50)->nullable()->unique();
             $table->rememberToken();
             $table->timestamps();
             $table->timestamp('email_verified_at')->nullable();
@@ -31,15 +31,15 @@ return new class extends Migration
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
-            $table->string('email')->primary();
-            $table->string('token');
+            $table->string('email', 50)->primary();
+            $table->string('token', 50);
             $table->timestamp('created_at')->nullable();
         });
 
         Schema::create('sessions', function (Blueprint $table) {
-            $table->string('id')->primary();
+            $table->string('id', 50)->primary();
             $table->foreignId('user_id')->nullable()->index();
-            $table->string('ip_address', 45)->nullable();
+            $table->string('ip_address', 50)->nullable();
             $table->text('user_agent')->nullable();
             $table->longText('payload');
             $table->integer('last_activity')->index();

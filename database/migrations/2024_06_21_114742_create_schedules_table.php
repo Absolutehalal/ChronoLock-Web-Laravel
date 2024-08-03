@@ -13,23 +13,23 @@ return new class extends Migration
     {
         Schema::create('schedules', function (Blueprint $table) {
             $table->id('scheduleID');
-            $table->string('courseCode')->nullable()->unique();
-            $table->string('courseName')->nullable();
-            $table->string('userID')->nullable();
-            $table->foreign('userID')->references('idNumber')->on('users')->cascadeOnUpdate();
-            $table->string('instFirstName')->nullable();
-            $table->string('instLastName')->nullable();
-            $table->string('program')->nullable();
-            $table->string('section')->nullable();
-            $table->string('year')->nullable();
+            $table->string('courseCode', 50)->nullable()->unique();
+            $table->string('courseName', 50)->nullable();
+            $table->string('userID', 50)->nullable();
+            $table->foreign('userID', 50)->references('idNumber')->on('users')->cascadeOnUpdate();
+            $table->string('instFirstName', 50)->nullable();
+            $table->string('instLastName', 50)->nullable();
+            $table->string('program', 50)->nullable();
+            $table->string('section', 50)->nullable();
+            $table->string('year', 50)->nullable();
             $table->time('startTime')->nullable();
             $table->time('endTime')->nullable();
             $table->date('startDate')->nullable();
             $table->date('endDate')->nullable();
-            $table->string('day')->nullable();
-            $table->string('scheduleStatus')->nullable();
-            $table->string('scheduleTitle')->nullable()->unique();
-            $table->string('scheduleType')->nullable();
+            $table->string('day', 50)->nullable();
+            $table->string('scheduleStatus', 50)->nullable();
+            $table->string('scheduleTitle', 50)->nullable()->unique();
+            $table->string('scheduleType', 50)->nullable();
             $table->timestamps();
         });
     }

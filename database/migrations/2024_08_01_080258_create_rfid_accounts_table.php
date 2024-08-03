@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('rfid_accounts', function (Blueprint $table) {
             $table->id();
-            $table->string('RFID_Code')->unique();
+            $table->string('RFID_Code', 50)->unique();
             $table->foreign('RFID_Code')->references('RFID_Code')->on('users')->cascadeOnUpdate()->cascadeOnDelete();
-            $table->string('RFID_Status')->nullable();
+            $table->string('RFID_Status', 50)->nullable();
             $table->timestamps();
         });
     }

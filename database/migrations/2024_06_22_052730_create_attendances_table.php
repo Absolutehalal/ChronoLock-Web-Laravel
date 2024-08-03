@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('attendances', function (Blueprint $table) {
             $table->id('attendanceID');
-            $table->string('userID')->nullable();
+            $table->string('userID', 50)->nullable();
             $table->foreign('userID')->references('idNumber')->on('users')->cascadeOnUpdate()->cascadeOnDelete();
             $table->unsignedBigInteger('classID')->nullable();
             $table->foreign('classID')->references('classID')->on('class_lists')->cascadeOnUpdate()->cascadeOnDelete();
             $table->date('date');
             $table->time('time');
-            $table->string('remark')->nullable();
+            $table->string('remark', 50)->nullable();
             $table->softDeletes()->nullable();
             $table->timestamps();
         });
