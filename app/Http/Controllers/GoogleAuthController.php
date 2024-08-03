@@ -121,7 +121,7 @@ class GoogleAuthController extends Controller
             // }
 
             // Find user by Google ID
-            $existingUser = User::where('google_id', $googleUser->id)->first();
+            $existingUser = User::where('google_id', $googleUser->email)->first();
 
             if ($existingUser) {
 
@@ -138,6 +138,15 @@ class GoogleAuthController extends Controller
                     return redirect()->intended('/adminPage');
 
                 } elseif ($existingUser->userType === 'Faculty') {
+                     
+                     if ($existingUser->accountName === Null){
+                        $existingUser->update([
+                            'google_id' => $googleUser->id,
+                        ], [
+                            'accountName' => $googleUser->name,
+                            'avatar' => $googleUser->getAvatar(),
+                        ]);  
+                     }
                      // If user exists, log them in
                     Auth::login($existingUser, true);
 
@@ -149,6 +158,16 @@ class GoogleAuthController extends Controller
                     return redirect()->intended('/instructorDashboard');
                     
                 } elseif ($existingUser->userType === 'Student') {
+
+                    if ($existingUser->accountName === Null){
+                        $existingUser->update([
+                            'google_id' => $googleUser->id,
+                        ], [
+                            'accountName' => $googleUser->name,
+                            'avatar' => $googleUser->getAvatar(),
+                        ]);  
+                     }
+                     
                     // If user exists, log them in
                    Auth::login($existingUser, true);
 
