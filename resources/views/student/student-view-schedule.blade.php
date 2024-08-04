@@ -138,8 +138,8 @@
                                         </div>
                                         @php
                                         $classID=$schedule->classID;
-                                        $link= mysqli_connect("localhost","root","");
-                                        mysqli_select_db($link, "chronolock");
+                                        $link= mysqli_connect("sql12.freesqldatabase.com","sql12722804","vjfsx3yAZK");
+                                        mysqli_select_db($link, "sql12722804");
                                         $query = "SELECT * FROM student_masterlists WHERE userID ='$userID' AND classID ='$classID'";
                                         $result = mysqli_query($link,$query);
                                         @endphp

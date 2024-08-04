@@ -199,12 +199,13 @@ class GoogleAuthController extends Controller
             }
         } catch (\Exception $e) {
 
+            echo $e;
             Alert::error('Error', 'Something went wrong. Please try again.')
                 ->autoClose(5000)
                 ->timerProgressBar()
                 ->showCloseButton();
 
-            return redirect('/login');
+            // return redirect('/login');
         }
     }
 

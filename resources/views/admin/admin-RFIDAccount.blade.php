@@ -86,7 +86,7 @@
                 </tr>
               </thead>
               <tbody>
-                  @foreach($RFID_Accounts as $RFID_Account)
+                @foreach($RFID_Accounts as $RFID_Account)
                 @csrf
                 <tr>
                   <td>{{ $RFID_Account->idNumber }}</td>
@@ -176,8 +176,8 @@
   </div>
 
 
-   <!-- Deactivation Modal -->
-   <div class="modal fade" id="deactivateRFIDModal" tabindex="-1" role="dialog" aria-labelledby="deactivateRFID" aria-hidden="true">
+  <!-- Deactivation Modal -->
+  <div class="modal fade" id="deactivateRFIDModal" tabindex="-1" role="dialog" aria-labelledby="deactivateRFID" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -198,7 +198,7 @@
               <h4 style="text-align:center;"> Deactivate RFID?</h4>
             </div>
         </div> <!-- Modal Boday End-->
-       
+
         <!-- Modal Footer -->
         <div class="modal-footer">
           <button type="button" class="btn btn-outline-info btn-pill" id="close" data-dismiss="modal">Cancel</button>
