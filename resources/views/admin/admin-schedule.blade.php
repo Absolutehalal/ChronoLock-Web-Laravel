@@ -85,15 +85,21 @@
               <div class="col-xl-12 col-md-12 d-flex justify-content-end">
                 <!-- Sort button -->
                 <div class="dropdown d-inline-block mb-3 mr-3">
-                  <button class="btn btn-primary btn-sm fw-bold" type="button" data-toggle="modal" data-target="#addRegularScheduleModal">
+                  <button title="Add Regular Schedule" class="btn btn-primary btn-sm fw-bold" type="button" data-toggle="modal" data-target="#addRegularScheduleModal">
                     <i class=" mdi mdi-calendar-plus"></i>
                     ADD SCHEDULE
                   </button>
                 </div>
-                <div class="dropdown d-inline-block mb-3">
-                  <button class="btn btn-warning btn-sm fw-bold" type="button">
+                <div class="dropdown d-inline-block mb-3 mr-3">
+                  <button title="Regular Schedules" class="btn btn-warning btn-sm fw-bold" onclick='window.location="{{ route("exportPDF") }}"' type="button">
                     <i class="mdi mdi-cloud-print-outline"></i>
-                    PRINT
+                    PDF
+                  </button>
+                </div>
+
+                <div class="dropdown d-inline-block mb-3">
+                  <button title="Regular Schedules" class="btn btn-outline-dark btn-sm fw-bold" onclick='window.location="{{ route("previewPDF") }}"' type="button">
+                    Preview
                   </button>
                 </div>
               </div>

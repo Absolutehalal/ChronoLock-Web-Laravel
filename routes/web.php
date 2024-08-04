@@ -11,6 +11,8 @@ use App\Http\Controllers\FacultyAttendanceAndListController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\RFIDController;
 use App\Http\Controllers\StudentMasterListController;
+use App\Http\Controllers\PDFController;
+
 
 
 use Illuminate\Support\Facades\Auth;
@@ -73,6 +75,8 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     Route::delete('/deleteRegularSchedule/{id}', [UserController::class, 'deleteRegularSchedule'])->name('deleteRegularSchedule');
     Route::delete('/deleteMakeUpSchedule/{id}', [UserController::class, 'deleteMakeUpSchedule'])->name('deleteMakeUpSchedule');
     Route::post('/scheduleManagementPage/import', [ScheduleController::class, 'import_schedule'])->name('schedule.import');
+    Route::get('/generate-pdf', [PDFController::class, 'exportPDF'])->name('exportPDF');
+    Route::get('/preview-pdf', [PDFController::class, 'previewPDF'])->name('previewPDF');
     //--------END schedule Management Routes----------
 
     //--------START Admin student attendance Management ROUTES---------  
