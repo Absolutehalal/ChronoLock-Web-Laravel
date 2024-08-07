@@ -76,7 +76,17 @@
               </div>
             </form>
           </div>
+
+          <div class="col-md-3 d-flex justify-content-end mb-2">
+            <div class="dropdown d-inline-block mb-2 rounded-2">
+              <button title="Add Regular Schedule" class="btn btn-primary btn-sm fw-bold" type="button" data-toggle="modal" data-target="#addRegularScheduleModal">
+                <i class=" mdi mdi-calendar-plus"></i>
+                ADD SCHEDULE
+              </button>
+            </div>
+          </div>
         </div>
+
         <div class="card card-default shadow">
           <div class="card-header card-header-border-bottom d-flex justify-content-between align-items-center">
             <h1>Schedule</h1>
@@ -84,27 +94,29 @@
 
               <div class="col-xl-12 col-md-12 d-flex justify-content-end">
                 <!-- Sort button -->
-                <div class="dropdown d-inline-block mb-3 mr-3">
+                <!-- <div class="dropdown d-inline-block mb-3 mr-3">
                   <button title="Add Regular Schedule" class="btn btn-primary btn-sm fw-bold" type="button" data-toggle="modal" data-target="#addRegularScheduleModal">
                     <i class=" mdi mdi-calendar-plus"></i>
                     ADD SCHEDULE
                   </button>
-                </div>
+                </div> -->
                 <div class="dropdown d-inline-block mb-3 mr-3">
-                  <button title="Regular Schedules" class="btn btn-warning btn-sm fw-bold" onclick='window.location="{{ route("exportPDF") }}"' type="button">
-                    <i class="mdi mdi-cloud-print-outline"></i>
+                  <button title="Export PDF" class="btn btn-warning btn-sm fw-bold" onclick='window.location = "{{ route("exportPDF") }}"' type="button">
+                    <i class="mdi mdi-file-pdf"></i>
                     PDF
                   </button>
                 </div>
 
                 <div class="dropdown d-inline-block mb-3">
-                  <button title="Regular Schedules" class="btn btn-outline-dark btn-sm fw-bold" onclick='window.location="{{ route("previewPDF") }}"' type="button">
+                  <button title="Preview" class="btn btn-outline-dark btn-sm fw-bold" onclick='window.location = "{{ route("previewPDF") }}"' type="button">
+                    <i class="mdi mdi-feature-search"></i>
                     Preview
                   </button>
                 </div>
               </div>
             </div>
           </div>
+
           <div class="card-body">
             <div class="full-calendar mb-5">
               <div id="calendar"></div>
@@ -133,7 +145,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <form method="post" action="{{route('createSchedule')}}">
+          <form id="clearMakeUpSchedule" method="post" action="{{route('createSchedule')}}">
             @csrf
             @method('post')
 
@@ -233,12 +245,16 @@
                     Instructor ID
                   </button>
                   <div class="dropdown-menu scrollable-dropdown" aria-labelledby="instIDDropdown">
-                    @foreach($instructorsID as $instructorID)
+                    @forelse($instructorsID as $instructorID)
                     @csrf
                     <a class="dropdown-item id-item filter-inst-id" data-value="{{ $instructorID->idNumber }}" href="#">
                       {{ $instructorID->idNumber }}-{{ $instructorID->firstName }} {{ $instructorID->lastName }}
                     </a>
-                    @endforeach
+                    @empty
+                    <a class="dropdown-item filter-faculty-id" data-value="None" href="#">
+                      None
+                    </a>
+                    @endforelse
                   </div>
                   <input type="hidden" class="faculty form-control" name="instructorID" id="selectedInstID">
                 </form>
@@ -247,7 +263,7 @@
             </div> <!-- Modal Boday End-->
 
             <!-- Modal Footer -->
-            <div class="modal-footer">
+            <div class="modal-footer mt-2">
               <button type="button" class="btn btn-danger btn-pill" onclick="$('#makeUpScheduleModal').modal('hide');">Close</button>
               <button type="submit" class="btn btn-primary btn-pill addMakeUpSchedule">Create</button>
             </div>
@@ -279,11 +295,11 @@
 
 
           <div class="d-flex justify-content-center mt-5">
-            <button class="btn btn-warning btn-pill mr-2 editRegularSchedule" type="button" data-toggle="modal" data-target="#updateRegularScheduleModal">
-              <i class="mdi mdi-circle-edit-outline text-light"></i>
+            <button class="btn btn-warning btn-pill mr-2 editRegularSchedule fw-bold" type="button" data-toggle="modal" data-target="#updateRegularScheduleModal">
+              <i class="mdi mdi-circle-edit-outline"></i>
               Edit Schedule</button>
-            <button class="btn btn-danger btn-pill deleteRegularSchedule" type="button" data-toggle="modal" data-target="#deleteRegularScheduleModal">
-              <i class="mdi mdi-trash-can text-light"></i>
+            <button class="btn btn-danger btn-pill deleteRegularSchedule fw-bold" type="button" data-toggle="modal" data-target="#deleteRegularScheduleModal">
+              <i class="mdi mdi-trash-can"></i>
               Delete Schedule</button>
 
           </div>
@@ -300,7 +316,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="decisionMakeUpSchedule" style="text-align:center;">Choose Action</h5>
-          <button type="button" class="close" id="close" data-dismiss="modal" aria-label="Close">
+          <button type="button" class="close" id="close" data-dismiss="modal" aria-label="Close" onclick="$('#decisionMakeUpScheduleModal').modal('hide');">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -312,11 +328,11 @@
 
 
           <div class="d-flex justify-content-center mt-5">
-            <button class="btn btn-warning btn-pill mr-2 editMakeUpSchedule" type="button" data-toggle="modal" data-target="#updateMakeUpScheduleModal">
-              <i class="mdi mdi-circle-edit-outline text-warning"></i>
+            <button class="btn btn-warning btn-pill mr-2 editMakeUpSchedule fw-bold" type="button" data-toggle="modal" data-target="#updateMakeUpScheduleModal">
+              <i class="mdi mdi-circle-edit-outline text-light"></i>
               Edit Schedule</button>
-            <button class="btn btn-danger btn-pill deleteMakeUpSchedule" type="button" data-toggle="modal" data-target="#deleteMakeUpScheduleModal">
-              <i class="mdi mdi-trash-can text-danger"></i>
+            <button class="btn btn-danger btn-pill deleteMakeUpSchedule fw-bold" type="button" data-toggle="modal" data-target="#deleteMakeUpScheduleModal">
+              <i class="mdi mdi-trash-can text-light"></i>
               Delete Schedule</button>
 
           </div>
@@ -340,7 +356,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <form method="post" action="{{route('createRegularSchedule')}}">
+          <form id="clearRegularSchedule" method="post" action="{{route('createRegularSchedule')}}">
             @csrf
             @method('post')
 
@@ -349,7 +365,7 @@
                 <ul id="courseCodeError"></ul>
                 <div class="form-group">
                   <label>Course Code</label>
-                  <input type="text" class="courseCode form-control border border-dark border border-dark" id="courseCode" name="courseCode" placeholder="Enter Course Code" />
+                  <input required type="text" class="courseCode form-control border border-dark border border-dark" id="courseCode" name="courseCode" placeholder="Enter Course Code" />
                 </div>
               </div>
 
@@ -499,12 +515,16 @@
                     Instructor ID
                   </button>
                   <div class="dropdown-menu scrollable-dropdown" aria-labelledby="facultyIDDropdown">
-                    @foreach($instructorsID as $instructorID)
+                    @forelse($instructorsID as $instructorID)
                     @csrf
                     <a class="dropdown-item id-faculty filter-faculty-id" data-value="{{ $instructorID->idNumber }}" href="#">
                       {{ $instructorID->idNumber }}-{{ $instructorID->firstName }} {{ $instructorID->lastName }}
                     </a>
-                    @endforeach
+                    @empty
+                    <a class="dropdown-item filter-faculty-id" data-value="None" href="#">
+                      None
+                    </a>
+                    @endforelse
                     <input type="hidden" class="scheduleFaculty form-control" name="facultyID" id="selectedFacultyID">
                   </div>
                 </form>
@@ -536,7 +556,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <form method="post">
+          <form id="clearForm" method="post">
             @csrf
             @method('put')
             <ul id="regularScheduleError"></ul>
@@ -639,6 +659,8 @@
                   </select>
                 </div>
               </div>
+
+
             </div> <!-- Modal Boday End-->
 
             <!-- Modal Footer -->
@@ -845,31 +867,12 @@
     </div>
   </div>
   </div>
-  <!-- Footer -->
-  <!-- <footer class="footer mt-auto">
-          <div class="copyright bg-white">
-            <p>
-              &copy; <span id="copy-year"></span> Copyright Mono Dashboard
-              Bootstrap Template by
-              <a
-                class="text-primary"
-                href="http://www.iamabdus.com/"
-                target="_blank"
-                >Abdus</a
-              >.
-            </p>
-          </div>
-          <script>
-            var d = new Date();
-            var year = d.getFullYear();
-            document.getElementById("copy-year").innerHTML = year;
-          </script>
-        </footer> -->
+
   </div>
   </div>
+
   <script>
     document.addEventListener("DOMContentLoaded", function() {
-
 
       document.querySelectorAll('.id-faculty').forEach(function(item) {
         item.addEventListener('click', function(e) {
@@ -886,4 +889,46 @@
       });
     });
   </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Clear form and errors for Add Regular Schedule Modal
+        $('#addRegularScheduleModal').on('hidden.bs.modal', function() {
+            $('#clearRegularSchedule')[0].reset();
+            clearRegularScheduleErrors();
+        });
+
+        // Clear form and errors for Make Up Schedule Modal
+        $('#makeUpScheduleModal').on('hidden.bs.modal', function() {
+            $('#clearMakeUpSchedule')[0].reset();
+            clearMakeUpScheduleErrors();
+        });
+
+        function clearRegularScheduleErrors() {
+            $('#courseCodeError').empty();
+            $('#courseNameError').empty();
+            $('#scheduleProgramError').empty();
+            $('#scheduleYearError').empty();
+            $('#scheduleSectionError').empty();
+            $('#scheduleEditWeekDayError').empty();
+            $('#scheduleStartTimeError').empty();
+            $('#scheduleEndTimeError').empty();
+            $('#scheduleStartDateError').empty();
+            $('#scheduleEndDateError').empty();
+            $('#scheduleFacultyError').empty();
+        }
+
+        function clearMakeUpScheduleErrors() {
+            $('#titleError').empty();
+            $('#programError').empty();
+            $('#yearError').empty();
+            $('#sectionError').empty();
+            $('#startTimeError').empty();
+            $('#endTimeError').empty();
+            $('#facultyError').empty();
+        }
+    });
+</script>
+
+
   @include('footer')

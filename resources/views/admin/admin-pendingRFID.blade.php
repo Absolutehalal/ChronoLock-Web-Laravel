@@ -92,9 +92,9 @@
                 </tr>
               </thead>
               <tbody>
-              @foreach($pendingRFID as $pendingRFID)
-               @csrf
-               <tr>
+                @foreach($pendingRFID as $pendingRFID)
+                @csrf
+                <tr>
                   <td>{{ $pendingRFID->id }}</td>
                   <td>{{ $pendingRFID->RFID_Code }}</td>
                   <th>
@@ -109,14 +109,14 @@
                           Activate
                         </button>
                         <button class="dropdown-item deleteBtn" data-toggle="modal" data-target="#deletePendingRFIDModal" value="{{$pendingRFID->id}}">
-                        <i class="mdi mdi-trash-can text-danger"></i>
-                         
+                          <i class="mdi mdi-trash-can text-danger"></i>
+
                           Delete
                         </button>
                       </div>
                     </div>
-                  </th> 
-  </tr>
+                  </th>
+                </tr>
                 @endforeach
               </tbody>
             </table>
@@ -143,49 +143,49 @@
           </button>
         </div>
         <div class="modal-body">
-          <form method="post">
-              @csrf
-              @method('put')
-          
-              <div class="row">
+          <form id="clearRFIDPending" method="post">
+            @csrf
+            @method('put')
 
-                <input type="hidden" id="pendingRFID_ID" class="form-control ">
+            <div class="row">
 
-                  <div class="col-lg-12">
-                  <ul id="rfidError"></ul>
-                    <div class="form-group">
-                      <label for="rfid code">RFID Code</label>
-                      <input type="text" class="Rfid_Code form-control border border-dark border border-dark" id="rfidCode" name="rfidCode" placeholder="RFID Code" readonly>
-                    </div>
-                  </div>
+              <input type="hidden" id="pendingRFID_ID" class="form-control ">
+
+              <div class="col-lg-12">
+                <ul id="rfidError"></ul>
+                <div class="form-group">
+                  <label for="rfid code">RFID Code</label>
+                  <input type="text" class="Rfid_Code form-control border border-dark border border-dark" id="rfidCode" name="rfidCode" placeholder="RFID Code" readonly>
+                </div>
+              </div>
 
 
-                  <div class="col-lg-12">
-                  <ul id="userIDError"></ul>
-                    <div class="form-group">
-                      <label for="user id">User ID</label>
-                      <input type="text" class="userId form-control border border-dark" id="userID" name="userID" placeholder="Enter User ID">
-                      <ul id="idNumberList" class="list-group" style="max-height: 100px; overflow-y: auto; margin-top: 5px;"></ul>
-                    </div>
-                  </div>
+              <div class="col-lg-12">
+                <ul id="userIDError"></ul>
+                <div class="form-group">
+                  <label for="user id">User ID</label>
+                  <input autocomplete="off" type="text" class="userId form-control border border-dark" id="userID" name="userID" placeholder="Enter User ID">
+                  <ul id="idNumberList" class="list-group" style="max-height: 100px; overflow-y: auto; margin-top: 5px;"></ul>
+                </div>
+              </div>
 
-        </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-danger btn-pill" class="close" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary btn-pill activateRFID">Activate</button>
-          </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger btn-pill" class="close" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary btn-pill activateRFID">Activate</button>
+            </div>
           </form>
+        </div>
       </div>
     </div>
   </div>
   </div>
-  </div>
 
 
 
 
-   <!-- Delete Pending RFID Modal -->
-   <div class="modal fade" id="deletePendingRFIDModal" tabindex="-1" role="dialog" aria-labelledby="deletePendingRFID" aria-hidden="true">
+  <!-- Delete Pending RFID Modal -->
+  <div class="modal fade" id="deletePendingRFIDModal" tabindex="-1" role="dialog" aria-labelledby="deletePendingRFID" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -246,8 +246,8 @@
 
               if (response.number && response.number.length > 0) {
                 response.number.forEach(function(item) {
-                  $('#idNumberList').append('<li class="list-group-item" style="font-weight: bold; cursor:pointer; border: 1px solid #000; margin-bottom: 2px">' 
-                  + item.idNumber + '</li>');
+                  $('#idNumberList').append('<li class="list-group-item" style="font-weight: bold; cursor:pointer; border: 1px solid #000; margin-bottom: 2px">' +
+                    item.idNumber + '</li>');
                 });
               } else {
                 $('#idNumberList').append('<li class="list-group-item" style="font-weight: bold; cursor:not-allowed; border: 1px solid #000; margin-bottom: 2px;pointer-events: none;">No results found</li>');
@@ -255,6 +255,7 @@
             }
           });
         } else {
+          // $('#clearForm')[0].reset();
           $('#idNumberList').empty();
         }
       });
@@ -266,12 +267,20 @@
     });
   </script>
 
-<script>
+  <script>
     document.addEventListener('DOMContentLoaded', function() {
+
       $('#pendingRFIDModal').on('hidden.bs.modal', function() {
-        $('#clearForm')[0].reset();
+        $('#clearRFIDPending')[0].reset();
         $('#idNumberList').empty();
+        clearRFIDPendingErrors();
       });
+
+      function clearRFIDPendingErrors() {
+        $('#userIDError').empty();
+        $('#rfidError').empty();
+      }
+
     });
   </script>
 

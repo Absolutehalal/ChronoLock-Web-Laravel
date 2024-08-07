@@ -12854,6 +12854,19 @@ code {
     font-size: 1.1rem;
 }
 
+#dashboard-calendar {
+    width: 100%;  /* Adjust the width as needed */
+    height: 30%;  /* Adjust the height as needed */
+    margin: 0 auto;  /* Center the calendar if desired */
+}
+
+.fc-today-highlight {
+    background-color: #ffeb3b;
+    color: #000000;
+    font-weight: bolder;
+}
+
+
 .full-calendar {
     position: relative;
 }

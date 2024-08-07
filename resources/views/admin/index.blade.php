@@ -126,7 +126,7 @@
                   <i class="mdi mdi-account-card-details"></i>
                 </div>
                 <div class="text-center">
-                  <span class="h2 d-block">8930</span>
+                  <span class="h2 d-block"> {{ $countRegRFID }} </span>
                   <p>Registered RFID</p>
                 </div>
               </div>
@@ -137,11 +137,24 @@
         <!-- CALENDAR -->
         <div class="card card-default shadow">
           <div class="card-header card-header-border-bottom d-flex justify-content-between align-items-center">
-            <h2>Schedule</h2>
-            <div class="card-body">
-              <div class=" full-calendar mb-5">
-                <div id="calendar"></div>
+            <h1>Schedule</h1>
+            <div class="row">
+
+              <div class="col-xl-12 col-md-12 d-flex justify-content-end">
+                <!-- Sort button -->
+                <div class="dropdown d-inline-block mb-3 mr-3">
+                  <a href="{{ route('adminScheduleManagement') }}" title="Add Regular Schedule" class="btn btn-primary btn-sm fw-bold" type="button">
+                    <i class=" mdi mdi-calendar-plus"></i>
+                    GO TO SCHEDULE
+                  </a>
+                </div>
               </div>
+            </div>
+          </div>
+
+          <div class="card-body">
+            <div class="full-calendar mb-5">
+              <div id="calendar"></div>
             </div>
           </div>
         </div>
@@ -153,7 +166,18 @@
             <!-- Striped Table -->
             <div class="card card-default shadow">
               <div class="card-header">
-                <h2>Users</h2>
+                <h2>Recently Added Users</h2>
+                <div class="row">
+                  <div class="col-xl-12 col-md-12 d-flex justify-content-end">
+
+                    <div class="dropdown d-inline-block ">
+                      <a href="{{ route('userManagement') }}" class="btn-warning btn-sm fw-bold" type="button">
+                        <i class=" mdi mdi-arrow-right"></i>
+                        GO TO USER MANAGEMENT
+                      </a>
+                    </div>
+                  </div>
+                </div>
               </div>
               <div class="card-body">
                 <div class="table-wrapper">
@@ -167,15 +191,19 @@
                       </tr>
                     </thead>
                     <tbody>
-                      @foreach ($tblUsers as $user)
+                      @php $counter = 1; @endphp
+                      @forelse ($tblUsers as $user)
                       @csrf
                       <tr>
-                        <td> {{$user->id}} </td>
+                        <td> {{$counter}} </td>
                         <td> {{$user->firstName}} </td>
                         <td> {{$user->lastName}} </td>
                         <td> {{$user->email}} </td>
                       </tr>
-                      @endforeach
+                      @php $counter++; @endphp
+                      @empty
+                      <td colspan="5" class="text-center">No Recent Added RFID</td>
+                      @endforelse
                     </tbody>
                   </table>
                 </div>
@@ -189,58 +217,57 @@
             <!-- Striped Table -->
             <div class="card card-default shadow">
               <div class="card-header">
-                <h2>Recent Added RFID</h2>
+                <h2>Recently Added RFID</h2>
+                <div class="row">
+                  <div class="col-xl-12 col-md-12 d-flex justify-content-end">
+
+                    <div class="dropdown d-inline-block ">
+                      <a href="{{ route('RFIDManagement') }}" class="btn-warning btn-sm fw-bold" type="button">
+                        <i class=" mdi mdi-arrow-right"></i>
+                        GO TO RFID ACCOUNTS
+                      </a>
+                    </div>
+                  </div>
+                </div>
               </div>
               <div class="card-body">
                 <div class="table-wrapper">
-                <table class="table table-bordered table-hover">
-                  <thead class="table-dark">
-                   <tr>
-                      <th scope="col">#</th>
-                      <th scope="col">First</th>
-                      <th scope="col">Last</th>
-                      <th scope="col">Handle</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td scope="row">1</td>
-                      <td>Lucia</td>
-                      <td>Christ</td>
-                      <td>@Lucia</td>
-                    </tr>
-                    <tr>
-                      <td scope="row">2</td>
-                      <td>Catrin</td>
-                      <td>Seidl</td>
-                      <td>@catrin</td>
-                    </tr>
-                    <tr>
-                      <td scope="row">3</td>
-                      <td>Lilli</td>
-                      <td>Kirsh</td>
-                      <td>@lilli</td>
-                    </tr>
-                    <tr>
-                      <td scope="row">4</td>
-                      <td>Else</td>
-                      <td>Voigt</td>
-                      <td>@voigt</td>
-                    </tr>
-                    <tr>
-                      <td scope="row">5</td>
-                      <td>Ursel</td>
-                      <td>Harms</td>
-                      <td>@ursel</td>
-                    </tr>
-                    <tr>
-                      <td scope="row">6</td>
-                      <td>Anke</td>
-                      <td>Sauter</td>
-                      <td>@Anke</td>
-                    </tr>
-                  </tbody>
-                </table>
+                  <table class="table table-bordered table-hover">
+                    <thead class="table-dark">
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">RFID</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Type</th>
+                        <th scope="col">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @php $counter = 1; @endphp
+                      @forelse ($tblRFID as $rfid)
+                      @csrf
+                      <tr>
+                        <td> {{$counter}} </td>
+                        <td> {{$rfid->RFID_Code}} </td>
+                        <td> {{$rfid->accountName}} </td>
+                        <td> {{$rfid->userType}} </td>
+                        <td>
+                          @if($rfid->RFID_Status == 'Activated')
+                          <span class="badge badge-success">Present</span>
+                          @elseif($rfid->RFID_Status == 'Deactivated')
+                          <span class="badge badge-danger">Deactivated</span>
+                          @endif
+                        </td>
+                      </tr>
+                      @php $counter++; @endphp
+                      @empty
+                      <tr>
+                        <td colspan="5" class="text-center">No Recent Added RFID</td>
+                      </tr>
+                      @endforelse
+                    </tbody>
+
+                  </table>
                 </div>
               </div>
             </div>

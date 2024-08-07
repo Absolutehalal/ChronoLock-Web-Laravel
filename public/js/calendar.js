@@ -1,9 +1,3 @@
-/**
- * WEBSITE: https://themefisher.com
- * TWITTER: https://twitter.com/themefisher
- * FACEBOOK: https://www.facebook.com/themefisher
- * GITHUB: https://github.com/themefisher/
- */
 
 /* ====== Index ======
 
@@ -35,6 +29,29 @@ $(document).ready(function () {
                 },
                 events: schedules,
                 selectable: true,
+                eventTimeFormat: {
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    meridiem: 'short'
+                },
+                eventDidMount: function(info) {
+                    var startTime = moment(info.event.start).format('h:mma');
+                    var endTime = moment(info.event.end).format('h:mma');
+                    var timeText = startTime + ' - ' + endTime;
+                    
+                    var timeElement = info.el.querySelector('.fc-event-time');
+                    if (timeElement) {
+                        timeElement.innerHTML = timeText;
+                    }
+                },
+                dayCellClassNames: function(arg) {
+                    var currentDate = moment().startOf('day');
+                    var cellDate = moment(arg.date).startOf('day');
+                    if (cellDate.isSame(currentDate, 'day')) {
+                        return 'fc-today-highlight';
+                    }
+                    return '';
+                },
                 select: function (info) {
                     var start_date = info.startStr;
                     var end_date = info.endStr;

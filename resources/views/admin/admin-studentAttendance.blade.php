@@ -17,7 +17,7 @@
 
   <!-- Ajax Student Attendance -->
   <script defer src="js/adminEditStudentAttendance.js"></script>
-  
+
   <title>ChronoLock Admin-Student Attendance</title>
 
   @include('head')
@@ -50,7 +50,7 @@
           <!-- Navigation -->
           <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ route('index') }}">Dashboard</a></li>
+              <li class="breadcrumb-item"><a href="{{ route('index') }}">Dashboard</a></li>
               <li class="breadcrumb-item active"><a href="{{ route('studentAttendanceManagement') }}">Attendance</a></li>
               <li class="breadcrumb-item active"><a href="{{ route('studentAttendanceManagement') }}">Student Attendance</a></li>
             </ol>
@@ -75,12 +75,16 @@
                   Year & Section
                 </button>
                 <div class="dropdown-menu scrollable-dropdown" aria-labelledby="yearDropdown">
-                  @foreach($studentYears as $studentYears)
+                  @forelse($studentYears as $studentYears)
                   @csrf
                   <a class="dropdown-item year-item filter-year" data-value="{{ $studentYears->year }}-{{ $studentYears->section }}" href="#">
                     {{ $studentYears->year }}-{{ $studentYears->section }}
                   </a>
-                  @endforeach
+                  @empty
+                  <a class="dropdown-item" data-value="None" href="#">
+                    None
+                  </a>
+                  @endforelse
                 </div>
                 <input type="hidden" name="year" id="selectedYear">
               </form>
@@ -93,12 +97,16 @@
                   Course
                 </button>
                 <div class="dropdown-menu scrollable-dropdown" aria-labelledby="courseDropdown">
-                  @foreach($studentPrograms as $studentPrograms)
+                  @forelse($studentPrograms as $studentPrograms)
                   @csrf
                   <a class="dropdown-item course-item filter-course" data-value="{{ $studentPrograms->program }}" href="#">
                     {{ $studentPrograms->program }}
                   </a>
-                  @endforeach
+                  @empty
+                  <a class="dropdown-item" data-value="None" href="#">
+                    None
+                  </a>
+                  @endforelse
                 </div>
                 <input type="hidden" name="course" id="selectedCourse">
               </form>
@@ -111,12 +119,16 @@
                   Remark
                 </button>
                 <div class="dropdown-menu scrollable-dropdown" aria-labelledby="statusDropdown">
-                  @foreach($studentRemarks as $studentRemarks)
+                  @forelse($studentRemarks as $studentRemarks)
                   @csrf
                   <a class="dropdown-item remark-item filter-status" data-value="{{ $studentRemarks->remark }}" href="#">
                     {{ $studentRemarks->remark }}
                   </a>
-                  @endforeach
+                  @empty
+                  <a class="dropdown-item" data-value="None" href="#">
+                    None
+                  </a>
+                  @endforelse
                 </div>
                 <input type="hidden" name="status" id="selectedStatus">
               </form>
@@ -213,12 +225,12 @@
                     <div class="dropdown d-inline-block">
                       <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
                         Actions
-                        </button>
+                      </button>
                       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <button class="dropdown-item editAttendanceBtn" type="button" data-toggle="modal" data-target="#updateAttendanceModal" value="{{$students->attendanceID}}">
+                        <button class="dropdown-item  btn-sm editAttendanceBtn" type="button" data-toggle="modal" data-target="#updateAttendanceModal" value="{{$students->attendanceID}}">
                           <i class="mdi mdi-circle-edit-outline text-warning"></i>
                           Edit</button>
-                        <button class="dropdown-item deleteAttendanceBtn" type="button" data-toggle="modal" data-target="#deleteAttendanceModal" value="{{$students->attendanceID}}">
+                        <button class="dropdown-item btn-sm deleteAttendanceBtn" type="button" data-toggle="modal" data-target="#deleteAttendanceModal" value="{{$students->attendanceID}}">
                           <i class="mdi mdi-trash-can text-danger"></i>
                           Delete</button>
                       </div>
@@ -237,7 +249,7 @@
   </div>
 
   <!-- Delete Attendance Modal -->
- <div class="modal fade" id="deleteAttendanceModal" tabindex="-1" role="dialog" aria-labelledby="deleteAttendance" aria-hidden="true">
+  <div class="modal fade" id="deleteAttendanceModal" tabindex="-1" role="dialog" aria-labelledby="deleteAttendance" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -297,7 +309,7 @@
                 <div class="form-group">
                   <label>Student ID</label>
                   <input type="text" class="updateUserID form-control border border-dark border border-dark" id="edit_studentID" name="update_studentID">
-                 
+
                 </div>
               </div>
 
@@ -306,7 +318,7 @@
                 <div class="form-group">
                   <label>Remark</label>
                   <select class="updateRemark form-select form-control border border-dark" aria-label="Default select example" id="edit_Remark" name="update_Remark">
-                  <option selected hidden></option>
+                    <option selected hidden></option>
                     <option value="Present">Present</option>
                     <option value="Absent">Absent</option>
                     <option value="Late">Late</option>
@@ -314,13 +326,13 @@
                 </div>
               </div>
 
-           <!-- Modal Boday End-->
+              <!-- Modal Boday End-->
 
-            <!-- Modal Footer -->
-            <div class="modal-footer">
-              <button type="button" class="btn btn-danger btn-pill" id="updateClose" data-dismiss="modal">Close</button>
-              <button type="submit" class="btn btn-primary btn-pill updateAttendance">Update</button>
-            </div>
+              <!-- Modal Footer -->
+              <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-pill" id="updateClose" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary btn-pill updateAttendance">Update</button>
+              </div>
 
           </form>
 
@@ -353,11 +365,11 @@
         });
       });
     });
-    $("#resetBtn").on("click", function (e) {
-        e.preventDefault();
-        document.getElementById("yearDropdown").innerHTML = yearDropdown;
-        document.getElementById("courseDropdown").innerHTML = courseDropdown;
-        document.getElementById("statusDropdown").innerHTML = statusDropdown;
+    $("#resetBtn").on("click", function(e) {
+      e.preventDefault();
+      document.getElementById("yearDropdown").innerHTML = yearDropdown;
+      document.getElementById("courseDropdown").innerHTML = courseDropdown;
+      document.getElementById("statusDropdown").innerHTML = statusDropdown;
     });
   </script>
 

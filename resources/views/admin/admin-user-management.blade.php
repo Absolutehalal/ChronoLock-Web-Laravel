@@ -45,8 +45,8 @@
           <!-- Navigation -->
           <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-               <!-- <i class="mdi mdi-home"></i> -->
-               <li class="breadcrumb-item"><a href="{{ route('index') }}">Dashboard</a></li>
+              <!-- <i class="mdi mdi-home"></i> -->
+              <li class="breadcrumb-item"><a href="{{ route('index') }}">Dashboard</a></li>
               <li class="breadcrumb-item active"><a href="{{ route('userManagement') }}">User Management</a></li>
             </ol>
           </nav>
@@ -133,10 +133,10 @@
                         Actions
                       </button>
                       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <button class="dropdown-item editBtn" type="button" data-toggle="modal" data-target="#updateUserModal" value="{{$user->id}}">
+                        <button class="dropdown-item btn-sm  editBtn" type="button" data-toggle="modal" data-target="#updateUserModal" value="{{$user->id}}">
                           <i class="mdi mdi-circle-edit-outline text-warning"></i>
                           Edit</button>
-                        <button class="dropdown-item deleteBtn" type="button" data-toggle="modal" data-target="#deleteUserModal" value="{{$user->id}}">
+                        <button class="dropdown-item btn-sm  deleteBtn" type="button" data-toggle="modal" data-target="#deleteUserModal" value="{{$user->id}}">
                           <i class="mdi mdi-trash-can text-danger"></i>
                           Delete</button>
                       </div>
@@ -166,7 +166,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <form method="post" action="{{route('addUser')}}">
+          <form id="clearAddUser" method="post" action="{{route('addUser')}}">
             @csrf
             @method('post')
 
@@ -273,7 +273,7 @@
     </div>
   </div>
   </div>
-  
+
 
   <!-- Update User Modal -->
   <div class="modal fade" id="updateUserModal" tabindex="-1" role="dialog" aria-labelledby="updateUser" aria-hidden="true">
@@ -289,7 +289,7 @@
 
           <ul id="userError"></ul>
 
-      
+
           <form method="post">
             @csrf
             @method('put')
@@ -302,7 +302,7 @@
                 <div class="form-group">
                   <label>First Name</label>
                   <input type="text" class="updateFirstName form-control border border-dark border border-dark" id="edit_firstName" name="updateFirstName" placeholder="Enter New First Name">
-            
+
                 </div>
               </div>
 
@@ -311,7 +311,7 @@
                 <div class="form-group">
                   <label>Last Name</label>
                   <input type="text" class="updateLastName form-control border border-dark border border-dark" id="edit_lastName" name="updateLastName" placeholder="Enter New Last Name">
-               
+
                 </div>
               </div>
 
@@ -320,7 +320,7 @@
                 <div class="form-group">
                   <label>User Type</label>
                   <select class="updateUserType form-select form-control border border-dark" aria-label="Default select example" id="edit_userType" name="updateUserType">
-              
+
                     <option selected hidden></option>
                     <option value="Lab-in-Charge">Lab-in-Charge</option>
                     <option value="Technician">Technician</option>
@@ -335,7 +335,7 @@
                 <div class="form-group">
                   <label>Email</label>
                   <input type="text" class="updateEmail form-control border border-dark" id="edit_email" name="updateEmail" placeholder="ex. chrono@my.cspc.edu.ph">
-             
+
                 </div>
               </div>
 
@@ -344,7 +344,7 @@
                 <div class="form-group">
                   <label>User ID Number</label>
                   <input type="text" class="userIdNumber form-control border border-dark" id="edit_userId_no" name="userIdNumber" placeholder="Enter User ID">
-               
+
                 </div>
               </div>
             </div> <!-- Modal Boday End-->
@@ -381,7 +381,7 @@
       //     success: function (response) {
       //       $('tbody').html("");
       //                 $.each(response.users, function (key, item) {
-                        
+
       //                     $('tbody').append('<tr>\
       //               <td>' + item.id + '</td>\
       //               <td>' + item.firstName + '</td>\
@@ -420,7 +420,7 @@
           'email': $(email).val(),
           'password': $(password).val(),
         }
-       
+
         $.ajaxSetup({
           headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -472,22 +472,22 @@
                 title: "Success",
                 text: "User Created",
                 confirmButtonText: "OK"
-}).then((result) => {
-  if (result.isConfirmed) {
-      $('.addUser').text('Save');
-              $("#addUserModal .close").click()
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  $('.addUser').text('Save');
+                  $("#addUserModal .close").click()
 
-              // fetchUsers(); -----------reserve-------------
-              window.location.href = "{{route('userManagement')}}";
-  }
-  
-  // $('.addUser').text('Save');
-  //             $("#addUserModal .close").click()
+                  // fetchUsers(); -----------reserve-------------
+                  window.location.href = "{{route('userManagement')}}";
+                }
 
-  //             // fetchUsers(); -----------reserve-------------
-  //             setTimeout(function () { location.reload(1); }, 1000);
+                // $('.addUser').text('Save');
+                //             $("#addUserModal .close").click()
+
+                //             // fetchUsers(); -----------reserve-------------
+                //             setTimeout(function () { location.reload(1); }, 1000);
               });
-           
+
             } else if (response.status == 100) {
               $('#firstNameError').html("");
               $('#lastNameError').html("");
@@ -501,7 +501,7 @@
                 text: "Email already Exist. Please use a another Email.",
               });
 
-            }else if (response.status == 300) {
+            } else if (response.status == 300) {
               $('#firstNameError').html("");
               $('#lastNameError').html("");
               $('#userTypeError').html("");
@@ -706,6 +706,25 @@
         });
       });
 
+    });
+  </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+     
+      $('#addUserModal').on('hidden.bs.modal', function() {
+        $('#clearAddUser')[0].reset();
+        clearAddUserErrors();
+      });
+
+     
+      function clearAddUserErrors() {
+        $('#firstNameError').empty();
+        $('#lastNameError').empty();
+        $('#userTypeError').empty();
+        $('#emailError').empty();
+        $('#passwordError').empty();
+      }
     });
   </script>
 

@@ -34,7 +34,7 @@
           <li>
             <a class="sidenav-item-link" href="{{route('studentViewSchedule')}}">
               <i class="mdi mdi-calendar-clock"></i>
-              <span class="nav-text" data-toggle="tooltip" title="View Schedule">View Schedule</span>
+              <span class="nav-text" data-toggle="tooltip" title="Enroll Schedule">Enroll Schedule</span>
             </a>
           </li>
 
@@ -46,41 +46,46 @@
           <li class="section-title">Classes</li>
 
           <li class="has-sub">
-                        <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#users" aria-expanded="false" aria-controls="users">
-                            <i class="mdi mdi-folder-multiple-outline"></i>
-                            <span class="nav-text" data-toggle="tooltip" title="Attendance">My Class Schedules</span> <b class="caret"></b>
-                        </a>
-                        <ul class="collapse" id="users" data-parent="#sidebar-menu">
-                            <div class="sub-menu">
-                            @foreach($classSchedules as $classSchedule)
-                            @csrf
-                                <li>
-                                <a class="section" href="{{ route('studentViewAttendance',  [ base64_encode( $classSchedule->classID)]) }}">{{$classSchedule->courseCode}}</a>
-                                </li>
-                            @endforeach
-                    </li>
-    </div>
+            <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#users" aria-expanded="false" aria-controls="users">
+              <i class="mdi mdi-folder-multiple-outline"></i>
+              <span class="nav-text" data-toggle="tooltip" title="My Class Schedules">My Class Schedules</span> <b class="caret"></b>
+            </a>
+            <ul class="collapse" id="users" data-parent="#sidebar-menu">
+              <div class="sub-menu">
+                @forelse($classSchedules as $classSchedule)
+                @csrf
+                <li>
+                  <a class="section" href="{{ route('studentViewAttendance',  [ base64_encode( $classSchedule->classID)]) }}">{{$classSchedule->courseCode}}</a>
+                </li>
+
+                @empty
+                <li>
+                  <a class="section" href=""#  data-toggle="tooltip" title="Enroll Schedule First"> EMPTY </a>
+                </li>
+                @endforelse
+          </li>
+      </div>
     </div>
     <div class="sidebar-footer">
-    <div class="sidebar-footer-content">
+      <div class="sidebar-footer-content">
         <ul class="d-flex">
-            <li>
-                <a href="user-account-settings.php" data-toggle="tooltip" title="Profile settings">
-                    <i class="mdi mdi-settings"></i>
-                </a>
-            </li>
-            <li>
-                <!-- Logout form -->
-                <form id="logout-form" action="{{ route('logout') }}" method="post" style="display: none;">
-                    @csrf
-                </form>
-                <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" data-toggle="tooltip" title="Logout">
-                    <i class="mdi mdi-logout-variant"></i>
-                </a>
-            </li>
+          <li>
+            <a href="user-account-settings.php" data-toggle="tooltip" title="Profile settings">
+              <i class="mdi mdi-settings"></i>
+            </a>
+          </li>
+          <li>
+            <!-- Logout form -->
+            <form id="logout-form" action="{{ route('logout') }}" method="post" style="display: none;">
+              @csrf
+            </form>
+            <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" data-toggle="tooltip" title="Logout">
+              <i class="mdi mdi-logout-variant"></i>
+            </a>
+          </li>
         </ul>
+      </div>
     </div>
-</div>
 
 </div>
 </aside>

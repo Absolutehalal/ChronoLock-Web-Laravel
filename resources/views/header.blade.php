@@ -6,12 +6,12 @@
         </button>
 
         @if(Auth::check())
-        <span class="page-title">Hello, {{ Auth::user()->accountName }}!</span>
+        <span class="page-title">Hello, {{ Auth::user()->userType }} | ID: {{ Auth::user()->idNumber }}</span>
         @endif
 
         <div class="navbar-right">
             <!-- search form -->
-            <div class="search-form">
+            <!-- <div class="search-form">
                 <form action="index.html" method="get">
                     <div class="input-group input-group-sm" id="input-group-search">
                         <input type="text" autocomplete="off" name="query" id="search-input" class="form-control" placeholder="Search..." />
@@ -34,11 +34,11 @@
                         <a class="nav-link" href="index.html">Vestibulum at eros</a>
                     </li>
                 </ul>
-            </div>
+            </div> -->
 
             <ul class="nav navbar-nav">
                 <!-- Offcanvas -->
-                <li class="custom-dropdown">
+                <!-- <li class="custom-dropdown">
                     <a class="offcanvas-toggler active custom-dropdown-toggler" data-offcanvas="contact-off" href="javascript:">
                         <i class="mdi mdi-contacts icon"></i>
                     </a>
@@ -301,17 +301,17 @@
                             </div>
                         </footer>
                     </div>
-                </li>
+                </li> -->
                 <!-- User Account -->
                 <li class="dropdown user-menu">
-                @if(Auth::check())
+                    @if(Auth::check())
                     <button class="dropdown-toggle nav-link" data-toggle="dropdown">
                         <img src="{{ Auth::user()->avatar }}" class="user-image rounded-circle" alt="User Image" />
                         <span class="d-none d-lg-inline-block">{{ Auth::user()->accountName }}</span>
                     </button>
-                @endif
+                    @endif
                     <ul class="dropdown-menu dropdown-menu-right">
-                        <li>
+                        <!-- <li>
                             <a class="dropdown-link-item" href="user-profile.html">
                                 <i class="mdi mdi-account-outline"></i>
                                 <span class="nav-text">My Profile</span>
@@ -328,21 +328,29 @@
                             <a class="dropdown-link-item" href="user-activities.html">
                                 <i class="mdi mdi-diamond-stone"></i>
                                 <span class="nav-text">Activitise</span></a>
-                        </li>
+                        </li> -->
                         <li>
-                            <a class="dropdown-link-item" href="user-account-settings.html">
+                            <a class="dropdown-link-item" href="#" data-toggle="tooltip" title="Account Settings">
                                 <i class="mdi mdi-settings"></i>
                                 <span class="nav-text">Account Setting</span>
                             </a>
                         </li>
 
-                        <li class="dropdown-footer">
-                            <a class="dropdown-link-item" href="sign-in.html">
-                                <i class="mdi mdi-logout"></i> Log Out
+                        <li>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                @csrf
+                            </form>
+                            <a class="dropdown-link-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" data-toggle="tooltip" title="Logout">
+                                <i class="mdi mdi-logout"></i> 
+                                <span class="nav-text">Log Out</span>
                             </a>
                         </li>
-                    </ul>
+
+                        <!-- <li class="dropdown-footer"> -->
+
                 </li>
+            </ul>
+            </li>
             </ul>
         </div>
     </nav>

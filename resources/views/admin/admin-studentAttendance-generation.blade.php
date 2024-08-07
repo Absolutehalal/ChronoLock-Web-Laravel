@@ -72,11 +72,15 @@
                   <i class="mdi mdi-developer-board"></i> Year & Section
                 </button>
                 <div class="dropdown-menu" aria-labelledby="studentYearsButton">
-                  @foreach ($studentYears as $studentYear)
+                  @forelse ($studentYears as $studentYear)
                   <a class="dropdown-item year-item @if ($selected_years == $studentYear->year . '-' . $studentYear->section) active @endif" href="#" data-value="{{ $studentYear->year }}">
                     {{ $studentYear->year }}-{{ $studentYear->section }}
                   </a>
-                  @endforeach
+                  @empty
+                  <a class="dropdown-item" data-value="None" href="#">
+                    None
+                  </a>
+                  @endforelse
                 </div>
                 <input type="hidden" name="selected_years" id="selected_year" value="">
               </div>
@@ -87,11 +91,15 @@
                   <i class="mdi mdi-alpha-c-box"></i> Course
                 </button>
                 <div class="dropdown-menu scrollable-dropdown" aria-labelledby="studentCoursesButton">
-                  @foreach ($studentPrograms as $studentPrograms)
+                  @forelse ($studentPrograms as $studentPrograms)
                   <a class="dropdown-item course-item @if ($studentPrograms == $studentPrograms->program) active @endif" href="#" data-value="{{ $studentPrograms->program }}">
                     {{ $studentPrograms->program }}
                   </a>
-                  @endforeach
+                  @empty
+                  <a class="dropdown-item" data-value="None" href="#">
+                    None
+                  </a>
+                  @endforelse
                 </div>
                 <input type="hidden" name="selected_courses" id="selected_courses" value="">
               </div>
@@ -101,11 +109,15 @@
                   <i class="mdi mdi-alpha-r-box"></i> Remarks
                 </button>
                 <div class="dropdown-menu" aria-labelledby="studentRemarksButton">
-                  @foreach ($studentRemarks as $remarks)
+                  @forelse ($studentRemarks as $remarks)
                   <a class="dropdown-item remark-item @if ($remarks == $remarks->remark) active @endif" href="#" data-value="{{ $remarks->remark }}">
                     {{ $remarks->remark }}
                   </a>
-                  @endforeach
+                  @empty
+                  <a class="dropdown-item" data-value="None" href="#">
+                    None
+                  </a>
+                  @endforelse
                 </div>
                 <input type="hidden" name="selected_remarks" id="selected_remarks" value="">
               </div>
@@ -137,7 +149,7 @@
                 <i class="mdi mdi-sort"></i> Filter
               </button>
             </div>
-            </form>
+          </form>
 
             <form action="{{ url('/student-attendance-generation')}}" method="GET">
               <div class="dropdown d-inline-block mb-3 ">
@@ -162,7 +174,7 @@
                 <!-- <input type="text" class="form-control border border-primary" id="exportDate" name="selectedDate" value="{{ Request()->date }}"> -->
                 <button class="btn btn-info btn-sm fw-bold" id="exportButton" type="submit">
                   <i class="mdi mdi-file-download"></i>
-                  Export
+                  Excel
                 </button>
               </form>
             </div>

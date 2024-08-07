@@ -69,12 +69,16 @@
                   <i class="mdi mdi-alpha-i-box"></i> Instructor ID
                 </button>
                 <div class="dropdown-menu scrollable-dropdown" aria-labelledby="instructorIDButton">
-                  @foreach($instructorID as $instructorID)
+                  @forelse ($instructorID as $instructorID)
                   @csrf
                   <a class="dropdown-item id-item @if ($instructorID == $instructorID->userID) active @endif" data-value="{{ $instructorID->userID }}" href="#">
                     {{ $instructorID->userID }} - {{ $instructorID->instFirstName }} {{ $instructorID->instLastName }}
                   </a>
-                  @endforeach
+                  @empty
+                  <a class="dropdown-item" data-value="None" href="#">
+                    None
+                  </a>
+                  @endforelse
                 </div>
                 <input type="hidden" name="selected_id" id="selected_id" value="">
               </div>
@@ -84,12 +88,16 @@
                   <i class="mdi mdi-alpha-r-box"></i> Remarks
                 </button>
                 <div class="dropdown-menu scrollable-dropdown" aria-labelledby="instructorRemarksButton">
-                  @foreach ($instructorRemarks as $remarks)
+                  @forelse ($instructorRemarks as $remarks)
                   @csrf
                   <a class="dropdown-item remark-item @if ($remarks == $remarks->remark) active @endif" href="#" data-value="{{ $remarks->remark }}">
                     {{ $remarks->remark }}
                   </a>
-                  @endforeach
+                  @empty
+                  <a class="dropdown-item" data-value="None" href="#">
+                    None
+                  </a>
+                  @endforelse
                 </div>
                 <input type="hidden" name="selected_remarks" id="selected_remarks" value="">
               </div>
@@ -140,7 +148,7 @@
               <form action="{{ url('/instructor-attendance-export') }}" method="GET">
                 <button class="btn btn-info btn-sm fw-bold" id="exportButton" type="submit">
                   <i class="mdi mdi-file-download"></i>
-                  Export
+                  Excel
                 </button>
               </form>
             </div>

@@ -79,7 +79,7 @@
             <div class="sidebar-footer-content">
                 <ul class="d-flex">
                     <li>
-                        <a href="user-account-settings.php" data-toggle="tooltip" title="Profile settings"><i class="mdi mdi-settings"></i></a>
+                        <a href="#" data-toggle="tooltip" title="Profile settings"><i class="mdi mdi-settings"></i></a>
                     </li>
                     <li>
                         <!-- Logout form -->

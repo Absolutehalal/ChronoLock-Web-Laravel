@@ -52,13 +52,13 @@ $(document).on('pointerup', '.activateBtn', function(e) {
           success: function(response) {
             // console.log(response);
             if (response.status == 400) {
-              $('#rfidError').html("");
-              $('#rfidError').addClass('error');
+              // $('#rfidError').html("");
+              // $('#rfidError').addClass('error');
               $('#userIDError').html("");
               $('#userIDError').addClass('error');
-              $.each(response.errors.Rfid_Code, function(key, err_value) {
-                $('#rfidError').append('<li>' + err_value + '</li>');
-              });
+              // $.each(response.errors.Rfid_Code, function(key, err_value) {
+              //   $('#rfidError').append('<li>' + err_value + '</li>');
+              // });
               $.each(response.errors.userId, function(key, err_value) {
                 $('#userIDError').append('<li>' + err_value + '</li>');
               });

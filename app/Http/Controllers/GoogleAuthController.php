@@ -121,7 +121,7 @@ class GoogleAuthController extends Controller
             // }
 
             // Find user by Google ID
-            $existingUser = User::where('email', $googleUser->email)->first();
+            $existingUser = User::where('google_id', $googleUser->id)->first();
 
             if ($existingUser) {
 

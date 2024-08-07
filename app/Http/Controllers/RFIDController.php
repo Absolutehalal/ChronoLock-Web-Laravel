@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class RFIDController extends Controller
 {
@@ -16,13 +17,12 @@ class RFIDController extends Controller
     public function pendingRFID()
     {
         $pendingRFID = DB::table('rfid_temps')
-        ->get();
-        return view('admin.admin-pendingRFID',['pendingRFID'=>$pendingRFID]);
+            ->get();
+        return view('admin.admin-pendingRFID', ['pendingRFID' => $pendingRFID]);
     }
 
     public function processPendingRFID($id)
     {
-
         $pendingRFID = Rfid_temp::find($id);
         if ($pendingRFID) {
             return response()->json([
@@ -39,22 +39,23 @@ class RFIDController extends Controller
 
     public function activatePendingRFID(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'Rfid_Code' => 'required',
-            'userId' => 'required',
-        ]);
-        if ($validator->fails()) {
-            return response()->json([
-                'status' => 400,
-                'errors' => $validator->messages()
+        try {
+            $validator = Validator::make($request->all(), [
+                'Rfid_Code' => 'required',
+                'userId' => 'required',
             ]);
-        } else {
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => 400,
+                    'errors' => $validator->messages()
+                ]);
+            } else {
 
                 // $tempRFIDCode=$request->get('Rfid_Code');
                 $code = $request->get('Rfid_Code');
                 $id = $request->get('userId');
-                $user = User::where('idNumber', $id)->first(); 
-                $tempRFIDCode = Rfid_temp::where('RFID_Code', $code )->first();
+                $user = User::where('idNumber', $id)->first();
+                $tempRFIDCode = Rfid_temp::where('RFID_Code', $code)->first();
                 // $user = User::find()->where('idNumber',  $id);
                 $updatedID = DB::table('users')->where('idNumber', $id)->value('id');
 
@@ -63,8 +64,8 @@ class RFIDController extends Controller
                 $lastName = DB::table('users')->where('id', $updatedID)->value('lastName');
 
                 $RFID_Code = DB::table('users')->where('idNumber', $id)->value('RFID_Code');
-                if ($user && $RFID_Code==Null) {
-                   
+                if ($user && $RFID_Code == Null) {
+
                     $user->RFID_Code = $request->input('Rfid_Code');
                     $user->update();
 
@@ -93,123 +94,154 @@ class RFIDController extends Controller
                     return response()->json([
                         'status' => 200,
                     ]);
-        } else if ($RFID_Code != "") {
-            return response()->json([
-                'status' => 500,
-            ]);
+                } else if ($RFID_Code != "") {
+                    return response()->json([
+                        'status' => 500,
+                    ]);
+                }
+            }
+        } catch (\Exception $e) {
+            Alert::error('Error', 'Something went wrong. Please try again later.')
+                ->autoClose(5000)
+                ->showCloseButton();
+            return redirect()->back();
         }
-    }
     }
 
     public function deletePendingRFID($id)
     {
-        $pendingRFID = Rfid_temp::find($id);
-      
-        if ($pendingRFID) {
-            $pendingRFID->delete();
+        try {
 
-            // Start Logs
-            $ID = Auth::id();
-            $userID = DB::table('users')->where('id', $ID)->value('idNumber');
-            date_default_timezone_set("Asia/Manila");
-            $date = date("Y-m-d");
-            $time = date("H:i:s");
-            $action = "Deleted pending RFID";
-            DB::table('user_logs')->insert([
-                'userID' => $userID,
-                'action' => $action,
-                'date' => $date,
-                'time' => $time,
-            ]);
-            // END Logs
 
-            return response()->json([
-                'status' => 200,
-            ]);
-        } else {
-            return response()->json([
-                'status' => 404,
-            ]);
+            $pendingRFID = Rfid_temp::find($id);
+
+            if ($pendingRFID) {
+                $pendingRFID->delete();
+
+                // Start Logs
+                $ID = Auth::id();
+                $userID = DB::table('users')->where('id', $ID)->value('idNumber');
+                date_default_timezone_set("Asia/Manila");
+                $date = date("Y-m-d");
+                $time = date("H:i:s");
+                $action = "Deleted pending RFID";
+                DB::table('user_logs')->insert([
+                    'userID' => $userID,
+                    'action' => $action,
+                    'date' => $date,
+                    'time' => $time,
+                ]);
+                // END Logs
+
+                return response()->json([
+                    'status' => 200,
+                ]);
+            } else {
+                return response()->json([
+                    'status' => 404,
+                ]);
+            }
+        } catch (\Exception $e) {
+            Alert::error('Error', 'Something went wrong. Please try again later.')
+                ->autoClose(5000)
+                ->showCloseButton();
+            return redirect()->back();
         }
     }
- // End pending RFID page
+    // End pending RFID page
 
-// Start RFID Account Management
-public function RFIDManagement()
-{
-    $RFID_Accounts = DB::table('rfid_accounts')
-        ->join('users', 'rfid_accounts.RFID_Code', '=', 'users.RFID_Code')
-        ->where('userType', '!=', 'Admin')
-        ->select('users.idNumber', 'users.firstName', 'users.lastName', 'rfid_accounts.RFID_Code', 'users.userType', 'rfid_accounts.RFID_Status','rfid_accounts.id')
-        ->get();
+    // Start RFID Account Management
+    public function RFIDManagement()
+    {
+        $RFID_Accounts = DB::table('rfid_accounts')
+            ->join('users', 'rfid_accounts.RFID_Code', '=', 'users.RFID_Code')
+            ->where('userType', '!=', 'Admin')
+            ->select('users.idNumber', 'users.firstName', 'users.lastName', 'rfid_accounts.RFID_Code', 'users.userType', 'rfid_accounts.RFID_Status', 'rfid_accounts.id')
+            ->get();
 
-    return view('admin.admin-RFIDAccount', ['RFID_Accounts' => $RFID_Accounts]);
-}
-    public function deactivateRFID($id){
-        $RFID_Account = RfidAccount::find($id);
-      
-        if ($RFID_Account) {
-            $RFID_Account->RFID_Status = 'Deactivated';
-            $RFID_Account->update();
+        return view('admin.admin-RFIDAccount', ['RFID_Accounts' => $RFID_Accounts]);
+    }
+    public function deactivateRFID($id)
+    {
+        try {
+            $RFID_Account = RfidAccount::find($id);
 
-            // Start Logs
-            $ID = Auth::id();
-            $userID = DB::table('users')->where('id', $ID)->value('idNumber');
-            date_default_timezone_set("Asia/Manila");
-            $date = date("Y-m-d");
-            $time = date("H:i:s");
-            $action = "Deactivated an RFID Account";
-            DB::table('user_logs')->insert([
-                'userID' => $userID,
-                'action' => $action,
-                'date' => $date,
-                'time' => $time,
-            ]);
-            // END Logs
+            if ($RFID_Account) {
+                $RFID_Account->RFID_Status = 'Deactivated';
+                $RFID_Account->update();
 
-            return response()->json([
-                'status' => 200,
-            ]);
-        } else {
-            return response()->json([
-                'status' => 404,
-            ]);
+                // Start Logs
+                $ID = Auth::id();
+                $userID = DB::table('users')->where('id', $ID)->value('idNumber');
+                date_default_timezone_set("Asia/Manila");
+                $date = date("Y-m-d");
+                $time = date("H:i:s");
+                $action = "Deactivated an RFID Account";
+                DB::table('user_logs')->insert([
+                    'userID' => $userID,
+                    'action' => $action,
+                    'date' => $date,
+                    'time' => $time,
+                ]);
+                // END Logs
+
+                return response()->json([
+                    'status' => 200,
+                ]);
+            } else {
+                return response()->json([
+                    'status' => 404,
+                ]);
+            }
+        } catch (\Exception $e) {
+            Alert::error('Error', 'Something went wrong. Please try again later.')
+                ->autoClose(5000)
+                ->showCloseButton();
+            return redirect()->back();
         }
     }
 
 
-    public function activateRFID($id){
-        $RFID_Account = RfidAccount::find($id);
-      
-        if ($RFID_Account) {
-            $RFID_Account->RFID_Status = 'Activated';
-            $RFID_Account->update();
+    public function activateRFID($id)
+    {
+        try {
+            $RFID_Account = RfidAccount::find($id);
 
-            // Start Logs
-            $ID = Auth::id();
-            $userID = DB::table('users')->where('id', $ID)->value('idNumber');
-            date_default_timezone_set("Asia/Manila");
-            $date = date("Y-m-d");
-            $time = date("H:i:s");
-            $action = "Activated an RFID Account";
-            DB::table('user_logs')->insert([
-                'userID' => $userID,
-                'action' => $action,
-                'date' => $date,
-                'time' => $time,
-            ]);
-            // END Logs
+            if ($RFID_Account) {
+                $RFID_Account->RFID_Status = 'Activated';
+                $RFID_Account->update();
 
-            return response()->json([
-                'status' => 200,
-            ]);
-        } else {
-            return response()->json([
-                'status' => 404,
-            ]);
+                // Start Logs
+                $ID = Auth::id();
+                $userID = DB::table('users')->where('id', $ID)->value('idNumber');
+                date_default_timezone_set("Asia/Manila");
+                $date = date("Y-m-d");
+                $time = date("H:i:s");
+                $action = "Activated an RFID Account";
+                DB::table('user_logs')->insert([
+                    'userID' => $userID,
+                    'action' => $action,
+                    'date' => $date,
+                    'time' => $time,
+                ]);
+                // END Logs
+
+                return response()->json([
+                    'status' => 200,
+                ]);
+            } else {
+                return response()->json([
+                    'status' => 404,
+                ]);
+            }
+        } catch (\Exception $e) {
+            Alert::error('Error', 'Something went wrong. Please try again later.')
+                ->autoClose(5000)
+                ->showCloseButton();
+            return redirect()->back();
         }
     }
-// END RFID Account Management
+    // END RFID Account Management
     public function autocomplete(Request $request)
     {
         $query = $request->get('query');

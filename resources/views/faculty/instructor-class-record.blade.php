@@ -96,10 +96,10 @@
                                                 Actions
                                             </button>
                                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                <button class="dropdown-item editClassListBtn" type="button" data-toggle="modal" data-target="#classListUpdateModal" value="{{$classes->classID}}">
+                                                <button class="dropdown-item btn-sm editClassListBtn" type="button" data-toggle="modal" data-target="#classListUpdateModal" value="{{$classes->classID}}">
                                                     <i class="mdi mdi-circle-edit-outline text-warning"></i>
                                                     Edit</button>
-                                                <button class="dropdown-item deleteClassListBtn" type="button" data-toggle="modal" data-target="#classListDeleteModal" value="{{$classes->classID}}">
+                                                <button class="dropdown-item btn-sm deleteClassListBtn" type="button" data-toggle="modal" data-target="#classListDeleteModal" value="{{$classes->classID}}">
                                                     <i class="mdi mdi-trash-can text-danger"></i>
                                                     Delete</button>
                                             </div>

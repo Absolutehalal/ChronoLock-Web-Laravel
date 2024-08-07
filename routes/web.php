@@ -112,7 +112,7 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     Route::put('/deactivateRFID/{id}', [RFIDController::class, 'deactivateRFID'])->name('deactivateRFID');
     Route::put('/activateRFID/{id}', [RFIDController::class, 'activateRFID'])->name('activateRFID');
     Route::get('/RFIDManagementPage', [RFIDController::class, 'RFIDManagement'])->name('RFIDManagement');
-    
+
     Route::get('/autocomplete', [RFIDController::class, 'autocomplete'])->name('autocomplete');
     //--------End Admin Pending RFID ROUTES---------  
 
@@ -128,6 +128,8 @@ Route::group(['middleware' => ['auth', 'faculty']], function () {
     Route::get('/instructorDashboard', [UserController::class, 'instructorIndex'])->name('instructorIndex');
 
     Route::get('/instructorSchedule', [ScheduleController::class, 'instructorScheduleManagement'])->name('instructorScheduleManagement');
+    Route::get('/schedules', [ScheduleController::class, 'showMySchedules'])->name('showMySchedules');
+
 
     //--------START Class List  ROUTES---------
     Route::get('/instructorClassList', [ScheduleController::class, 'classListManagement'])->name('classListManagement');
@@ -159,8 +161,7 @@ Route::group(['middleware' => ['auth', 'faculty']], function () {
 Route::group(['middleware' => ['auth', 'student']], function () {
     Route::get('/student-dashboard', [UserController::class, 'studentIndex'])->name('studentIndex');
 
-
-    Route::get('/student-view-schedule', [ScheduleController::class, 'studentViewSchedule'])->name('studentViewSchedule');
+    Route::get('/student-view-schedule', [StudentController::class, 'studentViewSchedule'])->name('studentViewSchedule');
     Route::get('/studentEditSchedule/{id}', [StudentMasterListController::class, 'studentEditSchedule'])->name('studentEditSchedule');
     Route::post('/student-view-schedule', [StudentMasterListController::class, 'enroll'])->name('enroll');
 

@@ -61,9 +61,9 @@
         <div class="card card-default shadow">
           <div class="card-header">
             <h1>RFID Accounts</h1>
-            <div class="row">
+            <!-- <div class="row">
               <div class="col-xl-12 col-md-12 d-flex justify-content-end">
-                <!-- Sort button -->
+               
                 <div class="dropdown d-inline-block ">
                   <button class="btn btn-primary btn-sm fw-bold" type="button" data-toggle="modal" data-target="#exampleModalForm">
                     <i class=" mdi mdi-plus-box"></i>
@@ -71,7 +71,7 @@
                   </button>
                 </div>
               </div>
-            </div>
+            </div> -->
           </div>
           <div class="card-body col-md-12">
             <table id="exampleTable" class="table table-bordered table-hover no-wrap" style="width:100%">
@@ -93,9 +93,13 @@
                   <td>{{ $RFID_Account->firstName }} {{ $RFID_Account->lastName }}</td>
                   <td>{{ $RFID_Account->RFID_Code }}</td>
                   <td>{{ $RFID_Account->userType }} </td>
-                  <td>{{ $RFID_Account->RFID_Status }} </td>
-
-
+                  <td>
+                    @if($RFID_Account->RFID_Status == 'Activated')
+                    <span class="badge badge-success">Present</span>
+                    @elseif($RFID_Account->RFID_Status == 'Deactivated')
+                    <span class="badge badge-danger">Deactivated</span>
+                    @endif
+                  </td>
                   <th>
                     <!-- Example single primary button -->
                     <div class="dropdown d-inline-block">
@@ -104,21 +108,21 @@
                       </button>
                       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
-                            @if ($RFID_Account->RFID_Status == "Activated")
-                            <button class="dropdown-item deactivateBtn" type="button" data-toggle="modal" data-target="#deactivateRFIDModal" value="{{ $RFID_Account->id }}">
-                                <i class="mdi mdi-close text-danger"></i>
-                                Deactivate
-                            </button>
-                            @elseif ($RFID_Account->RFID_Status == "Deactivated")
-                            <button class="dropdown-item activateBtn" type="button" data-toggle="modal" data-target="#activateRFIDModal" value="{{ $RFID_Account->id }}">
-                                <i class="mdi mdi-check text-info"></i>
-                                Activate
-                            </button>
-                            @endif
+                        @if ($RFID_Account->RFID_Status == "Activated")
+                        <button class="dropdown-item deactivateBtn" type="button" data-toggle="modal" data-target="#deactivateRFIDModal" value="{{ $RFID_Account->id }}">
+                          <i class="mdi mdi-close text-danger"></i>
+                          Deactivate
+                        </button>
+                        @elseif ($RFID_Account->RFID_Status == "Deactivated")
+                        <button class="dropdown-item activateBtn" type="button" data-toggle="modal" data-target="#activateRFIDModal" value="{{ $RFID_Account->id }}">
+                          <i class="mdi mdi-check text-info"></i>
+                          Activate
+                        </button>
+                        @endif
                       </div>
                     </div>
                   </th>
-  </tr>
+                </tr>
                 @endforeach
               </tbody>
             </table>

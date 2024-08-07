@@ -14,7 +14,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script defer src="js/studentJoinClassSchedule.js"></script>
-    <title>ChronoLock: Student View Schedule</title>
+    <title>ChronoLock: Student Enroll Schedule</title>
 
     @include('head')
 
@@ -51,7 +51,7 @@
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{{ route('studentIndex') }}">Dashboard</a></li>
-                            <li class="breadcrumb-item"><a href="{{ route('studentViewSchedule') }}">View Schedule</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('studentViewSchedule') }}">Enroll Schedule</a></li>
                         </ol>
                     </nav>
 
@@ -63,122 +63,125 @@
 
 
 
+                <div class="card card-default shadow-sm">
+                    <div class="card-header card-header-border-bottom d-flex justify-content-between align-items-center">
+                        <h1 class="mb-3">Overview Schedule</h1>
+                        <div class="row">
+                            <div class="col-xl-12 col-md-12 d-flex justify-content-end">
+                                <form method="GET" action="{{ url('/student-view-schedule') }}">
+                                    <div class=" d-inline-block mb-3">
+                                        <input class="form-control border-primary" type="text" name="search" id="search" placeholder="Search Here">
+                                    </div>
+
+                                    <div class="dropdown d-inline-block mb-3">
+                                        <button class="btn btn-danger btn-sm fw-bold" type="submit">
+                                            <i class="mdi mdi-feature-search"></i> Search
+                                        </button>
+                                    </div>
+
+                                    <div class="dropdown d-inline-block mb-3">
+                                        <button class="btn btn-warning btn-sm fw-bold" type="submit">
+                                            <i class="mdi mdi-alpha-r-box"></i> Reset
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
 
                 <div class="row">
+                    @if($schedules->isEmpty())
+                    @if(isset($search) && !empty($search))
+                    <div class="card-body">
+                        <p class="text-center fw-bold">Not Found. Please try again.</p>
+                    </div>
+                    @else
+                    <div class="card-body">
+                        <span class="text-center fw-bold">No schedules available.</span>
+                    </div>
+                    @endif
+                    @else
                     @foreach($schedules as $schedule)
                     <div class="col-lg-6 col-xl-4 col-xxl-3">
-                        <div class="card card-default shadow mt-7">
+                        <div class="card card-default shadow-md border-dark mt-7">
                             <div class="card-body text-center">
                                 <button class="editClassSchedule mb-2" href="javascript:void(0)" data-target="#join-class-schedule-modal" value="{{$schedule->classID}}">
                                     <div class="image mb-3 d-inline-flex mt-n8">
                                         <img src="{{$schedule->avatar }}" class="img-fluid rounded-circle d-inline-block" alt="Avatar Image">
                                     </div>
-
-                                    <h5 class="card-title">{{$schedule->instFirstName }} {{$schedule->instLastName }} </h5>
-
-
-                                    <ul class="list-unstyled d-inline-block mb-5">
+                                    <h5 class="card-title">{{$schedule->instFirstName }} {{$schedule->instLastName }}</h5>
+                                    <ul class="list-unstyled d-inline-block">
                                         <li class="d-flex mb-1">
-                                            <i class="mdi mdi-email mr-1"></i>
-                                            <span>{{$schedule->email}}</span>
+                                            <i class="mdi mdi-alpha-c-box mr-1"></i>
+                                            <label class="mr-1">Course:</label>
+                                            <span>{{$schedule->courseName}}-{{$schedule->courseCode}}</span>
                                         </li>
-
                                         <li class="d-flex">
                                             <i class="mdi mdi-group mr-1"></i>
                                             <label class="mr-1">Program:</label>
                                             <span>{{$schedule->program}}</span>
                                         </li>
-
                                         <li class="d-flex">
                                             <i class="mdi mdi-alpha-s-box mr-1"></i>
                                             <label class="mr-1">Year & Section:</label>
                                             <span>{{$schedule->year}}-{{$schedule->section}}</span>
                                         </li>
-
                                         <li class="d-flex">
-                                            <i class="mdi mdi-calendar-clock  mr-1"></i>
+                                            <i class="mdi mdi-calendar-clock mr-1"></i>
                                             <label class="mr-1">Schedule:</label>
-                                            <span>{{ $schedule->startTime }}-{{ $schedule->endTime }}</span>
+                                            <span>{{ date('h:i A', strtotime($schedule->startTime)) }}-{{ date('h:i A', strtotime($schedule->endTime)) }}</span>
                                         </li>
-                                    </ul>
-
-                                    <div class="row justify-content-center">
-                                        <div class="col-4 px-1">
-                                            <div class=" circle" data-size="60" data-value="0.50" data-thickness="4" data-fill="{ &quot;color&quot;: &quot;#35D00E&quot; }">
-                                                <div class="circle-content">
-                                                    <h6 class="text-uppercase">html</h6>
-                                                    <h6>80%</h6>
-                                                    <strong></strong>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-4 px-1">
-                                            <div class=" circle" data-size="60" data-value="0.65" data-thickness="4" data-fill="{
-                &quot;color&quot;: &quot;#fec400&quot;
-              }">
-                                                <div class="circle-content">
-                                                    <h6 class="text-uppercase">css</h6>
-                                                    <h6>65%</h6>
-                                                    <strong></strong>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-4 px-1">
-                                            <div class=" circle" data-size="60" data-value="0.35" data-thickness="4" data-fill="{
-                &quot;color&quot;: &quot;#fe5461&quot;
-              }">
-                                                <div class="circle-content">
-                                                    <h6 class="text-uppercase">js</h6>
-                                                    <h6>25%</h6>
-                                                    <strong></strong>
-                                                </div>
-                                            </div>
-                                        </div>
                                         @php
-                                        $classID=$schedule->classID;
-                                        $link= mysqli_connect("sql12.freesqldatabase.com","sql12722804","vjfsx3yAZK");
-                                        mysqli_select_db($link, "sql12722804");
-                                        $query = "SELECT * FROM student_masterlists WHERE userID ='$userID' AND classID ='$classID'";
-                                        $result = mysqli_query($link,$query);
+                                        // Mapping of day numbers
+                                        $dayMapping = [
+                                        0 => 'Sunday',
+                                        1 => 'Monday',
+                                        2 => 'Tuesday',
+                                        3 => 'Wednesday',
+                                        4 => 'Thursday',
+                                        5 => 'Friday',
+                                        6 => 'Saturday'
+                                        ];
+
+                                        // Get the day name from the mapping
+                                        $dayName = $dayMapping[$schedule->day];
                                         @endphp
 
-                                        @if (mysqli_num_rows($result) === 1 )
-                                        <div class="overlay" style="color: #31ce3c">Enrolled</div>
-                                        @else
-                                        <div class="overlay" style="color: #FF7F7F">Get Access</div>
+                                        <li class="d-flex">
+                                            <i class="mdi mdi-calendar-today mr-1"></i>
+                                            <label class="mr-1">Day:</label>
+                                            <span>{{ $dayName }}</span>
+                                        </li>
 
-                                        @endif
-
-
+                                    </ul>
+                                    @php
+                                    $classID=$schedule->classID;
+                                    $link= mysqli_connect("sql12.freesqldatabase.com","sql12724238","f8cI7wVnB5");
+                                    mysqli_select_db($link, "sql12724238");
+                                    $query = "SELECT * FROM student_masterlists WHERE userID ='$userID' AND classID ='$classID'";
+                                    $result = mysqli_query($link,$query);
+                                    @endphp
+                                    @if (mysqli_num_rows($result) === 1 )
+                                    <div class="overlay" style="color: #31ce3c">Enrolled</div>
+                                    @else
+                                    <div class="overlay" style="color: #FF7F7F">Get Access</div>
+                                    @endif
                                 </button>
                             </div>
                         </div>
                     </div>
                     @endforeach
+                    @endif
+
                 </div>
 
-                <!-- Schedule Modal -->
+                <!-- Join Class Modal -->
                 <div class="modal fade" id="join-class-schedule-modal" tabindex="-1" role="dialog" aria-labelledby="joinClass" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered modal-md" role="document">
                         <div class="modal-content">
                             <div class="modal-header justify-content-end border-bottom-0">
-                                <button type="button" class="btn-edit-icon" data-dismiss="modal" aria-label="Close">
-                                    <i class="mdi mdi-pencil"></i>
-                                </button>
-
-                                <div class="dropdown">
-                                    <button class="btn-dots-icon" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="mdi mdi-dots-vertical"></i>
-                                    </button>
-
-                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" href="javascript:void(0)">Action</a>
-                                        <a class="dropdown-item" href="javascript:void(0)">Another action</a>
-                                        <a class="dropdown-item" href="javascript:void(0)">Something else here</a>
-                                    </div>
-                                </div>
 
                                 <button type="button" class="btn-close-icon" onclick="$('#join-class-schedule-modal').modal('hide');" aria-label="Close">
                                     <i class="mdi mdi-close"></i>
@@ -196,7 +199,7 @@
 
                                                 <div class="card-body">
                                                     <h4> <input type="text" class="input form-control" id="instFirstNameAndLastName" name="instFirstNameAndLastName" readonly> </h4>
-                                                    <form method="post">
+                                                    <form id="clearJoinClass" method="post">
                                                         @csrf
                                                         @method('post')
 
@@ -210,7 +213,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="d-flex justify-content-between ">
+                                            <div class="d-flex justify-content-between">
                                                 <div class="text-center pb-4">
 
                                                     <h6 class="pb-2">Program</h6>
@@ -234,6 +237,7 @@
                                                         <input type="text" class="input form-control" id="startTimeAndEndTime" name="startTimeAndEndTime" readonly>
                                                     </div>
                                                 </div>
+                                                
                                             </div>
                                         </div>
                                     </div>
@@ -245,11 +249,6 @@
                     </div>
                 </div>
             </div>
-
-
-
-
-
         </div>
     </div>
 
@@ -259,10 +258,18 @@
     </div>
     </div>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
 
-    </div>
-    </div>
-    </div>
-    </div>
+            $('#join-class-schedule-modal').on('hidden.bs.modal', function() {
+                $('#clearJoinClass')[0].reset();
+                clearJoinClassErrors();
+            });
 
+
+            function clearJoinClassErrors() {
+                $('#enrollmentKeyError').empty();
+            }
+        });
+    </script>
     @include('footer')
