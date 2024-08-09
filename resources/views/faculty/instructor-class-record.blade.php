@@ -14,8 +14,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!-- Ajax edit Class List -->
-  <script defer src="{{asset('js/instructorEditClassList.js')}}"></script>
+    <!-- Ajax edit Class List -->
+    <script defer src="{{asset('js/instructorEditClassList.js')}}"></script>
 
     <title>ChronoLock Instructor-Class Record</title>
 
@@ -59,11 +59,11 @@
                     </div>
                 </div>
 
-                
+
 
                 <div class="card card-default">
                     <div class="card-header">
-                        <h1>    Class List</h1>
+                        <h1> Class List</h1>
                     </div>
                     <div class="card-body ">
                         <table id="exampleTable" class="table table-bordered table-hover" style="width:100%">
@@ -233,7 +233,3 @@
         </div>
     </div>
     @include('footer')
-
-
-
- 

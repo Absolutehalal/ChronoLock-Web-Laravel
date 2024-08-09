@@ -17,6 +17,7 @@
     <title>ChronoLock Student Dashboard</title>
 
     @include('head')
+    
 
     <!-- TOASTER -->
     <link href="plugins/toaster/toastr.min.css" rel="stylesheet">
@@ -152,5 +153,7 @@
     </div>
     </div>
     </div>
+
+    
 
     @include('footer')

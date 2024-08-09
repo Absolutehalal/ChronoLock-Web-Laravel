@@ -60,7 +60,7 @@
 
                 @empty
                 <li>
-                  <a class="section" href=""#  data-toggle="tooltip" title="Enroll Schedule First"> EMPTY </a>
+                  <a class="section" href="" # data-toggle="tooltip" title="Enroll Schedule First"> EMPTY </a>
                 </li>
                 @endforelse
           </li>
@@ -70,22 +70,22 @@
       <div class="sidebar-footer-content">
         <ul class="d-flex">
           <li>
-            <a href="user-account-settings.php" data-toggle="tooltip" title="Profile settings">
+            <a href="#" id="editProfile" data-toggle="modal" data-target="#modal-profile" data-toggle="tooltip" title="Profile settings">
               <i class="mdi mdi-settings"></i>
             </a>
           </li>
           <li>
             <!-- Logout form -->
-            <form id="logout-form" action="{{ route('logout') }}" method="post" style="display: none;">
+            <form id="logout-student" action="{{ route('logout') }}" method="post" style="display: none;">
               @csrf
             </form>
-            <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" data-toggle="tooltip" title="Logout">
+            <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-student').submit();" data-toggle="tooltip" title="Logout">
               <i class="mdi mdi-logout-variant"></i>
             </a>
           </li>
         </ul>
       </div>
     </div>
-
 </div>
+
 </aside>

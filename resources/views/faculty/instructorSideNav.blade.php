@@ -1,4 +1,3 @@
-
 <script defer src="{{asset('js/activePage.js')}}"></script>
 
 
@@ -42,7 +41,7 @@
                         <a class="sidenav-item-link" href="{{route('classListManagement')}}">
                             <i class="mdi mdi-file-document-box-multiple"></i>
                             <span class="nav-text" data-toggle="tooltip" title="Class List">Class
-                            List</span>
+                                List</span>
                         </a>
                     </li>
                     <li>
@@ -65,12 +64,12 @@
                         </a>
                         <ul class="collapse" id="users" data-parent="#sidebar-menu">
                             <div class="sub-menu">
-                            @foreach($classes as $classes)
-                            @csrf
+                                @foreach($classes as $classes)
+                                @csrf
                                 <li>
                                     <a class="section" href="{{ route('instructorClassAttendanceAndList',  [ base64_encode( $classes->classID)]) }}">{{$classes->program}}-{{$classes->year}}{{$classes->section}}</a>
                                 </li>
-                            @endforeach
+                                @endforeach
                     </li>
             </div>
         </div>
@@ -79,14 +78,16 @@
             <div class="sidebar-footer-content">
                 <ul class="d-flex">
                     <li>
-                        <a href="#" data-toggle="tooltip" title="Profile settings"><i class="mdi mdi-settings"></i></a>
+                        <a href="#" data-toggle="modal" data-target="#modal-profile" data-toggle="tooltip" title="Profile settings">
+                            <i class="mdi mdi-settings"></i>
+                        </a>
                     </li>
                     <li>
                         <!-- Logout form -->
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        <form id="logout-faculty" action="{{ route('logout') }}" method="POST" style="display: none;">
                             @csrf
                         </form>
-                        <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" data-toggle="tooltip" title="Logout">
+                        <a href="#" onclick="event.preventDefault(); document.getElementById('logout-faculty').submit();" data-toggle="tooltip" title="Logout">
                             <i class="mdi mdi-logout-variant"></i>
                         </a>
                 </ul>

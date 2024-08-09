@@ -17,6 +17,7 @@
   <title>ChronoLock My Attendance</title>
 
   @include('head')
+
 </head>
 
 <body class="navbar-fixed sidebar-fixed" id="body">
@@ -103,7 +104,7 @@
             <!-- Page Views  -->
             <div class="card card-default shadow" id="page-views">
               <div class="card-header">
-                @if($programTitle=='')\
+                @if($programTitle=='')
                 <h2>Classmates Enrolled</h2>
                 @else
                 <h2>@php echo ($programTitle) @endphp Classmates Enrolled</h2>

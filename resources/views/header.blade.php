@@ -6,7 +6,7 @@
         </button>
 
         @if(Auth::check())
-        <span class="page-title">Hello, {{ Auth::user()->userType }} | ID: {{ Auth::user()->idNumber }}</span>
+        <span class="page-title">Hello, {{ Auth::user()->accountName }} | ID: {{ Auth::user()->idNumber }}</span>
         @endif
 
         <div class="navbar-right">
@@ -307,7 +307,7 @@
                     @if(Auth::check())
                     <button class="dropdown-toggle nav-link" data-toggle="dropdown">
                         <img src="{{ Auth::user()->avatar }}" class="user-image rounded-circle" alt="User Image" />
-                        <span class="d-none d-lg-inline-block">{{ Auth::user()->accountName }}</span>
+                        <span class="d-none d-lg-inline-block">{{ Auth::user()->userType }}</span>
                     </button>
                     @endif
                     <ul class="dropdown-menu dropdown-menu-right">

@@ -12,7 +12,8 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\RFIDController;
 use App\Http\Controllers\StudentMasterListController;
 use App\Http\Controllers\PDFController;
-
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ForgotPasswordController;
 
 
 use Illuminate\Support\Facades\Auth;
@@ -23,23 +24,23 @@ Route::get('/', function () {
 
 // Auth::routes();
 
-
 Route::get('/login', [GoogleAuthController::class, 'login'])->name('login');
 Route::post('/login', [GoogleAuthController::class, 'loginUser'])->name('login.user');
 Route::get('/auth/google', [GoogleAuthController::class, 'redirectToGoogle'])->name('login.google');
 Route::get('/auth/google/call-back', [GoogleAuthController::class, 'handleGoogleCallback'])->name('login.google.callback');
 Route::post('/logout', [GoogleAuthController::class, 'logout'])->name('logout');
 
-Route::group(['middleware' => ['auth']], function () {
-    Route::post('/logout', [GoogleAuthController::class, 'logout'])->middleware('auth')->name('logout');
-});
+Route::get('/forgot-password', [ForgotPasswordController::class, 'forgotPassword'])->name('forgotPassword');
+Route::post('/forgot-password', [ForgotPasswordController::class, 'forgotPasswordPost'])->name('forgotPasswordPost');
+Route::get('/reset-password/{token}', [ForgotPasswordController::class, 'resetPassword'])->name('resetPassword');
+Route::post('/reset-password', [ForgotPasswordController::class, 'updatePassword'])->name('updatePassword');
 
 // ADMIN MIDDLEWARE -----ADMIN ROUTES------
 Route::group(['middleware' => ['auth', 'admin']], function () {
     Route::get('/adminPage', [UserController::class, 'index'])->name('index');
-    // Route::get('/adminPage', [UserController::class, 'index'])->name('index')->middleware(['auth', 'admin']);
-    // Route::get('/pendingRFIDPage', [UserController::class,'pendingRFID'])->name('pendingRFID');
 
+    Route::get('/profile/edit/{id}', [ProfileController::class, 'editProfile'])->name('profile.edit');
+    Route::put('/profile/update/{id}', [ProfileController::class, 'updateProfile'])->name('profile.update');
 
 
     //--------START userManagement ROUTES---------
@@ -98,7 +99,6 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     Route::delete('/deleteInstructorAttendance/{id}', [AttendanceController::class, 'deleteInstructorAttendance'])->name('deleteAttendance');
     Route::get('/instructor-attendance-generation', [AttendanceController::class, 'instructorAttendanceGeneration'])->name('instructorAttendanceGeneration');
     Route::get('/instructor-attendance-export', [AttendanceController::class, 'instructorAttendanceExport'])->name('instructorAttendanceExport');
-
 
 
     //--------END Admin instructor attendance Management ROUTES-----------
@@ -162,6 +162,7 @@ Route::group(['middleware' => ['auth', 'student']], function () {
     Route::get('/student-dashboard', [UserController::class, 'studentIndex'])->name('studentIndex');
 
     Route::get('/student-view-schedule', [StudentController::class, 'studentViewSchedule'])->name('studentViewSchedule');
+
     Route::get('/studentEditSchedule/{id}', [StudentMasterListController::class, 'studentEditSchedule'])->name('studentEditSchedule');
     Route::post('/student-view-schedule', [StudentMasterListController::class, 'enroll'])->name('enroll');
 

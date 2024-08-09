@@ -18,7 +18,6 @@
 
     @include('head')
 
-
 </head>
 
 <body class="navbar-fixed sidebar-fixed" id="body">
@@ -66,36 +65,32 @@
                 <div class="card card-default shadow-sm">
                     <div class="card-header card-header-border-bottom d-flex justify-content-between align-items-center">
                         <h1 class="mb-3">Overview Schedule</h1>
-                        <div class="row">
-                            <div class="col-xl-12 col-md-12 d-flex justify-content-end">
-                                <form method="GET" action="">
-                                    <div class=" d-inline-block mb-3">
-                                        <input class="form-control border-primary" type="text" name="search" id="search" placeholder="Search Here">
-                                    </div>
-
-                                    <div class="dropdown d-inline-block mb-3">
-                                        <button class="btn btn-danger btn-sm fw-bold" type="submit">
-                                            <i class="mdi mdi-feature-search"></i> Search
-                                        </button>
-                                    </div>
-
-                                    <div class="dropdown d-inline-block mb-3">
-                                        <button class="btn btn-warning btn-sm fw-bold" type="submit">
-                                            <i class="mdi mdi-alpha-r-box"></i> Reset
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
+                        <div class="d-flex align-items-center">
+                            <form method="GET" action="{{ url('/student-view-schedule')}}" class="d-flex align-items-center me-2">
+                                <div class="input-group">
+                                    <input class="form-control border-primary" type="text" name="search" id="search" placeholder="Search Here">
+                                    <button class="btn btn-danger btn-sm fw-bold" type="submit">
+                                        <i class="mdi mdi-feature-search"></i> Search
+                                    </button>
+                                </div>
+                            </form>
+                            <form action="{{ url('/student-view-schedule')}}" method="GET" class="d-flex align-items-center">
+                                <button class="btn btn-warning btn-sm fw-bold" type="submit">
+                                    <i class="mdi mdi-alpha-r-box"></i> Reset
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>
 
 
+
                 <div class="row">
+
                     @if($schedules->isEmpty())
                     @if(isset($search) && !empty($search))
                     <div class="card-body">
-                        <p class="text-center fw-bold">Not Found. Please try again.</p>
+                        <span class="text-center fw-bold">Not Found. Please try again.</span>
                     </div>
                     @else
                     <div class="card-body">
@@ -103,6 +98,7 @@
                     </div>
                     @endif
                     @else
+
                     @foreach($schedules as $schedule)
                     <div class="col-lg-6 col-xl-4 col-xxl-3">
                         <div class="card card-default shadow-md border-dark mt-7">
@@ -173,6 +169,7 @@
                         </div>
                     </div>
                     @endforeach
+
                     @endif
 
                 </div>
@@ -237,7 +234,7 @@
                                                         <input type="text" class="input form-control" id="startTimeAndEndTime" name="startTimeAndEndTime" readonly>
                                                     </div>
                                                 </div>
-                                                
+
                                             </div>
                                         </div>
                                     </div>
@@ -272,4 +269,5 @@
             }
         });
     </script>
+
     @include('footer')

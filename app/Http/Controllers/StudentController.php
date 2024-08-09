@@ -36,6 +36,7 @@ class StudentController extends Controller
                 ->where(function ($query) use ($data, $timeSearch) {
                     $query->where('schedules.instFirstName', 'LIKE', '%' . $data['search'] . '%')
                         ->orWhere('schedules.instLastName', 'LIKE', '%' . $data['search'] . '%')
+                        ->orWhere(DB::raw("CONCAT(schedules.instFirstName, ' ', schedules.instLastName)"), 'LIKE', '%' . $data['search'] . '%')
                         ->orWhere('schedules.program', 'LIKE', '%' . $data['search'] . '%')
                         ->orWhere('schedules.courseCode', 'LIKE', '%' . $data['search'] . '%')
                         ->orWhere('schedules.courseName', 'LIKE', '%' . $data['search'] . '%')
@@ -57,6 +58,8 @@ class StudentController extends Controller
 
 
             $data['schedules'] = $query->get();
+
+            // END SEARCH FUNCTION
 
             // ----------------------------------------------------------------------- //
 
@@ -82,6 +85,14 @@ class StudentController extends Controller
             return redirect()->back();
         }
     }
+
+    public function studentProfile() {
+
+        $profile = DB::table('users');
+
+        return view('student.student-profile', ['profile' => $profile]);
+    }
+
 
     // -----------End student functions-----------
 

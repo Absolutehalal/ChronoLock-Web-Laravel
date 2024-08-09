@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use RealRashid\SweetAlert\Facades\Alert;
-
+use Illuminate\Support\Facades\Validator;
 
 class GoogleAuthController extends Controller
 {
@@ -36,57 +36,56 @@ class GoogleAuthController extends Controller
 
     public function loginUser(Request $request)
     {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
+        try {
+            $request->validate([
+                'email' => 'required|email',
+                'password' => 'required',
+            ]);
 
+            $enteredEmail = $request->input('email');
 
-        // Check if the email field is not valid
-        if (!filter_var($request->input('email'), FILTER_VALIDATE_EMAIL)) {
-            // Display an alert
-            Alert::warning('Warning', 'Email is invalid.')
-                ->autoClose(3000)
-                ->timerProgressBar()
-                ->showCloseButton();
+            // Check if the email domain is @my.cspc.edu.ph
+            if (!str_ends_with($enteredEmail, '@my.cspc.edu.ph')) {
+                Alert::warning('Warning', 'Please login only with CSPC email.')
+                    ->autoClose(3000)
+                    ->timerProgressBar()
+                    ->showCloseButton();
 
-            // Redirect back to the intended page
-            return redirect()->intended('/login');
-        }
-
-        // Check if the password field is not valid
-        if (strlen($request->input('password')) < 5) {
-            // Display an alert
-            Alert::warning('Warning', 'Password is invalid.')
-                ->autoClose(3000)
-                ->timerProgressBar()
-                ->showCloseButton();
-
-            // Redirect back to the intended page
-            return redirect()->intended('/login');
-        }
-
-        // Attempt to authenticate the user
-        $data = $request->only('email', 'password');
-
-        if (Auth::attempt($data)) {
-            // Fetch the authenticated user
-            $user = Auth::user();
-
-            Alert::success('Success', 'Login successful.')
-                ->autoClose(3000)
-                ->timerProgressBar()
-                ->showCloseButton();
-
-            // Check userType and redirect accordingly
-            if ($user->userType === 'Admin') {
-                return redirect()->intended('/adminPage');
-            } elseif ($user->userType === 'Faculty') {
-                return redirect()->intended('/instructorDashboard');
+                return redirect()->intended('/login');
             }
-        } else {
-            // Authentication failed, return to login with an error messag
-            Alert::warning('Warning', 'Invalid credentials. Please try again.')
+
+            $credentials = $request->only('email', 'password');
+
+            // Attempt to authenticate the user using the provided credentials
+            if (Auth::attempt($credentials)) {
+                // Authentication passed
+                $user = Auth::user();
+
+                Alert::success('Success', 'Login successful.')
+                    ->autoClose(3000)
+                    ->timerProgressBar()
+                    ->showCloseButton();
+
+                // Check userType and redirect accordingly
+                if ($user->userType === 'Admin') {
+                    return redirect()->intended('/adminPage');
+                } elseif ($user->userType === 'Faculty') {
+                    return redirect()->intended('/instructorDashboard');
+                } elseif ($user->userType === 'Student') {
+                    return redirect()->intended('/studentDashboard');
+                }
+            } else {
+                // Authentication failed, display an invalid credentials message
+                Alert::warning('Warning', 'Invalid email or password.')
+                    ->autoClose(3000)
+                    ->timerProgressBar()
+                    ->showCloseButton();
+
+                return redirect()->back();
+            }
+        } catch (\Exception $e) {
+            // Authentication failed, return to login with an error message
+            Alert::warning('Warning', 'Something went wrong. Please try again.')
                 ->autoClose(3000)
                 ->timerProgressBar()
                 ->showCloseButton();
@@ -94,6 +93,9 @@ class GoogleAuthController extends Controller
             return redirect()->back();
         }
     }
+
+
+
 
 
     public function redirectToGoogle()
@@ -127,7 +129,7 @@ class GoogleAuthController extends Controller
 
                 // Check userType and redirect accordingly
                 if ($existingUser->userType === 'Admin') {
-                     // If user exists, log them in
+                    // If user exists, log them in
                     Auth::login($existingUser, true);
 
                     Alert::success('Success', 'Login successful.')
@@ -136,17 +138,16 @@ class GoogleAuthController extends Controller
                         ->showCloseButton();
 
                     return redirect()->intended('/adminPage');
-
                 } elseif ($existingUser->userType === 'Faculty') {
-                     
-                     if ($existingUser->accountName === Null){
+
+                    if ($existingUser->accountName === Null) {
                         $existingUser->update([
                             'google_id' => $googleUser->id,
                             'accountName' => $googleUser->name,
                             'avatar' => $googleUser->getAvatar(),
-                        ]);  
-                     }
-                     // If user exists, log them in
+                        ]);
+                    }
+                    // If user exists, log them in
                     Auth::login($existingUser, true);
 
                     Alert::success('Success', 'Login successful.')
@@ -155,26 +156,25 @@ class GoogleAuthController extends Controller
                         ->showCloseButton();
 
                     return redirect()->intended('/instructorDashboard');
-                    
                 } elseif ($existingUser->userType === 'Student') {
 
-                    if ($existingUser->accountName === Null){
+                    if ($existingUser->accountName === Null) {
                         $existingUser->update([
                             'google_id' => $googleUser->id,
                             'accountName' => $googleUser->name,
                             'avatar' => $googleUser->getAvatar(),
-                        ]);  
-                     }
+                        ]);
+                    }
 
                     // If user exists, log them in
-                   Auth::login($existingUser, true);
+                    Auth::login($existingUser, true);
 
-                   Alert::success('Success', 'Login successful.')
-                       ->autoClose(3000)
-                       ->timerProgressBar()
-                       ->showCloseButton();
+                    Alert::success('Success', 'Login successful.')
+                        ->autoClose(3000)
+                        ->timerProgressBar()
+                        ->showCloseButton();
 
-                   return redirect()->intended('/student-dashboard');
+                    return redirect()->intended('/student-dashboard');
                 } else {
                     Alert::warning('401', 'Unauthorized Access.')
                         ->autoClose(10000)
