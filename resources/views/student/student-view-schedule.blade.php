@@ -68,7 +68,7 @@
                         <h1 class="mb-3">Overview Schedule</h1>
                         <div class="row">
                             <div class="col-xl-12 col-md-12 d-flex justify-content-end">
-                                <form method="GET" action="{{ url('/student-view-schedule') }}">
+                                <form method="GET" action="">
                                     <div class=" d-inline-block mb-3">
                                         <input class="form-control border-primary" type="text" name="search" id="search" placeholder="Search Here">
                                     </div>

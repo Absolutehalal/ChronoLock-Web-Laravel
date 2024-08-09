@@ -53,15 +53,17 @@ class FacultyAttendanceAndListController extends Controller
             $studentRemarks = Attendance::select('remark')
                 ->join('users', 'attendances.userID', '=', 'users.idNumber')
                 ->distinct()
+                ->select('attendances.remark')
                 ->orderByRaw("FIELD(remark, 'PRESENT', 'ABSENT', 'LATE')")
                 ->where('users.userType', '=', 'Student')
                 ->get();
 
             $studentStatus = DB::table('student_masterlists')
                 ->join('users', 'student_masterlists.userID', '=', 'users.idNumber')
-                ->distinct()
                 ->orderByRaw("FIELD(student_masterlists.status, 'REGULAR', 'IRREGULAR', 'DROP')")
                 ->where('users.userType', '=', 'Student')
+                ->select('student_masterlists.status')
+                ->distinct()
                 ->get();
             // For Filtering 
 
