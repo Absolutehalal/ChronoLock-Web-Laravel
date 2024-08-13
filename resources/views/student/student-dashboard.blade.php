@@ -18,6 +18,16 @@
 
     @include('head')
 
+    <!-- TOASTER -->
+    <link href="{{asset('plugins/toaster/toastr.min.css')}}" rel="stylesheet">
+    <!-- jQuery -->
+    <script src="{{asset('https://code.jquery.com/jquery-3.7.1.min.js')}}"></script>
+    <!-- Toastr JS -->
+    <script src="{{asset('https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js')}}"></script>
+    <!-- Custom JS -->
+    <script src="{{asset('js/toastr.js')}}"></script>
+
+    <script src="{{asset('js/pieChart.js')}}"></script>
 
 </head>
 

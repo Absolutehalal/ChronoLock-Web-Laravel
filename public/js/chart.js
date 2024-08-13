@@ -517,69 +517,69 @@ if (horBarChart1 !== null) {
 
 /*======== 7. HORIZONTAL BAR CHART2 ========*/
 
-var horBarChart2 = document.querySelector("#horizontal-bar-chart2");
-if (horBarChart2 !== null) {
-  var options = {
-    chart: {
-      height: 335,
-      type: "bar",
-      toolbar: {
-        show: false,
-      },
-    },
-    colors: ["#007bff", "#faafca"],
-    plotOptions: {
-      bar: {
-        horizontal: true,
-        barHeight: "50%",
-        dataLabels: {
-          position: "top",
-        },
-      },
-    },
-    legend: {
-      show: true,
-      position: "top",
-      horizontalAlign: "right",
-      markers: {
-        width: 20,
-        height: 3,
-        radius: 0,
-      },
-    },
-    dataLabels: {
-      enabled: false,
-    },
-    stroke: {
-      show: true,
-      width: 1,
-      colors: ["#fff"],
-    },
-    series: [
-      {
-        data: [44, 55, 41, 64, 22, 43, 21],
-      },
-    ],
-    xaxis: {
-      categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
-    },
-    tooltip: {
-      theme: "dark",
-      x: {
-        show: false,
-      },
-      y: {
-        title: {
-          formatter: (seriesName) => "Student Per Section",
-        },
-      },
-    },
-  };
+// var horBarChart2 = document.querySelector("#horizontal-bar-chart2");
+// if (horBarChart2 !== null) {
+//   var options = {
+//     chart: {
+//       height: 335,
+//       type: "bar",
+//       toolbar: {
+//         show: false,
+//       },
+//     },
+//     colors: ["#007bff", "#faafca"],
+//     plotOptions: {
+//       bar: {
+//         horizontal: true,
+//         barHeight: "50%",
+//         dataLabels: {
+//           position: "top",
+//         },
+//       },
+//     },
+//     legend: {
+//       show: true,
+//       position: "top",
+//       horizontalAlign: "right",
+//       markers: {
+//         width: 20,
+//         height: 3,
+//         radius: 0,
+//       },
+//     },
+//     dataLabels: {
+//       enabled: false,
+//     },
+//     stroke: {
+//       show: true,
+//       width: 1,
+//       colors: ["#fff"],
+//     },
+//     series: [
+//       {
+//         data: [44, 55, 41, 64, 22, 43, 21],
+//       },
+//     ],
+//     xaxis: {
+//       categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
+//     },
+//     tooltip: {
+//       theme: "dark",
+//       x: {
+//         show: false,
+//       },
+//       y: {
+//         title: {
+//           formatter: (seriesName) => "Student Per Section",
+//         },
+//       },
+//     },
+//   };
 
-  var chart = new ApexCharts(horBarChart2, options);
+//   var chart = new ApexCharts(horBarChart2, options);
 
-  chart.render();
-}
+//   chart.render();
+// }
 
 /*======== 8.1 TABLE SMALL BAR CHART 01  ========*/
 var tableSmBarChart1 = document.querySelector("#tbl-chart-01");

@@ -14,13 +14,17 @@
     <title>ChronoLock Instructor Dashboard</title>
     @include('head')
     <!-- TOASTER -->
-    <link href="plugins/toaster/toastr.min.css" rel="stylesheet">
+    <link href="{{asset('plugins/toaster/toastr.min.css')}}" rel="stylesheet">
     <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="{{asset('https://code.jquery.com/jquery-3.7.1.min.js')}}"></script>
     <!-- Toastr JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="{{asset('https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js')}}"></script>
     <!-- Custom JS -->
-    <script src="js/toastr.js"></script>
+    <script src="{{asset('js/toastr.js')}}"></script>
+
+    <script src="{{asset('js/pieChart.js')}}"></script>
+
+    <script src="{{asset('js/horizontalBarChart.js')}}"></script>
 </head>
 
 <body class="navbar-fixed sidebar-fixed" id="body">
@@ -60,7 +64,7 @@
                     <!-- <div class="col-xl-4"> -->
                     <div class="col-xl-4 col-md-6" style="height: 50%;">
                         <!-- Pie Chart  -->
-                        <div class="card card-default border border-dark">
+                        <div class="card card-default shadow">
                             <div class="card-header">
                                 <h2>Students Status Chart</h2>
                                 <!-- Example single primary button -->
@@ -83,7 +87,7 @@
                     </div>
                     <div class="col-xl-4">
                         <!-- Horizontal Bar Chart  -->
-                        <div class="card card-default border border-dark">
+                        <div class="card card-default shadow">
                             <div class="card-header">
                                 <h2>Number of Students Per Section</h2>
                             </div>
@@ -93,7 +97,7 @@
                         </div>
                     </div>
                     <div class="col-xl-4">
-                        <div class="card card-default border border-dark" style="height: 92%;">
+                        <div class="card card-default shadow" style="height: 92%;">
                             <div class="card-header text-center">
                                 <h2>Sections Handled</h2>
                             </div>
@@ -168,61 +172,5 @@
     </div>
     </div>
     </div>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            var SimplePieChart = document.querySelector("#simple-pie-chart");
-
-            if (SimplePieChart !== null) {
-                fetch('/student-status-counts-chart')
-                    .then(response => response.json())
-                    .then(data => {
-                        // Check if all series data is zero
-                        var isEmpty = data.regularCount === 0 && data.irregularCount === 0 && data.dropCount === 0;
-
-                        if (isEmpty) {
-                            // Display "No data available" if all counts are zero
-                            SimplePieChart.innerHTML = "<div style='text-align: center; padding-top: 100px;'>No data available</div>";
-                        } else {
-                            var simplePieChartOptions = {
-                                chart: {
-                                    width: 312,
-                                    type: "pie",
-                                    animations: {
-                                        enabled: true,
-                                        easing: 'easeinout',
-                                        speed: 800
-                                    },
-                                },
-                                colors: ["#31ce3c", "#e9e300", "#cc0000"],
-                                labels: ["Regular", "Irregular", "Drop"],
-                                legend: {
-                                    position: "top",
-                                    horizontalAlign: "center",
-                                    markers: {
-                                        radius: 0,
-                                    },
-                                },
-                                series: [data.regularCount, data.irregularCount, data.dropCount],
-                                tooltip: {
-                                    y: {
-                                        formatter: function(val) {
-                                            return val + " students";
-                                        }
-                                    }
-                                }
-                            };
-
-                            var simplePieChartRenderer = new ApexCharts(
-                                SimplePieChart,
-                                simplePieChartOptions
-                            );
-
-                            simplePieChartRenderer.render();
-                        }
-                    });
-            }
-        });
-    </script>
 
     @include('footer')

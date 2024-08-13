@@ -951,6 +951,31 @@ class UserController extends Controller
         ]);
     }
 
+    public function getStudentCountsByClass()
+    {
+        $authID = Auth::id();
+        $classID = DB::table('users')->where('id', $authID)->value('idNumber');
+
+        $studentCounts = DB::table('student_masterlists')
+            ->select(
+                'class_lists.classID',
+                DB::raw('count(student_masterlists.userID) as total'),
+                DB::raw("CONCAT(schedules.program, ' ', schedules.year, schedules.section) as class_info")
+            )
+            ->join('class_lists', 'student_masterlists.classID', '=', 'class_lists.classID')
+            ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
+            ->join('users', 'student_masterlists.userID', '=', 'users.idNumber')
+            ->where('users.userType', 'Student')
+            ->where('schedules.userID', $classID)
+            ->groupBy('class_lists.classID', 'class_info')
+            ->get();
+
+        return response()->json($studentCounts);
+    }
+
+
+
+
 
     // public function getStudentStatusCountsChart()
     // {
