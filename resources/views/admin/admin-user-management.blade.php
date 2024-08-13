@@ -136,9 +136,19 @@
                         <button class="dropdown-item btn-sm  editBtn" type="button" data-toggle="modal" data-target="#updateUserModal" value="{{$user->id}}">
                           <i class="mdi mdi-circle-edit-outline text-warning"></i>
                           Edit</button>
-                        <button class="dropdown-item btn-sm  deleteBtn" type="button" data-toggle="modal" data-target="#deleteUserModal" value="{{$user->id}}">
+                        <button class="dropdown-item btn-sm deleteBtn" type="button" data-toggle="modal" data-target="#deleteUserModal" value="{{$user->id}}">
+                          <i class="mdi mdi-archive text-info"></i>
+                          Archive</button>
+
+                        <button class="dropdown-item btn-sm deleteForceBtn" href="#" id="deleteUserBtn" value="{{$user->id}}">
                           <i class="mdi mdi-trash-can text-danger"></i>
-                          Delete</button>
+                          Force Delete
+                        </button>
+
+                        <form id="deleteForm" action="" method="POST" style="display: none;">
+                          @csrf
+                          @method('GET')
+                        </form>
                       </div>
                     </div>
                   </th>
@@ -154,6 +164,32 @@
   </div>
   </div>
   </div>
+
+  <script>
+    // Add event listener to the delete buttons
+    document.querySelectorAll('.deleteForceBtn').forEach(button => {
+      button.addEventListener('click', function(event) {
+        event.preventDefault();
+        const userId = this.getAttribute('value');
+        const deleteForm = document.getElementById('deleteForm');
+        deleteForm.action = `/forceDelete/${userId}`;
+        Swal.fire({
+          title: 'Are you sure?',
+          text: "You won't be able to revert this!",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            deleteForm.submit();
+          }
+        });
+      });
+    });
+  </script>
+
 
   <!-- Add User Modal -->
   <div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="addUser" aria-hidden="true">
@@ -243,7 +279,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="deleteUser" style="text-align:center;">Delete User</h5>
+          <h5 class="modal-title" id="deleteUser" style="text-align:center;">Archive User</h5>
           <button type="button" class="close" id="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -257,14 +293,14 @@
               <i class="fa-solid fa-trash-can text-danger" style="text-align:center; font-size:50px; padding:1rem;"></i>
             </div>
             <div class="row">
-              <h4 style="text-align:center;"> Are you sure you want to delete this user?</h4>
+              <h4 style="text-align:center;"> Are you sure you want to archive this user?</h4>
             </div>
         </div> <!-- Modal Boday End-->
 
         <!-- Modal Footer -->
         <div class="modal-footer">
           <button type="button" class="btn btn-primary btn-pill" id="close" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-danger btn-pill deleteUser">Delete</button>
+          <button type="submit" class="btn btn-danger btn-pill deleteUser">Archive</button>
         </div>
 
         </form>
@@ -665,7 +701,7 @@
       $(document).on('click', '.deleteUser', function(e) {
         e.preventDefault();
 
-        $(this).text('Deleting..');
+        $(this).text('Archiving..');
         var id = $('#deleteID').val();
 
         $.ajaxSetup({
@@ -695,7 +731,7 @@
               Swal.fire({
                 icon: "success",
                 title: "Successful",
-                text: "User Deleted",
+                text: "User Archived",
                 buttons: false,
               });
 
@@ -711,13 +747,13 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-     
+
       $('#addUserModal').on('hidden.bs.modal', function() {
         $('#clearAddUser')[0].reset();
         clearAddUserErrors();
       });
 
-     
+
       function clearAddUserErrors() {
         $('#firstNameError').empty();
         $('#lastNameError').empty();

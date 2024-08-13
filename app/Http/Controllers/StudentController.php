@@ -88,57 +88,65 @@ class StudentController extends Controller
 
     //-------Start Student functions-------
     public function studentIndex()
-    {
-        $id = Auth::id();
-        $userID = DB::table('users')->where('id', $id)->value('idNumber');
+{
+    $id = Auth::id();
+    $userID = DB::table('users')->where('id', $id)->value('idNumber');
 
-        // DISPLAY THE CLASS SCHEDULES ENROLLED [SEE STDUENT NAV]
-        $classSchedules = DB::table('student_masterlists')
-            ->join('class_lists', 'class_lists.classID', '=', 'student_masterlists.classID')
-            ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
-            ->where('student_masterlists.userID', '=', $userID)
-            ->get();
+    // DISPLAY THE CLASS SCHEDULES ENROLLED
+    $classSchedules = DB::table('student_masterlists')
+        ->join('class_lists', 'class_lists.classID', '=', 'student_masterlists.classID')
+        ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
+        ->where('student_masterlists.userID', '=', $userID)
+        ->get();
 
-        // ----------------------------------------------------- //
+    // Count of enrolled courses
+    $enrolledStudent = DB::table('student_masterlists')
+        ->where('userID', '=', $userID)
+        ->count();
 
-        $enrolledStudent = DB::table('student_masterlists') // count id of the enrolled student
-            ->where('userID', '=', $userID)
-            ->count();
+    // TODAY'S SCHEDULE
+    $today = date('w'); // Numeric representation of the day of the week
+    $currentDate = date('F j, Y'); // Current date
 
-        // ----------------------------------------------------- //
-        // TODAY'S SCHEDULE
+    // Fetch schedules for today that belong to the authenticated user
+    $todaySchedules = DB::table('student_masterlists')
+        ->join('class_lists', 'class_lists.classID', '=', 'student_masterlists.classID')
+        ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
+        ->join('users', 'users.idNumber', '=', 'schedules.userID')
+        ->where('student_masterlists.userID', $userID)
+        ->where('schedules.day', $today)
+        ->orderBy('schedules.startTime', 'asc')
+        ->get();
 
-        $today = date('w'); // 'w' returns the numeric representation of the day of the week (0 for Sunday, 6 for Saturday)
-        $currentDate = date('F j, Y');
-        // Fetch schedules for today that belong to the authenticated user
-        $todaySchedules = DB::table('student_masterlists')
-            ->join('class_lists', 'class_lists.classID', '=', 'student_masterlists.classID')
-            ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
-            ->join('users', 'users.idNumber', '=', 'schedules.userID')
-            ->where('student_masterlists.userID', $userID)
-            ->where('schedules.day', $today)
-            ->orderBy('schedules.startTime', 'asc')
-            ->get();
+    // List of Enrolled Courses
+    $listEnrolledCourse = DB::table('student_masterlists')
+        ->join('class_lists', 'class_lists.classID', '=', 'student_masterlists.classID')
+        ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
+        ->join('users', 'users.idNumber', '=', 'schedules.userID')
+        ->where('student_masterlists.userID', $userID)
+        ->select('student_masterlists.status', 'class_lists.*', 'schedules.*', 'users.*')
+        ->get();
 
-        // ----------------------------------------------------- //
-        // List of Enrolled Course
+    // Count attendance records
+    $attendanceCounts = DB::table('attendances') // Assuming the table is named 'attendance'
+        ->where('userID', $userID)
+        ->selectRaw('
+            SUM(CASE WHEN remark = "Present" THEN 1 ELSE 0 END) as present_count,
+            SUM(CASE WHEN remark = "Absent" THEN 1 ELSE 0 END) as absent_count,
+            SUM(CASE WHEN remark = "Late" THEN 1 ELSE 0 END) as late_count
+        ')
+        ->first();
 
-        $listEnrolledCourse = DB::table('student_masterlists')
-            ->join('class_lists', 'class_lists.classID', '=', 'student_masterlists.classID')
-            ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
-            ->join('users', 'users.idNumber', '=', 'schedules.userID')
-            ->where('student_masterlists.userID', $userID)
-            ->select('student_masterlists.status', 'class_lists.*', 'schedules.*', 'users.*')
-            ->get();
+    return view('student.student-dashboard', [
+        'classSchedules' => $classSchedules,
+        'enrolledStudent' => $enrolledStudent,
+        'todaySchedules' => $todaySchedules,
+        'currentDate' => $currentDate,
+        'listEnrolledCourse' => $listEnrolledCourse,
+        'attendanceCounts' => $attendanceCounts,
+    ]);
+}
 
-        return view('student.student-dashboard', [
-            'classSchedules' => $classSchedules,
-            'enrolledStudent' => $enrolledStudent,
-            'todaySchedules' => $todaySchedules,
-            'currentDate' => $currentDate,
-            'listEnrolledCourse' => $listEnrolledCourse
-        ]);
-    }
 
 
     // ->select(

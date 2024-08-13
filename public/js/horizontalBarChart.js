@@ -5,7 +5,8 @@ document.addEventListener("DOMContentLoaded", function () {
             .then((response) => response.json())
             .then((data) => {
                 if (data.length === 0) {
-                    horBarChart2.innerHTML = "<p>No data available</p>";
+                    horBarChart2.innerHTML =
+                    "<div style='text-align: center; font-size:30px; height: 310px; padding-top: 100px; color: #cc0000''>No data available.</div>";
                     return;
                 }
 
@@ -19,10 +20,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 var options = {
                     chart: {
-                        height: 333,
+                        height: 300,
                         type: "bar",
                         toolbar: {
-                            show: false,
+                            show: true,
+                        },
+                        animations: {
+                            enabled: true,
+                            easing: "easeinout",
+                            speed: 800,
                         },
                     },
                     colors: ["#007bff", "#faafca"],

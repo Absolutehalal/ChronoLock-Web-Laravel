@@ -69,9 +69,9 @@
               <li class="nav-item">
                 <div class="nav-link">
                   <span class="text-dark d-block">Students:</span>
-                
+
                   <span class="h5 d-block"> {{ $studentCount ?? 0}} </span>
-                 
+
                 </div>
               </li>
               <li class="nav-item">
@@ -103,7 +103,7 @@
                 </div>
               </li>
 
-              
+
               @php
               // Mapping of day numbers
               $dayMapping = [
@@ -123,9 +123,9 @@
               <li class="nav-item">
                 <div class="nav-link">
                   <span class="text-dark d-block">Day:</span>
-                
+
                   <span class="h5 d-block"> {{ $dayName }} </span>
-                
+
                 </div>
               </li>
 
@@ -138,9 +138,21 @@
                 </div>
               </li>
             </ul>
-            <div class="profile-button">
 
-              <a class="btn btn-primary btn-pill" href=""> <i class="mdi mdi-account-edit"></i>Settings</a>
+            <div class="profile-button d-block justify-content-between">
+
+              <div class="row">
+                <div class="col-xl-4">
+                  <span class="text-success d-block fw-bold fs-6">Regular: </span> 0
+                </div>
+                <div class="col-xl-4">
+                  <span class="text-warning d-block fw-bold fs-6">Irregular: </span> 0
+                </div>
+                <div class="col-xl-4">
+                  <span class="text-danger d-block fw-bold fs-6">Regular: </span> 0
+                </div>
+              </div>
+
             </div>
 
           </div>
@@ -345,9 +357,9 @@
                             @if($student->status == 'Regular')
                             <span class="badge badge-success">Regular</span>
                             @elseif($student->status == 'Irregular')
-                            <span class="badge badge-danger">Irregular</span>
-                            @elseif($studAttendance->status == 'Drop')
-                            <span class="badge badge-warning">Drop</span>
+                            <span class="badge badge-warning">Irregular</span>
+                            @elseif($student->status == 'Drop')
+                            <span class="badge badge-danger">Drop</span>
                             @endif
                           </td>
                           <th>

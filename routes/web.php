@@ -59,6 +59,7 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     // Route::delete('/deleteUser/{user}', [UserController::class, 'deleteUser'])->name('deleteUser');
 
     Route::delete('/deleteUser/{id}', [UserController::class, 'deleteUser'])->name('deleteUser');
+    Route::get('/forceDeleteArchive/{id}', [UserController::class, 'forceDeleteArchive'])->name('forceDeleteArchive');
     Route::get('/forceDelete/{id}', [UserController::class, 'forceDelete'])->name('forceDelete');
     Route::get('/archive', [UserController::class, 'userArchive'])->name('archive');
     Route::get('/restore/{id}', [UserController::class, 'restore'])->name('restore');
@@ -121,8 +122,6 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     Route::get('/logsPage', [UserLogController::class, 'logs'])->name('logs');
     // Route::get('/reportGenerationPage', [UserController::class, 'reportGeneration'])->name('reportGeneration');
 });
-
-
 
 
 // INSTRUCTOR MIDDLEWARE

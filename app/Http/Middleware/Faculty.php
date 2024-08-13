@@ -17,12 +17,12 @@ class Faculty
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::check() && Auth::user()->userType == 'Faculty') {
+        if (Auth::check() && Auth::user()->userType === 'Faculty') {
             return $next($request);
         }
 
         Alert::warning('401', 'Unauthorized Access.')
-            ->autoClose(10000)
+            ->autoClose(5000)
             ->timerProgressBar()
             ->showCloseButton();
 

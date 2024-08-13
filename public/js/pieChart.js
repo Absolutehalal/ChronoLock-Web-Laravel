@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (isEmpty) {
                     // Display "No data available" if all counts are zero
                     SimplePieChart.innerHTML =
-                        "<div style='text-align: center; font-size:30px'>No data available</div>";
+                        "<div style='text-align: center; font-size:30px; height: 310px; padding-top: 100px; color: #cc0000'>No data available.</div>";
                 } else {
                     var simplePieChartOptions = {
                         chart: {
@@ -24,6 +24,9 @@ document.addEventListener("DOMContentLoaded", function () {
                                 enabled: true,
                                 easing: "easeinout",
                                 speed: 800,
+                            },
+                            toolbar: {
+                                show: true,
                             },
                         },
                         colors: ["#31ce3c", "#e9e300", "#cc0000"],

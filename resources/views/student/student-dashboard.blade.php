@@ -82,8 +82,12 @@
                                     <i class="mdi mdi-notebook"></i>
                                 </div>
                                 <div class="text-left">
-                                    <span class="h2 d-block">{{ $enrolledStudent ?? 0}}</span>
                                     <p>Enrolled Course</p>
+                                    @if($enrolledStudent > 0)
+                                    <span class="h2 d-block">{{ $enrolledStudent }}</span>
+                                    @else
+                                    <span class="h2 d-block" style='color: #cc0000'>0</span>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -97,8 +101,12 @@
                                     <i class="mdi mdi-alpha-p-box"></i>
                                 </div>
                                 <div class="text-left">
-                                    <span class="h2 d-block">20</span>
                                     <p>Presents</p>
+                                    @if($attendanceCounts->present_count > 0)
+                                    <span class="h2 d-block">{{ $attendanceCounts->present_count }}</span>
+                                    @else
+                                    <span class="h2 d-block" style='color: #cc0000'>0</span>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -112,8 +120,12 @@
                                     <i class="mdi mdi-alpha-a-box"></i>
                                 </div>
                                 <div class="text-left">
-                                    <span class="h2 d-block">2</span>
                                     <p>Absents</p>
+                                    @if($attendanceCounts->absent_count > 0)
+                                    <span class="h2 d-block">{{ $attendanceCounts->absent_count }}</span>
+                                    @else
+                                    <span class="h2 d-block" style='color: #cc0000'>0</span>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -127,8 +139,12 @@
                                     <i class="mdi mdi-alpha-l-box"></i>
                                 </div>
                                 <div class="text-left">
-                                    <span class="h2 d-block">3</span>
                                     <p>Lates</p>
+                                    @if($attendanceCounts->absent_count > 0)
+                                    <span class="h2 d-block">{{ $attendanceCounts->late_count }}</span>
+                                    @else
+                                    <span class="h2 d-block" style='color: #cc0000'>0</span>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -209,9 +225,9 @@
                                             @if($course->status == 'Regular')
                                             <span class="badge badge-success">Regular</span>
                                             @elseif($course->status == 'Irregular')
-                                            <span class="badge badge-danger">Irregular</span>
+                                            <span class="badge badge-warning">Irregular</span>
                                             @elseif($course->status == 'Drop')
-                                            <span class="badge badge-warning">Drop</span>
+                                            <span class="badge badge-danger">Drop</span>
                                             @endif
                                         </span>
                                     </li>

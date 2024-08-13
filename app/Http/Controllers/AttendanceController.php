@@ -605,6 +605,7 @@ class AttendanceController extends Controller
                 })
                 ->where('attendances.classID', '=', $decode)
                 ->where('userType', '=', 'Student')
+                ->where('idNumber', '=', $userID)
                 ->get();
 
             $h1 =  DB::table('class_lists')

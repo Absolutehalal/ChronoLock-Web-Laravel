@@ -151,7 +151,7 @@
                 event.preventDefault();
                 const userId = this.getAttribute('value');
                 const deleteForm = document.getElementById('deleteForm');
-                deleteForm.action = `/forceDelete/${userId}`;
+                deleteForm.action = `/forceDeleteArchive/${userId}`;
                 Swal.fire({
                     title: 'Are you sure?',
                     text: "You won't be able to revert this!",

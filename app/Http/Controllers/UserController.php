@@ -328,7 +328,7 @@ class UserController extends Controller
             return redirect()->back();
         }
     }
-    public function forceDelete($id)
+    public function forceDeleteArchive($id)
     {
         $user = User::withTrashed()->findOrFail($id);
 
@@ -346,6 +346,26 @@ class UserController extends Controller
             ->showCloseButton();
 
         return redirect('/archive');
+    }
+
+    public function forceDelete($id)
+    {
+        $user = User::findOrFail($id);
+
+        if (!$user) {
+            // Handle the case where the user is not found
+            Alert::error('Error', 'User not found');
+            return redirect('/archive');
+        }
+
+        $user->forceDelete();
+
+        Alert::success('Success', 'User deleted permanently')
+            ->autoClose(5000)
+            ->timerProgressBar()
+            ->showCloseButton();
+
+        return redirect('/userManagementPage');
     }
 
     public function userArchive()
@@ -900,13 +920,57 @@ class UserController extends Controller
         $id = Auth::id();
         $userID = DB::table('users')->where('id', $id)->value('idNumber');
 
+        // Retrieve the classes created by the instructor
         $classes = DB::table('class_lists')
             ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
             ->where('schedules.userID', '=', $userID)
             ->get();
 
-        return view('faculty.instructor-dashboard', ['classes' => $classes]);
+        // Count the number of classes handled
+        $classCount = $classes->count();
+
+        // Count the total number of students in the instructor's classes
+        $studentCount = DB::table('student_masterlists')
+            ->join('class_lists', 'student_masterlists.classID', '=', 'class_lists.classID')
+            ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
+            ->join('users', 'student_masterlists.userID', '=', 'users.idNumber')
+            ->where('schedules.userID', '=', $userID)
+            ->where('users.userType', 'Student')
+            ->count();
+
+        $today = date('w'); // 'w' returns the numeric representation of the day of the week (0 for Sunday, 6 for Saturday)
+
+        // Fetch schedules for today that belong to the authenticated user
+        $todaySchedules = DB::table('student_masterlists')
+            ->join('class_lists', 'class_lists.classID', '=', 'student_masterlists.classID')
+            ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
+            ->join('users', 'users.idNumber', '=', 'schedules.userID')
+            ->where('student_masterlists.userID', $userID)
+            ->where('schedules.day', $today)
+            ->count();
+
+        // Fetch the 15 latest students enrolled in the authenticated user's class list
+        $latestStudents = DB::table('student_masterlists')
+            ->join('class_lists', 'student_masterlists.classID', '=', 'class_lists.classID')
+            ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
+            ->join('users', 'student_masterlists.userID', '=', 'users.idNumber')
+            ->where('schedules.userID', '=', $userID)
+            ->where('users.userType', 'Student')
+            ->orderBy('student_masterlists.created_at', 'desc') // Adjust field name as needed
+            // ->limit(20)
+            ->get();
+
+        return view('faculty.instructor-dashboard', [
+            'classes' => $classes,
+            'classCount' => $classCount,
+            'studentCount' => $studentCount,
+            'todaySchedules' => $todaySchedules,
+            'latestStudents' => $latestStudents,
+        ]);
     }
+
+
+
 
     public function instructorAttendanceGeneration()
     {
@@ -972,6 +1036,7 @@ class UserController extends Controller
 
         return response()->json($studentCounts);
     }
+
 
 
 

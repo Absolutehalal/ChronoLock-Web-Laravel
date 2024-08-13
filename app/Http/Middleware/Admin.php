@@ -2,11 +2,11 @@
 
 namespace App\Http\Middleware;
 
-use Closure;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert;
+use Closure;
+use Symfony\Component\HttpFoundation\Response;
 
 class Admin
 {
@@ -15,20 +15,21 @@ class Admin
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
-     * @param  int  $id
+     * @param  int|null  $id
      * @return mixed
      */
     public function handle(Request $request, Closure $next, $id = null): Response
     {
-        // Check if the user is authenticated and is an Admin
-        if (Auth::check() && Auth::user()->userType == 'Admin') {
-            return $next($request); // Allow the request to proceed
-        }
-
+        // Check if the user is authenticated
         if (Auth::check()) {
-
             $userType = Auth::user()->userType;
 
+            // If the user is an Admin, allow the request to proceed
+            if ($userType == 'Admin') {
+                return $next($request);
+            }
+
+            // Allowed routes for Technician or Lab-in-Charge
             $allowedRoutes = [
                 'index',
                 'adminScheduleManagement',
@@ -45,24 +46,21 @@ class Admin
                 'exportPDF',
                 'previewPDF',
                 'logs'
-            ]; // Add the route names you want to allow
+            ];
 
-        
-            if (($userType == 'Technician' || $userType == 'Lab-in-Charge') &&
-                in_array($request->route()->getName(), $allowedRoutes)
-            ) {
-                return $next($request); // Allow only specific routes for Technician and Lab-in-Charge
+            // Allow specific routes for Technician and Lab-in-Charge
+            if (in_array($userType, ['Technician', 'Lab-in-Charge']) && in_array($request->route()->getName(), $allowedRoutes)) {
+                return $next($request);
             }
         }
 
-
-        // If not, show unauthorized access alert
-        Alert::warning('401', 'Unauthorized Access.')
+        // If the user is not authorized, show an unauthorized access alert
+        Alert::warning('401', 'ERROR Access.')
             ->autoClose(10000)
             ->timerProgressBar()
             ->showCloseButton();
 
-
+        // Redirect back to the previous page
         return redirect()->back();
     }
 }

@@ -76,21 +76,29 @@
                       <th>Program</th>
                       <th>Year & Section</th>
                       <th>Course</th>
-                      <th>Status</th>
+                      <!-- <th>Status</th> -->
                       <th>Remark</th>
                     </tr>
                   </thead>
                   <tbody>
                     @foreach($myAttendances as $myAttendance)
                     <tr>
-                      <td>{{$myAttendance->date}}</td>
+                      <td>{{date('F j, Y', strtotime($myAttendance->date))}}</td>
                       <td>{{$myAttendance->time}}</td>
                       <td>{{$myAttendance->instFirstName}} {{$myAttendance->instLastName}}</td>
                       <td>{{$myAttendance->program}}</td>
                       <td>{{$myAttendance->year}}-{{$myAttendance->section}}</td>
                       <td>{{$myAttendance->courseCode}}-{{$myAttendance->courseName}}</td>
                       <!-- <td>{{$myAttendance->status}}</td> -->
-                      <td>{{$myAttendance->remark}}</td>
+                      <td>
+                        @if($myAttendance->remark == 'Present')
+                        <span class="badge badge-success">Present</span>
+                        @elseif($myAttendance->remark == 'Absent')
+                        <span class="badge badge-danger">Absent</span>
+                        @elseif($myAttendance->remark == 'Late')
+                        <span class="badge badge-warning">Late</span>
+                        @endif
+                      </td>
 
                     </tr>
                     @endforeach
@@ -132,7 +140,7 @@
                 </table>
               </div>
               <div class="card-footer bg-white py-4">
-               
+
               </div>
             </div>
 
