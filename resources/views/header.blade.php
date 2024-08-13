@@ -6,7 +6,7 @@
         </button>
 
         @if(Auth::check())
-        <span class="page-title">Hello, {{ Auth::user()->accountName }} | ID: {{ Auth::user()->idNumber }}</span>
+        <span class="page-title">Hello, {{ Auth::user()->firstName }} {{ Auth::user()->lastName }} | ID: {{ Auth::user()->idNumber }}</span>
         @endif
 
         <div class="navbar-right">
@@ -310,7 +310,7 @@
                         <span class="d-none d-lg-inline-block">{{ Auth::user()->userType }}</span>
                     </button>
                     @endif
-                    <ul class="dropdown-menu dropdown-menu-right">
+                    <ul class="dropdown-menu dropdown-menu-right shadow-sm">
                         <!-- <li>
                             <a class="dropdown-link-item" href="user-profile.html">
                                 <i class="mdi mdi-account-outline"></i>
@@ -330,10 +330,14 @@
                                 <span class="nav-text">Activitise</span></a>
                         </li> -->
                         <li>
-                            <a class="dropdown-link-item" href="#" data-toggle="tooltip" title="Account Settings">
-                                <i class="mdi mdi-settings"></i>
-                                <span class="nav-text">Account Setting</span>
+                            <a href="#" id="editProfile" data-toggle="modal" data-target="#modal-profile" data-toggle="tooltip" title="Profile settings">
+                                <i class="mdi mdi-settings fw-bold text-warning"></i>
+                                <span class="nav-text fw-bold text-dark">Account Setting</span>
                             </a>
+<!-- 
+                            <a href="#" id="editProfile" data-toggle="modal" data-target="#modal-profile" data-toggle="tooltip" title="Profile settings">
+                                <i class="mdi mdi-settings"></i>
+                            </a> -->
                         </li>
 
                         <li>
@@ -341,8 +345,8 @@
                                 @csrf
                             </form>
                             <a class="dropdown-link-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" data-toggle="tooltip" title="Logout">
-                                <i class="mdi mdi-logout"></i> 
-                                <span class="nav-text">Log Out</span>
+                                <i class="mdi mdi-logout fw-bold text-info"></i>
+                                <span class="nav-text fw-bold text-dark">Log Out</span>
                             </a>
                         </li>
 

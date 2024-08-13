@@ -41,6 +41,7 @@ $(document).ready(function () {
         e.preventDefault();
 
         $(this).text("Updating...");
+
         var profileID = $("#profile_userID").val();
 
         var data = {
@@ -99,6 +100,10 @@ $(document).ready(function () {
                     $(".update-profile").text("Update");
                     $("#update-modal-profile .close").click();
                     location.reload();
+                } else if (response.status == 500) {
+                    alert("may error");
+                } else if (response.status == 405) {
+                    alert("may error");
                 }
             },
         });

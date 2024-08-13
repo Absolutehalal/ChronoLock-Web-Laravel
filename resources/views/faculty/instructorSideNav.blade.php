@@ -64,12 +64,16 @@
                         </a>
                         <ul class="collapse" id="users" data-parent="#sidebar-menu">
                             <div class="sub-menu">
-                                @foreach($classes as $classes)
+                                @forelse($classes as $classes)
                                 @csrf
                                 <li>
-                                    <a class="section" href="{{ route('instructorClassAttendanceAndList',  [ base64_encode( $classes->classID)]) }}">{{$classes->program}}-{{$classes->year}}{{$classes->section}}</a>
+                                    <a class="section" href="{{ route('instructorClassAttendanceAndList',  [ base64_encode($classes->classID)]) }}">{{$classes->program}}-{{$classes->year}}{{$classes->section}}</a>
                                 </li>
-                                @endforeach
+                                @empty
+                                <li>
+                                    <a class="section" href="">None</a>
+                                </li>
+                                @endforelse
                     </li>
             </div>
         </div>

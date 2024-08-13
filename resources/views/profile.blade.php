@@ -1,3 +1,7 @@
+<!DOCTYPE html>
+
+<html lang="en" dir="ltr">
+
 @if(Auth::check())
 <!-- VIEW PROFILE -->
 <div class="modal fade" id="modal-profile" tabindex="-1" role="dialog" aria-labelledby="modal-profile" aria-hidden="true">
@@ -20,31 +24,31 @@
             <div class="col-lg-6">
               <div class="form-group mt-3">
                 <label for="userType">User Type</label>
-                <input type="text" class="profile-userType form-control border-dark" value="{{ Auth::user()->userType }}" readonly>
+                <input type="text" class="profile-userType form-control border-dark" value="{{ Auth::user()->userType }}" disabled>
               </div>
             </div>
             <div class="col-lg-6">
               <div class="form-group">
                 <label for="firstName">First name</label>
-                <input type="text" class="profile-firstName form-control border-dark" value="{{ Auth::user()->firstName }}" readonly>
+                <input type="text" class="profile-firstName form-control border-dark" value="{{ Auth::user()->firstName }}" disabled>
               </div>
             </div>
             <div class="col-lg-6">
               <div class="form-group">
                 <label for="lastName">Last name</label>
-                <input type="text" class="profile-lastName form-control border-dark" value="{{ Auth::user()->lastName }}" readonly>
+                <input type="text" class="profile-lastName form-control border-dark" value="{{ Auth::user()->lastName }}" disabled>
               </div>
             </div>
             <div class="col-lg-6">
               <div class="form-group mb-4">
                 <label for="idNumber">ID Number</label>
-                <input type="text" class="profile-idNumber form-control border-dark" value="{{ Auth::user()->idNumber }}" readonly>
+                <input type="text" class="profile-idNumber form-control border-dark" value="{{ Auth::user()->idNumber }}" disabled>
               </div>
             </div>
             <div class="col-lg-6">
               <div class="form-group mb-4">
                 <label for="email">Email</label>
-                <input type="email" class="profile-email form-control border-dark" value="{{ Auth::user()->email }}" readonly>
+                <input type="email" class="profile-email form-control border-dark" value="{{ Auth::user()->email }}" disabled>
               </div>
             </div>
           </div>
@@ -85,7 +89,21 @@
             <div class="col-lg-6">
               <div class="form-group mt-3">
                 <label for="edit-userType">User Type</label>
-                <input type="text" class="form-control border-dark" id="edit-userType" name="update-userType" disabled>
+                <input type="text" class="form-control border-dark" id="edit-userType" name="update-userType" readonly>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <ul id="idNumberError"></ul>
+              <div class="form-group mb-4">
+                <label for="edit-idNumber">ID Number</label>
+                <input type="text" class="form-control border-dark" id="edit-idNumber" name="update-idNumber" readonly>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <ul id="emailError"></ul>
+              <div class="form-group mb-4">
+                <label for="edit-email">Email</label>
+                <input type="email" class="form-control border-dark" id="edit-email" name="update-email" readonly>
               </div>
             </div>
             <div class="col-lg-6">
@@ -100,20 +118,6 @@
               <div class="form-group">
                 <label for="edit-lastName">Last name</label>
                 <input type="text" class="form-control border-dark" id="edit-lastName" name="update-lastName">
-              </div>
-            </div>
-            <div class="col-lg-6">
-              <ul id="idNumberError"></ul>
-              <div class="form-group mb-4">
-                <label for="edit-idNumber">ID Number</label>
-                <input type="text" class="form-control border-dark" id="edit-idNumber" name="update-idNumber">
-              </div>
-            </div>
-            <div class="col-lg-6">
-              <ul id="emailError"></ul>
-              <div class="form-group mb-4">
-                <label for="edit-email">Email</label>
-                <input type="email" class="form-control border-dark" id="edit-email" name="update-email">
               </div>
             </div>
           </div>
@@ -134,3 +138,6 @@
     });
   });
 </script>
+
+
+</html>

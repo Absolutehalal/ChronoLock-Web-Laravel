@@ -205,7 +205,7 @@
                 <ul id="emailError"></ul>
                 <div class="form-group">
                   <label>Email</label>
-                  <input type="text" class="form-control border border-dark border border-dark" id="email" name="email" placeholder="Enter Email" />
+                  <input type="text" class="form-control border border-dark" id="email" name="email" placeholder="Enter Email" />
                 </div>
               </div>
 

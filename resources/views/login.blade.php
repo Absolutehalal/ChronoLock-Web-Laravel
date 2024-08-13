@@ -15,6 +15,12 @@
 
     <!-- FAVICON -->
     <link href="{{asset('images/chronolock-small.png')}}" rel="shortcut icon" />
+
+    <!-- Font Awesome -->
+    <script src="{{asset('https://kit.fontawesome.com/fc44043d19.js')}}" crossorigin="anonymous"></script>
+
+    <script defer src="{{asset('js/password.js')}}"></script>
+
     <title>ChronoLock Login</title>
 </head>
 
@@ -73,16 +79,18 @@
 
 
 
-                        <form method="post" action="{{ route('login.user') }}">
+                        <form method="post" action="{{ route('login.user') }}" onsubmit="return validatePassword()">
                             @csrf
                             <div class="form-group mb-3">
                                 <label class="form-label fw-bold">Email</label>
-                                <input id="email" name="email" type="text" class="form-control form-control-lg bg-light fs-6" placeholder="Email address" required>
+                                <input id="email" name="email" type="text" class="form-control form-control-lg bg-light border-dark fs-6" placeholder="Email address" required>
                             </div>
-                            <div class="form-group mb-1">
-                                <label class="form-label fw-bold">Password</label>
-                                <input id="password" name="password" type="password" class="form-control form-control-lg bg-light fs-6" placeholder="Password" required>
+                            <label class="form-label fw-bold">Password</label>
+                            <div class="form-group mb-1 position-relative">
+                                <input id="password" name="password" type="password" class="form-control form-control-lg bg-light border-dark fs-6" placeholder="Password" required>
+                                <i class="fa fa-eye-slash" id="show-password"></i>
                             </div>
+
                             <div class="input-group mb-2 d-flex justify-content-end">
                                 <!-- <div class="form-check">
                                     <input type="checkbox" class="form-check-input" id="formCheck" name="remember">
@@ -119,6 +127,27 @@
             </div>
         </div>
     </div>
+
+
+    <script>
+        function validatePassword() {
+            const password = document.getElementById('password').value;
+           
+
+            if (password.length !== 6 || isNaN(password)) {
+                Swal.fire({
+                    icon: "info",
+                    title: "Info",
+                    text: "Enter Valid Password",
+                    timer: 5000,
+                    timerProgressBar: true
+                });
+                return false; // Prevent form submission
+            }
+            return true; // Allow form submission
+        }
+    </script>
+
 
 </body>
 

@@ -123,6 +123,7 @@
             </div>
           </div>
         </div>
+
       </div>
 
     </div>
@@ -221,6 +222,7 @@
                   </div>
                 </div>
               </div>
+
               <div class="col-lg-6">
                 <ul id="endTimeError"></ul>
                 <div class="dropdown d-inline-block mb-3">
@@ -235,12 +237,13 @@
                   </div>
                 </div>
               </div>
+
               <label>Instructor</label>
               <div class="col-lg-6">
                 <ul id="facultyError"></ul>
                 <form method="GET" action="{{ route('adminScheduleManagement') }}">
 
-                  <button class="btn btn-primary btn-sm dropdown-toggle fw-bold" type="button" id="instIDDropdown" data-toggle="dropdown" aria-expanded="false">
+                  <button class="btn btn-primary btn-sm dropdown-toggle fw-bold" type="button" id="makeupinstIDDropdown" data-toggle="dropdown" aria-expanded="false">
                     <i class="mdi mdi-alpha-i-box"></i>
                     Instructor ID
                   </button>
@@ -506,9 +509,7 @@
 
               <div class="col-lg-6">
                 <ul id="scheduleFacultyError"></ul>
-                <form method="GET" action="{{ route('adminScheduleManagement') }}">
-
-
+                <form id="" method="GET" action="{{ route('adminScheduleManagement') }}">
 
                   <button class="btn btn-primary btn-sm dropdown-toggle fw-bold" type="button" id="facultyIDDropdown" data-toggle="dropdown" aria-expanded="false">
                     <i class="mdi mdi-alpha-i-box"></i>
@@ -782,6 +783,32 @@
                 </div>
               </div>
 
+              <label>Instructor</label>
+
+              <div class="col-lg-6">
+                <ul id="editScheduleFacultyError"></ul>
+                <form id="" method="GET" action="{{ route('adminScheduleManagement') }}">
+
+                  <button class="btn btn-primary btn-sm dropdown-toggle fw-bold" type="button" id="editfacultyIDDropdown" data-toggle="dropdown" aria-expanded="false">
+                    <i class="mdi mdi-alpha-i-box"></i>
+                    Instructor ID
+                  </button>
+                  <div class="dropdown-menu scrollable-dropdown" aria-labelledby="facultyIDDropdown">
+                    @forelse($instructorsID as $instructorID)
+                    @csrf
+                    <a class="dropdown-item edit-faculty filter-faculty-id" data-value="{{ $instructorID->idNumber }}" href="#">
+                      {{ $instructorID->idNumber }}-{{ $instructorID->firstName }} {{ $instructorID->lastName }}
+                    </a>
+                    @empty
+                    <a class="dropdown-item filter-faculty-id" data-value="None" href="#">
+                      None
+                    </a>
+                    @endforelse
+                    <input type="hidden" class="updateFaculty form-control" name="facultyID" id="selectedFacultyID">
+                  </div>
+                </form>
+              </div>
+
             </div> <!-- Modal Boday End-->
 
             <!-- Modal Footer -->
@@ -887,48 +914,67 @@
           document.getElementById('instIDDropdown').innerHTML = `<i class="mdi mdi-alpha-i-box"></i> ${this.textContent}`;
         });
       });
+      
+      document.querySelectorAll('.edit-faculty').forEach(function(item) {
+        item.addEventListener('click', function(e) {
+          e.preventDefault();
+          document.getElementById('editfacultyIDDropdown').innerHTML = `<i class="mdi mdi-alpha-i-box"></i> ${this.textContent}`;
+        });
+      });
     });
   </script>
 
-<script>
+  <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Clear form and errors for Add Regular Schedule Modal
-        $('#addRegularScheduleModal').on('hidden.bs.modal', function() {
-            $('#clearRegularSchedule')[0].reset();
-            clearRegularScheduleErrors();
-        });
+      // Clear form and errors for Add Regular Schedule Modal
+      $('#addRegularScheduleModal').on('hidden.bs.modal', function() {
+        $('#clearRegularSchedule')[0].reset();
+        clearRegularScheduleErrors();
 
-        // Clear form and errors for Make Up Schedule Modal
-        $('#makeUpScheduleModal').on('hidden.bs.modal', function() {
-            $('#clearMakeUpSchedule')[0].reset();
-            clearMakeUpScheduleErrors();
-        });
+      });
 
-        function clearRegularScheduleErrors() {
-            $('#courseCodeError').empty();
-            $('#courseNameError').empty();
-            $('#scheduleProgramError').empty();
-            $('#scheduleYearError').empty();
-            $('#scheduleSectionError').empty();
-            $('#scheduleEditWeekDayError').empty();
-            $('#scheduleStartTimeError').empty();
-            $('#scheduleEndTimeError').empty();
-            $('#scheduleStartDateError').empty();
-            $('#scheduleEndDateError').empty();
-            $('#scheduleFacultyError').empty();
-        }
+      // Clear form and errors for Make Up Schedule Modal
+      $('#makeUpScheduleModal').on('hidden.bs.modal', function() {
+        $('#clearMakeUpSchedule')[0].reset();
+        clearMakeUpScheduleErrors();
 
-        function clearMakeUpScheduleErrors() {
-            $('#titleError').empty();
-            $('#programError').empty();
-            $('#yearError').empty();
-            $('#sectionError').empty();
-            $('#startTimeError').empty();
-            $('#endTimeError').empty();
-            $('#facultyError').empty();
-        }
+        document.getElementById('makeupinstIDDropdown').innerHTML = '<i class="mdi mdi-alpha-i-box"></i> Instructor ID';
+        document.getElementById('selectedFacultyID').value = ''; // Reset the hidden input value as well
+      });
+
+      // Clear form and errors for update make up Schedule Modal
+      $('#updateMakeUpScheduleModal').on('hidden.bs.modal', function() {
+       
+        document.getElementById('editfacultyIDDropdown').innerHTML = '<i class="mdi mdi-alpha-i-box"></i> Instructor ID';
+        document.getElementById('updateFaculty').value = ''; // Reset the hidden input value as well
+      });
+
+
+      function clearRegularScheduleErrors() {
+        $('#courseCodeError').empty();
+        $('#courseNameError').empty();
+        $('#scheduleProgramError').empty();
+        $('#scheduleYearError').empty();
+        $('#scheduleSectionError').empty();
+        $('#scheduleEditWeekDayError').empty();
+        $('#scheduleStartTimeError').empty();
+        $('#scheduleEndTimeError').empty();
+        $('#scheduleStartDateError').empty();
+        $('#scheduleEndDateError').empty();
+        $('#scheduleFacultyError').empty();
+      }
+
+      function clearMakeUpScheduleErrors() {
+        $('#titleError').empty();
+        $('#programError').empty();
+        $('#yearError').empty();
+        $('#sectionError').empty();
+        $('#startTimeError').empty();
+        $('#endTimeError').empty();
+        $('#facultyError').empty();
+      }
     });
-</script>
+  </script>
 
 
   @include('footer')

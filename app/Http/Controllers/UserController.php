@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\RfidAccount;
 use App\Models\Attendance;
+use App\Models\StudentMasterlist;
 use App\Models\Schedule;
 use App\Models\MakeUpSchedule;
 
@@ -17,7 +18,7 @@ use App\Imports\UserImport;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\DataTables;
-
+use Carbon\Carbon;
 
 
 class UserController extends Controller
@@ -60,7 +61,7 @@ class UserController extends Controller
             ->take(15)
             ->get(); // This will fetch only 15 users
 
-            $tblRFID = DB::table('rfid_accounts')
+        $tblRFID = DB::table('rfid_accounts')
             ->join('users', 'rfid_accounts.id', '=', 'users.id')
             ->orderBy('rfid_accounts.id', 'desc')
             ->take(15)
@@ -261,52 +262,70 @@ class UserController extends Controller
         }
     }
 
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
+        if ($request->ajax()) {
+            $user = User::find($id);
 
-        $user = User::find($id);
-        if ($user) {
-            return response()->json([
-                'status' => 200,
-                'user' => $user,
-            ]);
+            if ($user) {
+                return response()->json([
+                    'status' => 200,
+                    'user' => $user,
+                ]);
+            } else {
+                return response()->json([
+                    'status' => 404,
+                ]);
+            }
         } else {
-            return response()->json([
-                'status' => 404,
-            ]);
+            Alert::info("Oops...", "Unauthorized action.")
+                ->showCloseButton()
+                ->timerProgressBar();
+
+            return redirect()->back();
         }
     }
+
     public function deleteUser($id)
     {
-        $user = User::findOrFail($id);
-        $deletedID = DB::table('users')->where('id', $id)->value('id');
-        if ($user) {
-            $user->delete();
+        try {
+            $user = User::findOrFail($id);
+            $deletedID = DB::table('users')->where('id', $id)->value('id');
+            if ($user) {
+                $user->delete();
 
-            // Start Logs
-            $email = DB::table('users')->where('id', $deletedID)->value('email');
-            $userType = DB::table('users')->where('id', $deletedID)->value('userType');
-            $ID = Auth::id();
-            $userID = DB::table('users')->where('id', $ID)->value('idNumber');
-            date_default_timezone_set("Asia/Manila");
-            $date = date("Y-m-d");
-            $time = date("H:i:s");
-            $action = "Deleted a $userType account associated to $email email";
-            DB::table('user_logs')->insert([
-                'userID' => $userID,
-                'action' => $action,
-                'date' => $date,
-                'time' => $time,
-            ]);
-            // END Logs
+                // Start Logs
+                $email = DB::table('users')->where('id', $deletedID)->value('email');
+                $userType = DB::table('users')->where('id', $deletedID)->value('userType');
+                $ID = Auth::id();
+                $userID = DB::table('users')->where('id', $ID)->value('idNumber');
+                date_default_timezone_set("Asia/Manila");
+                $date = date("Y-m-d");
+                $time = date("H:i:s");
+                $action = "Deleted a $userType account associated to $email email";
+                DB::table('user_logs')->insert([
+                    'userID' => $userID,
+                    'action' => $action,
+                    'date' => $date,
+                    'time' => $time,
+                ]);
+                // END Logs
 
-            return response()->json([
-                'status' => 200,
-            ]);
-        } else {
-            return response()->json([
-                'status' => 404,
-            ]);
+                return response()->json([
+                    'status' => 200,
+                ]);
+            } else {
+                return response()->json([
+                    'status' => 404,
+                ]);
+            }
+        } catch (\Exception $th) {
+
+            Alert::error("Error", "An error occurred.")
+                ->showCloseButton()
+                ->timerProgressBar();
+
+            return redirect()->back();
         }
     }
     public function forceDelete($id)
@@ -385,7 +404,7 @@ class UserController extends Controller
             if ($schedule->scheduleType == 'makeUpSchedule') {
                 $ERPSchedules[] = [
                     'id' =>   $schedule->scheduleID,
-                    'title' => $schedule->scheduleTitle,
+                    'title' => $schedule->scheduleTitle . " - " . $schedule->instFirstName . " " . $schedule->instLastName,
                     'startTime' => $schedule->startTime,
                     'endTime' => $schedule->endTime,
                     'startRecur' => $schedule->startDate,
@@ -425,69 +444,7 @@ class UserController extends Controller
         return view('admin.admin-schedule', ['instructorsID' => $instructorsID]);
     }
 
-    public function createSchedule(Request $request)
-    {
-        try {
-            $validator = Validator::make($request->all(), [
-                'scheduleTitle' => 'required',
-                'program' => 'required',
-                'year' => 'required',
-                'section' => 'required',
-                'makeUpScheduleStartTime' => 'required',
-                'makeUpScheduleEndTime' => 'required',
-                'faculty' => 'required',
-            ]);
 
-            if ($validator->fails()) {
-                return response()->json([
-                    'status' => 400,
-                    'errors' => $validator->messages()
-                ]);
-            } else {
-                $id = Auth::id();
-                $userID = DB::table('users')->where('id', $id)->value('idNumber');
-                $newSchedule = $request->input('scheduleTitle');
-
-                $startTime = date("H:i:s", strtotime($request->input('makeUpScheduleStartTime')));
-                $endTime = date("H:i:s", strtotime($request->input('makeUpScheduleEndTime')));
-
-                $makeUpSchedule = new Schedule;
-                $makeUpSchedule->userID =  $request->input('faculty');
-                $makeUpSchedule->scheduleTitle = $request->input('scheduleTitle');
-                $makeUpSchedule->program = $request->input('program');
-                $makeUpSchedule->year = $request->input('year');
-                $makeUpSchedule->section = $request->input('section');
-                $makeUpSchedule->startTime = $startTime;
-                $makeUpSchedule->endTime = $endTime;
-                $makeUpSchedule->startDate = $request->start_date;
-                $makeUpSchedule->endDate = $request->end_date;
-                $makeUpSchedule->scheduleStatus = 'unscheduled';
-                $makeUpSchedule->scheduleType = 'makeUpSchedule';
-                $makeUpSchedule->save();
-
-                // Start Logs
-                date_default_timezone_set("Asia/Manila");
-                $date = date("Y-m-d");
-                $time = date("H:i:s");
-                $action = "Added Make Up Schedule ($newSchedule)";
-                DB::table('user_logs')->insert([
-                    'userID' => $userID,
-                    'action' => $action,
-                    'date' => $date,
-                    'time' => $time,
-                ]);
-                // END Logs
-                return response()->json([
-                    'status' => 200,
-                ]);
-            }
-        } catch (\Exception $e) {
-            Alert::error('Error', 'Something went wrong. Please try again later.')
-                ->autoClose(5000)
-                ->showCloseButton();
-            return redirect()->back();
-        }
-    }
 
     public function createRegularSchedule(Request $request)
     {
@@ -509,6 +466,7 @@ class UserController extends Controller
             $facultyID = $request->get('scheduleFaculty');
             $facultyFirstName = DB::table('users')->where('idNumber', $facultyID)->value('firstName');
             $facultyLastName = DB::table('users')->where('idNumber', $facultyID)->value('lastName');
+
             if ($validator->fails()) {
                 return response()->json([
                     'status' => 400,
@@ -570,19 +528,28 @@ class UserController extends Controller
     }
 
 
-    public function editRegularSchedule($id)
+    public function editRegularSchedule($id, Request $request)
     {
+        if ($request->ajax()) {
 
-        $schedule = Schedule::find($id);
-        if ($schedule) {
-            return response()->json([
-                'status' => 200,
-                'schedule' => $schedule,
-            ]);
+            $schedule = Schedule::find($id);
+
+            if ($schedule) {
+                return response()->json([
+                    'status' => 200,
+                    'schedule' => $schedule,
+                ]);
+            } else {
+                return response()->json([
+                    'status' => 404,
+                ]);
+            }
         } else {
-            return response()->json([
-                'status' => 404,
-            ]);
+            Alert::info("Oops...", "Unauthorized action.")
+                ->showCloseButton()
+                ->timerProgressBar();
+
+            return redirect()->back();
         }
     }
 
@@ -673,6 +640,7 @@ class UserController extends Controller
             return redirect()->back();
         }
     }
+
     public function deleteRegularSchedule($id)
     {
         $regularSchedule = Schedule::find($id);
@@ -704,6 +672,77 @@ class UserController extends Controller
             return response()->json([
                 'status' => 404,
             ]);
+        }
+    }
+
+    public function createSchedule(Request $request)
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                'scheduleTitle' => 'required',
+                'program' => 'required',
+                'year' => 'required',
+                'section' => 'required',
+                'makeUpScheduleStartTime' => 'required',
+                'makeUpScheduleEndTime' => 'required',
+                'faculty' => 'required',
+            ]);
+
+            $facultyID = $request->get('faculty');
+            $facultyFirstName = DB::table('users')->where('idNumber', $facultyID)->value('firstName');
+            $facultyLastName = DB::table('users')->where('idNumber', $facultyID)->value('lastName');
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => 400,
+                    'errors' => $validator->messages()
+                ]);
+            } else {
+                $id = Auth::id();
+                $userID = DB::table('users')->where('id', $id)->value('idNumber');
+                $newSchedule = $request->input('scheduleTitle');
+
+                $startTime = date("H:i:s", strtotime($request->input('makeUpScheduleStartTime')));
+                $endTime = date("H:i:s", strtotime($request->input('makeUpScheduleEndTime')));
+
+                $makeUpSchedule = new Schedule;
+                $makeUpSchedule->userID =  $request->input('faculty');
+                $makeUpSchedule->scheduleTitle = $request->input('scheduleTitle');
+                $makeUpSchedule->userID = $request->input('scheduleFaculty');
+                $makeUpSchedule->instFirstName = $facultyFirstName;
+                $makeUpSchedule->instLastName = $facultyLastName;
+                $makeUpSchedule->program = $request->input('program');
+                $makeUpSchedule->year = $request->input('year');
+                $makeUpSchedule->section = $request->input('section');
+                $makeUpSchedule->startTime = $startTime;
+                $makeUpSchedule->endTime = $endTime;
+                $makeUpSchedule->startDate = $request->start_date;
+                $makeUpSchedule->endDate = $request->end_date;
+                $makeUpSchedule->scheduleStatus = 'unscheduled';
+                $makeUpSchedule->scheduleType = 'makeUpSchedule';
+                $makeUpSchedule->save();
+
+                // Start Logs
+                date_default_timezone_set("Asia/Manila");
+                $date = date("Y-m-d");
+                $time = date("H:i:s");
+                $action = "Added Make Up Schedule ($newSchedule)";
+                DB::table('user_logs')->insert([
+                    'userID' => $userID,
+                    'action' => $action,
+                    'date' => $date,
+                    'time' => $time,
+                ]);
+                // END Logs
+                return response()->json([
+                    'status' => 200,
+                ]);
+            }
+        } catch (\Exception $e) {
+            Alert::error('Error', 'Something went wrong. Please try again later.')
+                ->autoClose(5000)
+                ->showCloseButton();
+            return redirect()->back();
         }
     }
 
@@ -741,19 +780,27 @@ class UserController extends Controller
         }
     }
 
-    public function editMakeUpSchedule($id)
+    public function editMakeUpSchedule($id, Request $request)
     {
+        if ($request->ajax()) {
+            $makeUpSchedule = Schedule::find($id);
 
-        $makeUpSchedule = Schedule::find($id);
-        if ($makeUpSchedule) {
-            return response()->json([
-                'status' => 200,
-                'makeUpSchedule' => $makeUpSchedule,
-            ]);
+            if ($makeUpSchedule) {
+                return response()->json([
+                    'status' => 200,
+                    'makeUpSchedule' => $makeUpSchedule,
+                ]);
+            } else {
+                return response()->json([
+                    'status' => 404,
+                ]);
+            }
         } else {
-            return response()->json([
-                'status' => 404,
-            ]);
+            Alert::info("Oops...", "Unauthorized action.")
+                ->showCloseButton()
+                ->timerProgressBar();
+
+            return redirect()->back();
         }
     }
 
@@ -767,6 +814,7 @@ class UserController extends Controller
                 'updateSection' => 'required',
                 'updateStartTime' => 'required',
                 'updateEndTime' => 'required',
+                'updateFaculty' => 'required',
             ]);
             if ($validator->fails()) {
                 return response()->json([
@@ -776,6 +824,8 @@ class UserController extends Controller
             } else {
                 $makeUpSchedule = Schedule::find($id);
                 $updatedID = DB::table('schedules')->where('scheduleID', $id)->value('scheduleID');
+
+                // Retrieve existing schedule details
                 $scheduleTitle = DB::table('schedules')->where('scheduleID', $updatedID)->value('scheduleTitle');
                 $program = DB::table('schedules')->where('scheduleID', $updatedID)->value('program');
                 $year = DB::table('schedules')->where('scheduleID', $updatedID)->value('year');
@@ -783,25 +833,27 @@ class UserController extends Controller
                 $startTime = DB::table('schedules')->where('scheduleID', $updatedID)->value('startTime');
                 $endTime = DB::table('schedules')->where('scheduleID', $updatedID)->value('endTime');
 
+                // Update the schedule if it exists
                 if ($makeUpSchedule) {
 
                     $strtTime = date("H:i:s", strtotime($request->input('updateStartTime')));
                     $ndTime = date("H:i:s", strtotime($request->input('updateEndTime')));
 
+                    // Update schedule details
                     $makeUpSchedule->scheduleTitle = $request->input('updateScheduleTitle');
                     $makeUpSchedule->program = $request->input('updateProgram');
-                    $makeUpSchedule->year =  $request->input('updateYear');
-                    $makeUpSchedule->section =  $request->input('updateSection');
-                    $makeUpSchedule->startTime =  $strtTime;
-                    $makeUpSchedule->endTime =  $ndTime;
+                    $makeUpSchedule->year = $request->input('updateYear');
+                    $makeUpSchedule->section = $request->input('updateSection');
+                    $makeUpSchedule->startTime = $strtTime;
+                    $makeUpSchedule->endTime = $ndTime;
                     $makeUpSchedule->update();
 
                     // Start Logs
-                    $inputScheduleTitle = $request->input('updateCourseCode');
-                    $inputProgram = $request->input('updateCourseName');
-                    $inputYear =   $request->input('updateYear');
-                    $inputSection =  $request->input('updateSection');
-                    $inputStartTime =   $strtTime;
+                    $inputScheduleTitle = $request->input('updateScheduleTitle');
+                    $inputProgram = $request->input('updateProgram');
+                    $inputYear = $request->input('updateYear');
+                    $inputSection = $request->input('updateSection');
+                    $inputStartTime = $strtTime;
                     $inputEndTime = $ndTime;
 
                     $id = Auth::id();
@@ -809,11 +861,15 @@ class UserController extends Controller
                     date_default_timezone_set("Asia/Manila");
                     $date = date("Y-m-d");
                     $time = date("H:i:s");
+
+                    // Determine the action for the log
                     if (($inputScheduleTitle == $scheduleTitle) && ($inputProgram == $program) && ($inputYear == $year) && ($inputSection == $section)  && ($inputStartTime == $startTime)  && ($inputEndTime == $endTime)) {
                         $action = "Attempt update on $scheduleTitle schedule";
                     } else {
                         $action = "Updated $scheduleTitle schedule";
                     }
+
+                    // Insert log entry
                     DB::table('user_logs')->insert([
                         'userID' => $userID,
                         'action' => $action,
@@ -858,18 +914,38 @@ class UserController extends Controller
     }
     //-------End instructor functions-------
 
-    //-------Start Student functions-------
-    public function studentIndex()
+
+
+    public function getStudentStatusCountsChart()
     {
         $id = Auth::id();
         $userID = DB::table('users')->where('id', $id)->value('idNumber');
 
-        $classSchedules = DB::table('student_masterlists')
-            ->join('class_lists', 'class_lists.classID', '=', 'student_masterlists.classID')
+        $regularCount = DB::table('student_masterlists')
+            ->join('users', 'student_masterlists.userID', '=', 'users.idNumber')
+            ->join('class_lists', 'student_masterlists.classID', '=', 'class_lists.classID')
             ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
-            ->where('student_masterlists.userID', '=', $userID)
-            ->get();
-        return view('student.student-dashboard', ['classSchedules' => $classSchedules]);
+            ->where('student_masterlists.userID', $userID)
+            ->where('users.userType', 'Student')
+            ->where('student_masterlists.status', 'Regular')
+            ->count();
+
+        $irregularCount = DB::table('student_masterlists')
+            ->join('users', 'student_masterlists.userID', '=', 'users.idNumber')
+            ->where('users.userType', 'Student')
+            ->where('student_masterlists.status', 'Irregular')
+            ->count();
+
+        $dropCount = DB::table('student_masterlists')
+            ->join('users', 'student_masterlists.userID', '=', 'users.idNumber')
+            ->where('users.userType', 'Student')
+            ->where('student_masterlists.status', 'Drop')
+            ->count();
+
+        return response()->json([
+            'regular' => $regularCount,
+            'irregular' => $irregularCount,
+            'drop' => $dropCount,
+        ]);
     }
-    //-------End Student functions-------
 }

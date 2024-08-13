@@ -1,4 +1,3 @@
-
 /* ====== Index ======
 
 1. CALENDAR JS
@@ -30,27 +29,27 @@ $(document).ready(function () {
                 events: schedules,
                 selectable: true,
                 eventTimeFormat: {
-                    hour: 'numeric',
-                    minute: '2-digit',
-                    meridiem: 'short'
+                    hour: "numeric",
+                    minute: "2-digit",
+                    meridiem: "short",
                 },
-                eventDidMount: function(info) {
-                    var startTime = moment(info.event.start).format('h:mma');
-                    var endTime = moment(info.event.end).format('h:mma');
-                    var timeText = startTime + ' - ' + endTime;
-                    
-                    var timeElement = info.el.querySelector('.fc-event-time');
+                eventDidMount: function (info) {
+                    var startTime = moment(info.event.start).format("h:mma");
+                    var endTime = moment(info.event.end).format("h:mma");
+                    var timeText = startTime + " - " + endTime;
+
+                    var timeElement = info.el.querySelector(".fc-event-time");
                     if (timeElement) {
                         timeElement.innerHTML = timeText;
                     }
                 },
-                dayCellClassNames: function(arg) {
-                    var currentDate = moment().startOf('day');
-                    var cellDate = moment(arg.date).startOf('day');
-                    if (cellDate.isSame(currentDate, 'day')) {
-                        return 'fc-today-highlight';
+                dayCellClassNames: function (arg) {
+                    var currentDate = moment().startOf("day");
+                    var cellDate = moment(arg.date).startOf("day");
+                    if (cellDate.isSame(currentDate, "day")) {
+                        return "fc-today-highlight";
                     }
-                    return '';
+                    return "";
                 },
                 select: function (info) {
                     var start_date = info.startStr;
@@ -490,8 +489,6 @@ $(document).ready(function () {
 
                             $(this).text("Updating..");
 
-                            // alert(id);
-
                             var data = {
                                 updateCourseCode: $(".updateCourseCode").val(),
                                 updateCourseName: $(".updateCourseName").val(),
@@ -501,7 +498,7 @@ $(document).ready(function () {
                                 endDate: $(".endDate").val(),
                                 updateWeekDay: $(".updateWeekDay").val(),
                             };
-                            console.log(data);
+
                             $.ajaxSetup({
                                 headers: {
                                     "X-CSRF-TOKEN": $(
@@ -516,99 +513,34 @@ $(document).ready(function () {
                                 data: data,
                                 dataType: "json",
                                 success: function (response) {
-                                    // console.log(response);
                                     if (response.status == 400) {
                                         $("#editCourseCodeError").html("");
-                                        $("#editCourseCodeError").addClass(
-                                            "error"
-                                        );
                                         $("#editCourseNameError").html("");
-                                        $("#editCourseNameError").addClass(
-                                            "error"
-                                        );
                                         $("#startTimeError").html("");
-                                        $("#startTimeError").addClass("error");
                                         $("#endTimeError").html("");
-                                        $("#endTimeError").addClass("error");
                                         $("#startDateError").html("");
-                                        $("#startDateError").addClass("error");
                                         $("#endDateError").html("");
-                                        $("#endDateError").addClass("error");
                                         $("#editWeekDayError").html("");
-                                        $("#editWeekDayError").addClass(
-                                            "error"
-                                        );
-                                        $.each(
-                                            response.errors.updateCourseCode,
-                                            function (key, err_value) {
-                                                $(
-                                                    "#editCourseCodeError"
-                                                ).append(
-                                                    "<li>" + err_value + "</li>"
-                                                );
-                                            }
-                                        );
-                                        $.each(
-                                            response.errors.updateCourseName,
-                                            function (key, err_value) {
-                                                $(
-                                                    "#editCourseNameError"
-                                                ).append(
-                                                    "<li>" + err_value + "</li>"
-                                                );
-                                            }
-                                        );
-                                        $.each(
-                                            response.errors.startTime,
-                                            function (key, err_value) {
-                                                $("#startTimeError").append(
-                                                    "<li>" + err_value + "</li>"
-                                                );
-                                            }
-                                        );
-                                        $.each(
-                                            response.errors.endTime,
-                                            function (key, err_value) {
-                                                $("#endTimeError").append(
-                                                    "<li>" + err_value + "</li>"
-                                                );
-                                            }
-                                        );
-                                        $.each(
-                                            response.errors.startDate,
-                                            function (key, err_value) {
-                                                $("#startDateError").append(
-                                                    "<li>" + err_value + "</li>"
-                                                );
-                                            }
-                                        );
-                                        $.each(
-                                            response.errors.endDate,
-                                            function (key, err_value) {
-                                                $("#endDateError").append(
-                                                    "<li>" + err_value + "</li>"
-                                                );
-                                            }
-                                        );
-                                        $.each(
-                                            response.errors.updateWeekDay,
-                                            function (key, err_value) {
-                                                $("#editWeekDayError").append(
-                                                    "<li>" + err_value + "</li>"
-                                                );
-                                            }
-                                        );
+
+                                        if (response.errors.timeOverlap) {
+                                            $("#startTimeError").html(
+                                                response.errors.timeOverlap[0]
+                                            );
+                                        } else {
+                                            $.each(
+                                                response.errors,
+                                                function (key, err_values) {
+                                                    $("#" + key + "Error").html(
+                                                        err_values[0]
+                                                    );
+                                                }
+                                            );
+                                        }
+
                                         $(".updateRegularSchedule").text(
                                             "Update"
                                         );
                                     } else if (response.status == 200) {
-                                        $("#editCourseCodeError").html("");
-                                        $("#editCourseNameError").html("");
-                                        $("#startTimeError").html("");
-                                        $("#endTimeError").html("");
-                                        $("#startDateError").html("");
-                                        $("#endDateError").html("");
-                                        $("#editWeekDayError").html("");
                                         Swal.fire({
                                             icon: "success",
                                             title: "Successful",
@@ -622,7 +554,6 @@ $(document).ready(function () {
                                                 $(
                                                     "#updateRegularScheduleModal .close"
                                                 ).click();
-
                                                 location.reload();
                                             }
                                         });
@@ -691,6 +622,7 @@ $(document).ready(function () {
                                         );
 
                                         console.log(response.makeUpSchedule);
+
                                         $("#edit_schedule_title").val(
                                             response.makeUpSchedule
                                                 .scheduleTitle
@@ -708,6 +640,18 @@ $(document).ready(function () {
                                         $(".updateEndTime").val(endTime);
                                         $("#makeUpScheduleID").val(
                                             response.makeUpSchedule.scheduleID
+                                        );
+                                        $(
+                                            "#edit_schedule_faculty_first_name"
+                                        ).val(
+                                            response.makeUpSchedule
+                                                .instFirstName
+                                        );
+                                        $(
+                                            "#edit_schedule_faculty_last_name"
+                                        ).val(
+                                            response.makeUpSchedule
+                                                .instLastName
                                         );
                                     }
                                 },
@@ -736,6 +680,8 @@ $(document).ready(function () {
                                             $(".updateStartTime").val(),
                                         updateEndTime:
                                             $(".updateEndTime").val(),
+                                        updateFaculty:
+                                            $(".updateFaculty").val(),  
                                     };
                                     console.log(data);
                                     $.ajaxSetup({
@@ -859,6 +805,19 @@ $(document).ready(function () {
                                                         );
                                                     }
                                                 );
+                                                $.each(
+                                                    response.errors
+                                                        .updateFaculty,
+                                                    function (key, err_value) {
+                                                        $(
+                                                            "#editScheduleFacultyError"
+                                                        ).append(
+                                                            "<li>" +
+                                                                err_value +
+                                                                "</li>"
+                                                        );
+                                                    }
+                                                );
                                                 $(".updateMakeUpSchedule").text(
                                                     "Update"
                                                 );
@@ -871,6 +830,7 @@ $(document).ready(function () {
                                                 $("#updateSection").html("");
                                                 $("#updateStartTime").html("");
                                                 $("#updateEndTime").html("");
+                                                $("updateFaculty").html("");
                                                 $(
                                                     "#updateMakeUpScheduleModal .close"
                                                 ).click();
@@ -898,8 +858,9 @@ $(document).ready(function () {
                     // -----------End edit Make up schedule-----------
                 },
             });
-
             calendar.render();
         },
     });
+
+    
 });

@@ -61,7 +61,7 @@
 
 
 
-                <div class="card card-default">
+                <div class="card card-default shadow">
                     <div class="card-header">
                         <h1> Class List</h1>
                     </div>

@@ -21,8 +21,10 @@ class GoogleAuthController extends Controller
         // Check if the user is already authenticated
         if (Auth::check()) {
             $user = Auth::user();
-            if ($user->userType == 'Admin') {
-                return redirect('/adminPage');
+            if ($user->userType === 'Admin' || $user->userType === 'Technician' || $user->userType === 'Lab-in-Charge') {
+                return redirect('/index-dashboard');
+            } elseif ($user->userType == 'Student') {
+                return redirect('/student-dashboard');
             } elseif ($user->userType == 'Faculty') {
                 return redirect('/instructorDashboard');
             } else {
@@ -67,12 +69,14 @@ class GoogleAuthController extends Controller
                     ->showCloseButton();
 
                 // Check userType and redirect accordingly
-                if ($user->userType === 'Admin') {
-                    return redirect()->intended('/adminPage');
-                } elseif ($user->userType === 'Faculty') {
-                    return redirect()->intended('/instructorDashboard');
-                } elseif ($user->userType === 'Student') {
-                    return redirect()->intended('/studentDashboard');
+                if ($user->userType === 'Admin' || $user->userType === 'Technician' || $user->userType === 'Lab-in-Charge') {
+                    return redirect('/index-dashboard');
+                } elseif ($user->userType == 'Student') {
+                    return redirect('/student-dashboard');
+                } elseif ($user->userType == 'Faculty') {
+                    return redirect('/instructorDashboard');
+                } else {
+                    return redirect()->back(); // Redirect to a default page if usertype doesn't match
                 }
             } else {
                 // Authentication failed, display an invalid credentials message
@@ -128,7 +132,7 @@ class GoogleAuthController extends Controller
             if ($existingUser) {
 
                 // Check userType and redirect accordingly
-                if ($existingUser->userType === 'Admin') {
+                if ($existingUser->userType === 'Admin' || $existingUser->userType === 'Technician' || $existingUser->userType === 'Lab-in-Charge') {
                     // If user exists, log them in
                     Auth::login($existingUser, true);
 
@@ -137,7 +141,7 @@ class GoogleAuthController extends Controller
                         ->timerProgressBar()
                         ->showCloseButton();
 
-                    return redirect()->intended('/adminPage');
+                    return redirect()->intended('/index-dashboard');
                 } elseif ($existingUser->userType === 'Faculty') {
 
                     if ($existingUser->accountName === Null) {

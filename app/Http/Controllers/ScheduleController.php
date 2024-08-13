@@ -73,19 +73,28 @@ class ScheduleController extends Controller
         return view('faculty.instructor-class-record', ['classes' => $classes]);
     }
 
-    public function editClassList($id)
+    public function editClassList($id, Request $request)
     {
-        $classList = ClassList::with('schedule')->find($id);
-        if ($classList) {
-            return response()->json([
-                'status' => 200,
-                'classList' => $classList,
-                'schedule' => $classList->schedule
-            ]);
+        if ($request->ajax()) {
+            $classList = ClassList::with('schedule')->find($id);
+
+            if ($classList) {
+                return response()->json([
+                    'status' => 200,
+                    'classList' => $classList,
+                    'schedule' => $classList->schedule
+                ]);
+            } else {
+                return response()->json([
+                    'status' => 404,
+                ]);
+            }
         } else {
-            return response()->json([
-                'status' => 404,
-            ]);
+            Alert::info("Oops...", "Unauthorized action.")
+                ->showCloseButton()
+                ->timerProgressBar();
+
+            return redirect()->back();
         }
     }
 
@@ -214,6 +223,7 @@ class ScheduleController extends Controller
             ->where('schedules.userID', '=', $userID)
             ->get();
 
+        // SEACH FUNCTION
         $data['selectedName'] = $request->query('name');
 
         $query = DB::table('schedules')
@@ -244,19 +254,27 @@ class ScheduleController extends Controller
 
         return view('faculty.instructor-schedule', ['classes' => $classes]);
     }
-    public function editInstructorClass($id)
+    public function editInstructorClass($id, Request $request)
     {
+        if ($request->ajax()) {
+            $schedule = Schedule::find($id);
 
-        $schedule = Schedule::find($id);
-        if ($schedule) {
-            return response()->json([
-                'status' => 200,
-                'schedule' => $schedule,
-            ]);
+            if ($schedule) {
+                return response()->json([
+                    'status' => 200,
+                    'schedule' => $schedule,
+                ]);
+            } else {
+                return response()->json([
+                    'status' => 404,
+                ]);
+            }
         } else {
-            return response()->json([
-                'status' => 404,
-            ]);
+            Alert::info("Oops...", "Unauthorized action.")
+                ->showCloseButton()
+                ->timerProgressBar();
+
+            return redirect()->back();
         }
     }
 
@@ -297,6 +315,7 @@ class ScheduleController extends Controller
                     $classList->save();
                     $schedule->scheduleStatus = 'Has Schedule';
                     $schedule->update();
+
                     // Start Logs
                     date_default_timezone_set("Asia/Manila");
                     $date = date("Y-m-d");
@@ -322,8 +341,14 @@ class ScheduleController extends Controller
             return redirect()->back();
         }
     }
-    
+
     // -----------End instructor functions-----------
 
+
+    public function getFacultySchedules()
+    {
+        $schedules = Schedule::where('id', Auth::id())->get();
     
+        return view('faculty.instructor-schedule', ['schedules' => $schedules]);
+    }
 }

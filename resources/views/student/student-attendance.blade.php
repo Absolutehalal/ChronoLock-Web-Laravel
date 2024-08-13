@@ -89,7 +89,7 @@
                       <td>{{$myAttendance->program}}</td>
                       <td>{{$myAttendance->year}}-{{$myAttendance->section}}</td>
                       <td>{{$myAttendance->courseCode}}-{{$myAttendance->courseName}}</td>
-                      <td>{{$myAttendance->status}}</td>
+                      <!-- <td>{{$myAttendance->status}}</td> -->
                       <td>{{$myAttendance->remark}}</td>
 
                     </tr>
@@ -132,7 +132,7 @@
                 </table>
               </div>
               <div class="card-footer bg-white py-4">
-                <a href="#" class="text-uppercase">Audience Overview</a>
+               
               </div>
             </div>
 

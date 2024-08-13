@@ -28,10 +28,25 @@ class ForgotPasswordController extends Controller
             'email' => 'required|email',
         ]);
 
-        // Check if the email exists in the database
-        $user = DB::table('password_reset_tokens')->where('email', $request->email)->first();
+        // Check if the email exists in the users table
+        $userExists = User::where('email', $request->get('email'))->exists();
 
-        if ($user) {
+        if (!$userExists) {
+
+            Alert::info("Info", "Email is invalid. Please try again.")
+                ->autoClose(3000)
+                ->timerProgressBar()
+                ->showCloseButton();
+
+            return redirect()->back();
+        }
+
+        // Check if a password reset link has already been sent to this email
+        $existingToken = DB::table('password_reset_tokens')
+            ->where('email', $request->email)
+            ->first();
+
+        if ($existingToken) {
             Alert::info("Info", "This email has already received a password reset link")
                 ->autoClose(3000)
                 ->showCloseButton()
@@ -65,6 +80,7 @@ class ForgotPasswordController extends Controller
         return redirect()->intended('/login');
     }
 
+
     public function resetPassword($token)
     {
         return view('reset-password', ['token' => $token]);
@@ -78,7 +94,20 @@ class ForgotPasswordController extends Controller
                 'password' => 'required|min:6|confirmed',
             ]);
 
-            // Check if the it exists in the database
+            // Check if the email exists in the users table
+            $userExists = User::where('email', $request->get('email'))->exists();
+
+            if (!$userExists) {
+
+                Alert::info("Info", "Email is invalid. Please try again.")
+                    ->autoClose(3000)
+                    ->timerProgressBar()
+                    ->showCloseButton();
+
+                return redirect()->back();
+            }
+
+            // Check if the it exists in the password_reset_tokens database
             $updatePassword = DB::table('password_reset_tokens')
                 ->where([
                     'email' => $request->get('email'),
@@ -94,21 +123,21 @@ class ForgotPasswordController extends Controller
                     ->showCloseButton();
 
                 return redirect()->to('/forgotPassword');
-            } else {
-                // Updating the user’s password and removing the password reset token
-                User::where('email', $request->get('email'))
-                    ->update(['password' => Hash::make($request->get('password'))]);
-
-                DB::table('password_reset_tokens')
-                    ->where(['email' => $request->get('email')])->delete();
-
-                Alert::success("Success", "Password Reset Successfully")
-                    ->autoClose(3000)
-                    ->timerProgressBar()
-                    ->showCloseButton();
-
-                return redirect()->intended('/login');
             }
+
+            // Updating the user’s password and removing the password reset token
+            User::where('email', $request->get('email'))
+                ->update(['password' => Hash::make($request->get('password'))]);
+
+            DB::table('password_reset_tokens')
+                ->where(['email' => $request->get('email')])->delete();
+
+            Alert::success("Success", "Password Reset Successfully")
+                ->autoClose(3000)
+                ->timerProgressBar()
+                ->showCloseButton();
+
+            return redirect()->intended('/login');
         } catch (\Exception $th) {
 
             Alert::info("Info", "An error occurred. Please try again.")

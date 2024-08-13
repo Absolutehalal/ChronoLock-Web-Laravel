@@ -76,11 +76,11 @@
                             @csrf
                             <div class="form-group mb-2">
                                 <label class="form-label fw-bold">Provide Email</label>
-                                <input id="email" name="email" type="text" class="form-control form-control-lg bg-light fs-6" placeholder="Email address" required>
+                                <input id="email" name="email" type="text" class="form-control form-control-lg bg-light border-dark fs-6" placeholder="Email address" required>
                             </div>
                             <div class="input-group mb-2 d-flex justify-content-end">
                                 <div class="forgot">
-                                    <small><a href="{{ route('login') }}">Already have an account? Login</a></small>
+                                    <small><a href="{{ url('/login') }}">Already have an account? Login</a></small>
                                 </div>
                             </div>
                             <div class="input-group mb-3">
@@ -93,6 +93,29 @@
             </div>
         </div>
     </div>
+
+    <!-- <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.querySelector('form');
+            const emailInput = document.getElementById('email');
+
+            form.addEventListener('submit', function(event) {
+                const emailValue = emailInput.value;
+                const cpscDomain = '@my.cpsc.edu.ph';
+
+                if (!emailValue.endsWith(cpscDomain)) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        text: "Please provide a valid CPSC email address.",
+                        timer: 5000,
+                        timerProgressBar: true
+                    });
+                    event.preventDefault(); // Prevent form submission
+                }
+            });
+        });
+    </script> -->
 
 </body>
 

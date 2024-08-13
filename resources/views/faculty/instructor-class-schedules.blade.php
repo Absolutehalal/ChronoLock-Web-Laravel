@@ -162,10 +162,10 @@
                       <!-- <ul id="courseCodeError"></ul> -->
                       <div class="form-group">
                         <h4>
-                          <input type="text" class="input form-control" id="courseName" name="courseName" readonly>
+                          <input type="text" class="input form-control" id="courseName" name="courseName" disabled>
                         </h4>
                         <h4>
-                          <input type="text" class="input form-control" id="courseCode" name="courseCode" readonly>
+                          <input type="text" class="input form-control" id="courseCode" name="courseCode" disabled>
                         </h4>
                       </div>
                   </div>
@@ -175,21 +175,21 @@
                     <!-- <ul id="programError"></ul> -->
                     <h6 class="pb-2">Program</h6>
                     <div class="form-group">
-                      <input type="text" class="input form-control" id="program" name="program" readonly>
+                      <input type="text" class="input form-control" id="program" name="program" disabled>
                     </div>
                   </div>
                   <div class="text-center pb-4">
                     <!-- <ul id="yearError"></ul> -->
                     <h6 class="pb-2">Year</h6>
                     <div class="form-group">
-                      <input type="text" class="input form-control" id="year" name="year" readonly>
+                      <input type="text" class="input form-control" id="year" name="year" disabled>
                     </div>
                   </div>
                   <div class="text-center pb-4">
                     <!-- <ul id="sectionError"></ul> -->
                     <h6 class="pb-2">Section</h6>
                     <div class="form-group">
-                      <input type="text" class="input form-control" id="section" name="section" readonly>
+                      <input type="text" class="input form-control" id="section" name="section" disabled>
                     </div>
                   </div>
                 </div>

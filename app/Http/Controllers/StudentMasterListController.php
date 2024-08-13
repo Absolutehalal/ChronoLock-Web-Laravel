@@ -12,24 +12,32 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class StudentMasterListController extends Controller
 {
-    public function studentEditSchedule($id)
+    public function studentEditSchedule($id, Request $request)
     {
+        if ($request->ajax()) {
 
-        $classList = ClassList::select('classID', 'program', 'year', 'section', 'instFirstName', 'instLastName', 'avatar', 'startTime', 'endTime')
-            ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
-            ->join('users', 'users.idNumber', '=', 'schedules.userID')
-            ->find($id);
+            $classList = ClassList::select('classID', 'program', 'year', 'section', 'instFirstName', 'instLastName', 'avatar', 'startTime', 'endTime')
+                ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
+                ->join('users', 'users.idNumber', '=', 'schedules.userID')
+                ->find($id);
 
-        if ($classList) {
+            if ($classList) {
 
-            return response()->json([
-                'status' => 200,
-                'classList' => $classList,
-            ]);
+                return response()->json([
+                    'status' => 200,
+                    'classList' => $classList,
+                ]);
+            } else {
+                return response()->json([
+                    'status' => 404,
+                ]);
+            }
         } else {
-            return response()->json([
-                'status' => 404,
-            ]);
+            Alert::info("Oops...", "Unauthorized action.")
+                ->showCloseButton()
+                ->timerProgressBar();
+
+            return redirect()->back();
         }
     }
 

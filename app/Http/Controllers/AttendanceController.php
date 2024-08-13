@@ -185,8 +185,6 @@ class AttendanceController extends Controller
     public function studentAttendanceGeneration(Request $request)
     {
         try {
-
-
             // Month
             $data['selectedMonth'] = $request->query('selectedMonth');
 
@@ -285,9 +283,10 @@ class AttendanceController extends Controller
         }
     }
 
-    public function editInstructorAttendance($id)
+    public function editInstructorAttendance($id, Request $request)
     {
-        try {
+
+        if ($request->ajax()) {
             $attendance = Attendance::find($id);
             if ($attendance) {
                 return response()->json([
@@ -299,11 +298,12 @@ class AttendanceController extends Controller
                     'status' => 404,
                 ]);
             }
-        } catch (\Exception $e) {
+        } else {
 
-            Alert::error('Error', 'Something went wrong. Please try again later.')
-                ->autoClose(5000)
-                ->showCloseButton();
+            Alert::info("Oops...", "Unauthorized action.")
+                ->showCloseButton()
+                ->timerProgressBar();
+
             return redirect()->back();
         }
     }
@@ -425,9 +425,9 @@ class AttendanceController extends Controller
         }
     }
 
-    public function editStudentAttendance($id)
+    public function editStudentAttendance($id, Request $request)
     {
-        try {
+        if ($request->ajax()) {
             $attendance = Attendance::find($id);
             if ($attendance) {
                 return response()->json([
@@ -439,11 +439,11 @@ class AttendanceController extends Controller
                     'status' => 404,
                 ]);
             }
-        } catch (\Exception $e) {
+        } else {
+            Alert::info("Oops...", "Unauthorized action.")
+                ->showCloseButton()
+                ->timerProgressBar();
 
-            Alert::error('Error', 'Something went wrong. Please try again later.')
-                ->autoClose(5000)
-                ->showCloseButton();
             return redirect()->back();
         }
     }
@@ -451,7 +451,6 @@ class AttendanceController extends Controller
     public function updateStudentAttendance(Request $request, $id)
     {
         try {
-
             $validator = Validator::make($request->all(), [
                 'updateUserID' => 'required',
                 'updateRemark' => 'required',

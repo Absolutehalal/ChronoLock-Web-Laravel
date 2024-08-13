@@ -13,8 +13,14 @@
 
     <link href="{{asset('https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css')}}" rel="stylesheet">
 
+    <!-- Font Awesome -->
+    <script src="{{asset('https://kit.fontawesome.com/fc44043d19.js')}}" crossorigin="anonymous"></script>
+
+    <script defer src="{{asset('js/password.js')}}"></script>
+
     <!-- FAVICON -->
     <link href="{{asset('images/chronolock-small.png')}}" rel="shortcut icon" />
+
     <title>Reset Password</title>
 </head>
 
@@ -58,20 +64,25 @@
                             @csrf
 
                             <input type="hidden" id="token" name="token" value="{{ $token }}">
-
+                            <label class="form-label fw-bold">Email</label>
                             <div class="form-group mb-3">
-                                <label class="form-label fw-bold">Email</label>
-                                <input id="email" name="email" type="text" class="form-control form-control-lg bg-light fs-6" placeholder="Email address" required>
+                                <input id="email" name="email" type="text" class="form-control form-control-lg bg-light border-dark fs-6" placeholder="Email address" required>
                             </div>
-                            <div class="form-group mb-3">
-                                <label class="form-label fw-bold">Password</label>
-                                <input id="password" name="password" type="password" class="form-control form-control-lg bg-light fs-6" placeholder="Password" required>
+                            <label class="form-label fw-bold ">Password</label>
+                            <div class="form-group mb-1 position-relative  mb-3">
+                                <input id="password" name="password" type="password" class="form-control form-control-lg bg-light border-dark fs-6" placeholder="Password" required>
+                                <i class="fa fa-eye-slash" id="show-password"></i>
                             </div>
-                            <div class="form-group mb-3">
+                            <label class="form-label fw-bold ">Confirm Password</label>
+                            <div class="form-group mb-1 position-relative mb-3">
+                                <input id="password_confirmation" name="password_confirmation" type="password" class="form-control form-control-lg bg-light border-dark fs-6" placeholder="Confirm Password"" required>
+                                <i class=" fa fa-eye-slash" id="show-password-confirm"></i>
+                            </div>
+                            <!-- <div class="form-group mb-3">
                                 <label class="form-label fw-bold">Confirm Password</label>
-                                <input id="password_confirmation" name="password_confirmation" type="password" class="form-control form-control-lg bg-light fs-6" placeholder="Confirm Password" required>
-                            </div>
-                            <div class="input-group mb-3">
+                                <input id="password_confirmation" name="password_confirmation" type="password" class="form-control form-control-lg bg-light border-dark fs-6" placeholder="Confirm Password" required>
+                            </div> -->
+                            <div class="input-group mt-4 mb-3">
                                 <button type="submit" class="btn btn-lg btn-primary w-100 fs-6">Reset Password</button>
                             </div>
                         </form>

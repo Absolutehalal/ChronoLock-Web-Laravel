@@ -12,19 +12,33 @@ use App\Models\User;
 
 class ProfileController extends Controller
 {
-    public function editProfile($id)
+    public function show()
     {
-        $user = User::find($id);
+        $user = Auth::user(); // Get the authenticated user
+        return view('profile', ['user' => $user]);
+    }
 
-        if ($user) {
-            return response()->json([
-                'status' => 200,
-                'user' => $user,
-            ]);
+    public function editProfile($id, Request $request)
+    {
+        if ($request->ajax()) {
+            $user = User::find($id);
+
+            if ($user) {
+                return response()->json([
+                    'status' => 200,
+                    'user' => $user,
+                ]);
+            } else {
+                return response()->json([
+                    'status' => 404,
+                ]);
+            }
         } else {
-            return response()->json([
-                'status' => 404,
-            ]);
+            Alert::info("Oops...", "Unauthorized action.")
+                ->showCloseButton()
+                ->timerProgressBar();
+
+            return redirect()->back();
         }
     }
 
@@ -43,45 +57,29 @@ class ProfileController extends Controller
                 'errors' => $validator->messages()
             ]);
         } else {
+
             // Get the user by ID
             $user = User::find($id);
 
+            // Check if the email exists in the users table
+            $userExists = User::where('idNumber', $request->get('profile_idNumber'))->exists();
+
             if ($user) {
+                if (!$userExists) {
 
-                // Check if the idNumber already exists in the database for another user
-                $existingIDNumber = User::where('idNumber', $request->input('profile_idNumber'))
-                    ->where('idNumber', '!=', $user->idNumber)
-                    ->first();
+                    Alert::info("Info", "ID is invalid. Please try again.")
+                        ->autoClose(3000)
+                        ->timerProgressBar()
+                        ->showCloseButton();
 
-                $existingEmail = User::where('email', $request->input('profile_email'))
-                    ->where('email', '!=', $user->email)
-                    ->first();
-
-                if ($existingIDNumber) {
-                    return response()->json([
-                        'status' => 409, // Conflict status code
-                        'message' => 'Id Number already exists!'
-                    ]);
-                } else if ($existingEmail) {
-                    return response()->json([
-                        'status' => 409, // Conflict status code
-                        'message' => 'Email already exists!'
-                    ]);
-                }
-
-                $email = $request->input('profile_email');
-                if (!preg_match('/^[a-zA-Z0-9._%+-]+@my\.cspc\.edu\.ph$/', $email)) {
-                    return response()->json([
-                        'status' => 422, // Unprocessable Entity status code
-                        'message' => 'Email must be from the domain @my.cspc.edu.ph!'
-                    ]);
+                    return redirect()->back();
                 }
 
                 // Update the user's profile fields
-                $user->firstName = $request->input('profile_firstName');
-                $user->lastName = $request->input('profile_lastName');
-                $user->idNumber = $request->input('profile_idNumber');
-                $user->email = $request->input('profile_email');
+                $user->firstName = $request->get('profile_firstName');
+                $user->lastName = $request->get('profile_lastName');
+                $user->idNumber = $request->get('profile_idNumber');
+                $user->email = $request->get('profile_email');
                 $user->update();
 
                 return response()->json([
@@ -96,6 +94,7 @@ class ProfileController extends Controller
             }
         }
     }
+
 
 
     // public function updateProfile(Request $request)

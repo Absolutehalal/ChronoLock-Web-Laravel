@@ -5,7 +5,6 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\UserLogController;
-use App\Http\Middleware\CheckGoogleAuth;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\FacultyAttendanceAndListController;
 use App\Http\Controllers\StudentController;
@@ -35,13 +34,17 @@ Route::post('/forgot-password', [ForgotPasswordController::class, 'forgotPasswor
 Route::get('/reset-password/{token}', [ForgotPasswordController::class, 'resetPassword'])->name('resetPassword');
 Route::post('/reset-password', [ForgotPasswordController::class, 'updatePassword'])->name('updatePassword');
 
-// ADMIN MIDDLEWARE -----ADMIN ROUTES------
-Route::group(['middleware' => ['auth', 'admin']], function () {
-    Route::get('/adminPage', [UserController::class, 'index'])->name('index');
-
+// PROFILE -----PROFILE ROUTES------
+Route::middleware('profile')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
     Route::get('/profile/edit/{id}', [ProfileController::class, 'editProfile'])->name('profile.edit');
     Route::put('/profile/update/{id}', [ProfileController::class, 'updateProfile'])->name('profile.update');
+});
 
+
+// ADMIN MIDDLEWARE -----ADMIN ROUTES------
+Route::group(['middleware' => ['auth', 'admin']], function () {
+    Route::get('/index-dashboard', [UserController::class, 'index'])->name('index');
 
     //--------START userManagement ROUTES---------
 
@@ -56,7 +59,6 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     // Route::delete('/deleteUser/{user}', [UserController::class, 'deleteUser'])->name('deleteUser');
 
     Route::delete('/deleteUser/{id}', [UserController::class, 'deleteUser'])->name('deleteUser');
-
     Route::get('/forceDelete/{id}', [UserController::class, 'forceDelete'])->name('forceDelete');
     Route::get('/archive', [UserController::class, 'userArchive'])->name('archive');
     Route::get('/restore/{id}', [UserController::class, 'restore'])->name('restore');
@@ -117,7 +119,7 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     //--------End Admin Pending RFID ROUTES---------  
 
     Route::get('/logsPage', [UserLogController::class, 'logs'])->name('logs');
-    Route::get('/reportGenerationPage', [UserController::class, 'reportGeneration'])->name('reportGeneration');
+    // Route::get('/reportGenerationPage', [UserController::class, 'reportGeneration'])->name('reportGeneration');
 });
 
 
@@ -129,6 +131,9 @@ Route::group(['middleware' => ['auth', 'faculty']], function () {
 
     Route::get('/instructorSchedule', [ScheduleController::class, 'instructorScheduleManagement'])->name('instructorScheduleManagement');
     Route::get('/schedules', [ScheduleController::class, 'showMySchedules'])->name('showMySchedules');
+
+    Route::get('/get-faculty-schedules', [ScheduleController::class, 'getFacultySchedules'])->name('getFacultySchedules');
+    Route::get('/student-status-counts-chart', [UserController::class, 'getStudentStatusCountsChart'])->name('getStudentStatusCountsChart');
 
 
     //--------START Class List  ROUTES---------
@@ -159,9 +164,14 @@ Route::group(['middleware' => ['auth', 'faculty']], function () {
 
 
 Route::group(['middleware' => ['auth', 'student']], function () {
-    Route::get('/student-dashboard', [UserController::class, 'studentIndex'])->name('studentIndex');
+    Route::get('/student-dashboard', [StudentController::class, 'studentIndex'])->name('studentIndex');
+
+    Route::get('/search-schedules', [StudentController::class, 'search']);
 
     Route::get('/student-view-schedule', [StudentController::class, 'studentViewSchedule'])->name('studentViewSchedule');
+
+    Route::get('/upcoming-schedules', [StudentController::class, 'upcomingSchedules'])->name('upcomingSchedules');
+
 
     Route::get('/studentEditSchedule/{id}', [StudentMasterListController::class, 'studentEditSchedule'])->name('studentEditSchedule');
     Route::post('/student-view-schedule', [StudentMasterListController::class, 'enroll'])->name('enroll');

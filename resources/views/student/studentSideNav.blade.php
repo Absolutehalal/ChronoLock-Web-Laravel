@@ -48,7 +48,7 @@
           <li class="has-sub">
             <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#users" aria-expanded="false" aria-controls="users">
               <i class="mdi mdi-folder-multiple-outline"></i>
-              <span class="nav-text" data-toggle="tooltip" title="My Class Schedules">My Class Schedules</span> <b class="caret"></b>
+              <span class="nav-text" data-toggle="tooltip" title="My Class Schedules">My Class Attendance</span> <b class="caret"></b>
             </a>
             <ul class="collapse" id="users" data-parent="#sidebar-menu">
               <div class="sub-menu">

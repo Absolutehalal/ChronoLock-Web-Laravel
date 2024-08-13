@@ -45,7 +45,9 @@ class FacultyAttendanceAndListController extends Controller
                 ->get();
 
             $studentCount = DB::table('student_masterlists')
+                ->join('users', 'student_masterlists.userID', '=', 'users.idNumber')
                 ->where('classID', '=', $decode)
+                ->where('users.userType', '=', 'Student')
                 ->count();
 
 
@@ -95,18 +97,29 @@ class FacultyAttendanceAndListController extends Controller
         }
     }
 
-    public function instructorEditStudentAttendance($id)
+    public function instructorEditStudentAttendance($id, Request $request)
     {
-        $attendance = Attendance::find($id);
-        if ($attendance) {
-            return response()->json([
-                'status' => 200,
-                'attendance' => $attendance,
-            ]);
+
+        if ($request->ajax()) {
+
+            $attendance = Attendance::find($id);
+
+            if ($attendance) {
+                return response()->json([
+                    'status' => 200,
+                    'attendance' => $attendance,
+                ]);
+            } else {
+                return response()->json([
+                    'status' => 404,
+                ]);
+            }
         } else {
-            return response()->json([
-                'status' => 404,
-            ]);
+            Alert::info("Oops...", "Unauthorized action.")
+                ->showCloseButton()
+                ->timerProgressBar();
+
+            return redirect()->back();
         }
     }
 
@@ -221,19 +234,28 @@ class FacultyAttendanceAndListController extends Controller
 
 
 
-    public function instructorEditStudentList($id)
+    public function instructorEditStudentList($id, Request $request)
     {
+        if ($request->ajax()) {
 
-        $record = StudentMasterlist::find($id);
-        if ($record) {
-            return response()->json([
-                'status' => 200,
-                'record' => $record,
-            ]);
+            $record = StudentMasterlist::find($id);
+
+            if ($record) {
+                return response()->json([
+                    'status' => 200,
+                    'record' => $record,
+                ]);
+            } else {
+                return response()->json([
+                    'status' => 404,
+                ]);
+            }
         } else {
-            return response()->json([
-                'status' => 404,
-            ]);
+            Alert::info("Oops...", "Unauthorized action.")
+                ->showCloseButton()
+                ->timerProgressBar();
+
+            return redirect()->back();
         }
     }
 

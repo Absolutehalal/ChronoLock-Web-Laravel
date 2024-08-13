@@ -13,7 +13,9 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    
     <script defer src="js/studentJoinClassSchedule.js"></script>
+    
     <title>ChronoLock: Student Enroll Schedule</title>
 
     @include('head')
@@ -64,17 +66,17 @@
 
                 <div class="card card-default shadow-sm">
                     <div class="card-header card-header-border-bottom d-flex justify-content-between align-items-center">
-                        <h1 class="mb-3">Overview Schedule</h1>
-                        <div class="d-flex align-items-center">
-                            <form method="GET" action="{{ url('/student-view-schedule')}}" class="d-flex align-items-center me-2">
+                        <h1 class="mb-4">Overview Schedule</h1>
+                        <div class="d-flex align-items-center mb-3">
+                            <form id="search" method="GET" action="{{ url('/student-view-schedule')}}" class="d-flex align-items-center me-1">
                                 <div class="input-group">
-                                    <input class="form-control border-primary" type="text" name="search" id="search" placeholder="Search Here">
+                                    <input class="form-control border-primary bg-light" type="text" name="search" id="search" placeholder="Search Here">
                                     <button class="btn btn-danger btn-sm fw-bold" type="submit">
                                         <i class="mdi mdi-feature-search"></i> Search
                                     </button>
                                 </div>
                             </form>
-                            <form action="{{ url('/student-view-schedule')}}" method="GET" class="d-flex align-items-center">
+                            <form id="reset" action="{{ url('/student-view-schedule')}}" method="GET" class="d-flex align-items-center">
                                 <button class="btn btn-warning btn-sm fw-bold" type="submit">
                                     <i class="mdi mdi-alpha-r-box"></i> Reset
                                 </button>
@@ -82,7 +84,6 @@
                         </div>
                     </div>
                 </div>
-
 
 
                 <div class="row">
@@ -195,7 +196,7 @@
                                                 </div>
 
                                                 <div class="card-body">
-                                                    <h4> <input type="text" class="input form-control" id="instFirstNameAndLastName" name="instFirstNameAndLastName" readonly> </h4>
+                                                    <h4> <input type="text" class="input form-control" id="instFirstNameAndLastName" name="instFirstNameAndLastName" disable> </h4>
                                                     <form id="clearJoinClass" method="post">
                                                         @csrf
                                                         @method('post')
@@ -215,7 +216,7 @@
 
                                                     <h6 class="pb-2">Program</h6>
                                                     <div class="form-group">
-                                                        <input type="text" class="input form-control" id="program" name="program" readonly>
+                                                        <input type="text" class="input form-control" id="program" name="program" disable>
                                                     </div>
                                                 </div>
 
@@ -223,7 +224,7 @@
 
                                                     <h6 class="pb-2">Year & Section</h6>
                                                     <div class="form-group">
-                                                        <input type="text" class="input form-control" id="yearAndSection" name="yearAndSection" readonly>
+                                                        <input type="text" class="input form-control" id="yearAndSection" name="yearAndSection" disable>
                                                     </div>
                                                 </div>
 
@@ -231,7 +232,7 @@
                                                     <ul id="sectionError"></ul>
                                                     <h6 class="pb-2">Schedule</h6>
                                                     <div class="form-group">
-                                                        <input type="text" class="input form-control" id="startTimeAndEndTime" name="startTimeAndEndTime" readonly>
+                                                        <input type="text" class="input form-control" id="startTimeAndEndTime" name="startTimeAndEndTime" disable>
                                                     </div>
                                                 </div>
 

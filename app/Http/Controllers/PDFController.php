@@ -68,6 +68,7 @@ class PDFController extends Controller
         $schedules = DB::table('schedules')
             ->join('users', 'schedules.userID', '=', 'users.idNumber')
             ->select('schedules.*', 'users.firstName', 'users.lastName')
+            ->where('scheduleType', '=', 'regularSchedule')
             ->get();
 
         // Days mapping

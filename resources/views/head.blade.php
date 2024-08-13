@@ -4,14 +4,14 @@
     <link href="{{asset('https://cdn.datatables.net/rowreorder/1.5.0/css/rowReorder.bootstrap5.css')}}" rel="stylesheet">
     <link href="{{asset('https://cdn.datatables.net/responsive/3.0.2/css/responsive.dataTables.css')}}" rel="stylesheet">
     <link href="{{asset('https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.css')}}" rel="stylesheet">
-<!-- <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.0.2/css/buttons.dataTables.css"> -->
+    <!-- <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.0.2/css/buttons.dataTables.css"> -->
     <!-- Show password on Add user  -->
     <script defer src="{{asset('js/password.js')}}"></script>
-    
+
     <!-- Auto Generate password -->
     <script defer src="{{asset('js/passwordGenerator.js')}}"></script>
 
-     <!-- Active Page -->
+    <!-- Active Page -->
     <script defer src="{{asset('js/dataTable.js')}}"></script>
 
     <!-- csrf-token -->
@@ -39,14 +39,14 @@
 
     <!-- FLATPCK -->
     <link rel="stylesheet" href="{{asset('https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('https://npmcdn.com/flatpickr/dist/themes/material_blue.css')}}">    
+    <link rel="stylesheet" type="text/css" href="{{asset('https://npmcdn.com/flatpickr/dist/themes/material_blue.css')}}">
     <link rel="stylesheet" href="{{asset('https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/monthSelect/style.css')}}">
-    
+
     <!-- ChronoLock CSS -->
     <link id="main-css-href" rel="stylesheet" href="{{asset('css/style.css')}}" />
 
     <!-- FAVICON -->
-    <link href="{{asset('/images/chronolock-small.png' )}}"rel="shortcut icon" />
+    <link href="{{asset('/images/chronolock-small.png' )}}" rel="shortcut icon" />
 
     <!-- CALENDAR -->
     <link href="{{asset('plugins/fullcalendar/core-4.3.1/main.min.css')}}" rel="stylesheet">
@@ -58,12 +58,12 @@
 
     <!-- EXCEL EXPORT EXTENSION-->
     <script src="{{asset('https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js')}}"></script>
-    
+
     <script src="{{asset('plugins/nprogress/nprogress.js')}}"></script>
     <script src="{{asset('https://code.jquery.com/jquery-3.7.1.min.js')}}" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
-    
-    @include('profile')
-    
-<script defer src="{{asset('js/profile.js')}}"></script>
 
+    @include('profile')
+
+    <script defer src="{{asset('js/profile.js')}}"></script>
+    <script defer src="{{asset('js/readonly.js')}}"></script>

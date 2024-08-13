@@ -86,12 +86,97 @@ class StudentController extends Controller
         }
     }
 
-    public function studentProfile() {
+    //-------Start Student functions-------
+    public function studentIndex()
+    {
+        $id = Auth::id();
+        $userID = DB::table('users')->where('id', $id)->value('idNumber');
 
-        $profile = DB::table('users');
+        // DISPLAY THE CLASS SCHEDULES ENROLLED [SEE STDUENT NAV]
+        $classSchedules = DB::table('student_masterlists')
+            ->join('class_lists', 'class_lists.classID', '=', 'student_masterlists.classID')
+            ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
+            ->where('student_masterlists.userID', '=', $userID)
+            ->get();
 
-        return view('student.student-profile', ['profile' => $profile]);
+        // ----------------------------------------------------- //
+
+        $enrolledStudent = DB::table('student_masterlists') // count id of the enrolled student
+            ->where('userID', '=', $userID)
+            ->count();
+
+        // ----------------------------------------------------- //
+        // TODAY'S SCHEDULE
+
+        $today = date('w'); // 'w' returns the numeric representation of the day of the week (0 for Sunday, 6 for Saturday)
+        $currentDate = date('F j, Y');
+        // Fetch schedules for today that belong to the authenticated user
+        $todaySchedules = DB::table('student_masterlists')
+            ->join('class_lists', 'class_lists.classID', '=', 'student_masterlists.classID')
+            ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
+            ->join('users', 'users.idNumber', '=', 'schedules.userID')
+            ->where('student_masterlists.userID', $userID)
+            ->where('schedules.day', $today)
+            ->orderBy('schedules.startTime', 'asc')
+            ->get();
+
+        // ----------------------------------------------------- //
+        // List of Enrolled Course
+
+        $listEnrolledCourse = DB::table('student_masterlists')
+            ->join('class_lists', 'class_lists.classID', '=', 'student_masterlists.classID')
+            ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
+            ->join('users', 'users.idNumber', '=', 'schedules.userID')
+            ->where('student_masterlists.userID', $userID)
+            ->select('student_masterlists.status', 'class_lists.*', 'schedules.*', 'users.*')
+            ->get();
+
+        return view('student.student-dashboard', [
+            'classSchedules' => $classSchedules,
+            'enrolledStudent' => $enrolledStudent,
+            'todaySchedules' => $todaySchedules,
+            'currentDate' => $currentDate,
+            'listEnrolledCourse' => $listEnrolledCourse
+        ]);
     }
+
+
+    // ->select(
+    //     'users.avatar',
+    //     'schedules.instFirstName',
+    //     'schedules.instLastName',
+    //     'schedules.courseName',
+    //     'schedules.courseCode',
+    //     'schedules.startTime',
+    //     'schedules.endTime',
+    //     'schedules.startDate',
+    //     'schedules.endDate',
+    //     'schedules.day'
+    // )
+
+    // public function upcomingSchedules()
+    // {
+    //     $today = Carbon::today(); // Get the current date without time
+    //     $id = Auth::id();
+    //     $userID = DB::table('users')->where('id', $id)->value('idNumber');
+
+    //     // Fetch schedules for today that belong to the authenticated user
+    //     $upcomingSchedules = DB::table('student_masterlists')
+    //         ->join('class_lists', 'class_lists.classID', '=', 'student_masterlists.classID')
+    //         ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
+    //         ->join('users', 'users.idNumber', '=', 'schedules.userID')
+    //         ->whereDate('schedules.date', $today) // Corrected the date column to 'schedules.date'
+    //         ->where('student_masterlists.userID', $userID)
+    //         ->where('users.userType', 'Student')
+    //         ->select('users.avatar', 'users.instFirstName', 'users.instLastName', 'schedules.courseName', 'schedules.courseCode', 'schedules.startTime', 'schedules.endTime', 'schedules.date')
+    //         ->get();
+
+    //     dd($upcomingSchedules);
+
+    //     return view('student.student-dashboard', [
+    //         'upcomingSchedules' => $upcomingSchedules,
+    //     ]);
+    // }
 
 
     // -----------End student functions-----------

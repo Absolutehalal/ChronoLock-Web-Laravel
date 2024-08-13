@@ -73,6 +73,8 @@
         </div>
         <div class="row">
 
+          @if (Auth::check())
+          @if(Auth()->check() && (Auth()->user()->userType === 'Admin' || Auth()->user()->userType === 'Technician' || Auth()->user()->userType === 'Lab-in-Charge'))
           <!-- First box -->
           <div class="col-xl-3 col-md-6">
             <div class="card card-default shadow">
@@ -158,10 +160,14 @@
             </div>
           </div>
         </div>
+        @endif
+        @endif
+
 
 
         <!--TABLES-->
         <div class="row">
+        @if(Auth()->user()->userType === 'Admin')
           <div class="col-xl-6">
             <!-- Striped Table -->
             <div class="card card-default shadow">
@@ -272,8 +278,8 @@
               </div>
             </div>
           </div>
+          @endif
         </div>
-
 
       </div>
     </div>

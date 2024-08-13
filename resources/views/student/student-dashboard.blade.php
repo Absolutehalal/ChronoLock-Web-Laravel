@@ -17,17 +17,8 @@
     <title>ChronoLock Student Dashboard</title>
 
     @include('head')
-    
 
-    <!-- TOASTER -->
-    <link href="plugins/toaster/toastr.min.css" rel="stylesheet">
 
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <!-- Toastr JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    <!-- Custom JS -->
-    <script src="js/toastr.js"></script>
 </head>
 
 <body class="navbar-fixed sidebar-fixed" id="body">
@@ -60,8 +51,9 @@
                     <!-- Navigation -->
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"> <i class="mdi mdi-home"></i>
-                            <a href="{{ route('studentIndex') }}">Dashboard</a></li>
+                            <li class="breadcrumb-item">
+                                <a href="{{ route('studentIndex') }}">Dashboard</a>
+                            </li>
                         </ol>
                     </nav>
 
@@ -71,10 +63,169 @@
                     </div>
                 </div>
 
+                <div class="row">
+                    <!-- Frist box -->
+                    <div class="col-xl-3 col-md-6">
+                        <div class="card card-default shadow">
+                            <div class="d-flex p-5">
+                                <div class="icon-md bg-info rounded-circle mr-3">
+                                    <i class="mdi mdi-notebook"></i>
+                                </div>
+                                <div class="text-left">
+                                    <span class="h2 d-block">{{ $enrolledStudent ?? 0}}</span>
+                                    <p>Enrolled Course</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Second box -->
+                    <div class="col-xl-3 col-md-6">
+                        <div class="card card-default shadow">
+                            <div class="d-flex p-5">
+                                <div class="icon-md bg-success rounded-circle mr-3">
+                                    <i class="mdi mdi-alpha-p-box"></i>
+                                </div>
+                                <div class="text-left">
+                                    <span class="h2 d-block">20</span>
+                                    <p>Presents</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Third box -->
+                    <div class="col-xl-3 col-md-6">
+                        <div class="card card-default shadow">
+                            <div class="d-flex p-5">
+                                <div class="icon-md bg-danger rounded-circle mr-3">
+                                    <i class="mdi mdi-alpha-a-box"></i>
+                                </div>
+                                <div class="text-left">
+                                    <span class="h2 d-block">2</span>
+                                    <p>Absents</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Fourth box -->
+                    <div class="col-xl-3 col-md-6">
+                        <div class="card card-default shadow">
+                            <div class="d-flex p-5">
+                                <div class="icon-md bg-warning rounded-circle mr-3">
+                                    <i class="mdi mdi-alpha-l-box"></i>
+                                </div>
+                                <div class="text-left">
+                                    <span class="h2 d-block">3</span>
+                                    <p>Lates</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <!-- START TODAY'S SCHEDULE -->
+                    <div class="col-xl-6">
+                        <div class="card card-default shadow">
+                            <div class="card-header">
+                                <h2>Today's Schedule</h2>
+                            </div>
+                            <div class="card-body">
+                                <ul class="list-group" style="max-height: 330px; overflow-y: auto;">
+                                    @php $counter = 1; @endphp
+                                    @forelse($todaySchedules as $schedule)
+                                    <li class="list-group-item list-group-item-action">
+                                        <div class="media media-sm mb-1">
+                                            <div class="media-left d-flex align-items-center mt-1">
+                                                <span class="mr-2 fw-bold">{{ $counter }}.</span>
+                                                <img src="{{ $schedule->avatar }}" alt="Instructor Image" style="width: auto;" class="rounded">
+                                            </div>
+
+                                            @php
+                                            // Mapping of day numbers
+                                            $dayMapping = [
+                                            0 => 'Sunday',
+                                            1 => 'Monday',
+                                            2 => 'Tuesday',
+                                            3 => 'Wednesday',
+                                            4 => 'Thursday',
+                                            5 => 'Friday',
+                                            6 => 'Saturday'
+                                            ];
+
+                                            // Get the day name from the mapping
+                                            $dayName = $dayMapping[$schedule->day];
+                                            @endphp
+
+                                            <div class="media-body ml-4">
+                                                <span class="title">Instructor: {{ $schedule->instFirstName }} {{ $schedule->instLastName }}</span>
+                                                <p class="text-dark">Course Name: {{ $schedule->courseName }} </p>
+                                                <p class="text-dark">Course Code: {{ $schedule->courseCode }} </p>
+                                                <p class="text-dark">Time: {{ date('h:i A', strtotime($schedule->startTime)) }} -
+                                                    {{ date('h:i A', strtotime($schedule->endTime)) }}
+                                                </p>
+                                                <p class="text-dark">Date: {{ $currentDate }} | {{ $dayName }} </p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    @php $counter++; @endphp
+                                    @empty
+                                    <li class="list-group-item fw-bold">No schedules for today.</li>
+                                    @endforelse
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- END TODAY'S SCHEDULE -->
+                    </div>
+
+                    <div class="col-xl-6">
+                        <div class="card card-default shadow">
+                            <div class="card-header">
+                                <h2>List of Enrolled Course</h2>
+                            </div>
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <h5 class="ml-2">Courses</h5>
+                                    <h5 class="mr-6">Status</h5>
+                                </div>
+                                @php $counter = 1; @endphp
+                                @forelse($listEnrolledCourse as $course)
+                                <ul class="list-group">
+                                    <li class="list-group-item d-flex justify-content-between align-items-center fw-bold">
+                                        {{ $counter }}. {{ $course->courseName }} - {{ $course->courseCode }}
+                                        <span>
+                                            @if($course->status == 'Regular')
+                                            <span class="badge badge-success">Regular</span>
+                                            @elseif($course->status == 'Irregular')
+                                            <span class="badge badge-danger">Irregular</span>
+                                            @elseif($course->status == 'Drop')
+                                            <span class="badge badge-warning">Drop</span>
+                                            @endif
+                                        </span>
+                                    </li>
+                                </ul>
+                                @php $counter++; @endphp
+                                @empty
+                                <li class="list-group-item fw-bold">No enrolled course yet.</li>
+                                @endforelse
+
+                            </div>
+                        </div>
+
+                    </div>
 
 
 
-                <div class="card card-default border border-dark">
+                </div>
+
+            </div>
+
+
+
+
+            <!-- <div class="card card-default shadow border border-dark">
                     <div class="card-header">
                         <h2 style="font-size: 30px;">Class List</h2>
 
@@ -136,16 +287,10 @@
                     </div>
 
 
-                </div>
+                </div> -->
 
 
-            </div>
         </div>
-
-
-    </div>
-    </div>
-    </div>
     </div>
 
 
@@ -154,6 +299,12 @@
     </div>
     </div>
 
-    
+
+    </div>
+    </div>
+    </div>
+    </div>
+
+
 
     @include('footer')
