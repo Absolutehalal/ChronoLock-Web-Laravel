@@ -914,38 +914,69 @@ class UserController extends Controller
     }
     //-------End instructor functions-------
 
-
-
     public function getStudentStatusCountsChart()
     {
-        $id = Auth::id();
-        $userID = DB::table('users')->where('id', $id)->value('idNumber');
+        $ID = Auth::id();
+        $classID = DB::table('users')->where('id', $ID)->value('idNumber');
 
-        $regularCount = DB::table('student_masterlists')
-            ->join('users', 'student_masterlists.userID', '=', 'users.idNumber')
+        // Filtering student status counts based on the joined classID
+        $regularCount = StudentMasterlist::join('users', 'student_masterlists.userID', '=', 'users.idNumber')
+            ->where('users.userType', 'Student')
             ->join('class_lists', 'student_masterlists.classID', '=', 'class_lists.classID')
             ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
-            ->where('student_masterlists.userID', $userID)
-            ->where('users.userType', 'Student')
+            ->where('schedules.userID', $classID)
             ->where('student_masterlists.status', 'Regular')
             ->count();
 
-        $irregularCount = DB::table('student_masterlists')
-            ->join('users', 'student_masterlists.userID', '=', 'users.idNumber')
+        $irregularCount = StudentMasterlist::join('users', 'student_masterlists.userID', '=', 'users.idNumber')
             ->where('users.userType', 'Student')
+            ->join('class_lists', 'student_masterlists.classID', '=', 'class_lists.classID')
+            ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
+            ->where('schedules.userID', $classID)
             ->where('student_masterlists.status', 'Irregular')
             ->count();
 
-        $dropCount = DB::table('student_masterlists')
-            ->join('users', 'student_masterlists.userID', '=', 'users.idNumber')
+        $dropCount = StudentMasterlist::join('users', 'student_masterlists.userID', '=', 'users.idNumber')
             ->where('users.userType', 'Student')
+            ->join('class_lists', 'student_masterlists.classID', '=', 'class_lists.classID')
+            ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
+            ->where('schedules.userID', $classID)
             ->where('student_masterlists.status', 'Drop')
             ->count();
 
         return response()->json([
-            'regular' => $regularCount,
-            'irregular' => $irregularCount,
-            'drop' => $dropCount,
+            'regularCount' => $regularCount,
+            'irregularCount' => $irregularCount,
+            'dropCount' => $dropCount,
         ]);
     }
+
+
+    // public function getStudentStatusCountsChart()
+    // {
+
+    //     $regularCount = DB::table('student_masterlists')
+    //         ->join('users', 'student_masterlists.userID', '=', 'users.idNumber')
+    //         ->where('users.userType', 'Student')
+    //         ->where('student_masterlists.status', 'Regular')
+    //         ->count();
+
+    //     $irregularCount = DB::table('student_masterlists')
+    //         ->join('users', 'student_masterlists.userID', '=', 'users.idNumber')
+    //         ->where('users.userType', 'Student')
+    //         ->where('student_masterlists.status', 'Irregular')
+    //         ->count();
+
+    //     $dropCount = DB::table('student_masterlists')
+    //         ->join('users', 'student_masterlists.userID', '=', 'users.idNumber')
+    //         ->where('users.userType', 'Student')
+    //         ->where('student_masterlists.status', 'Drop')
+    //         ->count();
+
+    //     return response()->json([
+    //         'regularCount' => $regularCount,
+    //         'irregularCount' => $irregularCount,
+    //         'dropCount' => $dropCount,
+    //     ]);
+    // }
 }

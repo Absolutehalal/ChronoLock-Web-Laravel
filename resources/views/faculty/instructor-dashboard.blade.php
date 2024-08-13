@@ -179,8 +179,13 @@
                     .then(data => {
                         var simplePieChartOptions = {
                             chart: {
-                                width: 300,
+                                width: 312,
                                 type: "pie",
+                                animations: {
+                                    enabled: true,
+                                    easing: 'easeinout',
+                                    speed: 800
+                                },
                             },
                             colors: ["#31ce3c", "#e9e300", "#cc0000"],
                             labels: ["Regular", "Irregular", "Drop"],
@@ -191,15 +196,22 @@
                                     radius: 0,
                                 },
                             },
-                            series: [data.regular, data.irregular, data.drop],
+                            series: [data.regularCount, data.irregularCount, data.dropCount],
+                            tooltip: {
+                                y: {
+                                    formatter: function(val) {
+                                        return val + " students";
+                                    }
+                                }
+                            }
                         };
 
-                        var simpleplePieChartRander = new ApexCharts(
+                        var simplePieChartRenderer = new ApexCharts(
                             SimplePieChart,
                             simplePieChartOptions
                         );
 
-                        simpleplePieChartRander.render();
+                        simplePieChartRenderer.render();
                     });
             }
         });

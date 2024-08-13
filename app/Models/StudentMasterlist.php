@@ -13,9 +13,12 @@ class StudentMasterlist extends Model
     protected $fillable = [
         'userID',
         'status',
-        'course',
-        'year',
-        'section',
+        'classID',
 
     ];
+
+    public function classList()
+    {
+        return $this->belongsTo(ClassList::class, 'classID');
+    }
 }
