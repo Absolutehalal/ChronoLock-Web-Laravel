@@ -206,7 +206,7 @@
                 @csrf
                 <tr>
                   <td>{{ $students->formatted_date }}</td>
-                  <td>{{ $students->formatted_time }}</td>
+                  <td>{!! $students->formatted_time !!}</td>
                   <td>{{ $students->firstName }} {{ $students->lastName }}</td>
                   <td>{{ $students->idNumber }}</td>
                   <td>{{ $students->program }}</td>

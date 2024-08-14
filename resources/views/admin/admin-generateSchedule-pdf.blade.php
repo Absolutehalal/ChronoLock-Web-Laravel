@@ -75,7 +75,7 @@
                 <tr>
                     <td>{{ $instructor }}</td>
                     @foreach(['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'] as $day)
-                    <td class="{{ isset($days[$day]) ? 'with-schedule' : '' }}">
+                    <td class="{{ isset($days[$day]) ? 'with-schedule' : '' }}" style="font-size: 15px;">
                             @if(isset($days[$day]))
                                 @foreach($days[$day] as $schedule)
                                     <div>{{ $schedule['time'] }}</div>

@@ -27,9 +27,13 @@ class AttendanceController extends Controller
             ->get();
 
         foreach ($instructors as $instructor) {
-            // 'date and time' is the field in 'attendances' table
+            // Format the date field
             $instructor->formatted_date = Carbon::parse($instructor->date)->format('F j, Y');
-            $instructor->formatted_time = Carbon::parse($instructor->time)->format('g:i A');
+
+            // Check if the time is null, if so, display 'None', otherwise format the time
+            $instructor->formatted_time = $instructor->time
+                ? Carbon::parse($instructor->time)->format('g:i A')
+                : '<span style="color: #cc0000; font-weight: bold;">No Record</span>';
         }
 
         $remarks = Attendance::select('remark')
@@ -49,7 +53,11 @@ class AttendanceController extends Controller
             ->distinct()
             ->get();
 
-        return view('admin.admin-instructorAttendance', ['instructors' => $instructors, 'instructorsID' => $instructorsID, 'remarks' => $remarks]);
+        return view('admin.admin-instructorAttendance', [
+            'instructors' => $instructors,
+            'instructorsID' => $instructorsID,
+            'remarks' => $remarks
+        ]);
     }
 
     public function instructorAttendanceGeneration(Request $request)
@@ -151,9 +159,13 @@ class AttendanceController extends Controller
             ->get();
 
         foreach ($students as $student) {
-            // 'date and time' is the field in 'attendances' table
+            // Format the date field
             $student->formatted_date = Carbon::parse($student->date)->format('F j, Y');
-            $student->formatted_time = Carbon::parse($student->time)->format('g:i A');
+
+            // Check if the time is null, if so, display 'None', otherwise format the time
+            $student->formatted_time = $student->time
+                ? Carbon::parse($student->time)->format('g:i A')
+                : '<span style="color: #cc0000; font-weight: bold;">No Record</span>';
         }
 
         $studentPrograms = Attendance::select('program')

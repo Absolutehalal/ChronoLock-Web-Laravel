@@ -111,7 +111,7 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     Route::put('/activatePendingRFID', [RFIDController::class, 'activatePendingRFID'])->name('activatePendingRFID');
     Route::delete('/deletePendingRFID/{id}', [RFIDController::class, 'deletePendingRFID'])->name('deletePendingRFID');
     Route::get('/pendingRFIDPage', [RFIDController::class, 'pendingRFID'])->name('pendingRFID');
-
+    
     Route::put('/deactivateRFID/{id}', [RFIDController::class, 'deactivateRFID'])->name('deactivateRFID');
     Route::put('/activateRFID/{id}', [RFIDController::class, 'activateRFID'])->name('activateRFID');
     Route::get('/RFIDManagementPage', [RFIDController::class, 'RFIDManagement'])->name('RFIDManagement');

@@ -33,7 +33,12 @@ class FacultyAttendanceExport implements FromCollection, WithHeadings, ShouldAut
         $formattedDate = \DateTime::createFromFormat('Y-m-d', $attendance->date)->format('F j, Y');
 
         // Format the time
-        $formattedTime = \DateTime::createFromFormat('H:i:s', $attendance->time)->format('g:i A');
+        if ($attendance->time) {
+            $formattedTime = \DateTime::createFromFormat('H:i:s', $attendance->time)->format('g:i A');
+        } else {
+            $formattedTime = 'No Record';
+        }
+
 
         // Capitalize the remark
         $remark = strtoupper($attendance->remark);

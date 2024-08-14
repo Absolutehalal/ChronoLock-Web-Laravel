@@ -99,7 +99,7 @@
                   <a class="dropdown-item remark-item filter-inst-status" data-value="{{ $remarks->remark }}" href="#">
                     {{ $remarks->remark }}
                   </a>
-                   </a>
+                  </a>
                   @empty
                   <a class="dropdown-item" data-value="None" href="#">
                     None
@@ -172,7 +172,7 @@
                 @csrf
                 <tr>
                   <td>{{ $instructors->formatted_date }}</td>
-                  <td>{{ $instructors->formatted_time }}</td>
+                  <td>{!! $instructors->formatted_time !!}</td>
                   <td>{{ $instructors->courseCode }}</td>
                   <td>{{ $instructors->program }} - {{ $instructors->year }}{{ $instructors->section }}</td>
                   <td>{{ $instructors->instFirstName }} {{ $instructors->instLastName }}</td>

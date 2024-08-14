@@ -59,7 +59,7 @@
           <div class="card-body card-profile-body">
             @if(Auth::check())
             <div class="profile-avata">
-              <img class="rounded-circle" src="{{ Auth::user()->avatar }}" alt="Avatar Image">
+              <img class="rounded-circle" src="{{ Auth::user()->avatar }}" alt="Avatar Image" style="width: 100px; height: 100px;">
               <span class="h3 d-block mt-3 mb-2">{{ Auth::user()->accountName }}</span>
               <span class="d-block">{{ Auth::user()->email }}</span>
               <span class="d-block">{{ Auth::user()->userType }}</span>
@@ -143,13 +143,31 @@
 
               <div class="row">
                 <div class="col-xl-4">
-                  <span class="text-success d-block fw-bold fs-6">Regular: </span> 0
+                  <h5 class="text-success d-block fw-bold">Regular: </h5>
+
+                  @if($attendanceCounts->regular_count > 0)
+                  <h5>{{ $attendanceCounts->regular_count }}</h5>
+                  @else
+                  <h5>0</h5>
+                  @endif
                 </div>
                 <div class="col-xl-4">
-                  <span class="text-warning d-block fw-bold fs-6">Irregular: </span> 0
+                  <h5 class="text-warning d-block fw-bold">Irregular: </h5>
+
+                  @if($attendanceCounts->irregular_count > 0)
+                  <h5>{{ $attendanceCounts->irregular_count }}</h5>
+                  @else
+                  <h5>0</h5>
+                  @endif
                 </div>
                 <div class="col-xl-4">
-                  <span class="text-danger d-block fw-bold fs-6">Regular: </span> 0
+                  <h5 class="text-danger d-block fw-bold">Drop: </h5>
+
+                  @if($attendanceCounts->drop_count > 0)
+                  <h5>{{ $attendanceCounts->drop_count }}</h5>
+                  @else
+                  <h5>0</h5>
+                  @endif
                 </div>
               </div>
 
@@ -332,8 +350,6 @@
                     <h1>My Class List</h1>
                   </div>
                   <div class="card-body ">
-
-
                     <table id="studentListTable" class="table table-bordered table-hover no-wrap" style="width:100%">
                       <thead class="table-dark">
                         <tr>
@@ -592,10 +608,12 @@
           });
         });
       });
+
       $("#resetBtn").on("click", function(e) {
         e.preventDefault();
         document.getElementById("remarkDropdown").innerHTML = remarkDropdown;
       });
+
       $("#resetButton").on("click", function(e) {
         e.preventDefault();
         document.getElementById("studentStatusDropdown").innerHTML = studentStatusDropdown;

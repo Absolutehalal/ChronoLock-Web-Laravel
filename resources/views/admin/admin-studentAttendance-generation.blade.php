@@ -47,7 +47,7 @@
           <!-- Navigation -->
           <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ route('index') }}">Dashboard</a></li>
+              <li class="breadcrumb-item"><a href="{{ route('index') }}">Dashboard</a></li>
               <li class="breadcrumb-item active"><a href="{{ route('studentAttendanceGeneration') }}">Report Generation</a></li>
               <li class="breadcrumb-item active"><a href="{{ route('studentAttendanceGeneration') }}">Student Attendance</a></li>
             </ol>
@@ -149,7 +149,7 @@
                 <i class="mdi mdi-sort"></i> Filter
               </button>
             </div>
-          </form>
+            </form>
 
             <form action="{{ url('/student-attendance-generation')}}" method="GET">
               <div class="dropdown d-inline-block mb-3 ">
@@ -197,7 +197,13 @@
                 @foreach ($studentDetails as $student)
                 <tr>
                   <td>{{ date('F j, Y', strtotime($student->date)) }}</td>
-                  <td>{{ date('h:i A', strtotime($student->time)) }}</td>
+                  <td>
+                    @if($student->time)
+                    {{ date('h:i A', strtotime($student->time)) }}
+                    @else
+                    <span style="color: #cc0000; font-weight: bold;">No Record</span>
+                    @endif
+                  </td>
                   <td>{{ $student->firstName }} {{ $student->lastName }}</td>
                   <td>{{ $student->idNumber }}</td>
                   <td>{{ $student->program }}</td>

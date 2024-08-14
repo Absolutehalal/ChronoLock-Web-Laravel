@@ -50,6 +50,29 @@ class FacultyAttendanceAndListController extends Controller
                 ->where('users.userType', '=', 'Student')
                 ->count();
 
+            // Count Regular Students
+            $regularStudentCount = DB::table('student_masterlists')
+                ->join('users', 'student_masterlists.userID', '=', 'users.idNumber')
+                ->join('class_lists', 'student_masterlists.classID', '=', 'class_lists.classID')
+                ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
+                ->where('student_masterlists.classID', '=', $decode)
+                ->where('student_masterlists.status', '=', 'REGULAR')
+                ->where('users.userType', '=', 'Student')
+                ->count();
+
+            // Count attendance records
+            $attendanceCounts = DB::table('student_masterlists') // Assuming the table is named 'attendance'
+                ->join('users', 'student_masterlists.userID', '=', 'users.idNumber')
+                ->join('class_lists', 'student_masterlists.classID', '=', 'class_lists.classID')
+                ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
+                ->where('users.userType', '=', 'Student')
+                ->where('student_masterlists.classID', '=', $decode)
+                ->selectRaw('
+                    SUM(CASE WHEN status = "Regular" THEN 1 ELSE 0 END) as regular_count,
+                    SUM(CASE WHEN status = "Irregular" THEN 1 ELSE 0 END) as irregular_count,
+                    SUM(CASE WHEN status = "Drop" THEN 1 ELSE 0 END) as drop_count
+                ')
+                ->first();
 
             // For Filtering 
             $studentRemarks = Attendance::select('remark')
@@ -78,15 +101,19 @@ class FacultyAttendanceAndListController extends Controller
                 ->where('schedules.userID', '=', $userID)
                 ->orderBy('program', 'DESC')
                 ->get();
-            // Class List
+
+            // END Class List
 
             return view('faculty.instructor-class-attendanceAndList', [
-                'classes' => $classes, 'studAttendances' => $studAttendances,
+                'classes' => $classes,
+                'studAttendances' => $studAttendances,
                 'students' => $students,
                 'classListData' => $classListData,
                 'studentCount' => $studentCount,
                 'studentRemarks' => $studentRemarks,
-                'studentStatus' => $studentStatus
+                'studentStatus' => $studentStatus,
+                'regularStudentCount' => $regularStudentCount,
+                'attendanceCounts' => $attendanceCounts,
             ]);
         } catch (\Exception $e) {
 

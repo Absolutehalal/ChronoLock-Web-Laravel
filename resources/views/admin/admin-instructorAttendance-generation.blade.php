@@ -173,7 +173,13 @@
                 @csrf
                 <tr>
                   <td>{{ date('F j, Y', strtotime($instructors->date)) }}</td>
-                  <td>{{ date('h:i A', strtotime($instructors->time)) }}</td>
+                  <td>
+                    @if($instructors->time)
+                    {{ date('h:i A', strtotime($instructors->time)) }}
+                    @else
+                    <span style="color: #cc0000; font-weight: bold;">No Record</span>
+                    @endif
+                  </td>
                   <td>{{ $instructors->courseCode }}</td>
                   <td>{{ $instructors->courseName }}</td>
                   <td>{{ $instructors->program }} - {{ $instructors->year }}{{ $instructors->section }}</td>

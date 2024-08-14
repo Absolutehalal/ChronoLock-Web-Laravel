@@ -156,7 +156,7 @@
                     <div class="col-xl-6">
                         <div class="card card-default shadow">
                             <div class="card-header">
-                                <h2>Today's Schedule</h2>
+                                <h2>Today's Class Schedule</h2>
                             </div>
                             <div class="card-body">
                                 <ul class="list-group" style="max-height: 330px; overflow-y: auto;">

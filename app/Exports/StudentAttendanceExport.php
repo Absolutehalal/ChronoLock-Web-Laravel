@@ -33,7 +33,12 @@ class StudentAttendanceExport implements FromCollection, WithHeadings, ShouldAut
         $formattedDate = \DateTime::createFromFormat('Y-m-d', $attendance->date)->format('F j, Y');
 
         // Format the time
-        $formattedTime = \DateTime::createFromFormat('H:i:s', $attendance->time)->format('g:i A');
+        if ($attendance->time) {
+            $formattedTime = \DateTime::createFromFormat('H:i:s', $attendance->time)->format('g:i A');
+        } else {
+            $formattedTime = 'No Record';
+        }
+
 
         // Capitalize the remark
         $remark = strtoupper($attendance->remark);
@@ -182,16 +187,16 @@ class StudentAttendanceExport implements FromCollection, WithHeadings, ShouldAut
                 $drawingLeft->setOffsetY(5);
                 $drawingLeft->setWorksheet($event->sheet->getDelegate());
 
-               // Insert logo on the right side of the heading
-               $drawingRight = new Drawing();
-               $drawingRight->setName('Logo Right');
-               $drawingRight->setDescription('Logo Right');
-               $drawingRight->setPath(public_path('images/CCS.png')); // Path to your logo image
-               $drawingRight->setHeight(70);
-               $drawingRight->setCoordinates('H1');
-               $drawingRight->setOffsetX(-5);
-               $drawingRight->setOffsetY(5);
-               $drawingRight->setWorksheet($event->sheet->getDelegate());
+                // Insert logo on the right side of the heading
+                $drawingRight = new Drawing();
+                $drawingRight->setName('Logo Right');
+                $drawingRight->setDescription('Logo Right');
+                $drawingRight->setPath(public_path('images/CCS.png')); // Path to your logo image
+                $drawingRight->setHeight(70);
+                $drawingRight->setCoordinates('H1');
+                $drawingRight->setOffsetX(-5);
+                $drawingRight->setOffsetY(5);
+                $drawingRight->setWorksheet($event->sheet->getDelegate());
 
                 // Fit sheet to one page
                 $event->sheet->getPageSetup()->setFitToWidth(1);

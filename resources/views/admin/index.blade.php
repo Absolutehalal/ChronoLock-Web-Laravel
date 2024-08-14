@@ -167,7 +167,7 @@
 
         <!--TABLES-->
         <div class="row">
-        @if(Auth()->user()->userType === 'Admin')
+          @if(Auth()->user()->userType === 'Admin')
           <div class="col-xl-6">
             <!-- Striped Table -->
             <div class="card card-default shadow">
@@ -291,5 +291,6 @@
   </div>
   </div>
   </div>
+
 
   @include('footer')

@@ -941,7 +941,7 @@ class UserController extends Controller
         $today = date('w'); // 'w' returns the numeric representation of the day of the week (0 for Sunday, 6 for Saturday)
 
         // Fetch schedules for today that belong to the authenticated user
-        $todaySchedules = DB::table('student_masterlists')
+        $todaySchedulesCount = DB::table('student_masterlists')
             ->join('class_lists', 'class_lists.classID', '=', 'student_masterlists.classID')
             ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
             ->join('users', 'users.idNumber', '=', 'schedules.userID')
@@ -960,22 +960,31 @@ class UserController extends Controller
             // ->limit(20)
             ->get();
 
+        // TODAY'S SCHEDULE
+        $today = date('w'); // Numeric representation of the day of the week
+        $currentDate = date('F j, Y'); // Current date
+
+        // Fetch schedules for today that belong to the authenticated user
+        $todaySchedules = DB::table('student_masterlists')
+            ->join('class_lists', 'class_lists.classID', '=', 'student_masterlists.classID')
+            ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
+            ->join('users', 'users.idNumber', '=', 'schedules.userID')
+            ->where('student_masterlists.userID', $userID)
+            ->where('schedules.day', $today)
+            ->orderBy('schedules.startTime', 'asc')
+            ->get();
+
         return view('faculty.instructor-dashboard', [
             'classes' => $classes,
             'classCount' => $classCount,
             'studentCount' => $studentCount,
             'todaySchedules' => $todaySchedules,
+            'todaySchedulesCount' => $todaySchedulesCount,
             'latestStudents' => $latestStudents,
+            'currentDate' => $currentDate,
         ]);
     }
 
-
-
-
-    public function instructorAttendanceGeneration()
-    {
-        return view('admin-instructorAttendance-generation');
-    }
     //-------End instructor functions-------
 
     public function getStudentStatusCountsChart()

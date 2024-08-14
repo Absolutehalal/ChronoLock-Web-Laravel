@@ -74,7 +74,7 @@
                                     @if($classCount == 1 || $classCount == 0)
                                     <p>Section Handled</p>
                                     @else($classCount > 1)
-                                    <p>Student's Handled</p>
+                                    <p>Section's Handled</p>
                                     @endif
 
                                     @if($classCount > 0)
@@ -113,14 +113,14 @@
                                     <i class="mdi mdi-calendar-today"></i>
                                 </div>
                                 <div class="text-left">
-                                    @if($todaySchedules == 1 || $todaySchedules == 0)
+                                    @if($todaySchedulesCount == 1 || $todaySchedulesCount == 0)
                                     <p>Today's Schedule</p>
-                                    @else($todaySchedules > 1)
+                                    @else($todaySchedulesCount > 1)
                                     <p>Today's Schedules</p>
                                     @endif
 
-                                    @if($todaySchedules > 0)
-                                    <span class="h2 d-block">{{ $todaySchedules }}</span>
+                                    @if($todaySchedulesCount > 0)
+                                    <span class="h2 d-block">{{ $todaySchedulesCount }}</span>
                                     @else
                                     <span class="h2 d-block" style='color: #cc0000'>None</span>
                                     @endif
@@ -167,56 +167,103 @@
 
                 </div>
 
+                <div class="row">
 
-                <div class="card card-default shadow">
-                    <div class="card-header">
-                        <h2 style="font-size: 30px;">Latest Student Enrollees</h2>
-                        <!-- <div class="dropdown d-inline-block">
-                            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
-                                Section
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                             
-                                <button class="dropdown-item">
-                                    <i class="mdi mdi-arrow-right"></i>
-                                    BSIS 1A
-                                </button>
+                    <!-- START TODAY'S SCHEDULE -->
+                    <div class="col-xl-6">
+                        <div class="card card-default shadow">
+                            <div class="card-header">
+                                <h2>Today's Class Schedule</h2>
                             </div>
-                        </div> -->
-                    </div>
-                    <div class="card-body">
-                        <table id="exampleTable" class="table table-bordered table-hover no-wrap" style="width: 100%;">
-                            <thead class="table-dark">
-                                <tr>
-                                    <th>#</th>
-                                    <th>Name</th>
-                                    <th>Course</th>
-                                    <th>Program</th>
-                                    <th>Year & Section</th>
-                                    <th>Enrollment Date</th>
-                                    <!-- <th>Enrollment Time</th> -->
-                                    <!-- Add other headers as needed -->
-                                </tr>
-                            </thead>
-                            <tbody>
-                            @php $counter = 1; @endphp
-                                @foreach($latestStudents as $enrolee)
-                                <tr>
-                                    <td>{{$counter}}</td>
-                                    <td>{{ $enrolee->firstName }} {{ $enrolee->lastName }}</td>
-                                    <td>{{ $enrolee->courseName }} - {{ $enrolee->courseCode }}</td>
-                                    <td>{{ $enrolee->program }}</td>
-                                    <td>{{ $enrolee->year }}-{{ $enrolee->section }}</td>
-                                    <td>{{ date('F j, Y', strtotime($enrolee->created_at)) }}</td>
-                                    <!-- <td>{{ date('h:i A', strtotime($enrolee->created_at)) }}</td> -->
-                                </tr>
-                                @php $counter++; @endphp
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                            <div class="card-body">
+                                <ul class="list-group" style="max-height: 330px; overflow-y: auto;">
+                                    @php $counter = 1; @endphp
+                                    @forelse($todaySchedules as $schedule)
+                                    <li class="list-group-item list-group-item-action">
+                                        <div class="media media-sm mb-1">
+                                            <div class="media-left d-flex align-items-center mt-1">
+                                                <span class="mr-2 fw-bold">{{ $counter }}.</span>
+                                                <img src="{{ $schedule->avatar }}" alt="Instructor Image" style="width: auto;" class="rounded">
+                                            </div>
 
+                                            @php
+                                            // Mapping of day numbers
+                                            $dayMapping = [
+                                            0 => 'Sunday',
+                                            1 => 'Monday',
+                                            2 => 'Tuesday',
+                                            3 => 'Wednesday',
+                                            4 => 'Thursday',
+                                            5 => 'Friday',
+                                            6 => 'Saturday'
+                                            ];
+
+                                            // Get the day name from the mapping
+                                            $dayName = $dayMapping[$schedule->day];
+                                            @endphp
+
+                                            <div class="media-body ml-4">
+                                                <span class="title">Instructor: {{ $schedule->instFirstName }} {{ $schedule->instLastName }}</span>
+                                                <p class="text-dark">Course Name: {{ $schedule->courseName }} </p>
+                                                <p class="text-dark">Course Code: {{ $schedule->courseCode }} </p>
+                                                <p class="text-dark">Time: {{ date('h:i A', strtotime($schedule->startTime)) }} -
+                                                    {{ date('h:i A', strtotime($schedule->endTime)) }}
+                                                </p>
+                                                <p class="text-dark">Date: {{ $currentDate }} | {{ $dayName }} </p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    @php $counter++; @endphp
+                                    @empty
+                                    <li class="list-group-item fw-bold">No schedules for today.</li>
+                                    @endforelse
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- END TODAY'S SCHEDULE -->
+                    </div>
+
+
+                    <div class="col-xl-6">
+                        <div class="card card-default shadow">
+                            <div class="card-header">
+                                <h2>Latest Student Enrollees</h2>
+                            </div>
+                            <div class="card-body">
+                                <table id="exampleTable" class="table table-bordered table-hover no-wrap" style="width: 100%;">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Name</th>
+                                            <th>Course</th>
+                                            <!-- <th>Program</th> -->
+                                            <th>Year & Section</th>
+                                            <th>Enrollment Date</th>
+                                            <!-- <th>Enrollment Time</th> -->
+                                            <!-- Add other headers as needed -->
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @php $counter = 1; @endphp
+                                        @foreach($latestStudents as $enrolee)
+                                        <tr>
+                                            <td>{{$counter}}</td>
+                                            <td>{{ $enrolee->firstName }} {{ $enrolee->lastName }}</td>
+                                            <td>{{ $enrolee->courseName }} - {{ $enrolee->courseCode }}</td>
+                                           
+                                            <td>{{ $enrolee->program }} | {{ $enrolee->year }}-{{ $enrolee->section }}</td>
+                                            <td>{{ date('F j, Y', strtotime($enrolee->created_at)) }}</td>
+                                            <!-- <td>{{ date('h:i A', strtotime($enrolee->created_at)) }}</td> -->
+                                        </tr>
+                                        @php $counter++; @endphp
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
 
             </div>
 

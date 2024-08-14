@@ -15,6 +15,7 @@ class UserLogController extends Controller
           $adminLogs = DB::table('user_logs')
           ->join('users', 'user_logs.userID', '=', 'users.idNumber')
           ->where('users.userType', '=', 'Admin')
+          ->orderBy('date', 'desc')
           ->get();
 
           foreach ($adminLogs as $adminLog) {

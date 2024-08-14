@@ -42,6 +42,7 @@
     box-sizing: border-box;
 }
 
+
 #month-picker, .flatpickr-monthSelect-theme-dark .flatpickr-monthSelect-month {
     color: #000000;
     font-weight: bold;

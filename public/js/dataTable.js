@@ -1,7 +1,7 @@
 // DataTable
 $(document).ready(function () {
     var table = $("#exampleTable").DataTable({
-        // scrollX: true,
+        // scrollX: true,?
         // "searching": false, order: [[0, 'asc']],
         rowReorder: true,
         pagingType: "simple_numbers",
@@ -36,9 +36,9 @@ $(document).ready(function () {
         }
     });
 
-// Start Logs Table------------
+    // Start Logs Table------------
 
-//admin table
+    //admin table
 
     var adminTable = $("#adminTable").DataTable({
         // scrollX: true,
@@ -54,6 +54,8 @@ $(document).ready(function () {
         language: {
             searchPlaceholder: "Search Here",
         },
+        order: [[0, "desc"]],
+        columnDefs: [{ type: "id", targets: 1 }],
     });
 
     // Highlight search term
@@ -76,11 +78,11 @@ $(document).ready(function () {
         }
     });
 
- // end admin table
+    // end admin table
 
- //lab-In-Charge table
+    //lab-In-Charge table
 
-   var labInChargeTable = $("#labInChargeTable").DataTable({
+    var labInChargeTable = $("#labInChargeTable").DataTable({
         // scrollX: true,
         // "searching": false, order: [[0, 'asc']],
         rowReorder: true,
@@ -94,6 +96,10 @@ $(document).ready(function () {
         language: {
             searchPlaceholder: "Search Here",
         },
+        order: [[0, "desc"]], // Change 0 to the correct index if your date column is different
+        columnDefs: [
+            { type: "id", targets: 1 }, // Add this to specify the column type if your dates are in the first column
+        ],
     });
 
     // Highlight search term
@@ -116,171 +122,181 @@ $(document).ready(function () {
         }
     });
 
- //end lab-In-Charge table
+    //end lab-In-Charge table
 
- //technician table
+    //technician table
 
- var technicianTable = $("#technicianTable").DataTable({
-    // scrollX: true,
-    // "searching": false, order: [[0, 'asc']],
-    rowReorder: true,
-    pagingType: "simple_numbers",
-    responsive: true,
-    rowReorder: {
-        selector: "td:nth-child(2)",
-    },
-    // stateSave: false,
-    mark: true,
-    language: {
-        searchPlaceholder: "Search Here",
-    },
-});
+    var technicianTable = $("#technicianTable").DataTable({
+        // scrollX: true,
+        // "searching": false, order: [[0, 'asc']],
+        rowReorder: true,
+        pagingType: "simple_numbers",
+        responsive: true,
+        rowReorder: {
+            selector: "td:nth-child(2)",
+        },
+        // stateSave: false,
+        mark: true,
+        language: {
+            searchPlaceholder: "Search Here",
+        },
+        order: [[0, "desc"]], // Change 0 to the correct index if your date column is different
+        columnDefs: [
+            { type: "id", targets: 1 }, // Add this to specify the column type if your dates are in the first column
+        ],
+    });
 
-// Highlight search term
-technicianTable.on("draw", function () {
-    var body = $(technicianTable.table().body());
-    var searchTerm = technicianTable.search();
+    // Highlight search term
+    technicianTable.on("draw", function () {
+        var body = $(technicianTable.table().body());
+        var searchTerm = technicianTable.search();
 
-    // Clear previous highlights
-    body.unmark();
+        // Clear previous highlights
+        body.unmark();
 
-    if (searchTerm) {
-        // Highlight new search term in specific columns (excluding the Actions column)
-        body.find("td").each(function () {
-            var cell = $(this);
-            // Highlight in all columns except the last one (assuming it's the Actions column)
-            if (!cell.hasClass("action-cell")) {
-                cell.mark(searchTerm);
-            }
-        });
-    }
-});
+        if (searchTerm) {
+            // Highlight new search term in specific columns (excluding the Actions column)
+            body.find("td").each(function () {
+                var cell = $(this);
+                // Highlight in all columns except the last one (assuming it's the Actions column)
+                if (!cell.hasClass("action-cell")) {
+                    cell.mark(searchTerm);
+                }
+            });
+        }
+    });
 
- //end technician table
+    //end technician table
 
- //faculty table
+    //faculty table
 
- var facultyTable = $("#facultyTable").DataTable({
-    // scrollX: true,
-    // "searching": false, order: [[0, 'asc']],
-    rowReorder: true,
-    pagingType: "simple_numbers",
-    responsive: true,
-    rowReorder: {
-        selector: "td:nth-child(2)",
-    },
-    // stateSave: false,
-    mark: true,
-    language: {
-        searchPlaceholder: "Search Here",
-    },
-});
+    var facultyTable = $("#facultyTable").DataTable({
+        // scrollX: true,
+        // "searching": false, order: [[0, 'asc']],
+        rowReorder: true,
+        pagingType: "simple_numbers",
+        responsive: true,
+        rowReorder: {
+            selector: "td:nth-child(2)",
+        },
+        // stateSave: false,
+        mark: true,
+        language: {
+            searchPlaceholder: "Search Here",
+        },
+        order: [[0, "desc"]], // Change 0 to the correct index if your date column is different
+        columnDefs: [
+            { type: "id", targets: 1 }, // Add this to specify the column type if your dates are in the first column
+        ],
+    });
 
-// Highlight search term
-facultyTable.on("draw", function () {
-    var body = $(facultyTable.table().body());
-    var searchTerm = facultyTable.search();
+    // Highlight search term
+    facultyTable.on("draw", function () {
+        var body = $(facultyTable.table().body());
+        var searchTerm = facultyTable.search();
 
-    // Clear previous highlights
-    body.unmark();
+        // Clear previous highlights
+        body.unmark();
 
-    if (searchTerm) {
-        // Highlight new search term in specific columns (excluding the Actions column)
-        body.find("td").each(function () {
-            var cell = $(this);
-            // Highlight in all columns except the last one (assuming it's the Actions column)
-            if (!cell.hasClass("action-cell")) {
-                cell.mark(searchTerm);
-            }
-        });
-    }
-});
- 
- //end faculty table
+        if (searchTerm) {
+            // Highlight new search term in specific columns (excluding the Actions column)
+            body.find("td").each(function () {
+                var cell = $(this);
+                // Highlight in all columns except the last one (assuming it's the Actions column)
+                if (!cell.hasClass("action-cell")) {
+                    cell.mark(searchTerm);
+                }
+            });
+        }
+    });
 
- //student table
+    //end faculty table
 
- var studentTable = $("#studentTable").DataTable({
-    // scrollX: true,
-    // "searching": false, order: [[0, 'asc']],
-    rowReorder: true,
-    pagingType: "simple_numbers",
-    responsive: true,
-    rowReorder: {
-        selector: "td:nth-child(2)",
-    },
-    // stateSave: false,
-    mark: true,
-    language: {
-        searchPlaceholder: "Search Here",
-    },
-});
+    //student table
 
-// Highlight search term
-studentTable.on("draw", function () {
-    var body = $(studentTable.table().body());
-    var searchTerm = studentTable.search();
+    var studentTable = $("#studentTable").DataTable({
+        // scrollX: true,
+        // "searching": false, order: [[0, 'asc']],
+        rowReorder: true,
+        pagingType: "simple_numbers",
+        responsive: true,
+        rowReorder: {
+            selector: "td:nth-child(2)",
+        },
+        // stateSave: false,
+        mark: true,
+        language: {
+            searchPlaceholder: "Search Here",
+        },
+        order: [[0, "desc"]], // Change 0 to the correct index if your date column is different
+        columnDefs: [
+            { type: "id", targets: 1 }, // Add this to specify the column type if your dates are in the first column
+        ],
+    });
 
-    // Clear previous highlights
-    body.unmark();
+    // Highlight search term
+    studentTable.on("draw", function () {
+        var body = $(studentTable.table().body());
+        var searchTerm = studentTable.search();
 
-    if (searchTerm) {
-        // Highlight new search term in specific columns (excluding the Actions column)
-        body.find("td").each(function () {
-            var cell = $(this);
-            // Highlight in all columns except the last one (assuming it's the Actions column)
-            if (!cell.hasClass("action-cell")) {
-                cell.mark(searchTerm);
-            }
-        });
-    }
-});
+        // Clear previous highlights
+        body.unmark();
 
- //end student table
+        if (searchTerm) {
+            // Highlight new search term in specific columns (excluding the Actions column)
+            body.find("td").each(function () {
+                var cell = $(this);
+                // Highlight in all columns except the last one (assuming it's the Actions column)
+                if (!cell.hasClass("action-cell")) {
+                    cell.mark(searchTerm);
+                }
+            });
+        }
+    });
 
-// End Logs Table------------
+    //end student table
 
-//----Start Class List Table-----
+    // End Logs Table------------
 
-var studentListTable = $("#studentListTable").DataTable({
-    // scrollX: true,
-    // "searching": false, order: [[0, 'asc']],
-    rowReorder: true,
-    pagingType: "simple_numbers",
-    responsive: true,
-    rowReorder: {
-        selector: "td:nth-child(2)",
-    },
-    // stateSave: false,
-    mark: true,
-    language: {
-        searchPlaceholder: "Search Here",
-    },
-});
+    //----Start Class List Table-----
 
-// Highlight search term
-studentListTable.on("draw", function () {
-    var body = $(studentListTable.table().body());
-    var searchTerm = studentListTable.search();
+    var studentListTable = $("#studentListTable").DataTable({
+        // scrollX: true,
+        // "searching": false, order: [[0, 'asc']],
+        rowReorder: true,
+        pagingType: "simple_numbers",
+        responsive: true,
+        rowReorder: {
+            selector: "td:nth-child(2)",
+        },
+        // stateSave: false,
+        mark: true,
+        language: {
+            searchPlaceholder: "Search Here",
+        },
+    });
 
-    // Clear previous highlights
-    body.unmark();
+    // Highlight search term
+    studentListTable.on("draw", function () {
+        var body = $(studentListTable.table().body());
+        var searchTerm = studentListTable.search();
 
-    if (searchTerm) {
-        // Highlight new search term in specific columns (excluding the Actions column)
-        body.find("td").each(function () {
-            var cell = $(this);
-            // Highlight in all columns except the last one (assuming it's the Actions column)
-            if (!cell.hasClass("action-cell")) {
-                cell.mark(searchTerm);
-            }
-        });
-    }
-});
+        // Clear previous highlights
+        body.unmark();
 
+        if (searchTerm) {
+            // Highlight new search term in specific columns (excluding the Actions column)
+            body.find("td").each(function () {
+                var cell = $(this);
+                // Highlight in all columns except the last one (assuming it's the Actions column)
+                if (!cell.hasClass("action-cell")) {
+                    cell.mark(searchTerm);
+                }
+            });
+        }
+    });
 
-//----End Class List Table-----
-
+    //----End Class List Table-----
 
     // Initialize DataTable
     var attendanceTable = $("#AttendanceTable").DataTable({
@@ -333,6 +349,9 @@ studentListTable.on("draw", function () {
         noCalendar: true,
         dateFormat: "h:i K", // 'h' for 12-hour format, 'i' for minutes, 'K' for AM/PM
         time_24hr: false, // Use 12-hour time format with AM/PM
+        defaultHour: 8, // Set default hour (e.g., 9 AM)
+        defaultMinute: 0, // Set default minute (e.g., 00 minutes)
+        minDate: "today",
     };
 
     // Initialize flatpickr instances
@@ -409,10 +428,9 @@ studentListTable.on("draw", function () {
         attendanceTable.draw();
     });
 
-
     //ADMIN FILTERS START-----------
 
-//admin logs filter
+    //admin logs filter
 
     $(".filter-admin-id").on("click", function (e) {
         e.preventDefault();
@@ -429,99 +447,99 @@ studentListTable.on("draw", function () {
         $(this).addClass("active");
     });
 
-//end admin logs filter
+    //end admin logs filter
 
-//lab-In-Charge logs filter
+    //lab-In-Charge logs filter
 
-$(".filter-labInCharge-id").on("click", function (e) {
-    e.preventDefault();
-    var labInChargeID = $(this).data("value");
+    $(".filter-labInCharge-id").on("click", function (e) {
+        e.preventDefault();
+        var labInChargeID = $(this).data("value");
 
-    // Update the selected inst_name in a hidden input (if needed)
-    $("#selectedLabInChargeID").val(labInChargeID);
+        // Update the selected inst_name in a hidden input (if needed)
+        $("#selectedLabInChargeID").val(labInChargeID);
 
-    // Filter DataTable based on the selected inst_name
-    labInChargeTable.column(1).search(labInChargeID).draw();
+        // Filter DataTable based on the selected inst_name
+        labInChargeTable.column(1).search(labInChargeID).draw();
 
-    // Toggle active class for visual indication
-    $(".filter-labInCharge-id").removeClass("active");
-    $(this).addClass("active");
-});
+        // Toggle active class for visual indication
+        $(".filter-labInCharge-id").removeClass("active");
+        $(this).addClass("active");
+    });
 
-//end lab-In-Charge logs filter
+    //end lab-In-Charge logs filter
 
-//technician logs filter
+    //technician logs filter
 
-$(".filter-technician-id").on("click", function (e) {
-    e.preventDefault();
-    var technicianID = $(this).data("value");
+    $(".filter-technician-id").on("click", function (e) {
+        e.preventDefault();
+        var technicianID = $(this).data("value");
 
-    // Update the selected inst_name in a hidden input (if needed)
-    $("#selectedTechnicianID").val(technicianID);
+        // Update the selected inst_name in a hidden input (if needed)
+        $("#selectedTechnicianID").val(technicianID);
 
-    // Filter DataTable based on the selected inst_name
-    technicianTable.column(1).search(technicianID).draw();
+        // Filter DataTable based on the selected inst_name
+        technicianTable.column(1).search(technicianID).draw();
 
-    // Toggle active class for visual indication
-    $(".filter-technician-id").removeClass("active");
-    $(this).addClass("active");
-});
+        // Toggle active class for visual indication
+        $(".filter-technician-id").removeClass("active");
+        $(this).addClass("active");
+    });
 
-//end technician logs filter
+    //end technician logs filter
 
-//faculty logs filter
+    //faculty logs filter
 
-$(".filter-faculty-id").on("click", function (e) {
-    e.preventDefault();
-    var facultyID = $(this).data("value");
+    $(".filter-faculty-id").on("click", function (e) {
+        e.preventDefault();
+        var facultyID = $(this).data("value");
 
-    // Update the selected inst_name in a hidden input (if needed)
-    $("#selectedFacultyID").val(facultyID);
+        // Update the selected inst_name in a hidden input (if needed)
+        $("#selectedFacultyID").val(facultyID);
 
-    // Filter DataTable based on the selected inst_name
-    facultyTable.column(1).search(facultyID).draw();
+        // Filter DataTable based on the selected inst_name
+        facultyTable.column(1).search(facultyID).draw();
 
-    // Toggle active class for visual indication
-    $(".filter-faculty-id").removeClass("active");
-    $(this).addClass("active");
-});
+        // Toggle active class for visual indication
+        $(".filter-faculty-id").removeClass("active");
+        $(this).addClass("active");
+    });
 
-//end faculty logs filter
+    //end faculty logs filter
 
-//student filter
+    //student filter
 
-$(".filter-student-id").on("click", function (e) {
-    e.preventDefault();
-    var studentID = $(this).data("value");
+    $(".filter-student-id").on("click", function (e) {
+        e.preventDefault();
+        var studentID = $(this).data("value");
 
-    // Update the selected inst_name in a hidden input (if needed)
-    $("#selectedStudentID").val(studentID);
+        // Update the selected inst_name in a hidden input (if needed)
+        $("#selectedStudentID").val(studentID);
 
-    // Filter DataTable based on the selected inst_name
-    studentTable.column(1).search(studentID).draw();
+        // Filter DataTable based on the selected inst_name
+        studentTable.column(1).search(studentID).draw();
 
-    // Toggle active class for visual indication
-    $(".filter-student-id").removeClass("active");
-    $(this).addClass("active");
-});
+        // Toggle active class for visual indication
+        $(".filter-student-id").removeClass("active");
+        $(this).addClass("active");
+    });
 
-//end student filter
+    //end student filter
 
-//start schedule faculty filter
+    //start schedule faculty filter
 
-$(".filter-faculty-id").on("click", function (e) {
-    e.preventDefault();
-    var facultyID = $(this).data("value");
+    $(".filter-faculty-id").on("click", function (e) {
+        e.preventDefault();
+        var facultyID = $(this).data("value");
 
-    // Update the selected inst_name in a hidden input (if needed)
-    $("#selectedFacultyID").val(facultyID);
+        // Update the selected inst_name in a hidden input (if needed)
+        $("#selectedFacultyID").val(facultyID);
 
-    // Toggle active class for visual indication
-    $(".filter-faculty-id").removeClass("active");
-    $(this).addClass("active");
-});
+        // Toggle active class for visual indication
+        $(".filter-faculty-id").removeClass("active");
+        $(this).addClass("active");
+    });
 
-//end schedule faculty filter
+    //end schedule faculty filter
     //ADMIN FILTERS END-------------
 
     // STUDENT FILTERS
@@ -572,7 +590,7 @@ $(".filter-faculty-id").on("click", function (e) {
         $(this).addClass("active");
     });
 
-// Class Lists Status
+    // Class Lists Status
     $(".filter-student-status").on("click", function (e) {
         e.preventDefault();
         var studentStatus = $(this).data("value");
@@ -581,8 +599,11 @@ $(".filter-faculty-id").on("click", function (e) {
         $("#selectedStudentStatus").val(studentStatus);
 
         // Filter DataTable based on the selected status
-       
-        studentListTable.column(4).search("^" + studentStatus + "$", true, false).draw();
+
+        studentListTable
+            .column(4)
+            .search("^" + studentStatus + "$", true, false)
+            .draw();
 
         // Toggle active class for visual indication
         $(".filter-student-status").removeClass("active");
@@ -633,6 +654,7 @@ $(".filter-faculty-id").on("click", function (e) {
 
         $("#selectedInstName").val("");
         $("#selectedInstStatus").val("");
+        $("#selectedStudentStatus").val("");
 
         $("#selectedDate").val("");
         $("#selectedTime").val("");
@@ -642,5 +664,10 @@ $(".filter-faculty-id").on("click", function (e) {
 
         // Remove active class from all filter options
         $(".dropdown-item").removeClass("active");
+    });
+
+    $("#resetButton").on("click", function (e) {
+        e.preventDefault();
+        studentListTable.search("").columns().search("").draw();
     });
 });
