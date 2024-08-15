@@ -136,7 +136,6 @@ Route::group(['middleware' => ['auth', 'faculty']], function () {
     Route::get('/student-counts-chart', [UserController::class, 'getStudentCountsByClass'])->name('getStudentCountsByClass');
 
 
-
     //--------START Class List  ROUTES---------
     Route::get('/instructorClassList', [ScheduleController::class, 'classListManagement'])->name('classListManagement');
     Route::get('/edit-Class-List/{id}', [ScheduleController::class, 'editClassList'])->name('editClassList');

@@ -27,6 +27,7 @@ class UserLogController extends Controller
           $labInChargeLogs = DB::table('user_logs')
           ->join('users', 'user_logs.userID', '=', 'users.idNumber')
           ->where('users.userType', '=', 'Lab-in-Charge')
+          ->orderBy('date', 'desc')
           ->get();
 
           foreach ($labInChargeLogs as $labInChargeLog) {
@@ -38,6 +39,7 @@ class UserLogController extends Controller
           $technicianLogs = DB::table('user_logs')
           ->join('users', 'user_logs.userID', '=', 'users.idNumber')
           ->where('users.userType', '=', 'Technician')
+          ->orderBy('date', 'desc')
           ->get();
 
           foreach ($technicianLogs as $technicianLog) {
@@ -49,6 +51,7 @@ class UserLogController extends Controller
           $facultyLogs = DB::table('user_logs')
           ->join('users', 'user_logs.userID', '=', 'users.idNumber')
           ->where('users.userType', '=', 'Faculty')
+          ->orderBy('date', 'desc')
           ->get();
 
           foreach ($facultyLogs as $facultyLog) {
@@ -60,6 +63,7 @@ class UserLogController extends Controller
           $studentLogs = DB::table('user_logs')
           ->join('users', 'user_logs.userID', '=', 'users.idNumber')
           ->where('users.userType', '=', 'Student')
+          ->orderBy('date', 'desc')
           ->get();
 
           foreach ($studentLogs as $studentLog) {

@@ -54,7 +54,7 @@ $(document).ready(function () {
         language: {
             searchPlaceholder: "Search Here",
         },
-        order: [[0, "desc"]],
+        order: [[0, "asc"]],
         columnDefs: [{ type: "id", targets: 1 }],
     });
 
@@ -96,10 +96,8 @@ $(document).ready(function () {
         language: {
             searchPlaceholder: "Search Here",
         },
-        order: [[0, "desc"]], // Change 0 to the correct index if your date column is different
-        columnDefs: [
-            { type: "id", targets: 1 }, // Add this to specify the column type if your dates are in the first column
-        ],
+        order: [[0, "asc"]],
+        columnDefs: [{ type: "id", targets: 1 }],
     });
 
     // Highlight search term
@@ -140,10 +138,8 @@ $(document).ready(function () {
         language: {
             searchPlaceholder: "Search Here",
         },
-        order: [[0, "desc"]], // Change 0 to the correct index if your date column is different
-        columnDefs: [
-            { type: "id", targets: 1 }, // Add this to specify the column type if your dates are in the first column
-        ],
+        order: [[0, "asc"]],
+        columnDefs: [{ type: "id", targets: 1 }],
     });
 
     // Highlight search term
@@ -184,10 +180,8 @@ $(document).ready(function () {
         language: {
             searchPlaceholder: "Search Here",
         },
-        order: [[0, "desc"]], // Change 0 to the correct index if your date column is different
-        columnDefs: [
-            { type: "id", targets: 1 }, // Add this to specify the column type if your dates are in the first column
-        ],
+        order: [[0, "asc"]],
+        columnDefs: [{ type: "id", targets: 1 }],
     });
 
     // Highlight search term
@@ -228,10 +222,8 @@ $(document).ready(function () {
         language: {
             searchPlaceholder: "Search Here",
         },
-        order: [[0, "desc"]], // Change 0 to the correct index if your date column is different
-        columnDefs: [
-            { type: "id", targets: 1 }, // Add this to specify the column type if your dates are in the first column
-        ],
+        order: [[0, "asc"]],
+        columnDefs: [{ type: "id", targets: 1 }],
     });
 
     // Highlight search term

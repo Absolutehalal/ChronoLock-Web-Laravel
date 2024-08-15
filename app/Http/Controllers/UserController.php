@@ -62,7 +62,7 @@ class UserController extends Controller
             ->get(); // This will fetch only 15 users
 
         $tblRFID = DB::table('rfid_accounts')
-            ->join('users', 'rfid_accounts.id', '=', 'users.id')
+            ->join('users', 'rfid_accounts.RFID_Code', '=', 'users.RFID_Code')
             ->orderBy('rfid_accounts.id', 'desc')
             ->take(15)
             ->get();
@@ -89,8 +89,10 @@ class UserController extends Controller
     //user management page
     public function userManagement()
     {
-        $users = User::all()
-            ->where('userType', '!=', 'Admin');
+        $users = DB::table('users')
+            ->where('userType', '!=', 'Admin')
+            ->orderBy('id', 'desc')
+            ->get();
         return view('admin.admin-user-management', ['users' => $users]);
     }
 

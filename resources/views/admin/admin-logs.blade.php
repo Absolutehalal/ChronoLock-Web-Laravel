@@ -56,18 +56,28 @@
         </div>
 
         <nav>
-          <div class="nav nav-tabs justify-content-center" id="nav-tab" role="tablist">
-            <button class="nav-link active" id="nav-admin-tab" data-bs-toggle="tab" data-bs-target="#nav-admin" type="button" role="tab" aria-controls="nav-admin" aria-selected="true">Admin</button>
-            <button class="nav-link" id="nav-labInCharge-tab" data-bs-toggle="tab" data-bs-target="#nav-labInCharge" type="button" role="tab" aria-controls="nav-labInCharge" aria-selected="false">Lab-in-Charge</button>
-            <button class="nav-link" id="nav-technician-tab" data-bs-toggle="tab" data-bs-target="#nav-technician" type="button" role="tab" aria-controls="nav-technician" aria-selected="false">Technician</button>
-            <button class="nav-link" id="nav-faculty-tab" data-bs-toggle="tab" data-bs-target="#nav-faculty" type="button" role="tab" aria-controls="nav-faculty" aria-selected="false">Faculty</button>
-            <button class="nav-link" id="nav-student-tab" data-bs-toggle="tab" data-bs-target="#nav-student" type="button" role="tab" aria-controls="nav-student" aria-selected="false">Students</button>
+          <div class="nav nav-tabs justify-content-start" id="nav-tab" role="tablist">
+            <button class="nav-link active shadow" id="nav-admin-tab" data-bs-toggle="tab" data-bs-target="#nav-admin" type="button" role="tab" aria-controls="nav-admin" aria-selected="true">
+              <i class="mdi mdi-account-box text-danger"></i> Admin
+            </button>
+            <button class="nav-link shadow" id="nav-labInCharge-tab" data-bs-toggle="tab" data-bs-target="#nav-labInCharge" type="button" role="tab" aria-controls="nav-labInCharge" aria-selected="false">
+              <i class="mdi mdi-account-box text-danger"></i> Lab-in-Charge
+            </button>
+            <button class="nav-link shadow" id="nav-technician-tab" data-bs-toggle="tab" data-bs-target="#nav-technician" type="button" role="tab" aria-controls="nav-technician" aria-selected="false">
+              <i class="mdi mdi-account-box text-danger"></i> Technician
+            </button>
+            <button class="nav-link shadow" id="nav-faculty-tab" data-bs-toggle="tab" data-bs-target="#nav-faculty" type="button" role="tab" aria-controls="nav-faculty" aria-selected="false">
+              <i class="mdi mdi-account-box text-danger"></i> Faculty
+            </button>
+            <button class="nav-link shadow" id="nav-student-tab" data-bs-toggle="tab" data-bs-target="#nav-student" type="button" role="tab" aria-controls="nav-student" aria-selected="false">
+              <i class="mdi mdi-account-box text-danger"></i> Students
+            </button>
           </div>
         </nav>
         <div class="tab-content" id="nav-tabContent">
           <div class="tab-pane fade show active" id="nav-admin" role="tabpanel" aria-labelledby="nav-admin-tab">
 
-            <div class="card card-default">
+            <div class="card card-default shadow">
               <div class="card-header">
                 <h1>Admin Logs</h1>
               </div>
@@ -108,15 +118,17 @@
                     </tr>
                   </thead>
                   <tbody>
+                    @php $counter = 1; @endphp
                     @foreach ($adminLogs as $adminLog)
                     <tr>
-                      <td> {{$adminLog->idLogs}} </td>
+                      <td> {{$counter}} </td>
                       <td> {{$adminLog->userID}} </td>
                       <td> {{$adminLog->action}} </td>
                       <td> {{$adminLog->formatted_date}} </td>
                       <td> {{$adminLog->formatted_time}} </td>
 
                     </tr>
+                    @php $counter++; @endphp
                     @endforeach
 
                   </tbody>
@@ -171,15 +183,17 @@
                     </tr>
                   </thead>
                   <tbody>
+                    @php $counter = 1; @endphp
                     @foreach ($labInChargeLogs as $labInChargeLog)
                     <tr>
-                      <td> {{$labInChargeLog->idLogs}} </td>
+                      <td> {{$counter}} </td>
                       <td> {{$labInChargeLog->userID}} </td>
                       <td> {{$labInChargeLog->action}} </td>
                       <td> {{$labInChargeLog->formatted_date}} </td>
                       <td> {{$labInChargeLog->formatted_time}} </td>
 
                     </tr>
+                    @php $counter++; @endphp
                     @endforeach
 
                   </tbody>
@@ -232,15 +246,17 @@
                     </tr>
                   </thead>
                   <tbody>
+                    @php $counter = 1; @endphp
                     @foreach ($technicianLogs as $technicianLog)
                     <tr>
-                      <td> {{$technicianLog->idLogs}} </td>
+                      <td> {{$counter}} </td>
                       <td> {{$technicianLog->userID}} </td>
                       <td> {{$technicianLog->action}} </td>
                       <td> {{$technicianLog->formatted_date}} </td>
                       <td> {{$technicianLog->formatted_time}} </td>
 
                     </tr>
+                    @php $counter++; @endphp
                     @endforeach
 
                   </tbody>
@@ -291,15 +307,16 @@
                     </tr>
                   </thead>
                   <tbody>
+                    @php $counter = 1; @endphp
                     @foreach ($facultyLogs as $facultyLog)
                     <tr>
-                      <td> {{$facultyLog->idLogs}} </td>
+                      <td> {{$counter}} </td>
                       <td> {{$facultyLog->userID}} </td>
                       <td> {{$facultyLog->action}} </td>
                       <td> {{$facultyLog->formatted_date}} </td>
                       <td> {{$facultyLog->formatted_time}} </td>
-
                     </tr>
+                    @php $counter++; @endphp
                     @endforeach
 
                   </tbody>
@@ -350,15 +367,17 @@
                     </tr>
                   </thead>
                   <tbody>
+                    @php $counter = 1; @endphp
                     @foreach ($studentLogs as $studentLog)
                     <tr>
-                      <td> {{$studentLog->idLogs}} </td>
+                      <td> {{$counter}} </td>
                       <td> {{$studentLog->userID}} </td>
                       <td> {{$studentLog->action}} </td>
                       <td> {{$studentLog->formatted_date}} </td>
                       <td> {{$studentLog->formatted_time}} </td>
 
                     </tr>
+                    @php $counter++; @endphp
                     @endforeach
 
                   </tbody>

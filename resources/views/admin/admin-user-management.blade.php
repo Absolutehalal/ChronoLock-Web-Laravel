@@ -119,9 +119,11 @@
                 </tr>
               </thead>
               <tbody>
+                @php $counter = 1; @endphp
+
                 @foreach ($users as $user)
                 <tr>
-                  <td> {{$user->id}} </td>
+                  <td> {{$counter}} </td>
                   <td> {{$user->firstName}} </td>
                   <td> {{$user->lastName}} </td>
                   <td> {{$user->userType}} </td>
@@ -153,6 +155,8 @@
                     </div>
                   </th>
                 </tr>
+
+                @php $counter++; @endphp
                 @endforeach
               </tbody>
             </table>
@@ -250,7 +254,7 @@
                 <div class="form-group">
                   <label>Temporary Password</label>
                   <div class="input-group">
-                    <input type="password" class="form-control border border-dark" id="password" name="password" placeholder="Generate Password" readonly="true">
+                    <input type="password" class="form-control border border-dark" id="password" name="password" placeholder="Generate Password" disabled">
                     <i class="fa fa-eye-slash" id="show-password"></i>
                     <div class="input-group-append">
                       <button class="btn btn-primary btn-sm fw-bold" type="button" id="generate-password">Generate</button>

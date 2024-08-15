@@ -59,7 +59,7 @@
           <div class="card-body card-profile-body">
             @if(Auth::check())
             <div class="profile-avata">
-              <img class="rounded-circle" src="{{ Auth::user()->avatar }}" alt="Avatar Image" style="width: 100px; height: 100px;">
+              <img class="rounded-circle" src="{{ Auth::user()->avatar }}" alt="Avatar Image" style="width: 150px; height: 150px;">
               <span class="h3 d-block mt-3 mb-2">{{ Auth::user()->accountName }}</span>
               <span class="d-block">{{ Auth::user()->email }}</span>
               <span class="d-block">{{ Auth::user()->userType }}</span>
@@ -68,9 +68,13 @@
             <ul class="nav nav-profile-follow">
               <li class="nav-item">
                 <div class="nav-link">
+                  @if($studentCount == 1)
+                  <span class="text-dark d-block">Student:</span>
+                  @else($studentCount > 1)
                   <span class="text-dark d-block">Students:</span>
+                  @endif
 
-                  <span class="h5 d-block"> {{ $studentCount ?? 0}} </span>
+                  <span class="h5 d-block"> {{ $studentCount }} </span>
 
                 </div>
               </li>

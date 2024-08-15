@@ -255,11 +255,11 @@
                       <tr>
                         <td> {{$counter}} </td>
                         <td> {{$rfid->RFID_Code}} </td>
-                        <td> {{$rfid->accountName}} </td>
+                        <td> {{$rfid->firstName}} {{$rfid->lastName}} </td>
                         <td> {{$rfid->userType}} </td>
                         <td>
                           @if($rfid->RFID_Status == 'Activated')
-                          <span class="badge badge-success">Present</span>
+                          <span class="badge badge-success">Activated</span>
                           @elseif($rfid->RFID_Status == 'Deactivated')
                           <span class="badge badge-danger">Deactivated</span>
                           @endif

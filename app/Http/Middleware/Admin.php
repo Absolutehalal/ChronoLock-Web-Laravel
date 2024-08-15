@@ -56,7 +56,7 @@ class Admin
 
         // If the user is not authorized, show an unauthorized access alert
         Alert::warning('401', 'ERROR Access.')
-            ->autoClose(10000)
+            ->autoClose(5000)
             ->timerProgressBar()
             ->showCloseButton();
 

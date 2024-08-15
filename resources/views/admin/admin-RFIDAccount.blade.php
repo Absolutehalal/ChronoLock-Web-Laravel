@@ -95,7 +95,7 @@
                   <td>{{ $RFID_Account->userType }} </td>
                   <td>
                     @if($RFID_Account->RFID_Status == 'Activated')
-                    <span class="badge badge-success">Present</span>
+                    <span class="badge badge-success">Activated</span>
                     @elseif($RFID_Account->RFID_Status == 'Deactivated')
                     <span class="badge badge-danger">Deactivated</span>
                     @endif
@@ -109,12 +109,12 @@
                       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
                         @if ($RFID_Account->RFID_Status == "Activated")
-                        <button class="dropdown-item deactivateBtn" type="button" data-toggle="modal" data-target="#deactivateRFIDModal" value="{{ $RFID_Account->id }}">
+                        <button class="dropdown-item deactivateBtn btn-sm" type="button" data-toggle="modal" data-target="#deactivateRFIDModal" value="{{ $RFID_Account->id }}">
                           <i class="mdi mdi-close text-danger"></i>
                           Deactivate
                         </button>
                         @elseif ($RFID_Account->RFID_Status == "Deactivated")
-                        <button class="dropdown-item activateBtn" type="button" data-toggle="modal" data-target="#activateRFIDModal" value="{{ $RFID_Account->id }}">
+                        <button class="dropdown-item activateBtn btn-sm" type="button" data-toggle="modal" data-target="#activateRFIDModal" value="{{ $RFID_Account->id }}">
                           <i class="mdi mdi-check text-info"></i>
                           Activate
                         </button>
@@ -168,8 +168,8 @@
 
         <!-- Modal Footer -->
         <div class="modal-footer">
-          <button type="button" class="btn btn-outline-danger btn-pill" id="close" data-dismiss="modal">Cancel</button>
-          <button type="submit" class="btn btn-outline-info btn-pill activate"></i>Activate</button>
+          <button type="button" class="btn btn-danger " id="close" data-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-info  activate"></i>Activate</button>
         </div>
 
         </form>
