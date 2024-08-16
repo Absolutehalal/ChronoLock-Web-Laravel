@@ -149,7 +149,7 @@
                                 </div> -->
                             </div>
                             <div class="card-body">
-                                <div id="simple-pie-chart" class=""></div>
+                                <div id="donut-chart-2" class=""></div>
                             </div>
                         </div>
                     </div>

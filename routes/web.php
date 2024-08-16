@@ -21,6 +21,10 @@ Route::get('/', function () {
     return view('login');
 });
 
+if (config('APP_ENV') !== 'production') {
+    Route::get('/only-admin-registration', [UserController::class, 'onlyAdmin'])->name('onlyAdmin');
+}
+
 // Auth::routes();
 
 Route::get('/login', [GoogleAuthController::class, 'login'])->name('login');
@@ -111,7 +115,7 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     Route::put('/activatePendingRFID', [RFIDController::class, 'activatePendingRFID'])->name('activatePendingRFID');
     Route::delete('/deletePendingRFID/{id}', [RFIDController::class, 'deletePendingRFID'])->name('deletePendingRFID');
     Route::get('/pendingRFIDPage', [RFIDController::class, 'pendingRFID'])->name('pendingRFID');
-    
+
     Route::put('/deactivateRFID/{id}', [RFIDController::class, 'deactivateRFID'])->name('deactivateRFID');
     Route::put('/activateRFID/{id}', [RFIDController::class, 'activateRFID'])->name('activateRFID');
     Route::get('/RFIDManagementPage', [RFIDController::class, 'RFIDManagement'])->name('RFIDManagement');
@@ -134,7 +138,6 @@ Route::group(['middleware' => ['auth', 'faculty']], function () {
     Route::get('/get-faculty-schedules', [ScheduleController::class, 'getFacultySchedules'])->name('getFacultySchedules');
     Route::get('/student-status-counts-chart', [UserController::class, 'getStudentStatusCountsChart'])->name('getStudentStatusCountsChart');
     Route::get('/student-counts-chart', [UserController::class, 'getStudentCountsByClass'])->name('getStudentCountsByClass');
-
 
     //--------START Class List  ROUTES---------
     Route::get('/instructorClassList', [ScheduleController::class, 'classListManagement'])->name('classListManagement');

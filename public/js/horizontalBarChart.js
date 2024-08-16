@@ -1,20 +1,27 @@
-document.addEventListener("DOMContentLoaded", function () {
+$(document).ready(function () {
     var horBarChart2 = document.querySelector("#horizontal-bar-chart2");
+
     if (horBarChart2 !== null) {
-        fetch("/student-counts-chart")
-            .then((response) => response.json())
-            .then((data) => {
-                if (data.length === 0) {
+        fetchData();
+    }
+
+    function fetchData() {
+        $.ajax({
+            type: "GET",
+            url: "/student-counts-chart",
+            dataType: "json",
+            success: function (response) {
+                if (response.length === 0) {
                     horBarChart2.innerHTML =
-                    "<div style='text-align: center; font-size:30px; height: 310px; padding-top: 100px; color: #cc0000''>No data available.</div>";
+                        "<div style='text-align: center; font-size:30px; height: 310px; padding-top: 100px; color: #cc0000;'>No data available.</div>";
                     return;
                 }
 
                 var categories = [];
                 var seriesData = [];
 
-                data.forEach((item) => {
-                    categories.push(item.class_info); // Use the formatted class info
+                response.forEach((item) => {
+                    categories.push(item.class_info);
                     seriesData.push(item.total);
                 });
 
@@ -52,7 +59,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         },
                     },
                     dataLabels: {
-                        enabled: false,
+                        enabled: true,
                     },
                     stroke: {
                         show: true,
@@ -68,9 +75,9 @@ document.addEventListener("DOMContentLoaded", function () {
                         categories: categories,
                     },
                     tooltip: {
-                        theme: "dark",
+                        theme: "light",
                         x: {
-                            show: false,
+                            show: true,
                         },
                         y: {
                             title: {
@@ -82,10 +89,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 var chart = new ApexCharts(horBarChart2, options);
                 chart.render();
-            })
-            .catch((error) => {
-                horBarChart2.innerHTML = "<p>Error loading data</p>";
+            },
+            error: function (error) {
+                horBarChart2.innerHTML =
+                    "<div style='text-align: center; font-size:30px; height: 310px; padding-top: 100px; color: #cc0000;'>Error Loading Data.</div>";
                 console.error("Error fetching data:", error);
-            });
+            },
+        });
     }
 });

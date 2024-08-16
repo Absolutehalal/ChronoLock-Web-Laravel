@@ -23,6 +23,10 @@ use Carbon\Carbon;
 
 class UserController extends Controller
 {
+    public function onlyAdmin()
+    {
+        return "This route is for demonstration purposes only and is only available in the local environment.";
+    }
 
     public function import_excel(Request $request)
     {
@@ -1026,6 +1030,8 @@ class UserController extends Controller
         ]);
     }
 
+
+
     public function getStudentCountsByClass()
     {
         $authID = Auth::id();
@@ -1047,37 +1053,4 @@ class UserController extends Controller
 
         return response()->json($studentCounts);
     }
-
-
-
-
-
-
-    // public function getStudentStatusCountsChart()
-    // {
-
-    //     $regularCount = DB::table('student_masterlists')
-    //         ->join('users', 'student_masterlists.userID', '=', 'users.idNumber')
-    //         ->where('users.userType', 'Student')
-    //         ->where('student_masterlists.status', 'Regular')
-    //         ->count();
-
-    //     $irregularCount = DB::table('student_masterlists')
-    //         ->join('users', 'student_masterlists.userID', '=', 'users.idNumber')
-    //         ->where('users.userType', 'Student')
-    //         ->where('student_masterlists.status', 'Irregular')
-    //         ->count();
-
-    //     $dropCount = DB::table('student_masterlists')
-    //         ->join('users', 'student_masterlists.userID', '=', 'users.idNumber')
-    //         ->where('users.userType', 'Student')
-    //         ->where('student_masterlists.status', 'Drop')
-    //         ->count();
-
-    //     return response()->json([
-    //         'regularCount' => $regularCount,
-    //         'irregularCount' => $irregularCount,
-    //         'dropCount' => $dropCount,
-    //     ]);
-    // }
 }

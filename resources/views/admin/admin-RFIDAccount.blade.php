@@ -167,9 +167,9 @@
         </div> <!-- Modal Boday End-->
 
         <!-- Modal Footer -->
-        <div class="modal-footer">
+        <div class="modal-footer justify-content-center">
           <button type="button" class="btn btn-danger " id="close" data-dismiss="modal">Cancel</button>
-          <button type="submit" class="btn btn-info  activate"></i>Activate</button>
+          <button type="submit" class="btn btn-info activate"></i>Activate</button>
         </div>
 
         </form>
@@ -204,9 +204,9 @@
         </div> <!-- Modal Boday End-->
 
         <!-- Modal Footer -->
-        <div class="modal-footer">
-          <button type="button" class="btn btn-outline-info btn-pill" id="close" data-dismiss="modal">Cancel</button>
-          <button type="submit" class="btn btn-outline-danger btn-pill deactivate"></i>Deactivate</button>
+        <div class="modal-footer justify-content-center">
+          <button type="button" class="btn btn-danger " id="close" data-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-info deactivate"></i>Deactivate</button>
         </div>
 
         </form>

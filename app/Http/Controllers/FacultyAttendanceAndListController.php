@@ -18,6 +18,7 @@ class FacultyAttendanceAndListController extends Controller
         try {
             $decode = base64_decode($id);
 
+            // Instructor My Attendances - Students
             $studAttendances = DB::table('student_masterlists')
                 ->join('users', 'student_masterlists.userID', '=', 'users.idNumber')
                 ->join('class_lists', 'student_masterlists.classID', '=', 'class_lists.classID')
@@ -30,6 +31,7 @@ class FacultyAttendanceAndListController extends Controller
                 ->where('users.userType', '=', 'Student')
                 ->get();
 
+            // Instructor My Class List - Students
             $students = DB::table('student_masterlists')
                 ->join('users', 'student_masterlists.userID', '=', 'users.idNumber')
                 ->join('class_lists', 'student_masterlists.classID', '=', 'class_lists.classID')
