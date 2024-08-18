@@ -313,7 +313,7 @@ class ScheduleController extends Controller
                     $classList->semester = $request->input('semester');
                     $classList->enrollmentKey = $request->input('enrollmentKey');
                     $classList->save();
-                    $schedule->scheduleStatus = 'Has Schedule';
+                    $schedule->scheduleStatus = 'With Class';
                     $schedule->update();
 
                     // Start Logs

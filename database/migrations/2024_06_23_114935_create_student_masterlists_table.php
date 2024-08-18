@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('student_masterlists', function (Blueprint $table) {
             $table->id('MIT_ID');
             $table->string('userID', 50);
-            $table->foreign('userID')->references('idNumber')->on('users')->cascadeOnUpdate();
+            $table->foreign('userID')->references('idNumber')->on('users')->cascadeOnUpdate()->cascadeOnDelete();
             $table->string('status', 50)->nullable();
             $table->unsignedBigInteger('classID')->nullable();
             $table->foreign('classID')->references('classID')->on('class_lists')->cascadeOnUpdate()->cascadeOnDelete();
