@@ -156,7 +156,7 @@
         <div class="modal-body">
           <form method="post">
             @csrf
-            @method('delete')
+            @method('put')
             <input type="hidden" id="activateRFID_ID" class="id form-control ">
             <div class="row">
               <i class="mdi mdi-check text-info" style="text-align:center; font-size:50px; padding:1rem;"></i>
@@ -193,7 +193,7 @@
         <div class="modal-body">
           <form method="post">
             @csrf
-            @method('delete')
+            @method('put')
             <input type="hidden" id="deactivateRFID_ID" class="id form-control ">
             <div class="row">
               <i class="mdi mdi-close text-danger" style="text-align:center; font-size:50px; padding:1rem;"></i>

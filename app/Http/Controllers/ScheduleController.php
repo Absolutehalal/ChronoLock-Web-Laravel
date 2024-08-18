@@ -212,6 +212,93 @@ class ScheduleController extends Controller
         }
     }
 
+    public function noClassClassList($id)
+    {
+        try {
+            $classList = DB::table('class_lists')
+            ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
+            ->where('class_lists.classID', $id)  
+            ->select('schedules.scheduleID') // Select the scheduleID to identify the schedule record
+            ->first();
+        
+        if ($classList) {
+            DB::table('schedules')
+                ->where('scheduleID', $classList->scheduleID)
+                ->update(['scheduleStatus' => 'Without Class']);
+                // Start Logs
+                $ID = Auth::id();
+                $userID = DB::table('users')->where('id', $ID)->value('idNumber');
+                date_default_timezone_set("Asia/Manila");
+                $date = date("Y-m-d");
+                $time = date("H:i:s");
+                $action = "Set a schedule to Without Classes";
+                DB::table('user_logs')->insert([
+                    'userID' => $userID,
+                    'action' => $action,
+                    'date' => $date,
+                    'time' => $time,
+                ]);
+                // END Logs
+
+                return response()->json([
+                    'status' => 200,
+                ]);
+            } else {
+                return response()->json([
+                    'status' => 404,
+                ]);
+            }
+        } catch (\Exception $e) {
+            Alert::error('Error', 'Something went wrong. Please try again later.')
+                ->autoClose(5000)
+                ->showCloseButton();
+            return redirect()->back();
+        }
+    }
+
+    public function withClassClassList($id)
+    {
+        try {
+            $classList = DB::table('class_lists')
+            ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
+            ->where('class_lists.classID', $id)  
+            ->select('schedules.scheduleID') // Select the scheduleID to identify the schedule record
+            ->first();
+        
+        if ($classList) {
+            DB::table('schedules')
+                ->where('scheduleID', $classList->scheduleID)
+                ->update(['scheduleStatus' => 'With Class']);
+                // Start Logs
+                $ID = Auth::id();
+                $userID = DB::table('users')->where('id', $ID)->value('idNumber');
+                date_default_timezone_set("Asia/Manila");
+                $date = date("Y-m-d");
+                $time = date("H:i:s");
+                $action = "Set a schedule to With Classes";
+                DB::table('user_logs')->insert([
+                    'userID' => $userID,
+                    'action' => $action,
+                    'date' => $date,
+                    'time' => $time,
+                ]);
+                // END Logs
+
+                return response()->json([
+                    'status' => 200,
+                ]);
+            } else {
+                return response()->json([
+                    'status' => 404,
+                ]);
+            }
+        } catch (\Exception $e) {
+            Alert::error('Error', 'Something went wrong. Please try again later.')
+                ->autoClose(5000)
+                ->showCloseButton();
+            return redirect()->back();
+        }
+    }
 
     public function classSchedules(Request $request)
     {

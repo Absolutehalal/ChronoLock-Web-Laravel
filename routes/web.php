@@ -142,6 +142,8 @@ Route::group(['middleware' => ['auth', 'faculty']], function () {
     //--------START Class List  ROUTES---------
     Route::get('/instructorClassList', [ScheduleController::class, 'classListManagement'])->name('classListManagement');
     Route::get('/edit-Class-List/{id}', [ScheduleController::class, 'editClassList'])->name('editClassList');
+    Route::put('/noClass-Class-List/{id}', [ScheduleController::class, 'noClassClassList'])->name('noClassClassList');
+    Route::put('/withClass-Class-List/{id}', [ScheduleController::class, 'withClassClassList'])->name('withClassClassList');
     Route::put('/update-Class-List/{id}', [ScheduleController::class, 'updateClassList'])->name('updateClassList');
     Route::delete('/delete-Class-List/{id}', [ScheduleController::class, 'deleteClassList'])->name('deleteClassList');
     //--------END Class List  ROUTES---------
