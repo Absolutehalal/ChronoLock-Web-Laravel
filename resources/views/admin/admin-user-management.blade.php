@@ -146,10 +146,7 @@
                           Force Delete
                         </button>
 
-                        <form id="deleteForm" action="" method="POST" style="display: none;">
-                          @csrf
-                          @method('GET')
-                        </form>
+
                       </div>
                     </div>
                   </th>
@@ -168,30 +165,6 @@
   </div>
   </div>
 
-  <script>
-    // Add event listener to the delete buttons
-    document.querySelectorAll('.deleteForceBtn').forEach(button => {
-      button.addEventListener('click', function(event) {
-        event.preventDefault();
-        const userId = this.getAttribute('value');
-        const deleteForm = document.getElementById('deleteForm');
-        deleteForm.action = `/forceDelete/${userId}`;
-        Swal.fire({
-          title: 'Are you sure?',
-          text: "You won't be able to revert this!",
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
-          confirmButtonText: 'Yes, delete it!'
-        }).then((result) => {
-          if (result.isConfirmed) {
-            deleteForm.submit();
-          }
-        });
-      });
-    });
-  </script>
 
 
   <!-- Add User Modal -->
@@ -409,6 +382,32 @@
     </div>
   </div>
 
+
+  <script>
+    // Add event listener to the delete buttons
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('.deleteForceBtn').forEach(button => {
+        button.addEventListener('click', function() {
+          const id = this.value;
+
+          Swal.fire({
+            title: 'Are you sure?',
+            text: "This action cannot be undone!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.href = "/forceDelete/" + id;
+            }
+          });
+        });
+      });
+    });
+  </script>
+
   <script>
     const firstName = document.getElementById("firstName");
     const lastName = document.getElementById("lastName");
@@ -466,6 +465,7 @@
           'userType': $(userType).val(),
           'email': $(email).val(),
           'password': $(password).val(),
+          'idNumber': $(idNumber).val(),
         }
 
         $.ajaxSetup({
@@ -488,6 +488,8 @@
               $('#lastNameError').addClass('error');
               $('#userTypeError').html("");
               $('#userTypeError').addClass('error');
+              $('#idNumberError').html("");
+              $('#idNumberError').addClass('error');
               $('#emailError').html("");
               $('#emailError').addClass('error');
               $('#passwordError').html("");
@@ -501,6 +503,9 @@
               $.each(response.errors.userType, function(key, err_value) {
                 $('#userTypeError').append('<li>' + err_value + '</li>');
               });
+              $.each(response.errors.idNumber, function(key, err_value) {
+                $('#idNumberError').append('<li>' + err_value + '</li>');
+              });
               $.each(response.errors.email, function(key, err_value) {
                 $('#emailError').append('<li>' + err_value + '</li>');
               });
@@ -512,6 +517,7 @@
               $('#firstNameError').html("");
               $('#lastNameError').html("");
               $('#userTypeError').html("");
+              $('#idNumberError').html("");
               $('#emailError').html("");
               $('#passwordError').html("");
               Swal.fire({
@@ -539,6 +545,7 @@
               $('#firstNameError').html("");
               $('#lastNameError').html("");
               $('#userTypeError').html("");
+              $('#idNumberError').html("");
               $('#emailError').html("");
               $('#passwordError').html("");
               $('.addUser').text('Save');
@@ -548,10 +555,24 @@
                 text: "Email already Exist. Please use a another Email.",
               });
 
+            } else if (response.status === 100) {
+              $('#firstNameError').html("");
+              $('#lastNameError').html("");
+              $('#userTypeError').html("");
+              $('#idNumberError').html("");
+              $('#emailError').html("");
+              $('#passwordError').html("");
+              $('.addUser').text('Save');
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "ID already Exist. Please use a another ID.",
+              });
             } else if (response.status == 300) {
               $('#firstNameError').html("");
               $('#lastNameError').html("");
               $('#userTypeError').html("");
+              $('#idNumberError').html("");
               $('#emailError').html("");
               $('#passwordError').html("");
               $('.addUser').text('Save');
@@ -633,6 +654,8 @@
               $('#editFirstNameError').addClass('error');
               $('#editLastNameError').html("");
               $('#editLastNameError').addClass('error');
+              $('#editUserIdError').html("");
+              $('#editUserIdError').addClass('error');
               $('#editUserTypeError').html("");
               $('#editUserTypeError').addClass('error');
               $('#editEmailError').html("");
@@ -700,6 +723,17 @@
               });
               $('.updateUser').text('Update');
               $("#updateUserModal .close").click()
+            } else if (response.status === 101) {
+              $('#editFirstNameError').html("");
+              $('#editLastNameError').html("");
+              $('#editUserTypeError').html("");
+              $('#editEmailError').html("");
+              $('#editUserIdError').html("");s
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "ID already Exist. Please use a another ID.",
+              });
             }
           }
         });

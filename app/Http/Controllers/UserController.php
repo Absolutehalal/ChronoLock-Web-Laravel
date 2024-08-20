@@ -182,11 +182,14 @@ class UserController extends Controller
             'updateLastName' => 'required',
             'updateUserType' => 'required',
             'updateEmail' => 'required|email',
+            'userIdNumber' => 'required|unique:users,idNumber',
         ]);
 
         $email = $request->get('updateEmail');
         $emailDomain = substr(strrchr($email, "@"), 1);
         $checkEmail = User::where('email', 'LIKE',  $email)->value('email');
+        $checkIdNumber = User::where('idNumber', $request->input('idNumber'))->first();
+
 
         if ($validator->fails()) {
             return response()->json([
@@ -197,6 +200,10 @@ class UserController extends Controller
             if ($emailDomain !== 'my.cspc.edu.ph') {
                 return response()->json([
                     'status' => 300,
+                ]);
+            } elseif ($checkIdNumber) {
+                return response()->json([
+                    'status' => 101,
                 ]);
             } else if ($checkEmail == $email) {
                 $user = User::find($id);
@@ -211,6 +218,7 @@ class UserController extends Controller
                     $user->lastName = $request->input('updateLastName');
                     $user->userType = $request->input('updateUserType');
                     $user->email = $request->input('updateEmail');
+                    $user->idNumber = $request->input('userIdNumber');
                     $user->update();
 
                     // Start Logs
@@ -218,12 +226,13 @@ class UserController extends Controller
                     $inputLastName =  $request->input('updateLastName');
                     $inputUserType = $request->input('updateUserType');
                     $inputEmail =  $request->input('updateEmail');
+                    $inputIdNumber = $request->input('userIdNumber');
                     $id = Auth::id();
                     $userID = DB::table('users')->where('id', $id)->value('idNumber');
                     date_default_timezone_set("Asia/Manila");
                     $date = date("Y-m-d");
                     $time = date("H:i:s");
-                    if (($inputFirstName == $firstName) && ($inputLastName == $lastName) && ($inputUserType == $userType) && ($inputEmail == $email)) {
+                    if (($inputFirstName == $firstName) && ($inputLastName == $lastName) && ($inputUserType == $userType) && ($inputEmail == $email) && ($inputIdNumber == $idNumber)) {
                         $action = "Attempt update on $email account : $userType User ID - $idNumber";
                     } else {
                         $action = "Updated $email account : $inputUserType User ID - $idNumber";
@@ -282,10 +291,12 @@ class UserController extends Controller
             'userType' => 'required',
             'email' => 'required|email',
             'password' => 'required',
+            'idNumber' => 'required|unique:users,idNumber',
         ]);
         $email = $request->get('email');
         $emailDomain = substr(strrchr($email, "@"), 1);
         $checkEmail = User::where('email', 'LIKE',  $email)->value('email');
+        $checkIdNumber = User::where('idNumber', $request->input('idNumber'))->first();
 
 
         if ($validator->fails()) {
@@ -302,12 +313,17 @@ class UserController extends Controller
                 return response()->json([
                     'status' => 100,
                 ]);
+            } elseif ($checkIdNumber) {
+                return response()->json([
+                    'status' => 101,
+                ]);
             } else {
                 $user = new User;
                 $user->firstName = $request->input('firstName');
                 $user->lastName = $request->input('lastName');
                 $user->userType = $request->input('userType');
                 $user->email = $request->input('email');
+                $user->idNumber = $request->input('idNumber');
                 $user->password = $request->input('password');
                 $user->save();
 

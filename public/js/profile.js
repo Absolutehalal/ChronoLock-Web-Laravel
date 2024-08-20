@@ -64,10 +64,22 @@ $(document).ready(function () {
             dataType: "json",
             success: function (response) {
                 if (response.status === 400) {
-                    $("#firstNameError").html("").addClass("error");
-                    $("#lastNameError").html("").addClass("error");
-                    $("#idNumberError").html("").addClass("error");
-                    $("#emailError").html("").addClass("error");
+                    // $("#firstNameError").html("").addClass("error");
+                    // $("#lastNameError").html("").addClass("error");
+                    // $("#idNumberError").html("").addClass("error");
+                    // $("#emailError").html("").addClass("error");
+
+                    // $('#firstNameError').addClass('error');
+                    // $('#firstNameError').html("");
+
+                    // $('#lastNameError').addClass('error');
+                    // $('#lastNameError').html("");
+
+                    $('#idNumberError').addClass('error');
+                    $('#idNumberError').html("");
+
+                    $('#emailError').addClass('error');
+                    $('#emailError').html("");
 
                     $.each(response.errors.idNumber, function (key, err_value) {
                         $("#idNumberError").append(
