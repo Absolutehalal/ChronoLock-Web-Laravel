@@ -59,11 +59,15 @@ class ProfileController extends Controller
             ]);
         } else {
 
+            // Validate that the email has the required domain
+            $email = $request->input('profile_email');
+
             // Check if the idNumber is already taken by another user
             $checkIdNumber = User::where('idNumber', $request->input('profile_idNumber'))
                 ->where('id', '!=', $id)
                 ->first();
 
+            // Check if the email is already taken by another user
             $checkEmail = User::where('email', $request->input('profile_email'))
                 ->where('id', '!=', $id)
                 ->first();
@@ -73,17 +77,23 @@ class ProfileController extends Controller
                     'status' => 409,
                     'message' => 'ID Number has already been taken.',
                 ]);
-            }
-
-            if ($checkEmail) {
+            } else if ($checkEmail) {
                 return response()->json([
                     'status' => 409,
                     'message' => 'Email has already been taken.',
+                ]);
+            } else if (!str_ends_with($email, '@my.cspc.edu.ph')) {
+                return response()->json([
+                    'status' => 409,
+                    'message' => 'Use your CSPC email.',
                 ]);
             }
 
             // Get the user by ID
             $user = User::find($id);
+            $updatedID = DB::table('users')->where('id', $id)->value('id');
+            $profileEmail = DB::table('users')->where('id', $updatedID)->value('email');
+            $profileIDNum = DB::table('users')->where('id', $updatedID)->value('idNumber');
 
             if ($user) {
                 // Update the user's profile fields
@@ -92,6 +102,39 @@ class ProfileController extends Controller
                 $user->idNumber = $request->get('profile_idNumber');
                 $user->email = $request->get('profile_email');
                 $user->save();
+
+                // Start Logs
+                $inputProfileEmail = $request->input('profile_email');
+                $inputProfileIDNum = $request->input('profile_idNumber');
+
+                $ID = Auth::id();
+                $userID = DB::table('users')->where('id', $ID)->value('idNumber');
+                date_default_timezone_set("Asia/Manila");
+                $date = date("Y-m-d");
+                $time = date("H:i:s");
+
+                // Determine actions based on changes
+                $emailChanged = $inputProfileEmail != $profileEmail;
+                $idNumChanged = $inputProfileIDNum != $profileIDNum;
+
+                if ($emailChanged && $idNumChanged) {
+                    $action = "Updated both email and ID number";
+                } elseif ($emailChanged) {
+                    $action = "Updated email from $profileEmail to $inputProfileEmail";
+                } elseif ($idNumChanged) {
+                    $action = "Updated ID number from $profileIDNum to $inputProfileIDNum";
+                } else {
+                    $action = "Attempt to update profile";
+                }
+
+                // Insert log entry
+                DB::table('user_logs')->insert([
+                    'userID' => $userID,
+                    'action' => $action,
+                    'date' => $date,
+                    'time' => $time,
+                ]);
+                // END Logs
 
                 return response()->json([
                     'status' => 200,

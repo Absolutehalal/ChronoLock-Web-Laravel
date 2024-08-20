@@ -208,6 +208,7 @@ class UserController extends Controller
                     ->where('id', '!=', $id)
                     ->first();
 
+                // Check if the email is already taken by another user
                 $checkEmail = User::where('email', $request->input('userEmail'))
                     ->where('id', '!=', $id)
                     ->first();
@@ -217,9 +218,7 @@ class UserController extends Controller
                         'status' => 409,
                         'message' => 'ID Number has already been taken.',
                     ]);
-                }
-
-                if ($checkEmail) {
+                } else if ($checkEmail) {
                     return response()->json([
                         'status' => 409,
                         'message' => 'Email has already been taken.',
