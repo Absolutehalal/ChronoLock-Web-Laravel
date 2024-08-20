@@ -19,14 +19,12 @@ use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\DataTables;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Hash;
+use Laravel\Socialite\Facades\Socialite;
 
 
 class UserController extends Controller
 {
-    public function onlyAdmin()
-    {
-        return "This route is for demonstration purposes only and is only available in the local environment.";
-    }
 
     public function import_excel(Request $request)
     {
@@ -53,6 +51,74 @@ class UserController extends Controller
             return redirect()->intended('/userManagementPage');
         }
     }
+
+    // FOR HIDDEN ROUTE
+    public function onlyAdmin()
+    {
+        return view('hidden-route');
+    }
+
+    public function addOnlyAdmin(Request $request)
+    {
+        try {
+            // Validate the request data
+            $validator = Validator::make($request->all(), [
+                'email' => 'required|email|unique:users,email',
+                'password' => 'required|min:6',
+                'idNumber' => 'required|unique:users,idNumber',
+            ]);
+
+            if ($validator->fails()) {
+                // Check if the email exists in the users table
+                $userEmailExists = User::where('email', $request->get('email'))->exists();
+
+                // Check if the idNumber exists in the users table
+                $userIDExists = User::where('idNumber', $request->get('idNumber'))->exists();
+
+                if ($userEmailExists && $userIDExists) {
+                    Alert::info("Info", "Email and ID Number already exist.")
+                        ->autoClose(3000)
+                        ->timerProgressBar()
+                        ->showCloseButton();
+
+                    return redirect()->back();
+                } elseif ($userEmailExists) {
+                    Alert::info("Info", "Email already exists.")
+                        ->autoClose(3000)
+                        ->timerProgressBar()
+                        ->showCloseButton();
+
+                    return redirect()->back();
+                } elseif ($userIDExists) {
+                    Alert::info("Info", "ID Number already exists.")
+                        ->autoClose(3000)
+                        ->timerProgressBar()
+                        ->showCloseButton();
+
+                    return redirect()->back();
+                }
+            }
+
+
+            // Create the new user in the database
+            $user = User::create([
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'idNumber' => $request->idNumber,
+                'userType' => 'Admin', // Assuming you want to add another admin user
+            ]);
+
+            return redirect('/login');
+        } catch (\Exception $e) {
+
+            Alert::error("Error", "Something went wrong. Please try again.")
+                ->autoClose(3000)
+                ->timerProgressBar()
+                ->showCloseButton();
+        }
+    }
+    // FOR HIDDEN ROUTE
+
 
 
     //admin functions

@@ -21,7 +21,7 @@
 
     <script defer src="{{asset('js/password.js')}}"></script>
 
-    <title>ChronoLock Login</title>
+    <title>Admin Registration Only</title>
 </head>
 
 <body>
@@ -53,81 +53,81 @@
                 <div class="col-md-6 right-box">
                     <div class="row align-items-center">
                         <div class="header-text  text-center">
-                            <h2 style="font-weight: 600; font-size: 40px;">Hello, User!</h2>
-                            <p>Please login your credentials.</p>
+                            <h2 style="font-weight: 600; font-size: 40px;">Register Admin</h2>
+                            <p>Please register your admin credentials.</p>
                         </div>
 
                         @include('sweetalert::alert')
 
-                        <!-- <div>
-                            @if($errors->any())
-                            <div class="col-lg-12">
-                                @foreach($errors->all() as $error)
-                                <div class="alert alert-danger">{{$error}}</div>
-                                @endforeach
-                            </div>
-                            @endif
-
-                            @if(session()->has('error'))
-                            <div class="alert alert-danger">{{session('error')}}</div>
-                            @endif
-
-                            @if(session()->has('success'))
-                            <div class="alert alert-success">{{session('success')}}</div>
-                            @endif
-                        </div> -->
-
-
-
-                        <form method="post" action="{{ route('login.user') }}" onsubmit="return validatePassword()">
+                        <form method="post" id="createAdminForm" action="{{ route('addOnlyAdmin') }}" onsubmit="return validatePassword()">
                             @csrf
+                            <label class="form-label fw-bold">ID Number</label>
+                            <div class="form-group mb-3 position-relative">
+                                <input id="idNumber" name="idNumber" type="text" class="form-control form-control-lg bg-light border-dark fs-6" placeholder="ID Number" required>
+                            </div>
+
+                            <label class="form-label fw-bold">Admin Email</label>
                             <div class="form-group mb-3">
-                                <label class="form-label fw-bold">Email</label>
                                 <input id="email" name="email" type="text" class="form-control form-control-lg bg-light border-dark fs-6" placeholder="Email address" required>
                             </div>
-                            <label class="form-label fw-bold">Password</label>
+
+                            <label class="form-label fw-bold">Admin Password</label>
                             <div class="form-group mb-1 position-relative">
                                 <input id="password" name="password" type="password" class="form-control form-control-lg bg-light border-dark fs-6" placeholder="Password" required>
                                 <i class="fa fa-eye-slash" id="show-password"></i>
                             </div>
 
-                            <div class="input-group mb-2 d-flex justify-content-end">
-                                <!-- <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="formCheck" name="remember">
-                                    <label for="formCheck" class="form-check-label text-secondary"><small>Remember Me</small></label>
-                                </div> -->
-                                <div class="forgot">
-                                    <small><a href="{{ route('forgotPassword') }}">Forgot Password?</a></small>
-                                </div>
-                            </div>
                             <div class="input-group mb-3">
-                                <button type="submit" id="confirmButton" class="btn btn-lg btn-primary w-100 fs-6">Login</button>
+                                <button type="button" id="confirmButton" class="btn btn-lg btn-primary w-100 fs-6 mt-4">Create Admin Account</button>
                             </div>
                         </form>
 
                         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-
-                        <div class="row">
-                            <small class="col-lg-12 text-center w-100 mb-3 ml-3">OR</small>
-                        </div>
-
-                        <form>
-                            @csrf
-                            <div class="input-group">
-                                <a href="{{route('login.google')}}" class="btn btn-lg btn-primary w-100 fs-6 shadow-lg">
-                                    <img src="images/google.png" style="width:20px" class="me-2">
-                                    <small class="text-light">Sign In with Google</small>
-                                </a>
-                            </div>
-                        </form>
 
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <script>
+        document.getElementById('confirmButton').addEventListener('click', function(event) {
+            // Get form elements
+            var idNumber = document.getElementById('idNumber').value.trim();
+            var email = document.getElementById('email').value.trim();
+            var password = document.getElementById('password').value.trim();
 
+            // Check if any field is empty
+            if (!idNumber || !email || !password) {
+                // Show SweetAlert if any field is empty
+                Swal.fire({
+                    title: 'Validation Error',
+                    text: 'Please fill in all fields before submitting.',
+                    icon: 'error',
+                    showCancelButton: false,
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'OK',
+                    timer: 3000, // Display for 3 seconds
+                    timerProgressBar: true,
+                });
+                return; // Prevent form submission
+            }
+
+            // If all fields are filled, confirm the action
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "Do you want to create this admin account?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, create it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('createAdminForm').submit();
+                }
+            });
+        });
+    </script>
 
     <script>
         function validatePassword() {
@@ -138,7 +138,7 @@
                 Swal.fire({
                     icon: "info",
                     title: "Info",
-                    text: "Invalid password. Please enter a 6-digit password.",
+                    text: "Password must be 6 digits",
                     timer: 5000,
                     timerProgressBar: true
                 });
@@ -148,30 +148,28 @@
         }
     </script>
 
-    <script>
-        document.getElementById('confirmButton').addEventListener('click', function(event) {
-            // Get form elements
-            var email = document.getElementById('email').value.trim();
-            var password = document.getElementById('password').value.trim();
+    <!-- <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.querySelector('form');
+            const emailInput = document.getElementById('email');
 
-            // Check if any field is empty
-            if (!email || !password) {
-                // Show SweetAlert if any field is empty
-                Swal.fire({
-                    toast: true,
-                    position: 'top-end',
-                    // title: 'Validation Error',
-                    text: 'Please fill in all fields.',
-                    icon: 'error',
-                    showConfirmButton: false,
-                    timer: 3000, // Display for 3 seconds
-                    timerProgressBar: true,
-                });
-                return; // Prevent form submission
-            }
+            form.addEventListener('submit', function(event) {
+                const emailValue = emailInput.value;
+                const cpscDomain = '@my.cpsc.edu.ph';
 
+                if (!emailValue.endsWith(cpscDomain)) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        text: "Please provide a valid CPSC email address.",
+                        timer: 5000,
+                        timerProgressBar: true
+                    });
+                    event.preventDefault(); // Prevent form submission
+                }
+            });
         });
-    </script>
+    </script> -->
 
 
 </body>

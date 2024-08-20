@@ -18,7 +18,7 @@ class Admin
      * @param  int|null  $id
      * @return mixed
      */
-    public function handle(Request $request, Closure $next, $id = null): Response
+    public function handle(Request $request, Closure $next, string $userType): Response
     {
         // Check if the user is authenticated
         if (Auth::check()) {
@@ -55,7 +55,7 @@ class Admin
         }
 
         // If the user is not authorized, show an unauthorized access alert
-        Alert::warning('401', 'ERROR Access.')
+        Alert::warning('401', 'Unauthorized Access.')
             ->autoClose(5000)
             ->timerProgressBar()
             ->showCloseButton();

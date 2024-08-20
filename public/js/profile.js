@@ -63,18 +63,23 @@ $(document).ready(function () {
             data: data,
             dataType: "json",
             success: function (response) {
-                if (response.status == 400) {
+                if (response.status === 400) {
                     $("#firstNameError").html("").addClass("error");
                     $("#lastNameError").html("").addClass("error");
                     $("#idNumberError").html("").addClass("error");
                     $("#emailError").html("").addClass("error");
 
-                    $.each(response.errors, function (key, value) {
-                        $("#" + key + "Error").append("<li>" + value + "</li>");
+                    $.each(response.errors.idNumber, function (key, err_value) {
+                        $("#idNumberError").append(
+                            "<li>" + err_value + "</li>"
+                        );
+                    });
+                    $.each(response.errors.email, function (key, err_value) {
+                        $("#emailError").append("<li>" + err_value + "</li>");
                     });
 
                     $(".update-profile").text("Update");
-                } else if (response.status == 404) {
+                } else if (response.status === 404) {
                     Swal.fire({
                         icon: "error",
                         title: "Oops...",
@@ -83,7 +88,7 @@ $(document).ready(function () {
                         timerProgressBar: true,
                     });
                     $("#update-modal-profile .close").click();
-                } else if (response.status == 200) {
+                } else if (response.status === 200) {
                     $("#firstNameError").html("");
                     $("#lastNameError").html("");
                     $("#idNumberError").html("");
@@ -100,10 +105,12 @@ $(document).ready(function () {
                     $(".update-profile").text("Update");
                     $("#update-modal-profile .close").click();
                     location.reload();
-                } else if (response.status == 500) {
-                    alert("may error");
-                } else if (response.status == 405) {
-                    alert("may error");
+                }
+            },
+
+            error: function (response) {
+                if (response.status === 500) {
+                    alert("Something went wrong! Please try again later.");
                 }
             },
         });

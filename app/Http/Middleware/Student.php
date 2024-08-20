@@ -13,14 +13,21 @@ class Student
     /**
      * Handle an incoming request.
      *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @param  int|null  $id
+     * @return mixed
      */
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, Closure $next, string $userType): Response
     {
-        if (Auth::check() && Auth::user()->userType === 'Student') {
-            return $next($request);
-        }
+        if (Auth::check()) {
+            $userType = Auth::user()->userType;
 
+            // If the user is an Student, allow the request to proceed
+            if ($userType == 'Student') {
+                return $next($request);
+            }
+        }
         Alert::warning('401', 'Unauthorized Access.')
             ->autoClose(5000)
             ->timerProgressBar()

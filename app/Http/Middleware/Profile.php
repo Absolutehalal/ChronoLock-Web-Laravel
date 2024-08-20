@@ -15,7 +15,7 @@ class Profile
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
-     * @param  int  $id
+     * @param  int|null  $id
      * @return mixed
      */
     public function handle(Request $request, Closure $next, $id = null)

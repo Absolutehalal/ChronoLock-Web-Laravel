@@ -26,8 +26,8 @@
     <script src="{{asset('https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js')}}"></script>
     <!-- Custom JS -->
     <script src="{{asset('js/toastr.js')}}"></script>
-
-    <script src="{{asset('js/pieChart.js')}}"></script>
+    <!-- 
+    <script src="{{asset('js/pieChart.js')}}"></script> -->
 
 </head>
 
@@ -143,7 +143,7 @@
                                     @if($attendanceCounts->absent_count > 0)
                                     <span class="h2 d-block">{{ $attendanceCounts->late_count }}</span>
                                     @else
-                                    <span class="h2 d-block" style='color: #cc0000'>0</span>
+                                    <span class="h2 d-block" style='    '>0</span>
                                     @endif
                                 </div>
                             </div>
@@ -213,14 +213,32 @@
                             </div>
                             <div class="card-body">
                                 <div class="d-flex justify-content-between mb-2">
-                                    <h5 class="ml-2">Courses</h5>
+                                    <h5 class="ml-2">Course & Time</h5>
                                     <h5 class="mr-6">Status</h5>
                                 </div>
+
+                                @php
+                                // Mapping of day numbers
+                                $dayMapping = [
+                                0 => 'Sunday',
+                                1 => 'Monday',
+                                2 => 'Tuesday',
+                                3 => 'Wednesday',
+                                4 => 'Thursday',
+                                5 => 'Friday',
+                                6 => 'Saturday'
+                                ];
+
+                                // Get the day name from the mapping
+                                $dayName = $dayMapping[$schedule->day];
+                                @endphp
+
                                 @php $counter = 1; @endphp
                                 @forelse($listEnrolledCourse as $course)
                                 <ul class="list-group">
                                     <li class="list-group-item d-flex justify-content-between align-items-center fw-bold">
-                                        {{ $counter }}. {{ $course->courseName }} - {{ $course->courseCode }}
+                                        {{ $counter }}. {{ $course->courseName }} - {{ $course->courseCode }} | {{ date('h:i A', strtotime($course->startTime)) }} -
+                                        {{ date('h:i A', strtotime($course->endTime)) }} | {{ $dayName }}
                                         <span>
                                             @if($course->status == 'Regular')
                                             <span class="badge badge-success">Regular</span>
@@ -247,73 +265,6 @@
                 </div>
 
             </div>
-
-
-
-
-            <!-- <div class="card card-default shadow border border-dark">
-                    <div class="card-header">
-                        <h2 style="font-size: 30px;">Class List</h2>
-
-                        <div class="dropdown d-inline-block">
-                            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
-                                Section
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <button class="dropdown-item">
-                                    <i class="mdi mdi-arrow-right"></i>
-                                    BSIS 1A</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <table class="table table-bordered table-hover">
-                            <thead class="thead-dark">
-                                <tr class="text-center">
-                                    <th scope="col">#</th>
-                                    <th scope="col">RFID Code</th>
-                                    <th scope="col">Name</th>
-                                    <th scope="col">Age</th>
-                                    <th scope="col">Gender</th>
-                                    <th scope="col">User Type</th>
-
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr class="text-center">
-                                    <td scope="row">1</td>
-                                    <td>210102192301923</td>
-                                    <td>Lorzano, Ralph H.</td>
-                                    <td>22</td>
-                                    <td>Male</td>
-                                    <td>Student</td>
-                                </tr>
-                            </tbody>
-                            <tbody>
-                                <tr class="text-center">
-                                    <td scope="row">1</td>
-                                    <td>210102192301923</td>
-                                    <td>Lorzano, Ralph H.</td>
-                                    <td>22</td>
-                                    <td>Male</td>
-                                    <td>Student</td>
-                                </tr>
-                            </tbody>
-                            <tbody>
-                                <tr class="text-center">
-                                    <td scope="row">1</td>
-                                    <td>210102192301923</td>
-                                    <td>Lorzano, Ralph H.</td>
-                                    <td>22</td>
-                                    <td>Male</td>
-                                    <td>Student</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-
-                </div> -->
 
 
         </div>

@@ -1,21 +1,14 @@
 <!DOCTYPE html>
 
-<!--
- // WEBSITE: https://themefisher.com
- // TWITTER: https://twitter.com/themefisher
- // FACEBOOK: https://www.facebook.com/themefisher
- // GITHUB: https://github.com/themefisher/
--->
-
 <html lang="en" dir="ltr">
 
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    
+
     <script defer src="js/studentJoinClassSchedule.js"></script>
-    
+
     <title>ChronoLock: Student Enroll Schedule</title>
 
     @include('head')
@@ -87,20 +80,7 @@
 
 
                 <div class="row">
-
-                    @if($schedules->isEmpty())
-                    @if(isset($search) && !empty($search))
-                    <div class="card-body">
-                        <span class="text-center fw-bold">Not Found. Please try again.</span>
-                    </div>
-                    @else
-                    <div class="card-body">
-                        <span class="text-center fw-bold">No schedules available.</span>
-                    </div>
-                    @endif
-                    @else
-
-                    @foreach($schedules as $schedule)
+                    @forelse($schedules as $schedule)
                     <div class="col-lg-6 col-xl-4 col-xxl-3">
                         <div class="card card-default shadow-md border-dark mt-7">
                             <div class="card-body text-center">
@@ -169,9 +149,12 @@
                             </div>
                         </div>
                     </div>
-                    @endforeach
 
-                    @endif
+                    @empty
+                    <div class="card-body justify-content-center">
+                        <span class="text-center fw-bold">No schedules available.</span>
+                    </div>
+                    @endforelse
 
                 </div>
 

@@ -21,9 +21,18 @@ Route::get('/', function () {
     return view('login');
 });
 
-if (config('APP_ENV') !== 'production') {
+
+// Check if the environment is local or staging
+if (in_array(config('app.env'), ['local', 'staging'])) {
     Route::get('/only-admin-registration', [UserController::class, 'onlyAdmin'])->name('onlyAdmin');
+    Route::post('/add-admin-only', [UserController::class, 'addOnlyAdmin'])->name('addOnlyAdmin');
 }
+
+// Check if the environment is local, staging , or production
+// Route::get('/env-test', function () {
+//     return config('app.env');
+// });
+
 
 // Auth::routes();
 
@@ -43,11 +52,12 @@ Route::middleware('profile')->group(function () {
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
     Route::get('/profile/edit/{id}', [ProfileController::class, 'editProfile'])->name('profile.edit');
     Route::put('/profile/update/{id}', [ProfileController::class, 'updateProfile'])->name('profile.update');
+    // Route::post('/profile/update', [ProfileController::class, 'updateProfile'])->name('profile.update');
 });
 
 
 // ADMIN MIDDLEWARE -----ADMIN ROUTES------
-Route::group(['middleware' => ['auth', 'admin']], function () {
+Route::group(['middleware' => ['auth', 'admin:Admin']], function () {
     Route::get('/index-dashboard', [UserController::class, 'index'])->name('index');
 
     //--------START userManagement ROUTES---------
@@ -129,7 +139,7 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
 
 
 // INSTRUCTOR MIDDLEWARE
-Route::group(['middleware' => ['auth', 'faculty']], function () {
+Route::group(['middleware' => ['auth', 'faculty:Faculty']], function () {
     Route::get('/instructorDashboard', [UserController::class, 'instructorIndex'])->name('instructorIndex');
 
     Route::get('/instructorSchedule', [ScheduleController::class, 'instructorScheduleManagement'])->name('instructorScheduleManagement');
@@ -166,7 +176,7 @@ Route::group(['middleware' => ['auth', 'faculty']], function () {
 
 
 
-Route::group(['middleware' => ['auth', 'student']], function () {
+Route::group(['middleware' => ['auth', 'student:Student']], function () {
     Route::get('/student-dashboard', [StudentController::class, 'studentIndex'])->name('studentIndex');
 
     Route::get('/search-schedules', [StudentController::class, 'search']);
@@ -177,6 +187,7 @@ Route::group(['middleware' => ['auth', 'student']], function () {
 
 
     Route::get('/studentEditSchedule/{id}', [StudentMasterListController::class, 'studentEditSchedule'])->name('studentEditSchedule');
+
     Route::post('/student-view-schedule', [StudentMasterListController::class, 'enroll'])->name('enroll');
 
     Route::get('/student-view-attendance/{id}', [AttendanceController::class, 'studentViewAttendance'])->name('studentViewAttendance');

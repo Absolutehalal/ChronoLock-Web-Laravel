@@ -100,8 +100,6 @@ class GoogleAuthController extends Controller
 
 
 
-
-
     public function redirectToGoogle()
     {
         return Socialite::driver('google')->redirect();

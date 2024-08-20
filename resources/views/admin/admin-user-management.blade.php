@@ -1,12 +1,5 @@
 <!DOCTYPE html>
 
-<!--
- // WEBSITE: https://themefisher.com
- // TWITTER: https://twitter.com/themefisher
- // FACEBOOK: https://www.facebook.com/themefisher
- // GITHUB: https://github.com/themefisher/
--->
-
 <html lang="en" dir="ltr">
 
 <head>
@@ -113,8 +106,10 @@
                   <th>#</th>
                   <th>FirstName</th>
                   <th>LastName</th>
+                  <th>ID Number</th>
                   <th>UserType</th>
                   <th>Email</th>
+                  <th>Avatar</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -126,8 +121,12 @@
                   <td> {{$counter}} </td>
                   <td> {{$user->firstName}} </td>
                   <td> {{$user->lastName}} </td>
+                  <td> {{$user->idNumber}} </td>
                   <td> {{$user->userType}} </td>
                   <td> {{$user->email}} </td>
+                  <td class="text-center">
+                    <img src="{{ $user->avatar }}" alt="Avatar" width="40" height="40" class="rounded">
+                  </td>
                   <th>
                     <!-- Example single primary button -->
                     <div class="dropdown d-inline-block">
@@ -246,6 +245,14 @@
                 <div class="form-group">
                   <label>Email</label>
                   <input type="text" class="form-control border border-dark" id="email" name="email" placeholder="Enter Email" />
+                </div>
+              </div>
+
+              <div class="col-lg-6">
+                <ul id="idNumberError"></ul>
+                <div class="form-group">
+                  <label>ID Number</label>
+                  <input type="text" class="form-control border border-dark" id="idNumber" name="idNumber" placeholder="Enter ID Number" />
                 </div>
               </div>
 
