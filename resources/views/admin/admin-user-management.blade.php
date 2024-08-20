@@ -354,7 +354,7 @@
                 <ul id="editEmailError"></ul>
                 <div class="form-group">
                   <label>Email</label>
-                  <input type="text" class="updateEmail form-control border border-dark" id="edit_email" name="updateEmail" placeholder="ex. chrono@my.cspc.edu.ph">
+                  <input type="text" class="userEmail form-control border border-dark" id="edit_email" name="userEmail" placeholder="ex. chrono@my.cspc.edu.ph">
 
                 </div>
               </div>
@@ -555,7 +555,7 @@
                 text: "Email already Exist. Please use a another Email.",
               });
 
-            } else if (response.status === 100) {
+            } else if (response.status === 101) {
               $('#firstNameError').html("");
               $('#lastNameError').html("");
               $('#userTypeError').html("");
@@ -633,7 +633,7 @@
           'updateFirstName': $('.updateFirstName').val(),
           'updateLastName': $('.updateLastName').val(),
           'updateUserType': $('.updateUserType').val(),
-          'updateEmail': $('.updateEmail').val(),
+          'userEmail': $('.userEmail').val(),
           'userIdNumber': $('.userIdNumber').val(),
         }
         $.ajaxSetup({
@@ -671,7 +671,7 @@
               $.each(response.errors.updateUserType, function(key, err_value) {
                 $('#editUserTypeError').append('<li>' + err_value + '</li>');
               });
-              $.each(response.errors.updateEmail, function(key, err_value) {
+              $.each(response.errors.userEmail, function(key, err_value) {
                 $('#editEmailError').append('<li>' + err_value + '</li>');
               });
               $.each(response.errors.userIdNumber, function(key, err_value) {
@@ -721,19 +721,24 @@
                 title: "Oops...",
                 text: "Email already exist. Please use another email.",
               });
-              $('.updateUser').text('Update');
+
               $("#updateUserModal .close").click()
-            } else if (response.status === 101) {
+            } else if (response.status === 409) {
               $('#editFirstNameError').html("");
               $('#editLastNameError').html("");
               $('#editUserTypeError').html("");
               $('#editEmailError').html("");
-              $('#editUserIdError').html("");s
+              $('#editUserIdError').html("");
               Swal.fire({
                 icon: "error",
                 title: "Oops...",
-                text: "ID already Exist. Please use a another ID.",
+                text: response.message,
+                timer: 5000,
+                timerProgressBar: true,
               });
+
+              $('.updateUser').text('Update');
+              $("#updateUserModal .close").click()
             }
           }
         });

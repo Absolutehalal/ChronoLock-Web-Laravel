@@ -181,31 +181,51 @@ class UserController extends Controller
             'updateFirstName' => 'required',
             'updateLastName' => 'required',
             'updateUserType' => 'required',
-            'updateEmail' => 'required|email',
-            'userIdNumber' => 'required|unique:users,idNumber',
+            'userEmail' => 'required|email',
+            'userIdNumber' => 'required',
         ]);
 
-        $email = $request->get('updateEmail');
+        $email = $request->get('userEmail');
         $emailDomain = substr(strrchr($email, "@"), 1);
         $checkEmail = User::where('email', 'LIKE',  $email)->value('email');
-        $checkIdNumber = User::where('idNumber', $request->input('idNumber'))->first();
-
 
         if ($validator->fails()) {
+
             return response()->json([
                 'status' => 400,
-                'errors' => $validator->messages()
+                'errors' => $validator->messages(),
             ]);
         } else {
             if ($emailDomain !== 'my.cspc.edu.ph') {
+
                 return response()->json([
                     'status' => 300,
                 ]);
-            } elseif ($checkIdNumber) {
-                return response()->json([
-                    'status' => 101,
-                ]);
             } else if ($checkEmail == $email) {
+
+                // Check if the idNumber is already taken by another user
+                $checkIdNumber = User::where('idNumber', $request->input('userIdNumber'))
+                    ->where('id', '!=', $id)
+                    ->first();
+
+                $checkEmail = User::where('email', $request->input('userEmail'))
+                    ->where('id', '!=', $id)
+                    ->first();
+
+                if ($checkIdNumber) {
+                    return response()->json([
+                        'status' => 409,
+                        'message' => 'ID Number has already been taken.',
+                    ]);
+                }
+
+                if ($checkEmail) {
+                    return response()->json([
+                        'status' => 409,
+                        'message' => 'Email has already been taken.',
+                    ]);
+                }
+
                 $user = User::find($id);
                 $updatedID = DB::table('users')->where('id', $id)->value('id');
                 $idNumber = DB::table('users')->where('id', $updatedID)->value('idNumber');
@@ -217,7 +237,7 @@ class UserController extends Controller
                     $user->firstName = $request->input('updateFirstName');
                     $user->lastName = $request->input('updateLastName');
                     $user->userType = $request->input('updateUserType');
-                    $user->email = $request->input('updateEmail');
+                    $user->email = $request->input('userEmail');
                     $user->idNumber = $request->input('userIdNumber');
                     $user->update();
 
@@ -225,7 +245,7 @@ class UserController extends Controller
                     $inputFirstName = $request->input('updateFirstName');
                     $inputLastName =  $request->input('updateLastName');
                     $inputUserType = $request->input('updateUserType');
-                    $inputEmail =  $request->input('updateEmail');
+                    $inputEmail =  $request->input('userEmail');
                     $inputIdNumber = $request->input('userIdNumber');
                     $id = Auth::id();
                     $userID = DB::table('users')->where('id', $id)->value('idNumber');

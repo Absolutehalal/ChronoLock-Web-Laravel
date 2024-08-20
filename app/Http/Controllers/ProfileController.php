@@ -46,9 +46,11 @@ class ProfileController extends Controller
         $validator = Validator::make($request->all(), [
             'profile_firstName' => 'required',
             'profile_lastName' => 'required',
-            'profile_idNumber' => 'required',
             'profile_email' => 'required|email',
+            'profile_idNumber' => 'required',
         ]);
+
+        // $checkIdNumber = User::where('idNumber', $request->input('profile_idNumber'))->first();
 
         if ($validator->fails()) {
             return response()->json([
@@ -57,9 +59,32 @@ class ProfileController extends Controller
             ]);
         } else {
 
+            // Check if the idNumber is already taken by another user
+            $checkIdNumber = User::where('idNumber', $request->input('profile_idNumber'))
+                ->where('id', '!=', $id)
+                ->first();
+
+            $checkEmail = User::where('email', $request->input('profile_email'))
+                ->where('id', '!=', $id)
+                ->first();
+
+            if ($checkIdNumber) {
+                return response()->json([
+                    'status' => 409,
+                    'message' => 'ID Number has already been taken.',
+                ]);
+            }
+
+            if ($checkEmail) {
+                return response()->json([
+                    'status' => 409,
+                    'message' => 'Email has already been taken.',
+                ]);
+            }
+
             // Get the user by ID
             $user = User::find($id);
-            
+
             if ($user) {
                 // Update the user's profile fields
                 $user->firstName = $request->get('profile_firstName');

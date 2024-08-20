@@ -2,6 +2,8 @@
 
 <html lang="en" dir="ltr">
 
+@include('sweetalert::alert')
+
 @if(Auth::check())
 <!-- VIEW PROFILE -->
 <div class="modal fade" id="modal-profile" tabindex="-1" role="dialog" aria-labelledby="modal-profile" aria-hidden="true">
@@ -105,7 +107,7 @@
               <ul id="emailError"></ul>
               <div class="form-group mb-4">
                 <label for="edit-email">Email</label>
-                <input type="email" class="form-control border-dark" id="edit-email" name="update-email" readonly>
+                <input type="email" class="profile_email form-control border-dark" id="edit-email" name="update-email">
               </div>
             </div>
 
@@ -113,7 +115,7 @@
               <ul id="idNumberError"></ul>
               <div class="form-group mb-4">
                 <label for="edit-idNumber">ID Number</label>
-                <input type="text" class="form-control border-dark" id="edit-idNumber" name="update-idNumber">
+                <input type="text" class="profile_idNumber form-control border-dark" id="edit-idNumber" name="update-idNumber">
               </div>
             </div>
 
@@ -121,7 +123,7 @@
               <ul id="firstNameError"></ul>
               <div class="form-group">
                 <label for="edit-firstName">First name</label>
-                <input type="text" class="form-control border-dark" id="edit-firstName" name="update-firstName">
+                <input type="text" class="profile_firstName form-control border-dark" id="edit-firstName" name="update-firstName">
               </div>
             </div>
 
@@ -129,7 +131,7 @@
               <ul id="lastNameError"></ul>
               <div class="form-group">
                 <label for="edit-lastName">Last name</label>
-                <input type="text" class="form-control border-dark" id="edit-lastName" name="update-lastName">
+                <input type="text" class="profile_lastName form-control border-dark" id="edit-lastName" name="update-lastName">
               </div>
             </div>
 
@@ -148,7 +150,14 @@
   document.addEventListener('DOMContentLoaded', function() {
     $('#update-modal-profile').on('hidden.bs.modal', function() {
       $('#clearProfile')[0].reset();
+
+      clearProfileErrors();
     });
+
+    function clearProfileErrors() {
+      $('#emailError').empty();
+      $('#idNumberError').empty();
+    }
   });
 </script>
 
