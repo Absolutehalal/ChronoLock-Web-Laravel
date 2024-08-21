@@ -2,6 +2,24 @@
 
 <html lang="en" dir="ltr">
 
+<head>
+  <style>
+    #show-password-profile {
+      position: absolute;
+      right: 10px;
+      /* Adjust distance from the right as needed */
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      font-size: 1.25rem;
+      /* Adjust icon size as needed */
+      color: #000000;
+      /* Optional: change icon color */
+    }
+  </style>
+
+</head>
+
 @include('sweetalert::alert')
 
 @if(Auth::check())
@@ -25,12 +43,25 @@
             </div>
 
             <div class="col-lg-6">
-              <div class="form-group mt-3">
+              <div class="form-group mt-4">
                 <label for="userType">User Type</label>
                 <input type="text" class="profile-userType form-control border-dark" value="{{ Auth::user()->userType }}" disabled>
               </div>
             </div>
 
+            <div class="col-lg-6">
+              <div class="form-group mb-4">
+                <label for="firstName">First name</label>
+                <input type="text" class="profile-firstName form-control border-dark" value="{{ Auth::user()->firstName }}" disabled>
+              </div>
+            </div>
+
+            <div class="col-lg-6">
+              <div class="form-group mb-4">
+                <label for="lastName">Last name</label>
+                <input type="text" class="profile-lastName form-control border-dark" value="{{ Auth::user()->lastName }}" disabled>
+              </div>
+            </div>
 
             <div class="col-lg-6">
               <div class="form-group mb-4">
@@ -46,19 +77,6 @@
               </div>
             </div>
 
-            <div class="col-lg-6">
-              <div class="form-group">
-                <label for="firstName">First name</label>
-                <input type="text" class="profile-firstName form-control border-dark" value="{{ Auth::user()->firstName }}" disabled>
-              </div>
-            </div>
-
-            <div class="col-lg-6">
-              <div class="form-group">
-                <label for="lastName">Last name</label>
-                <input type="text" class="profile-lastName form-control border-dark" value="{{ Auth::user()->lastName }}" disabled>
-              </div>
-            </div>
           </div>
         </div>
         <div class="modal-footer px-4">
@@ -97,25 +115,9 @@
             </div>
 
             <div class="col-lg-6">
-              <div class="form-group mt-3">
+              <div class="form-group mt-4">
                 <label for="edit-userType">User Type</label>
-                <input type="text" class="form-control border-dark" id="edit-userType" name="update-userType" readonly>
-              </div>
-            </div>
-
-            <div class="col-lg-6">
-              <ul id="emailError"></ul>
-              <div class="form-group mb-4">
-                <label for="edit-email">Email</label>
-                <input type="email" class="profile_email form-control border-dark" id="edit-email" name="update-email">
-              </div>
-            </div>
-
-            <div class="col-lg-6">
-              <ul id="idNumberError"></ul>
-              <div class="form-group mb-4">
-                <label for="edit-idNumber">ID Number</label>
-                <input type="text" class="profile_idNumber form-control border-dark" id="edit-idNumber" name="update-idNumber">
+                <input type="text" class="form-control border-dark" id="edit-userType" name="update-userType" placeholder="Input User Type" readonly>
               </div>
             </div>
 
@@ -123,7 +125,7 @@
               <ul id="firstNameError"></ul>
               <div class="form-group">
                 <label for="edit-firstName">First name</label>
-                <input type="text" class="profile_firstName form-control border-dark" id="edit-firstName" name="update-firstName">
+                <input type="text" class="profile_firstName form-control border-dark" id="edit-firstName" name="update-firstName" placeholder="Input First Name">
               </div>
             </div>
 
@@ -131,13 +133,39 @@
               <ul id="lastNameError"></ul>
               <div class="form-group">
                 <label for="edit-lastName">Last name</label>
-                <input type="text" class="profile_lastName form-control border-dark" id="edit-lastName" name="update-lastName">
+                <input type="text" class="profile_lastName form-control border-dark" id="edit-lastName" name="update-lastName" placeholder="Input Last Name">
+              </div>
+            </div>
+
+
+            <div class="col-lg-4">
+              <ul id="emailError"></ul>
+              <div class="form-group mb-4">
+                <label for="edit-email">Email</label>
+                <input type="email" class="profile_email form-control border-dark" id="edit-email" name="update-email" placeholder="Input Email">
+              </div>
+            </div>
+
+            <div class="col-lg-4">
+              <ul id="idNumberError"></ul>
+              <div class="form-group mb-4">
+                <label for="edit-idNumber">ID Number</label>
+                <input type="text" class="profile_idNumber form-control border-dark" id="edit-idNumber" name="update-idNumber" placeholder="Input ID Number">
+              </div>
+            </div>
+
+            <div class="col-lg-4">
+              <ul id="passwordError"></ul>
+              <label class="form-label fw-bold">Password</label>
+              <div class="form-group position-relative">
+                <input id="edit-password" name="update-password" type="password" class="profile_password form-control border-dark" placeholder="Password" oninput="validateFieldPassword()" maxlength="6">
+                <i class="fa fa-eye-slash" id="show-password-profile"></i>
               </div>
             </div>
 
           </div>
           <div class="modal-footer px-4">
-            <button type="button" class="btn btn-danger btn-pill" data-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-danger btn-pill" data-dismiss="modal" data-toggle="modal" data-target="#modal-profile">Cancel</button>
             <button type="submit" class="btn btn-primary btn-pill update-profile">Update Profile</button>
           </div>
         </form>
@@ -158,8 +186,45 @@
       $('#emailError').empty();
       $('#idNumberError').empty();
     }
+
   });
 </script>
 
+
+<script>
+  const profileShowPassword = document.querySelector("#show-password-profile");
+  const profilePasswordField = document.querySelector("#edit-password");
+
+  profileShowPassword.addEventListener("click", function() {
+    this.classList.toggle("fa-eye");
+
+    const type = profilePasswordField.getAttribute("type") === "password" ? "text" : "password";
+
+    // Toggle password field visibility
+    profilePasswordField.setAttribute("type", type);
+  });
+</script>
+
+<script>
+  function validateFieldPassword() {
+    var passwordInput = document.getElementById("edit-password").value;
+
+
+    if (!/^\d*$/.test(passwordInput)) {
+      Swal.fire({
+        timer: 5000,
+        timerProgressBar: true,
+        icon: 'error',
+        title: 'Invalid Input',
+        text: 'Only numerical values are allowed.',
+        confirmButtonText: 'OK'
+      });
+      document.getElementById("edit-password").value = passwordInput.replace(/\D/g, ''); // Remove non-numeric characters
+      return false; // Prevent form submission
+    }
+    return true; // Allow form submission
+
+  }
+</script>
 
 </html>

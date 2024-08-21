@@ -48,6 +48,7 @@ class ProfileController extends Controller
             'profile_lastName' => 'required',
             'profile_email' => 'required|email',
             'profile_idNumber' => 'required',
+            'profile_password' => 'nullable|min:6', 
         ]);
 
         // $checkIdNumber = User::where('idNumber', $request->input('profile_idNumber'))->first();
@@ -62,6 +63,9 @@ class ProfileController extends Controller
             // Validate that the email has the required domain
             $email = $request->input('profile_email');
 
+            $password = $request->input('profile_password');
+
+            
             // Check if the idNumber is already taken by another user
             $checkIdNumber = User::where('idNumber', $request->input('profile_idNumber'))
                 ->where('id', '!=', $id)
@@ -85,7 +89,7 @@ class ProfileController extends Controller
             } else if (!str_ends_with($email, '@my.cspc.edu.ph')) {
                 return response()->json([
                     'status' => 409,
-                    'message' => 'Use your CSPC email.',
+                    'message' => 'Use your CSPC email only.',
                 ]);
             }
 
@@ -101,6 +105,13 @@ class ProfileController extends Controller
                 $user->lastName = $request->get('profile_lastName');
                 $user->idNumber = $request->get('profile_idNumber');
                 $user->email = $request->get('profile_email');
+                $user->password = $request->get('profile_password');
+
+                // Only update the password if it's not empty
+                if ($request->filled('profile_password')) {
+                    $user->password = $request->get('profile_password');
+                }
+
                 $user->save();
 
                 // Start Logs

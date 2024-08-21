@@ -64,15 +64,18 @@
                             @csrf
 
                             <input type="hidden" id="token" name="token" value="{{ $token }}">
+                            
                             <label class="form-label fw-bold">Email</label>
                             <div class="form-group mb-3">
                                 <input id="email" name="email" type="text" class="form-control form-control-lg bg-light border-dark fs-6" placeholder="Email address" required>
                             </div>
+
                             <label class="form-label fw-bold ">Password</label>
                             <div class="form-group mb-1 position-relative  mb-3">
                                 <input id="password" name="password" type="password" class="form-control form-control-lg bg-light border-dark fs-6" placeholder="Password" required>
                                 <i class="fa fa-eye-slash" id="show-password"></i>
                             </div>
+
                             <label class="form-label fw-bold ">Confirm Password</label>
                             <div class="form-group mb-1 position-relative mb-3">
                                 <input id="password_confirmation" name="password_confirmation" type="password" class="form-control form-control-lg bg-light border-dark fs-6" placeholder="Confirm Password"" required>

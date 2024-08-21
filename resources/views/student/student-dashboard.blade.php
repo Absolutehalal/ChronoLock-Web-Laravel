@@ -143,7 +143,7 @@
                                     @if($attendanceCounts->absent_count > 0)
                                     <span class="h2 d-block">{{ $attendanceCounts->late_count }}</span>
                                     @else
-                                    <span class="h2 d-block" style='    '>0</span>
+                                    <span class="h2 d-block" style='color: #cc0000'>0</span>
                                     @endif
                                 </div>
                             </div>
@@ -217,6 +217,11 @@
                                     <h5 class="mr-6">Status</h5>
                                 </div>
 
+
+
+                                @php $counter = 1; @endphp
+                                @forelse($listEnrolledCourse as $course)
+
                                 @php
                                 // Mapping of day numbers
                                 $dayMapping = [
@@ -230,11 +235,9 @@
                                 ];
 
                                 // Get the day name from the mapping
-                                $dayName = $dayMapping[$schedule->day];
+                                $dayName = $dayMapping[$course->day];
                                 @endphp
-
-                                @php $counter = 1; @endphp
-                                @forelse($listEnrolledCourse as $course)
+                                
                                 <ul class="list-group">
                                     <li class="list-group-item d-flex justify-content-between align-items-center fw-bold">
                                         {{ $counter }}. {{ $course->courseName }} - {{ $course->courseCode }} | {{ date('h:i A', strtotime($course->startTime)) }} -

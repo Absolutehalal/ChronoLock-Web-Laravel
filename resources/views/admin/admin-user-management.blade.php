@@ -125,7 +125,7 @@
                   <td> {{$user->userType}} </td>
                   <td> {{$user->email}} </td>
                   <td class="text-center">
-                    <img src="{{ $user->avatar }}" alt="Avatar" width="40" height="40" class="rounded">
+                    <img src="{{ $user->avatar ?? asset('images/User Icon.png') }}" alt="Avatar" width="35" height="35" class="rounded">
                   </td>
                   <th>
                     <!-- Example single primary button -->

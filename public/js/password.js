@@ -1,9 +1,9 @@
 const showPassword = document.querySelector("#show-password");
 const passwordField = document.querySelector("#password");
+
 const showConfirmPassword = document.querySelector("#show-password-confirm");
-const passwordConfirmationField = document.querySelector(
-    "#password_confirmation"
-);
+const passwordConfirmationField = document.querySelector( "#password_confirmation" );
+
 
 showPassword.addEventListener("click", function () {
     this.classList.toggle("fa-eye");
@@ -22,4 +22,6 @@ showConfirmPassword.addEventListener("click", function () {
     // Toggle password field visibility
     passwordConfirmationField.setAttribute("type", type);
 });
+
+
 

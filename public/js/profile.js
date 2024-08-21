@@ -32,6 +32,7 @@ $(document).ready(function () {
                     $("#edit-email").val(response.user.email);
                     $("#edit-avatar").attr("src", response.user.avatar);
                     $("#edit-userType").val(response.user.userType);
+                    $("#edit-password").val(response.user.password);
                 }
             },
         });
@@ -50,6 +51,7 @@ $(document).ready(function () {
             profile_lastName: $("#edit-lastName").val(),
             profile_idNumber: $("#edit-idNumber").val(),
             profile_email: $("#edit-email").val(),
+            profile_password: $("#edit-password").val(),
         };
 
         $.ajaxSetup({
@@ -124,6 +126,7 @@ $(document).ready(function () {
                     $("#lastNameError").html("");
                     $("#idNumberError").html("");
                     $("#emailError").html("");
+                    $("#passwordError").html("");
 
                     Swal.fire({
                         icon: "success",

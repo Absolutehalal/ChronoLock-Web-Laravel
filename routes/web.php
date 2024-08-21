@@ -52,7 +52,8 @@ Route::middleware('profile')->group(function () {
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
     Route::get('/profile/edit/{id}', [ProfileController::class, 'editProfile'])->name('profile.edit');
     Route::put('/profile/update/{id}', [ProfileController::class, 'updateProfile'])->name('profile.update');
-    // Route::post('/profile/update', [ProfileController::class, 'updateProfile'])->name('profile.update');
+    // Route::get('/profile/change-password/edit/{id}', [ProfileController::class, 'editProfileChangePassword'])->name('profile.edit.changePassword');
+    // Route::put('/profile/change-password/{id}', [ProfileController::class, 'changeProfilePassword'])->name('profile.changePassword');
 });
 
 

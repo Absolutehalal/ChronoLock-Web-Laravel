@@ -21,6 +21,9 @@ use Yajra\DataTables\DataTables;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Socialite\Facades\Socialite;
+use App\Mail\NewUserMail;
+use Illuminate\Support\Facades\Mail;
+
 
 
 class UserController extends Controller
@@ -345,6 +348,15 @@ class UserController extends Controller
                 $user->idNumber = $request->input('idNumber');
                 $user->password = $request->input('password');
                 $user->save();
+
+                // Send email with credentials
+                Mail::send("admin.admin-new-user-mail", [
+                    'email' => $user->email,
+                    'password' => $request->input('password')
+                ], function ($message) use ($user) {
+                    $message->to($user->email);
+                    $message->subject("ChronoLock Account Details");
+                });
 
                 // Start Logs
                 $userType =  $request->input('userType');
