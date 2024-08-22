@@ -234,7 +234,7 @@
                 <div class="form-group">
                   <label>Temporary Password</label>
                   <div class="input-group">
-                    <input type="password" class="form-control border border-dark" id="password" name="password" placeholder="Generate Password" disabled">
+                    <input type="password" class="form-control border border-dark" id="password" name="password" placeholder="Generate Password" disabled autocomplete="true">
                     <i class="fa fa-eye-slash" id="show-password"></i>
                     <div class="input-group-append">
                       <button class="btn btn-primary btn-sm fw-bold" type="button" id="generate-password">Generate</button>
@@ -283,7 +283,7 @@
 
         <!-- Modal Footer -->
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary btn-pill" id="close" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary btn-pill" id="deleteClose" data-dismiss="modal">Close</button>
           <button type="submit" class="btn btn-danger btn-pill deleteUser">Archive</button>
         </div>
 
@@ -582,6 +582,24 @@
                 text: "Invalid email. Please use a CSPC email.",
               });
 
+            } else if (response.status === 409) {
+              $('#firstNameError').html("");
+              $('#lastNameError').html("");
+              $('#userTypeError').html("");
+              $('#idNumberError').html("");
+              $('#emailError').html("");
+              $('#passwordError').html("");
+              $('.addUser').text('Save');
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: response.message,
+                timer: 5000,
+                timerProgressBar: true,
+              });
+
+              // $('.updateUser').text('Update');
+              // $("#updateUserModal .close").click()
             }
           }
         });
@@ -813,5 +831,7 @@
       }
     });
   </script>
+
+
 
   @include('footer')

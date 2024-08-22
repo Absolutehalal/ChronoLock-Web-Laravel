@@ -45,35 +45,35 @@
             <div class="col-lg-6">
               <div class="form-group mt-4">
                 <label for="userType">User Type</label>
-                <input type="text" class="profile-userType form-control border-dark" value="{{ Auth::user()->userType }}" disabled>
+                <input type="text" class="profile-userType form-control border-dark" value="{{ Auth::user()->userType }}" id="userType" name="userType" disabled>
               </div>
             </div>
 
             <div class="col-lg-6">
               <div class="form-group mb-4">
                 <label for="firstName">First name</label>
-                <input type="text" class="profile-firstName form-control border-dark" value="{{ Auth::user()->firstName }}" disabled>
+                <input type="text" class="profile-firstName form-control border-dark" value="{{ Auth::user()->firstName }}" id="firstName" name="firstName" disabled>
               </div>
             </div>
 
             <div class="col-lg-6">
               <div class="form-group mb-4">
                 <label for="lastName">Last name</label>
-                <input type="text" class="profile-lastName form-control border-dark" value="{{ Auth::user()->lastName }}" disabled>
+                <input type="text" class="profile-lastName form-control border-dark" value="{{ Auth::user()->lastName }}" id="lastName" name="lastName" disabled>
               </div>
             </div>
 
             <div class="col-lg-6">
               <div class="form-group mb-4">
                 <label for="email">Email</label>
-                <input type="email" class="profile-email form-control border-dark" value="{{ Auth::user()->email }}" disabled>
+                <input type="email" class="profile-email form-control border-dark" value="{{ Auth::user()->email }}" id="email" name="email" disabled autocomplete="true">
               </div>
             </div>
 
             <div class="col-lg-6">
               <div class="form-group mb-4">
                 <label for="idNumber">ID Number</label>
-                <input type="text" class="profile-idNumber form-control border-dark" value="{{ Auth::user()->idNumber }}" disabled>
+                <input type="text" class="profile-idNumber form-control border-dark" value="{{ Auth::user()->idNumber }}" id="idNumber" name="idNumber" disabled>
               </div>
             </div>
 
@@ -156,9 +156,9 @@
 
             <div class="col-lg-4">
               <ul id="passwordError"></ul>
-              <label class="form-label fw-bold">Password</label>
+              <label for="edit-password" class="form-label fw-bold">Password</label>
               <div class="form-group position-relative">
-                <input id="edit-password" name="update-password" type="password" class="profile_password form-control border-dark" placeholder="Password" oninput="validateFieldPassword()" maxlength="6">
+                <input id="edit-password" name="update-password" type="password" class="profile_password form-control border-dark" placeholder="Password" oninput="validateFieldPassword()" maxlength="6" autocomplete="true">
                 <i class="fa fa-eye-slash" id="show-password-profile"></i>
               </div>
             </div>

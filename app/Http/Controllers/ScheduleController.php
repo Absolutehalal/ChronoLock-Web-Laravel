@@ -345,10 +345,11 @@ class ScheduleController extends Controller
     // -----------End instructor functions-----------
 
 
-    public function getFacultySchedules()
+    public function showInstructorSchedule()
     {
-        $schedules = Schedule::where('id', Auth::id())->get();
-    
-        return view('faculty.instructor-schedule', ['schedules' => $schedules]);
+        $userId = Auth::id(); // Get the authenticated user's ID
+        $schedules = Schedule::where('userID', $userId)->get(); // Fetch schedules directly
+
+        return view('your-view-name', compact('schedules'));
     }
 }

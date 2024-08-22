@@ -87,7 +87,7 @@
                             </div>
                             <label class="form-label fw-bold">Password</label>
                             <div class="form-group mb-1 position-relative">
-                                <input id="password" name="password" type="password" class="form-control form-control-lg bg-light border-dark fs-6" placeholder="Password" required>
+                                <input id="password" name="password" type="password" class="form-control form-control-lg bg-light border-dark fs-6" placeholder="Password" required autocomplete="true" maxlength="6">
                                 <i class="fa fa-eye-slash" id="show-password"></i>
                             </div>
 
@@ -100,7 +100,7 @@
                                     <small><a href="{{ route('forgotPassword') }}">Forgot Password?</a></small>
                                 </div>
                             </div>
-                            <div class="input-group mb-3">
+                            <div class="input-group mb-3 mt-2">
                                 <button type="submit" id="confirmButton" class="btn btn-lg btn-primary w-100 fs-6">Login</button>
                             </div>
                         </form>

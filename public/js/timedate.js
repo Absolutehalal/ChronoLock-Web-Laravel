@@ -8,7 +8,7 @@
             day: "numeric",
             hour: "numeric",
             minute: "numeric",
-            second: "numeric",
+            // second: "numeric",
             hour12: true,
         });
         document.getElementById("liveDateTime").textContent = dateTimeString;

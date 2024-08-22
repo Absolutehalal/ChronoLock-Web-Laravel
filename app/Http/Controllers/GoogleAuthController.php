@@ -57,9 +57,10 @@ class GoogleAuthController extends Controller
             }
 
             $credentials = $request->only('email', 'password');
+            $remember = true; // Force "remember me" functionality
 
             // Attempt to authenticate the user using the provided credentials
-            if (Auth::attempt($credentials)) {
+            if (Auth::attempt($credentials, $remember)) {
                 // Authentication passed
                 $user = Auth::user();
 

@@ -9,6 +9,8 @@ use Illuminate\Notifications\Notifiable;
 use Dyrynda\Database\Support\CascadeSoftDeletes;
 use Illuminate\Database\Eloquent\SoftDeletes;
 // use Haruncpi\LaravelIdGenerator\IdGenerator;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
 
 class User extends Authenticatable
 {
@@ -68,10 +70,11 @@ class User extends Authenticatable
         ];
     }
 
-     // protected $cascadeDeletes = ['attendance'];
+    // protected $cascadeDeletes = ['attendance'];
 
-     public function attendances()
-     {
-         return $this->hasMany(Attendance::class);
-     }
+    public function attendances()
+    {
+        return $this->hasMany(Attendance::class);
+    }
+
 }

@@ -48,7 +48,7 @@ class ProfileController extends Controller
             'profile_lastName' => 'required',
             'profile_email' => 'required|email',
             'profile_idNumber' => 'required',
-            'profile_password' => 'nullable|min:6', 
+            'profile_password' => 'nullable|min:6',
         ]);
 
         // $checkIdNumber = User::where('idNumber', $request->input('profile_idNumber'))->first();
@@ -65,7 +65,7 @@ class ProfileController extends Controller
 
             $password = $request->input('profile_password');
 
-            
+
             // Check if the idNumber is already taken by another user
             $checkIdNumber = User::where('idNumber', $request->input('profile_idNumber'))
                 ->where('id', '!=', $id)
@@ -98,6 +98,7 @@ class ProfileController extends Controller
             $updatedID = DB::table('users')->where('id', $id)->value('id');
             $profileEmail = DB::table('users')->where('id', $updatedID)->value('email');
             $profileIDNum = DB::table('users')->where('id', $updatedID)->value('idNumber');
+            $profilePass = DB::table('users')->where('id', $updatedID)->value('password');
 
             if ($user) {
                 // Update the user's profile fields
@@ -117,6 +118,7 @@ class ProfileController extends Controller
                 // Start Logs
                 $inputProfileEmail = $request->input('profile_email');
                 $inputProfileIDNum = $request->input('profile_idNumber');
+                $inputProfilePass = $request->input('profile_password');
 
                 $ID = Auth::id();
                 $userID = DB::table('users')->where('id', $ID)->value('idNumber');
@@ -127,6 +129,7 @@ class ProfileController extends Controller
                 // Determine actions based on changes
                 $emailChanged = $inputProfileEmail != $profileEmail;
                 $idNumChanged = $inputProfileIDNum != $profileIDNum;
+                $passChanged = $inputProfilePass != $profilePass;
 
                 if ($emailChanged && $idNumChanged) {
                     $action = "Updated both email and ID number";
@@ -134,6 +137,8 @@ class ProfileController extends Controller
                     $action = "Updated email from $profileEmail to $inputProfileEmail";
                 } elseif ($idNumChanged) {
                     $action = "Updated ID number from $profileIDNum to $inputProfileIDNum";
+                } elseif ($passChanged) {
+                    $action = "Updated the profile password";
                 } else {
                     $action = "Attempt to update profile";
                 }

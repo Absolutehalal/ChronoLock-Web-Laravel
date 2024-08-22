@@ -28,6 +28,7 @@ class Schedule extends Model
         'scheduleTitle',
         'scheduleType'
     ];
+    
     public function classList()
     {
         return $this->belongsTo(ClassList::class);

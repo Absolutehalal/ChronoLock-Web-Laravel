@@ -346,7 +346,7 @@ $(document).ready(function () {
         minDate: "today",
     };
 
-    // Initialize flatpickr instances
+    // Initialize flatpickr instances for the Datatable
     flatpickr("#selectedDate", dateConfig);
     flatpickr("#selectedTime", timeConfig);
 
@@ -419,6 +419,24 @@ $(document).ready(function () {
     $("#selectedDate, #selectedTime").on("change", function () {
         attendanceTable.draw();
     });
+
+
+    // Schedule Date [See Schedule Management Admin] 
+    flatpickr("#selectedDate1", dateConfig);
+    flatpickr("#selectedDate2", dateConfig);
+    flatpickr("#selectedDate3", dateConfig);
+    flatpickr("#selectedDate4", dateConfig);
+
+    flatpickr("#selectedTime1", timeConfig);
+    flatpickr("#selectedTime2", timeConfig);
+    flatpickr("#selectedTime3", timeConfig);
+    flatpickr("#selectedTime4", timeConfig);
+    flatpickr("#selectedTime5", timeConfig);
+    flatpickr("#selectedTime6", timeConfig);
+    flatpickr("#selectedTime7", timeConfig);
+    flatpickr("#selectedTime8", timeConfig);
+
+
 
     //ADMIN FILTERS START-----------
 
@@ -531,7 +549,20 @@ $(document).ready(function () {
         $(this).addClass("active");
     });
 
+    $(".filter-faculty-id").on("click", function (e) {
+        e.preventDefault();
+        var faculty = $(this).data("value");
+
+        // Update the selected inst_name in a hidden input (if needed)
+        $("#selectedFaculty").val(faculty);
+
+        // Toggle active class for visual indication
+        $(".filter-faculty-id").removeClass("active");
+        $(this).addClass("active");
+    });
+
     //end schedule faculty filter
+
     //ADMIN FILTERS END-------------
 
     // STUDENT FILTERS

@@ -327,6 +327,15 @@ class UserController extends Controller
                 'errors' => $validator->messages()
             ]);
         } else {
+
+            // Check if the email contains '@'
+            if (!str_contains($request->input('email'), '@')) {
+                return response()->json([
+                    'status' => 409,
+                    'message' => 'Invalid email'
+                ]);
+            }
+
             if ($emailDomain !== 'my.cspc.edu.ph') {
                 return response()->json([
                     'status' => 300,
