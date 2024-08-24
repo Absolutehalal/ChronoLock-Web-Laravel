@@ -26,7 +26,7 @@ class Attendance extends Model
         'userID',
         'remark',
     ];
-    
+
     public function user()
     {
         return $this->belongsTo(User::class);

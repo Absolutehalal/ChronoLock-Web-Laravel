@@ -13,6 +13,7 @@ use App\Http\Controllers\StudentMasterListController;
 use App\Http\Controllers\PDFController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ForgotPasswordController;
+use App\Http\Controllers\ClassListController;
 
 
 use Illuminate\Support\Facades\Auth;
@@ -86,6 +87,15 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     Route::get('/generate-pdf', [PDFController::class, 'exportPDF'])->name('exportPDF');
     Route::get('/preview-pdf', [PDFController::class, 'previewPDF'])->name('previewPDF');
     //--------END schedule Management Routes----------
+
+    //--------START ClassList Management Routes----------
+
+    Route::get('/AppointedSchedules', [ClassListController::class, 'appointedSchedules'])->name('appointedSchedules');
+    Route::put('/adminNoClass-Class-List/{id}', [ScheduleController::class, 'noClassClassList'])->name('noClassClassList');
+    Route::put('/adminWithClass-Class-List/{id}', [ScheduleController::class, 'withClassClassList'])->name('withClassClassList');
+
+    //--------End ClassList Management Routes----------
+
 
     //--------START Admin student attendance Management ROUTES---------  
 
@@ -164,6 +174,10 @@ Route::group(['middleware' => ['auth', 'faculty']], function () {
     Route::put('/instructorUpdateStudentList/{id}', [FacultyAttendanceAndListController::class, 'instructorUpdateStudentList'])->name('instructorUpdateStudentList');
     Route::delete('/instructorDeleteStudentList/{id}', [FacultyAttendanceAndListController::class, 'instructorDeleteStudentList'])->name('instructorDeleteStudentList');
     //--------END instructor class Attendance and List  ROUTES---------
+
+    //--------START instructor Calendar ROUTES---------
+    Route::get('/get-Faculty-Schedules', [ScheduleController::class, 'facultyCalendarSchedules'])->name('facultyCalendarSchedules');
+    //--------END instructor Calendar ROUTES---------
 });
 
 

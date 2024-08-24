@@ -492,23 +492,63 @@ class UserController extends Controller
             $facultyID = $request->get('scheduleFaculty');
             $facultyFirstName = DB::table('users')->where('idNumber', $facultyID)->value('firstName');
             $facultyLastName = DB::table('users')->where('idNumber', $facultyID)->value('lastName');
+            $id = Auth::id();
+            $userID = DB::table('users')->where('id', $id)->value('idNumber');
+            $startTime = date("H:i:s", strtotime($request->input('scheduleStartTime')));
+            $endTime = date("H:i:s", strtotime($request->input('scheduleEndTime')));
 
+            $startDate = date('Y-m-d', strtotime($request->input('scheduleStartDate')));
+            $endDate = date('Y-m-d', strtotime($request->input('scheduleEndDate')));
+            $courseCode =  $request->input('courseCode');
+            $checkStartTime = DB::table('schedules')
+            ->whereRaw('? BETWEEN startTime AND endTime', [$startTime])
+            ->get();
+            $checkEndTime = DB::table('schedules')
+            ->whereRaw('? BETWEEN startTime AND endTime', [$endTime])
+            ->get();
             if ($validator->fails()) {
                 return response()->json([
                     'status' => 400,
                     'errors' => $validator->messages()
                 ]);
-            } else {
-                $id = Auth::id();
-                $userID = DB::table('users')->where('id', $id)->value('idNumber');
+            } else if(($checkStartTime->isNotEmpty()) || ($checkEndTime->isNotEmpty())){
 
-                $courseCode =  $request->input('courseCode');
-                $startTime = date("H:i:s", strtotime($request->input('scheduleStartTime')));
-                $endTime = date("H:i:s", strtotime($request->input('scheduleEndTime')));
+                $newRegularSchedule = new Schedule;
+                $newRegularSchedule->courseCode =  $request->input('courseCode');
+                $newRegularSchedule->courseName = $request->input('courseName');
+                $newRegularSchedule->userID = $request->input('scheduleFaculty');
+                $newRegularSchedule->instFirstName = $facultyFirstName;
+                $newRegularSchedule->instLastName = $facultyLastName;
+                $newRegularSchedule->userID = $request->input('scheduleFaculty');
+                $newRegularSchedule->program = $request->input('scheduleProgram');
+                $newRegularSchedule->year = $request->input('scheduleYear');
+                $newRegularSchedule->section = $request->input('scheduleSection');
+                $newRegularSchedule->startTime = $startTime;
+                $newRegularSchedule->endTime = $endTime;
+                $newRegularSchedule->startDate = $startDate;
+                $newRegularSchedule->endDate = $endDate;
+                $newRegularSchedule->day = $request->input('scheduleWeekDay');
+                $newRegularSchedule->scheduleStatus = 'unscheduled';
+                $newRegularSchedule->scheduleType = 'regularSchedule';
+                $newRegularSchedule->save();
 
-                $startDate = date('Y-m-d', strtotime($request->input('scheduleStartDate')));
-                $endDate = date('Y-m-d', strtotime($request->input('scheduleEndDate')));
+                // Start Logs
+                date_default_timezone_set("Asia/Manila");
+                $date = date("Y-m-d");
+                $time = date("H:i:s");
+                $action = "Added New Regular Schedule for $courseCode";
+                DB::table('user_logs')->insert([
+                    'userID' => $userID,
+                    'action' => $action,
+                    'date' => $date,
+                    'time' => $time,
+                ]);
+                // END Logs
+                return response()->json([
+                    'status' => 300,
+                ]);
 
+            }else {
                 $newRegularSchedule = new Schedule;
                 $newRegularSchedule->courseCode =  $request->input('courseCode');
                 $newRegularSchedule->courseName = $request->input('courseName');
@@ -608,8 +648,60 @@ class UserController extends Controller
                 $startTime = DB::table('schedules')->where('scheduleID', $updatedID)->value('startTime');
                 $endTime = DB::table('schedules')->where('scheduleID', $updatedID)->value('endTime');
                 $day = DB::table('schedules')->where('scheduleID', $updatedID)->value('day');
+                $checkStartTime = DB::table('schedules')
+                ->whereRaw('? BETWEEN startTime AND endTime', [$startTime])
+                ->get();
+                $checkEndTime = DB::table('schedules')
+                ->whereRaw('? BETWEEN startTime AND endTime', [$endTime])
+                ->get();
 
-                if ($schedule) {
+                if (($schedule)&&(($checkStartTime->isNotEmpty()) || ($checkEndTime->isNotEmpty()))){
+                    $strtTime = date("H:i:s", strtotime($request->input('startTime')));
+                    $ndTime = date("H:i:s", strtotime($request->input('endTime')));
+
+                    $strtDate = date('Y-m-d', strtotime($request->input('startDate')));
+                    $ndDate = date('Y-m-d', strtotime($request->input('endDate')));
+
+                    $schedule->courseCode = $request->input('updateCourseCode');
+                    $schedule->courseName = $request->input('updateCourseName');
+                    $schedule->startDate = $strtDate;
+                    $schedule->endDate = $ndDate;
+                    $schedule->startTime =  $strtTime;
+                    $schedule->endTime =  $ndTime;
+                    $schedule->day = $request->input('updateWeekDay');
+                    $schedule->update();
+
+                    // Start Logs
+                    $inputCourseCode = $request->input('updateCourseCode');
+                    $inputCourseName = $request->input('updateCourseName');
+                    $inputStartTime =   $strtTime;
+                    $inputEndTime = $ndTime;
+                    $inputStartDate =   $strtDate;
+                    $inputEndDate = $ndDate;
+                    $inputDay = $request->input('updateWeekDay');
+
+                    $id = Auth::id();
+                    $userID = DB::table('users')->where('id', $id)->value('idNumber');
+                    date_default_timezone_set("Asia/Manila");
+                    $date = date("Y-m-d");
+                    $time = date("H:i:s");
+                    if (($inputCourseCode == $courseCode) && ($inputCourseName == $courseName) && ($inputStartTime == $startTime) && ($inputEndTime == $endTime)  && ($inputStartDate == $startDate)  && ($inputEndDate == $endDate) && ($inputDay == $day)) {
+                        $action = "Attempt update on $courseCode schedule";
+                    } else {
+                        $action = "Updated $courseCode schedule";
+                    }
+                    DB::table('user_logs')->insert([
+                        'userID' => $userID,
+                        'action' => $action,
+                        'date' => $date,
+                        'time' => $time,
+                    ]);
+                    // END Logs
+
+                    return response()->json([
+                        'status' => 300,
+                    ]);
+                }else if($schedule) {
 
                     $strtTime = date("H:i:s", strtotime($request->input('startTime')));
                     $ndTime = date("H:i:s", strtotime($request->input('endTime')));
@@ -658,8 +750,8 @@ class UserController extends Controller
                     ]);
                 }
             }
-        } catch (\Exception $e) {
 
+        } catch (\Exception $e) {
             Alert::error('Error', 'Something went wrong. Please try again later.')
                 ->autoClose(5000)
                 ->showCloseButton();
@@ -707,34 +799,51 @@ class UserController extends Controller
             $validator = Validator::make($request->all(), [
                 'scheduleTitle' => 'required',
                 'program' => 'required',
+                'makeUpCourseCode' => 'required',
+                'makeUpCourseName' => 'required',
                 'year' => 'required',
                 'section' => 'required',
                 'makeUpScheduleStartTime' => 'required',
                 'makeUpScheduleEndTime' => 'required',
                 'faculty' => 'required',
-            ]);
 
+            ]);
+            $scheduleTitle = $request->get('scheduleTitle');
             $facultyID = $request->get('faculty');
+            $duplicateScheduleTitle = DB::table('schedules')->where('scheduleTitle', $scheduleTitle)->get();
             $facultyFirstName = DB::table('users')->where('idNumber', $facultyID)->value('firstName');
             $facultyLastName = DB::table('users')->where('idNumber', $facultyID)->value('lastName');
+            $startTime = date("H:i:s", strtotime($request->input('makeUpScheduleStartTime')));
+            $endTime = date("H:i:s", strtotime($request->input('makeUpScheduleEndTime')));
+            $checkStartTime = DB::table('schedules')
+            ->whereRaw('? BETWEEN startTime AND endTime', [$startTime])
+            ->get();
+            $checkEndTime = DB::table('schedules')
+            ->whereRaw('? BETWEEN startTime AND endTime', [$endTime])
+            ->get();
+            $id = Auth::id();
+            $userID = DB::table('users')->where('id', $id)->value('idNumber');
+            $newSchedule = $request->input('scheduleTitle');
 
             if ($validator->fails()) {
                 return response()->json([
                     'status' => 400,
                     'errors' => $validator->messages()
                 ]);
-            } else {
-                $id = Auth::id();
-                $userID = DB::table('users')->where('id', $id)->value('idNumber');
-                $newSchedule = $request->input('scheduleTitle');
 
-                $startTime = date("H:i:s", strtotime($request->input('makeUpScheduleStartTime')));
-                $endTime = date("H:i:s", strtotime($request->input('makeUpScheduleEndTime')));
+            }else if($duplicateScheduleTitle->isNotEmpty()){
+                return response()->json([
+                    'status' => 100,
+                ]);
 
+
+
+            }else if(($checkStartTime->isNotEmpty()) || ($checkEndTime->isNotEmpty())){
                 $makeUpSchedule = new Schedule;
+                $makeUpSchedule->courseCode = $request->input('makeUpCourseCode');
+                $makeUpSchedule->courseName = $request->input('makeUpCourseName');
                 $makeUpSchedule->userID =  $request->input('faculty');
                 $makeUpSchedule->scheduleTitle = $request->input('scheduleTitle');
-                $makeUpSchedule->userID = $request->input('scheduleFaculty');
                 $makeUpSchedule->instFirstName = $facultyFirstName;
                 $makeUpSchedule->instLastName = $facultyLastName;
                 $makeUpSchedule->program = $request->input('program');
@@ -744,6 +853,43 @@ class UserController extends Controller
                 $makeUpSchedule->endTime = $endTime;
                 $makeUpSchedule->startDate = $request->start_date;
                 $makeUpSchedule->endDate = $request->end_date;
+                $makeUpSchedule->day = $request->dayOfWeekString;
+                $makeUpSchedule->scheduleStatus = 'unscheduled';
+                $makeUpSchedule->scheduleType = 'makeUpSchedule';
+                $makeUpSchedule->save();
+
+                // Start Logs
+                date_default_timezone_set("Asia/Manila");
+                $date = date("Y-m-d");
+                $time = date("H:i:s");
+                $action = "Added Make Up Schedule ($newSchedule)";
+                DB::table('user_logs')->insert([
+                    'userID' => $userID,
+                    'action' => $action,
+                    'date' => $date,
+                    'time' => $time,
+                ]);
+                // END Logs
+                return response()->json([
+                    'status' => 300,
+                ]);
+            
+            } else {
+                $makeUpSchedule = new Schedule;
+                $makeUpSchedule->courseCode = $request->input('makeUpCourseCode');
+                $makeUpSchedule->courseName = $request->input('makeUpCourseName');
+                $makeUpSchedule->userID =  $request->input('faculty');
+                $makeUpSchedule->scheduleTitle = $request->input('scheduleTitle');
+                $makeUpSchedule->instFirstName = $facultyFirstName;
+                $makeUpSchedule->instLastName = $facultyLastName;
+                $makeUpSchedule->program = $request->input('program');
+                $makeUpSchedule->year = $request->input('year');
+                $makeUpSchedule->section = $request->input('section');
+                $makeUpSchedule->startTime = $startTime;
+                $makeUpSchedule->endTime = $endTime;
+                $makeUpSchedule->startDate = $request->start_date;
+                $makeUpSchedule->endDate = $request->end_date;
+                $makeUpSchedule->day = $request->dayOfWeekString;
                 $makeUpSchedule->scheduleStatus = 'unscheduled';
                 $makeUpSchedule->scheduleType = 'makeUpSchedule';
                 $makeUpSchedule->save();
@@ -840,7 +986,7 @@ class UserController extends Controller
                 'updateSection' => 'required',
                 'updateStartTime' => 'required',
                 'updateEndTime' => 'required',
-                'updateFaculty' => 'required',
+                // 'updateFaculty' => 'required',
             ]);
             if ($validator->fails()) {
                 return response()->json([
@@ -858,12 +1004,16 @@ class UserController extends Controller
                 $section = DB::table('schedules')->where('scheduleID', $updatedID)->value('section');
                 $startTime = DB::table('schedules')->where('scheduleID', $updatedID)->value('startTime');
                 $endTime = DB::table('schedules')->where('scheduleID', $updatedID)->value('endTime');
-
+                $strtTime = date("H:i:s", strtotime($request->input('updateStartTime')));
+                $ndTime = date("H:i:s", strtotime($request->input('updateEndTime')));
+                $checkStartTime = DB::table('schedules')
+                ->whereRaw('? BETWEEN startTime AND endTime', [$strtTime])
+                ->get();
+                $checkEndTime = DB::table('schedules')
+                ->whereRaw('? BETWEEN startTime AND endTime', [$ndTime])
+                ->get();
                 // Update the schedule if it exists
-                if ($makeUpSchedule) {
-
-                    $strtTime = date("H:i:s", strtotime($request->input('updateStartTime')));
-                    $ndTime = date("H:i:s", strtotime($request->input('updateEndTime')));
+                if (($makeUpSchedule)&&(($checkStartTime->isNotEmpty()) || ($checkEndTime->isNotEmpty()))) {
 
                     // Update schedule details
                     $makeUpSchedule->scheduleTitle = $request->input('updateScheduleTitle');
@@ -905,8 +1055,51 @@ class UserController extends Controller
                     // END Logs
 
                     return response()->json([
-                        'status' => 200,
+                        'status' => 300,
                     ]);
+                }else if ($makeUpSchedule){
+                      // Update schedule details
+                      $makeUpSchedule->scheduleTitle = $request->input('updateScheduleTitle');
+                      $makeUpSchedule->program = $request->input('updateProgram');
+                      $makeUpSchedule->year = $request->input('updateYear');
+                      $makeUpSchedule->section = $request->input('updateSection');
+                      $makeUpSchedule->startTime = $strtTime;
+                      $makeUpSchedule->endTime = $ndTime;
+                      $makeUpSchedule->update();
+  
+                      // Start Logs
+                      $inputScheduleTitle = $request->input('updateScheduleTitle');
+                      $inputProgram = $request->input('updateProgram');
+                      $inputYear = $request->input('updateYear');
+                      $inputSection = $request->input('updateSection');
+                      $inputStartTime = $strtTime;
+                      $inputEndTime = $ndTime;
+  
+                      $id = Auth::id();
+                      $userID = DB::table('users')->where('id', $id)->value('idNumber');
+                      date_default_timezone_set("Asia/Manila");
+                      $date = date("Y-m-d");
+                      $time = date("H:i:s");
+  
+                      // Determine the action for the log
+                      if (($inputScheduleTitle == $scheduleTitle) && ($inputProgram == $program) && ($inputYear == $year) && ($inputSection == $section)  && ($inputStartTime == $startTime)  && ($inputEndTime == $endTime)) {
+                          $action = "Attempt update on $scheduleTitle schedule";
+                      } else {
+                          $action = "Updated $scheduleTitle schedule";
+                      }
+  
+                      // Insert log entry
+                      DB::table('user_logs')->insert([
+                          'userID' => $userID,
+                          'action' => $action,
+                          'date' => $date,
+                          'time' => $time,
+                      ]);
+                      // END Logs
+  
+                      return response()->json([
+                          'status' => 200,
+                      ]);
                 }
             }
         } catch (\Exception $e) {

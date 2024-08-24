@@ -316,7 +316,6 @@ class ScheduleController extends Controller
         $query = DB::table('schedules')
             ->join('users', 'schedules.userID', '=', 'users.idNumber')
             ->where('schedules.scheduleStatus', '=', 'unscheduled')
-            ->where('schedules.scheduleType', '=', 'regularSchedule')
             ->orderBy('schedules.scheduleID', 'desc');
 
         if ($data['selectedName']) {
@@ -429,13 +428,53 @@ class ScheduleController extends Controller
         }
     }
 
-    // -----------End instructor functions-----------
+    public function facultyCalendarSchedules()
+    {
+        $ERPSchedules = array();
+        $id = Auth::id();
+        $userID = DB::table('users')->where('id', $id)->value('idNumber');
+        $schedule = DB::table('schedules')->where('userID', $userID)->get();
+       
+
+        foreach ($schedule as $schedule) {
+            if ($schedule->scheduleType == 'makeUpSchedule') {
+                $ERPSchedules[] = [
+                    'id' =>   $schedule->scheduleID,
+                    'title' => $schedule->scheduleTitle . " - " . $schedule->instFirstName . " " . $schedule->instLastName,
+                    'startTime' => $schedule->startTime,
+                    'endTime' => $schedule->endTime,
+                    'startRecur' => $schedule->startDate,
+                    'endRecur' => $schedule->endDate,
+                    'color' => '#f9a603',
+                    'description' => 'makeUpSchedule',
+                ];
+            } else if ($schedule->scheduleType == 'regularSchedule') {
+                $ERPSchedules[] = [
+                    'id' =>  $schedule->scheduleID,
+                    'title' => $schedule->courseName . " - " . $schedule->instFirstName . " " . $schedule->instLastName,
+                    'startTime' => $schedule->startTime,
+                    'endTime' => $schedule->endTime,
+                    'startRecur' => $schedule->startDate,
+                    'endRecur' => $schedule->endDate,
+                    'daysOfWeek' => $schedule->day,
+                    'color' => '#1fd655',
+                    'description' => 'regularSchedule',
+                ];
+            }
+        }
+        return response()->json([
+            'status' => 200,
+            'ERPSchedules' => $ERPSchedules,
+        ]);
+    }
+    // -----------End instructor functions------------
 
 
     public function getFacultySchedules()
     {
         $schedules = Schedule::where('id', Auth::id())->get();
-    
+
         return view('faculty.instructor-schedule', ['schedules' => $schedules]);
+
     }
 }

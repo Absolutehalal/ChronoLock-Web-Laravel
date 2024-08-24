@@ -36,6 +36,44 @@ $(document).ready(function () {
         }
     });
 
+    var tableTwo = $("#exampleTable2").DataTable({
+        // scrollX: true,?
+        // "searching": false, order: [[0, 'asc']],
+        rowReorder: true,
+        pagingType: "simple_numbers",
+        responsive: true,
+        topEnd: null,
+        rowReorder: {
+            selector: "td:nth-child(2)",
+        },
+        // stateSave: false,
+        mark: true,
+        language: {
+            searchPlaceholder: "Search Here",
+        },
+    });
+
+    // Highlight search term
+    tableTwo.on("draw", function () {
+        var body = $(table.table().body());
+        var searchTerm = table.search();
+
+        // Clear previous highlights
+        body.unmark();
+
+        if (searchTerm) {
+            // Highlight new search term in specific columns (excluding the Actions column)
+            body.find("td").each(function () {
+                var cell = $(this);
+                // Highlight in all columns except the last one (assuming it's the Actions column)
+                if (!cell.hasClass("action-cell")) {
+                    cell.mark(searchTerm);
+                }
+            });
+        }
+    });
+    
+
     // Start Logs Table------------
 
     //admin table
@@ -528,6 +566,18 @@ $(document).ready(function () {
 
         // Toggle active class for visual indication
         $(".filter-faculty-id").removeClass("active");
+        $(this).addClass("active");
+    });
+
+    $(".makeUp-filter-faculty-id").on("click", function (e) {
+        e.preventDefault();
+        var facultyID = $(this).data("value");
+
+        // Update the selected inst_name in a hidden input (if needed)
+        $("#editMakeUpSelectedFacultyID").val(facultyID);
+
+        // Toggle active class for visual indication
+        $(".makeUp-filter-faculty-id").removeClass("active");
         $(this).addClass("active");
     });
 

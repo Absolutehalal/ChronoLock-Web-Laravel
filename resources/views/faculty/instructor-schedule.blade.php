@@ -13,7 +13,7 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-
+    <script src="{{asset('js/instructorCalendar.js')}}"></script>
     <title>ChronoLock Instructor-Schedule</title>
 
     @include('head')
@@ -90,7 +90,7 @@
 
                     <div class="card-body">
                         <div class="full-calendar mb-5">
-                            <div id="calendar"></div>
+                            <div id="instructorCalendar"></div>
                         </div>
                     </div>
                 </div>
@@ -103,18 +103,6 @@
     </div>
     </div>
 
-    <script>
-        $(document).ready(function() {
-            var calendarEl = document.getElementById('calendar');
-            var schedules = response.schedules;
-
-            var calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'dayGridMonth',
-                events: schedules
-            });
-
-            calendar.render();
-        });
-    </script>
-
+ <script src="{{asset('plugins/fullcalendar/core-4.3.1/main.min.js')}}"></script>
+ <script src="{{asset('plugins/fullcalendar/daygrid-4.3.0/main.min.js')}}"></script>
     @include('footer')

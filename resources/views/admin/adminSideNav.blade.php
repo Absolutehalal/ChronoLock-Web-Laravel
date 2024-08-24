@@ -55,9 +55,17 @@
           <li>
             <a class="sidenav-item-link" href="{{ route('adminScheduleManagement') }}">
               <i class="mdi mdi-calendar-today "></i>
-              <span class="nav-text" data-toggle="tooltip" title="Schedule">Schedule</span>
+              <span class="nav-text" data-toggle="tooltip" title="Schedule">ERP Schedule</span>
             </a>
           </li>
+
+          <li>
+            <a class="sidenav-item-link" href="{{ route('appointedSchedules') }}">
+              <i class="mdi mdi-calendar-today "></i>
+              <span class="nav-text" data-toggle="tooltip" title="AppointedSchedule">Appointed Schedule</span>
+            </a>
+          </li>
+
 
           <li class="has-sub">
             <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#users" aria-expanded="false" aria-controls="users">
@@ -115,6 +123,12 @@
                 <li>
                   <a class="sidenav-item-link" href="{{ route('instructorAttendanceGeneration') }}">
                     <span class="nav-text">Instructor Attendance</span>
+                  </a>
+                </li>
+
+                <li>
+                  <a class="sidenav-item-link" href="{{ route('previewPDF') }}">
+                    <span class="nav-text">ERP Regular Schedules</span>
                   </a>
                 </li>
               </div>

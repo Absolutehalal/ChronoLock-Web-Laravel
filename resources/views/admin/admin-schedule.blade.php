@@ -100,19 +100,19 @@
                     ADD SCHEDULE
                   </button>
                 </div> -->
-                <div class="dropdown d-inline-block mb-3 mr-3">
+                <!-- <div class="dropdown d-inline-block mb-3 mr-3">
                   <button title="Export PDF" class="btn btn-warning btn-sm fw-bold" onclick='window.location = "{{ route("exportPDF") }}"' type="button">
                     <i class="mdi mdi-file-pdf"></i>
                     PDF
                   </button>
-                </div>
+                </div> -->
 
-                <div class="dropdown d-inline-block mb-3">
+                <!-- <div class="dropdown d-inline-block mb-3">
                   <button title="Preview" class="btn btn-outline-dark btn-sm fw-bold" onclick='window.location = "{{ route("previewPDF") }}"' type="button">
                     <i class="mdi mdi-feature-search"></i>
                     Preview
                   </button>
-                </div>
+                </div> -->
               </div>
             </div>
           </div>
@@ -171,6 +171,22 @@
                     <option value="BSCS">BSCS</option>
                     <option value="BLIS">BLIS</option>
                   </select>
+                </div>
+              </div>
+
+              <div class="col-lg-6">
+                <ul id="makeUpCourseCodeError"></ul>
+                <div class="form-group">
+                  <label>Course Code</label>
+                  <input type="text" class="makeUpCourseCode form-control border border-dark border border-dark" id="makeUpCourseCode" name="makeUpCourseCode" placeholder="Enter Course Code" />
+                </div>
+              </div>
+
+              <div class="col-lg-6">
+                <ul id="makeUpCourseNameError"></ul>
+                <div class="form-group">
+                  <label>Course Name</label>
+                  <input type="text" class="makeUpCourseName form-control border border-dark border border-dark" id="makeUpCourseName" name="makeUpCourseName" placeholder="Enter Course Name" />
                 </div>
               </div>
 
@@ -243,7 +259,7 @@
                 <ul id="facultyError"></ul>
                 <form method="GET" action="{{ route('adminScheduleManagement') }}">
 
-                  <button class="btn btn-primary btn-sm dropdown-toggle fw-bold" type="button" id="makeupinstIDDropdown" data-toggle="dropdown" aria-expanded="false">
+                  <button class="btn btn-primary btn-sm dropdown-toggle fw-bold" type="button" id="makeupInstIDDropdown" data-toggle="dropdown" aria-expanded="false">
                     <i class="mdi mdi-alpha-i-box"></i>
                     Instructor ID
                   </button>
@@ -783,20 +799,20 @@
                 </div>
               </div>
 
-              <label>Instructor</label>
+              <!-- <label>Instructor</label>
 
               <div class="col-lg-6">
                 <ul id="editScheduleFacultyError"></ul>
                 <form id="" method="GET" action="{{ route('adminScheduleManagement') }}">
 
-                  <button class="btn btn-primary btn-sm dropdown-toggle fw-bold" type="button" id="editfacultyIDDropdown" data-toggle="dropdown" aria-expanded="false">
+                  <button class="btn btn-primary btn-sm dropdown-toggle fw-bold" type="button" id="editFacultyIDDropdown" data-toggle="dropdown" aria-expanded="false">
                     <i class="mdi mdi-alpha-i-box"></i>
                     Instructor ID
                   </button>
                   <div class="dropdown-menu scrollable-dropdown" aria-labelledby="facultyIDDropdown">
                     @forelse($instructorsID as $instructorID)
                     @csrf
-                    <a class="dropdown-item edit-faculty filter-faculty-id" data-value="{{ $instructorID->idNumber }}" href="#">
+                    <a class="dropdown-item edit-faculty makeUp-filter-faculty-id" data-value="{{ $instructorID->idNumber }}" href="#">
                       {{ $instructorID->idNumber }}-{{ $instructorID->firstName }} {{ $instructorID->lastName }}
                     </a>
                     @empty
@@ -804,10 +820,10 @@
                       None
                     </a>
                     @endforelse
-                    <input type="hidden" class="updateFaculty form-control" name="facultyID" id="selectedFacultyID">
+                   <input type="text" class="updateFaculty form-control" name="facultyID" id="editMakeUpSelectedFacultyID">
                   </div>
                 </form>
-              </div>
+              </div> -->
 
             </div> <!-- Modal Boday End-->
 
@@ -911,16 +927,16 @@
       document.querySelectorAll('.id-item').forEach(function(item) {
         item.addEventListener('click', function(e) {
           e.preventDefault();
-          document.getElementById('instIDDropdown').innerHTML = `<i class="mdi mdi-alpha-i-box"></i> ${this.textContent}`;
+          document.getElementById('makeupInstIDDropdown').innerHTML = `<i class="mdi mdi-alpha-i-box"></i> ${this.textContent}`;
         });
       });
       
-      document.querySelectorAll('.edit-faculty').forEach(function(item) {
-        item.addEventListener('click', function(e) {
-          e.preventDefault();
-          document.getElementById('editfacultyIDDropdown').innerHTML = `<i class="mdi mdi-alpha-i-box"></i> ${this.textContent}`;
-        });
-      });
+      // document.querySelectorAll('.edit-faculty').forEach(function(item) {
+      //   item.addEventListener('click', function(e) {
+      //     e.preventDefault();
+      //     document.getElementById('editFacultyIDDropdown').innerHTML = `<i class="mdi mdi-alpha-i-box"></i> ${this.textContent}`;
+      //   });
+      // });
     });
   </script>
 
@@ -976,5 +992,5 @@
     });
   </script>
 
-
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
   @include('footer')

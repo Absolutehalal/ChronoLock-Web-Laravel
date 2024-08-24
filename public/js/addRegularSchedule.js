@@ -116,6 +116,41 @@ $(document).on('click', '.createRegularSchedule', function(e) {
             }
 
           });
+        }else if (response.status == 300) {
+          $('#courseCodeError').html("");
+          $('#courseNameError').html("");
+          $('#scheduleProgramError').html("");
+          $('#scheduleYearError').html("");
+          $('#scheduleSectionError').html("");
+          $('#scheduleStartTimeError').html("");
+          $('#scheduleEndTimeError').html("");
+          $('#scheduleStartDateError').html("");
+          $('#scheduleEndDateError').html("");
+          $('#scheduleEditWeekDayError').html("");
+          $('#scheduleFacultyError').html("");
+          $('.createRegularSchedule').text('Create');
+        $("#addRegularScheduleModal .close").click()
+
+        Swal.fire({
+          icon: "warning",
+          title: "Warning",
+          text: "Regular Schedule Created. Conflict in schedules!!! Fix schedule status of either schedules conflicting with each other",
+          confirmButtonText: "OK",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: "Redirecting...",
+                    html: "Please wait...",
+                    allowEscapeKey: false,
+                    allowOutsideClick: false,
+                    timer: 2000,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    },
+                });
+                window.location.href = "/AppointedSchedules";
+            }
+            });
         }
       }
     });

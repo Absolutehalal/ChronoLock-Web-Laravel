@@ -28,7 +28,7 @@ $(document).ready(function () {
                 },
                 events: schedules,
                 selectable: true,
-                eventTimeFormat: {
+                eventTimeFormat: { 
                     hour: "numeric",
                     minute: "2-digit",
                     meridiem: "short",
@@ -54,6 +54,9 @@ $(document).ready(function () {
                 select: function (info) {
                     var start_date = info.startStr;
                     var end_date = info.endStr;
+                    var startDateDay = new Date(start_date);
+                    var dayOfWeekNumber = startDateDay.getDay();
+                    var dayOfWeekString = dayOfWeekNumber.toString();
 
                     var currentDate = moment().format("YYYY-MM-DD");
                     if (start_date < currentDate) {
@@ -78,6 +81,8 @@ $(document).ready(function () {
                                 var data = {
                                     scheduleTitle: $(".scheduleTitle").val(),
                                     program: $(".program").val(),
+                                    makeUpCourseCode: $(".makeUpCourseCode").val(),
+                                    makeUpCourseName: $(".makeUpCourseName").val(),
                                     year: $(".year").val(),
                                     section: $(".section").val(),
                                     makeUpScheduleStartTime: $(
@@ -88,9 +93,10 @@ $(document).ready(function () {
                                     ).val(),
                                     start_date,
                                     end_date,
+                                    dayOfWeekString,
                                     faculty: $(".faculty").val(),
                                 };
-                                // console.log(data)
+                                console.log(data)
 
                                 $.ajaxSetup({
                                     headers: {
@@ -106,7 +112,7 @@ $(document).ready(function () {
                                     data: data,
                                     dataType: "json",
                                     success: function (response) {
-                                        //  console.log(response);
+                                        //   console.log(response);
                                         if (response.status == 400) {
                                             $("#titleError").html("");
                                             $("#titleError").addClass("error");
@@ -114,6 +120,10 @@ $(document).ready(function () {
                                             $("#programError").addClass(
                                                 "error"
                                             );
+                                            $("#makeUpCourseCodeError").html("");
+                                            $("#makeUpCourseCodeError").addClass("error");
+                                            $("#makeUpCourseNameError").html("");
+                                            $("#makeUpCourseNameError").addClass("error");
                                             $("#yearError").html("");
                                             $("#yearError").addClass("error");
                                             $("#sectionError").html("");
@@ -147,6 +157,26 @@ $(document).ready(function () {
                                                 response.errors.program,
                                                 function (key, err_value) {
                                                     $("#programError").append(
+                                                        "<li>" +
+                                                            err_value +
+                                                            "</li>"
+                                                    );
+                                                }
+                                            );
+                                            $.each(
+                                                response.errors.makeUpCourseCode,
+                                                function (key, err_value) {
+                                                    $("#makeUpCourseCodeError").append(
+                                                        "<li>" +
+                                                            err_value +
+                                                            "</li>"
+                                                    );
+                                                }
+                                            );
+                                            $.each(
+                                                response.errors.makeUpCourseName,
+                                                function (key, err_value) {
+                                                    $("#makeUpCourseNameError").append(
                                                         "<li>" +
                                                             err_value +
                                                             "</li>"
@@ -211,11 +241,14 @@ $(document).ready(function () {
                                         } else if (response.status == 200) {
                                             $("#titleError").html("");
                                             $("#programError").html("");
+                                            $("#makeUpCourseCodeError").html("");
+                                            $("#makeUpCourseNameError").html("");
                                             $("#yearError").html("");
                                             $("#sectionError").html("");
                                             $("#startTimeError").html("");
                                             $("#endTimeError").html("");
                                             $("#facultyError").html("");
+
                                             Swal.fire({
                                                 icon: "success",
                                                 title: "Success",
@@ -233,14 +266,73 @@ $(document).ready(function () {
                                                     location.reload();
                                                 }
                                             });
-                                        }
+                                        } else if (response.status == 300) {
+                                            $("#titleError").html("");
+                                            $("#programError").html("");
+                                            $("#makeUpCourseCodeError").html("");
+                                            $("#makeUpCourseNameError").html("");
+                                            $("#yearError").html("");
+                                            $("#sectionError").html("");
+                                            $("#startTimeError").html("");
+                                            $("#endTimeError").html("");
+                                            $("#facultyError").html("");
+                                            $(
+                                                        ".addMakeUpSchedule"
+                                                    ).text("Create");
+                                                    $(
+                                                        "#makeUpScheduleModal .close"
+                                                    ).click();
+                                            Swal.fire({
+                                                icon: "warning",
+                                                title: "Warning",
+                                                text: "Make up Schedule Created. Conflict in schedules!!! Fix schedule status of either schedules conflicting with each other",
+                                                confirmButtonText: "OK",
+                                            }).then((result) => {
+                                                if (result.isConfirmed) {
+                                                    Swal.fire({
+                                                        title: "Redirecting...",
+                                                        html: "Please wait...",
+                                                        allowEscapeKey: false,
+                                                        allowOutsideClick: false,
+                                                        timer: 2000,
+                                                        didOpen: () => {
+                                                            Swal.showLoading();
+                                                        },
+                                                    });
+
+                                                    window.location.href = "/AppointedSchedules";
+                                                }
+                                                });
+                                                }else if (response.status == 100) {
+                                                    $("#titleError").html("");
+                                                    $("#programError").html("");
+                                                    $("#makeUpCourseCodeError").html("");
+                                                    $("#makeUpCourseNameError").html("");
+                                                    $("#yearError").html("");
+                                                    $("#sectionError").html("");
+                                                    $("#startTimeError").html("");
+                                                    $("#endTimeError").html("");
+                                                    $("#facultyError").html("");
+                                                    Swal.fire({
+                                                        icon: "warning",
+                                                        title: "Warning",
+                                                        text: "Duplicated Schedule Title!!!",
+                                                        timer: 5000,
+                                                        timerProgressBar: true,
+                                                    })
+                                                    $(
+                                                        ".addMakeUpSchedule"
+                                                    ).text("Create");
+                                                    $(
+                                                        "#makeUpScheduleModal .close"
+                                                    ).click();
+                                                }
                                     },
                                 });
                             }
                         );
                     }
                 },
-
                 eventClick: function (info) {
                     var scheduleType = info.event.extendedProps.description;
                     var id = info.event.id;
@@ -391,7 +483,7 @@ $(document).ready(function () {
 
                     // -----------Start edit regular schedule-----------
                     $(document).on(
-                        "mouseover",
+                        "pointerup",
                         ".editRegularSchedule",
                         function (e) {
                             e.preventDefault();
@@ -557,6 +649,35 @@ $(document).ready(function () {
                                                 location.reload();
                                             }
                                         });
+                                    }else if(response.status == 300){ 
+                                        $(
+                                                    ".updateRegularSchedule"
+                                                ).text("Update");
+                                                $(
+                                                    "#updateRegularScheduleModal .close"
+                                                ).click();
+                                        Swal.fire({
+                                            icon: "warning",
+                                            title: "Warning",
+                                            text: "Regular Schedule Updated. Conflict in schedules!!! Fix schedule status of either schedules conflicting with each other",
+                                            confirmButtonText: "OK",
+                                        }).then((result) => {
+                                            if (result.isConfirmed) {
+                                               
+                                                Swal.fire({
+                                                    title: "Redirecting...",
+                                                    html: "Please wait...",
+                                                    allowEscapeKey: false,
+                                                    allowOutsideClick: false,
+                                                    timer: 2000,
+                                                    didOpen: () => {
+                                                        Swal.showLoading();
+                                                    },
+                                                });
+
+                                                window.location.href = "/AppointedSchedules";
+                                            }
+                                        });
                                     }
                                 },
                             });
@@ -568,7 +689,7 @@ $(document).ready(function () {
                     // -----------Start edit Make up schedule-----------
 
                     $(document).on(
-                        "mouseover",
+                        "pointerup",
                         ".editMakeUpSchedule",
                         function (e) {
                             e.preventDefault();
@@ -641,18 +762,13 @@ $(document).ready(function () {
                                         $("#makeUpScheduleID").val(
                                             response.makeUpSchedule.scheduleID
                                         );
-                                        $(
-                                            "#edit_schedule_faculty_first_name"
-                                        ).val(
-                                            response.makeUpSchedule
-                                                .instFirstName
-                                        );
-                                        $(
-                                            "#edit_schedule_faculty_last_name"
-                                        ).val(
-                                            response.makeUpSchedule
-                                                .instLastName
-                                        );
+                                        // $(
+                                        //     "#editMakeUpSelectedFacultyID"
+                                        // ).val(
+                                        //     response.makeUpSchedule
+                                        //         .userID
+                                        // );
+
                                     }
                                 },
                             });
@@ -728,6 +844,10 @@ $(document).ready(function () {
                                                 $("#editEndTimeError").addClass(
                                                     "error"
                                                 );
+                                                // $("#editScheduleFacultyError").html("");
+                                                // $("#editScheduleFacultyError").addClass(
+                                                //     "error"
+                                                // );
                                                 $.each(
                                                     response.errors
                                                         .updateScheduleTitle,
@@ -792,6 +912,7 @@ $(document).ready(function () {
                                                         );
                                                     }
                                                 );
+
                                                 $.each(
                                                     response.errors
                                                         .updateEndTime,
@@ -805,19 +926,19 @@ $(document).ready(function () {
                                                         );
                                                     }
                                                 );
-                                                $.each(
-                                                    response.errors
-                                                        .updateFaculty,
-                                                    function (key, err_value) {
-                                                        $(
-                                                            "#editScheduleFacultyError"
-                                                        ).append(
-                                                            "<li>" +
-                                                                err_value +
-                                                                "</li>"
-                                                        );
-                                                    }
-                                                );
+                                                // $.each(
+                                                //     response.errors
+                                                //         .updateFaculty,
+                                                //     function (key, err_value) {
+                                                //         $(
+                                                //             "#editScheduleFacultyError"
+                                                //         ).append(
+                                                //             "<li>" +
+                                                //                 err_value +
+                                                //                 "</li>"
+                                                //         );
+                                                //     }
+                                                // );
                                                 $(".updateMakeUpSchedule").text(
                                                     "Update"
                                                 );
@@ -830,7 +951,7 @@ $(document).ready(function () {
                                                 $("#updateSection").html("");
                                                 $("#updateStartTime").html("");
                                                 $("#updateEndTime").html("");
-                                                $("updateFaculty").html("");
+                                                // $("updateFaculty").html("");
                                                 $(
                                                     "#updateMakeUpScheduleModal .close"
                                                 ).click();
@@ -847,6 +968,42 @@ $(document).ready(function () {
                                                         location.reload();
                                                     }
                                                 });
+                                            }else if(response.status == 300){
+                                                $("#updateScheduleTitle").html(
+                                                    ""
+                                                );
+                                                $("#updateProgram").html("");
+                                                $("#updateYear").html("");
+                                                $("#updateSection").html("");
+                                                $("#updateStartTime").html("");
+                                                $("#updateEndTime").html("");
+                                                // $("updateFaculty").html("");
+                                                $(
+                                                    "#updateMakeUpScheduleModal .close"
+                                                ).click();
+                                                $(".updateMakeUpSchedule").text(
+                                                    "Update"
+                                                );
+                                                Swal.fire({
+                                                    icon: "warning",
+                                                    title: "Warning",
+                                                    text: "Make Up Schedule Updated. Conflict in schedules!!! Fix schedule status of either schedules conflicting with each other",
+                                                    confirmButtonText: "OK",
+                                                }).then((result) => {
+                                                    if (result.isConfirmed) {
+                                                        Swal.fire({
+                                                            title: "Redirecting...",
+                                                            html: "Please wait...",
+                                                            allowEscapeKey: false,
+                                                            allowOutsideClick: false,
+                                                            timer: 2000,
+                                                            didOpen: () => {
+                                                                Swal.showLoading();
+                                                            },
+                                                        });
+                                                        window.location.href = "/AppointedSchedules";
+                                                    }
+                                                });
                                             }
                                         },
                                     });
@@ -854,7 +1011,6 @@ $(document).ready(function () {
                             );
                         }
                     );
-
                     // -----------End edit Make up schedule-----------
                 },
             });
@@ -862,5 +1018,4 @@ $(document).ready(function () {
         },
     });
 
-    
 });
