@@ -1,40 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" href="{{asset('css/login.css')}}">
-
     <!-- SWEET ALERT -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.11.1/sweetalert2.min.js" integrity="sha512-Ozu7Km+muKCuIaPcOyNyW8yOw+KvkwsQyehcEnE5nrr0V4IuUqGZUKJDavjSCAA/667Dt2z05WmHHoVVb7Bi+w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
-
     <!-- FAVICON -->
     <link href="{{asset('images/chronolock-small.png')}}" rel="shortcut icon" />
-
     <!-- Font Awesome -->
     <script src="{{asset('https://kit.fontawesome.com/fc44043d19.js')}}" crossorigin="anonymous"></script>
-
     <script defer src="{{asset('js/password.js')}}"></script>
-
     <title>ChronoLock Login</title>
 </head>
-
 <body>
-
-
     <!----------------------- Main Container -------------------------->
     <div class="background-container">
-
         <!----------------------- Login Container -------------------------->
         <div class="container d-flex justify-content-center align-items-center min-vh-100">
             <div class="row border rounded-5 p-3 bg-white shadow-lg p-3 bg-body-tertiary box-area">
                 <!--------------------------- Left Box ----------------------------->
-
                 <div class="col-md-6 rounded-4 d-flex justify-content-center align-items-center flex-column left-box" style=" background: linear-gradient(
                     120deg, /* Angle of the gradient */
                     #04082ee8, 
@@ -47,18 +35,14 @@
                         <img src="{{asset('images/UNCERTAIN LOGO (50 x 50 px).png')}}" class="img-fluid animate-text" style="width: 500px;">
                     </div>
                 </div>
-
                 <!----------------------------- Right Box ---------------------------->
-
                 <div class="col-md-6 right-box">
                     <div class="row align-items-center">
                         <div class="header-text  text-center">
                             <h2 style="font-weight: 600; font-size: 40px;">Hello, User!</h2>
                             <p>Please login your credentials.</p>
                         </div>
-
                         @include('sweetalert::alert')
-
                         <!-- <div>
                             @if($errors->any())
                             <div class="col-lg-12">
@@ -67,18 +51,13 @@
                                 @endforeach
                             </div>
                             @endif
-
                             @if(session()->has('error'))
                             <div class="alert alert-danger">{{session('error')}}</div>
                             @endif
-
                             @if(session()->has('success'))
                             <div class="alert alert-success">{{session('success')}}</div>
                             @endif
                         </div> -->
-
-
-
                         <form method="post" action="{{ route('login.user') }}" onsubmit="return validatePassword()">
                             @csrf
                             <div class="form-group mb-3">
@@ -87,7 +66,7 @@
                             </div>
                             <label class="form-label fw-bold">Password</label>
                             <div class="form-group mb-1 position-relative">
-                                <input id="password" name="password" type="password" class="form-control form-control-lg bg-light border-dark fs-6" placeholder="Password" required>
+                                <input id="password" name="password" type="password" class="form-control form-control-lg bg-light border-dark fs-6" placeholder="Password" required autocomplete="true" maxlength="6">
                                 <i class="fa fa-eye-slash" id="show-password"></i>
                             </div>
 
@@ -100,18 +79,15 @@
                                     <small><a href="{{ route('forgotPassword') }}">Forgot Password?</a></small>
                                 </div>
                             </div>
-                            <div class="input-group mb-3">
-                                <button type="submit" class="btn btn-lg btn-primary w-100 fs-6">Login</button>
+                            <div class="input-group mb-3 mt-2">
+                                <button type="submit" id="confirmButton" class="btn btn-lg btn-primary w-100 fs-6">Login</button>
                             </div>
                         </form>
 
                         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-
                         <div class="row">
                             <small class="col-lg-12 text-center w-100 mb-3 ml-3">OR</small>
                         </div>
-
                         <form>
                             @csrf
                             <div class="input-group">
@@ -121,24 +97,19 @@
                                 </a>
                             </div>
                         </form>
-
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-
     <script>
         function validatePassword() {
             const password = document.getElementById('password').value;
-           
-
             if (password.length !== 6 || isNaN(password)) {
                 Swal.fire({
                     icon: "info",
                     title: "Info",
-                    text: "Enter Valid Password",
+                    text: "Invalid password. Please enter a 6-digit password.",
                     timer: 5000,
                     timerProgressBar: true
                 });
@@ -146,6 +117,29 @@
             }
             return true; // Allow form submission
         }
+    </script>
+
+    <script>
+        document.getElementById('confirmButton').addEventListener('click', function(event) {
+            // Get form elements
+            var email = document.getElementById('email').value.trim();
+            var password = document.getElementById('password').value.trim();
+            // Check if any field is empty
+            if (!email || !password) {
+                // Show SweetAlert if any field is empty
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    // title: 'Validation Error',
+                    text: 'Please fill in all fields.',
+                    icon: 'error',
+                    showConfirmButton: false,
+                    timer: 3000, // Display for 3 seconds
+                    timerProgressBar: true,
+                });
+                return; // Prevent form submission
+            }
+        });
     </script>
 
 

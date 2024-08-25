@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Models;
-
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -9,11 +7,12 @@ use Illuminate\Notifications\Notifiable;
 use Dyrynda\Database\Support\CascadeSoftDeletes;
 use Illuminate\Database\Eloquent\SoftDeletes;
 // use Haruncpi\LaravelIdGenerator\IdGenerator;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
 
 class User extends Authenticatable
 {
     use HasFactory, Notifiable, SoftDeletes; //CascadeSoftDeletes
-
     /**
      * The attributes that are mass assignable.
      *
@@ -36,7 +35,6 @@ class User extends Authenticatable
         'avatar',
         'google_id',
         'RFID_Code',
-
     ];
     // public static function boot()
     // {
@@ -54,7 +52,6 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
-
     /**
      * Get the attributes that should be cast.
      *
@@ -68,10 +65,11 @@ class User extends Authenticatable
         ];
     }
 
-     // protected $cascadeDeletes = ['attendance'];
+    // protected $cascadeDeletes = ['attendance'];
 
-     public function attendances()
-     {
-         return $this->hasMany(Attendance::class);
-     }
+    public function attendances()
+    {
+        return $this->hasMany(Attendance::class);
+    }
+
 }

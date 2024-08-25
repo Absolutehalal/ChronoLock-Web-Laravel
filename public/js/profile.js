@@ -1,15 +1,12 @@
 $(document).ready(function () {
     $(document).on("click", ".editProfileBtn", function (e) {
         e.preventDefault();
-
         var id = $(this).val();
-
         $.ajaxSetup({
             headers: {
                 "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
             },
         });
-
         $.ajax({
             type: "GET",
             url: "/profile/edit/" + id,
@@ -32,23 +29,24 @@ $(document).ready(function () {
                     $("#edit-email").val(response.user.email);
                     $("#edit-avatar").attr("src", response.user.avatar);
                     $("#edit-userType").val(response.user.userType);
+                    $("#edit-password").val(response.user.password);
                 }
             },
         });
     });
-
     $(document).on("click", ".update-profile", function (e) {
         e.preventDefault();
-
         $(this).text("Updating...");
 
         var profileID = $("#profile_userID").val();
+        // alert(profileID);
 
         var data = {
             profile_firstName: $("#edit-firstName").val(),
             profile_lastName: $("#edit-lastName").val(),
             profile_idNumber: $("#edit-idNumber").val(),
             profile_email: $("#edit-email").val(),
+            profile_password: $("#edit-password").val(),
         };
 
         $.ajaxSetup({
@@ -56,25 +54,44 @@ $(document).ready(function () {
                 "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
             },
         });
-
         $.ajax({
             type: "PUT",
             url: "/profile/update/" + profileID,
             data: data,
             dataType: "json",
             success: function (response) {
-                if (response.status == 400) {
-                    $("#firstNameError").html("").addClass("error");
-                    $("#lastNameError").html("").addClass("error");
-                    $("#idNumberError").html("").addClass("error");
-                    $("#emailError").html("").addClass("error");
+                if (response.status === 400) {
+                    // $('#firstNameError').addClass('error');
+                    // $('#firstNameError').html("");
 
-                    $.each(response.errors, function (key, value) {
-                        $("#" + key + "Error").append("<li>" + value + "</li>");
-                    });
+                    // $('#lastNameError').addClass('error');
+                    // $('#lastNameError').html("");
+
+                    $("#idNumberError").addClass("error");
+                    $("#idNumberError").html("");
+
+                    $("#emailError").addClass("error");
+                    $("#emailError").html("");
+
+                    $.each(
+                        response.errors.profile_idNumber,
+                        function (key, err_value) {
+                            $("#idNumberError").append(
+                                "<li>" + err_value + "</li>"
+                            );
+                        }
+                    );
+                    $.each(
+                        response.errors.profile_email,
+                        function (key, err_value) {
+                            $("#emailError").append(
+                                "<li>" + err_value + "</li>"
+                            );
+                        }
+                    );
 
                     $(".update-profile").text("Update");
-                } else if (response.status == 404) {
+                } else if (response.status === 404) {
                     Swal.fire({
                         icon: "error",
                         title: "Oops...",
@@ -83,11 +100,27 @@ $(document).ready(function () {
                         timerProgressBar: true,
                     });
                     $("#update-modal-profile .close").click();
-                } else if (response.status == 200) {
+                } else if (response.status === 409) {
                     $("#firstNameError").html("");
                     $("#lastNameError").html("");
                     $("#idNumberError").html("");
                     $("#emailError").html("");
+                    Swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        text: response.message,
+                        timer: 5000,
+                        timerProgressBar: true,
+                    });
+
+                    $(".update-profile").text("Update");
+                    $("#update-modal-profile .close").click();
+                } else if (response.status === 200) {
+                    $("#firstNameError").html("");
+                    $("#lastNameError").html("");
+                    $("#idNumberError").html("");
+                    $("#emailError").html("");
+                    $("#passwordError").html("");
 
                     Swal.fire({
                         icon: "success",
@@ -96,14 +129,16 @@ $(document).ready(function () {
                         timer: 5000,
                         timerProgressBar: true,
                     });
-
                     $(".update-profile").text("Update");
                     $("#update-modal-profile .close").click();
                     location.reload();
-                } else if (response.status == 500) {
-                    alert("may error");
-                } else if (response.status == 405) {
-                    alert("may error");
+                }
+            },
+
+            error: function (response) {
+                if (response.status === 500) {
+                    alert("Something went wrong! Please try again later.");
+                    // console.log(response.errors);
                 }
             },
         });

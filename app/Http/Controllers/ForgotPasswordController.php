@@ -99,7 +99,7 @@ class ForgotPasswordController extends Controller
 
             if (!$userExists) {
 
-                Alert::info("Info", "Email is invalid. Please try again.")
+                Alert::info("Info", "Email already exist. Please try again.")
                     ->autoClose(3000)
                     ->timerProgressBar()
                     ->showCloseButton();

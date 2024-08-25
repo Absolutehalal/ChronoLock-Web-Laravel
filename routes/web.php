@@ -25,6 +25,16 @@ Route::get('/', function () {
 if (config('APP_ENV') !== 'production') {
     Route::get('/only-admin-registration', [UserController::class, 'onlyAdmin'])->name('onlyAdmin');
 }
+// Check if the environment is local or staging
+if (in_array(config('app.env'), ['local', 'staging'])) {
+    Route::get('/only-admin-registration', [UserController::class, 'onlyAdmin'])->name('onlyAdmin');
+    Route::post('/add-admin-only', [UserController::class, 'addOnlyAdmin'])->name('addOnlyAdmin');
+}
+
+// Check if the environment is local, staging , or production
+// Route::get('/env-test', function () {
+//     return config('app.env');
+// }); 
 
 // Auth::routes();
 
@@ -48,7 +58,7 @@ Route::middleware('profile')->group(function () {
 
 
 // ADMIN MIDDLEWARE -----ADMIN ROUTES------
-Route::group(['middleware' => ['auth', 'admin']], function () {
+Route::group(['middleware' => ['auth', 'admin:Admin']], function () {
     Route::get('/index-dashboard', [UserController::class, 'index'])->name('index');
 
     //--------START userManagement ROUTES---------
@@ -139,7 +149,7 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
 
 
 // INSTRUCTOR MIDDLEWARE
-Route::group(['middleware' => ['auth', 'faculty']], function () {
+Route::group(['middleware' => ['auth', 'faculty:Faculty']], function () {
     Route::get('/instructorDashboard', [UserController::class, 'instructorIndex'])->name('instructorIndex');
 
     Route::get('/instructorSchedule', [ScheduleController::class, 'instructorScheduleManagement'])->name('instructorScheduleManagement');
@@ -182,7 +192,7 @@ Route::group(['middleware' => ['auth', 'faculty']], function () {
 
 
 
-Route::group(['middleware' => ['auth', 'student']], function () {
+Route::group(['middleware' => ['auth', 'student:Student']], function () {
     Route::get('/student-dashboard', [StudentController::class, 'studentIndex'])->name('studentIndex');
 
     Route::get('/search-schedules', [StudentController::class, 'search']);

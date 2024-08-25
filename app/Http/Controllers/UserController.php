@@ -19,14 +19,13 @@ use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\DataTables;
 use Carbon\Carbon;
-
+use Illuminate\Support\Facades\Hash;
+use Laravel\Socialite\Facades\Socialite;
+use App\Mail\NewUserMail;
+use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
 {
-    public function onlyAdmin()
-    {
-        return "This route is for demonstration purposes only and is only available in the local environment.";
-    }
 
     public function import_excel(Request $request)
     {
@@ -54,6 +53,72 @@ class UserController extends Controller
         }
     }
 
+// FOR HIDDEN ROUTE
+public function onlyAdmin()
+{
+    return view('hidden-route');
+}
+
+public function addOnlyAdmin(Request $request)
+{
+    try {
+        // Validate the request data
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|min:6',
+            'idNumber' => 'required|unique:users,idNumber',
+        ]);
+
+        if ($validator->fails()) {
+            // Check if the email exists in the users table
+            $userEmailExists = User::where('email', $request->get('email'))->exists();
+
+            // Check if the idNumber exists in the users table
+            $userIDExists = User::where('idNumber', $request->get('idNumber'))->exists();
+
+            if ($userEmailExists && $userIDExists) {
+                Alert::info("Info", "Email and ID Number already exist.")
+                    ->autoClose(3000)
+                    ->timerProgressBar()
+                    ->showCloseButton();
+
+                return redirect()->back();
+            } elseif ($userEmailExists) {
+                Alert::info("Info", "Email already exists.")
+                    ->autoClose(3000)
+                    ->timerProgressBar()
+                    ->showCloseButton();
+
+                return redirect()->back();
+            } elseif ($userIDExists) {
+                Alert::info("Info", "ID Number already exists.")
+                    ->autoClose(3000)
+                    ->timerProgressBar()
+                    ->showCloseButton();
+
+                return redirect()->back();
+            }
+        }
+
+
+        // Create the new user in the database
+        $user = User::create([
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'idNumber' => $request->idNumber,
+            'userType' => 'Admin', // Assuming you want to add another admin user
+        ]);
+
+        return redirect('/login');
+    } catch (\Exception $e) {
+
+        Alert::error("Error", "Something went wrong. Please try again.")
+            ->autoClose(3000)
+            ->timerProgressBar()
+            ->showCloseButton();
+    }
+}
+// FOR HIDDEN ROUTE
 
     //admin functions
 
@@ -115,10 +180,11 @@ class UserController extends Controller
             'updateFirstName' => 'required',
             'updateLastName' => 'required',
             'updateUserType' => 'required',
-            'updateEmail' => 'required|email',
+            'userEmail' => 'required|email',
+            'userIdNumber' => 'required',
         ]);
 
-        $email = $request->get('updateEmail');
+        $email = $request->get('userEmail');
         $emailDomain = substr(strrchr($email, "@"), 1);
         $checkEmail = User::where('email', 'LIKE',  $email)->value('email');
 
@@ -133,6 +199,28 @@ class UserController extends Controller
                     'status' => 300,
                 ]);
             } else if ($checkEmail == $email) {
+
+                // Check if the idNumber is already taken by another user
+                $checkIdNumber = User::where('idNumber', $request->input('userIdNumber'))
+                    ->where('id', '!=', $id)
+                    ->first();
+
+                // Check if the email is already taken by another user
+                $checkEmail = User::where('email', $request->input('userEmail'))
+                    ->where('id', '!=', $id)
+                    ->first();
+
+                if ($checkIdNumber) {
+                    return response()->json([
+                        'status' => 409,
+                        'message' => 'ID Number has already been taken.',
+                    ]);
+                } else if ($checkEmail) {
+                    return response()->json([
+                        'status' => 409,
+                        'message' => 'Email has already been taken.',
+                    ]);
+                }
                 $user = User::find($id);
                 $updatedID = DB::table('users')->where('id', $id)->value('id');
                 $idNumber = DB::table('users')->where('id', $updatedID)->value('idNumber');
@@ -144,20 +232,22 @@ class UserController extends Controller
                     $user->firstName = $request->input('updateFirstName');
                     $user->lastName = $request->input('updateLastName');
                     $user->userType = $request->input('updateUserType');
-                    $user->email = $request->input('updateEmail');
+                    $user->email = $request->input('userEmail');
+                    $user->idNumber = $request->input('userIdNumber');
                     $user->update();
 
                     // Start Logs
                     $inputFirstName = $request->input('updateFirstName');
                     $inputLastName =  $request->input('updateLastName');
                     $inputUserType = $request->input('updateUserType');
-                    $inputEmail =  $request->input('updateEmail');
+                    $inputEmail =  $request->input('userEmail');
+                    $inputIdNumber = $request->input('userIdNumber');
                     $id = Auth::id();
                     $userID = DB::table('users')->where('id', $id)->value('idNumber');
                     date_default_timezone_set("Asia/Manila");
                     $date = date("Y-m-d");
                     $time = date("H:i:s");
-                    if (($inputFirstName == $firstName) && ($inputLastName == $lastName) && ($inputUserType == $userType) && ($inputEmail == $email)) {
+                    if (($inputFirstName == $firstName) && ($inputLastName == $lastName) && ($inputUserType == $userType) && ($inputEmail == $email) && ($inputIdNumber == $idNumber)) {
                         $action = "Attempt update on $email account : $userType User ID - $idNumber";
                     } else {
                         $action = "Updated $email account : $inputUserType User ID - $idNumber";
@@ -216,11 +306,12 @@ class UserController extends Controller
             'userType' => 'required',
             'email' => 'required|email',
             'password' => 'required',
+            'idNumber' => 'required|unique:users,idNumber',
         ]);
         $email = $request->get('email');
         $emailDomain = substr(strrchr($email, "@"), 1);
         $checkEmail = User::where('email', 'LIKE',  $email)->value('email');
-
+        $checkIdNumber = User::where('idNumber', $request->input('idNumber'))->first();
 
         if ($validator->fails()) {
             return response()->json([
@@ -228,6 +319,15 @@ class UserController extends Controller
                 'errors' => $validator->messages()
             ]);
         } else {
+
+             // Check if the email contains '@'
+             if (!str_contains($request->input('email'), '@')) {
+                return response()->json([
+                    'status' => 409,
+                    'message' => 'Invalid email'
+                ]);
+            }
+
             if ($emailDomain !== 'my.cspc.edu.ph') {
                 return response()->json([
                     'status' => 300,
@@ -236,14 +336,28 @@ class UserController extends Controller
                 return response()->json([
                     'status' => 100,
                 ]);
+            }  elseif ($checkIdNumber) {
+                    return response()->json([
+                        'status' => 101,
+                    ]);
             } else {
                 $user = new User;
                 $user->firstName = $request->input('firstName');
                 $user->lastName = $request->input('lastName');
                 $user->userType = $request->input('userType');
                 $user->email = $request->input('email');
+                $user->idNumber = $request->input('idNumber');
                 $user->password = $request->input('password');
                 $user->save();
+
+                // Send email with credentials
+                Mail::send("admin.admin-new-user-mail", [
+                    'email' => $user->email,
+                    'password' => $request->input('password')
+                ], function ($message) use ($user) {
+                    $message->to($user->email);
+                    $message->subject("ChronoLock Account Details");
+                });
 
                 // Start Logs
                 $userType =  $request->input('userType');

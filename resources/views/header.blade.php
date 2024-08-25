@@ -302,42 +302,21 @@
                         </footer>
                     </div>
                 </li> -->
-                <!-- User Account -->
-                <li class="dropdown user-menu">
+                               <!-- User Account -->
+                               <li class="dropdown user-menu">
                     @if(Auth::check())
                     <button class="dropdown-toggle nav-link" data-toggle="dropdown">
-                        <img src="{{ Auth::user()->avatar }}" class="user-image rounded-circle" alt="User Image" />
+                        <img src="{{ Auth::user()->avatar ?? asset('images/User Icon.png') }}" class="user-image rounded-circle" alt="User Image" />
                         <span class="d-none d-lg-inline-block">{{ Auth::user()->userType }}</span>
                     </button>
                     @endif
                     <ul class="dropdown-menu dropdown-menu-right shadow-sm">
-                        <!-- <li>
-                            <a class="dropdown-link-item" href="user-profile.html">
-                                <i class="mdi mdi-account-outline"></i>
-                                <span class="nav-text">My Profile</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-link-item" href="email-inbox.html">
-                                <i class="mdi mdi-email-outline"></i>
-                                <span class="nav-text">Message</span>
-                                <span class="badge badge-pill badge-primary">24</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-link-item" href="user-activities.html">
-                                <i class="mdi mdi-diamond-stone"></i>
-                                <span class="nav-text">Activitise</span></a>
-                        </li> -->
+
                         <li>
                             <a href="#" id="editProfile" data-toggle="modal" data-target="#modal-profile" data-toggle="tooltip" title="Profile settings">
                                 <i class="mdi mdi-settings fw-bold text-warning"></i>
                                 <span class="nav-text fw-bold text-dark">Account Setting</span>
                             </a>
-<!-- 
-                            <a href="#" id="editProfile" data-toggle="modal" data-target="#modal-profile" data-toggle="tooltip" title="Profile settings">
-                                <i class="mdi mdi-settings"></i>
-                            </a> -->
                         </li>
 
                         <li>
@@ -349,9 +328,7 @@
                                 <span class="nav-text fw-bold text-dark">Log Out</span>
                             </a>
                         </li>
-
                         <!-- <li class="dropdown-footer"> -->
-
                 </li>
             </ul>
             </li>

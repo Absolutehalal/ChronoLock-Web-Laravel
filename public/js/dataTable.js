@@ -384,7 +384,7 @@ $(document).ready(function () {
         minDate: "today",
     };
 
-    // Initialize flatpickr instances
+    // Initialize flatpickr instances for the Datatable
     flatpickr("#selectedDate", dateConfig);
     flatpickr("#selectedTime", timeConfig);
 
@@ -458,6 +458,21 @@ $(document).ready(function () {
         attendanceTable.draw();
     });
 
+        // Schedule Date [See Schedule Management Admin] 
+        flatpickr("#selectedDate1", dateConfig);
+        flatpickr("#selectedDate2", dateConfig);
+        flatpickr("#selectedDate3", dateConfig);
+        flatpickr("#selectedDate4", dateConfig);
+
+        flatpickr("#selectedTime1", timeConfig);
+        flatpickr("#selectedTime2", timeConfig);
+        flatpickr("#selectedTime3", timeConfig);
+        flatpickr("#selectedTime4", timeConfig);
+        flatpickr("#selectedTime5", timeConfig);
+        flatpickr("#selectedTime6", timeConfig);
+        flatpickr("#selectedTime7", timeConfig);
+        flatpickr("#selectedTime8", timeConfig);
+        
     //ADMIN FILTERS START-----------
 
     //admin logs filter
