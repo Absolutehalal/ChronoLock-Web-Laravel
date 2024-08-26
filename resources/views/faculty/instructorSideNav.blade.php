@@ -67,7 +67,7 @@
                                 @forelse($classes as $class)
                                 @csrf
                                 <li>
-                                    <a class="section" href="{{ route('instructorClassAttendanceAndList', [base64_encode($class->classID)]) }}">{{$class->program}}-{{$class->year}}{{$class->section}}</a>
+                                    <a class="section" href="{{ route('instructorClassAttendanceAndList', [base64_encode($class->classID)]) }}"> {{$class->courseCode}} | {{$class->program}}-{{$class->year}}{{$class->section}}</a>
                                 </li>
                                 @empty
                                 <li>

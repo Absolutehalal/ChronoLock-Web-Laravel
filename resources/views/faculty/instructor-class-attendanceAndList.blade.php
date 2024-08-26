@@ -80,7 +80,7 @@
               </li>
               <li class="nav-item">
                 <div class="nav-link">
-                  <span class="text-dark d-block">Course:</span>
+                  <span class="text-dark d-block">Program:</span>
                   @foreach ($classListData as $classTime)
                   <span class="h5 d-block"> {{ $classTime->program }} </span>
                   @endforeach
@@ -138,6 +138,15 @@
                   <span class="text-dark d-block">Semester:</span>
                   @foreach ($classListData as $classTime)
                   <span class="h5 d-block"> {{ $classTime->semester }} </span>
+                  @endforeach
+                </div>
+              </li>
+
+              <li class="nav-item">
+                <div class="nav-link">
+                  <span class="text-dark d-block">Course:</span>
+                  @foreach ($classListData as $classTime)
+                  <span class="h5 d-block"> {{ $classTime->courseCode }}-{{ $classTime->courseName }} </span>
                   @endforeach
                 </div>
               </li>
