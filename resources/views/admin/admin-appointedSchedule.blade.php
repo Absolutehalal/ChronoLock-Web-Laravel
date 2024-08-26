@@ -17,7 +17,7 @@
     <!-- Ajax edit Class List -->
     <script defer src="{{asset('js/adminEditAppointedSchedule.js')}}"></script>
 
-    <title>ChronoLock Instructor-Class Record</title>
+    <title>ChronoLock Appointed Schedule</title>
 
     @include('head')
 </head>

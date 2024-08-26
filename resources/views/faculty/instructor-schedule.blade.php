@@ -26,6 +26,7 @@
         });
         NProgress.start();
     </script>
+    @include('sweetalert::alert')
     @include('faculty.instructorSideNav')
     <!-- ====================================
       ——— PAGE WRAPPER
@@ -60,32 +61,7 @@
 
                 <div class="card card-default shadow">
                     <div class="card-header card-header-border-bottom d-flex justify-content-between align-items-center">
-                        <h1>Schedule</h1>
-                        <div class="row">
-
-                            <div class="col-xl-12 col-md-12 d-flex justify-content-end">
-                                <!-- Sort button -->
-                                <!-- <div class="dropdown d-inline-block mb-3 mr-3">
-                  <button title="Add Regular Schedule" class="btn btn-primary btn-sm fw-bold" type="button" data-toggle="modal" data-target="#addRegularScheduleModal">
-                    <i class=" mdi mdi-calendar-plus"></i>
-                    ADD SCHEDULE
-                  </button>
-                </div> -->
-                                <!-- <div class="dropdown d-inline-block mb-3 mr-3">
-                                    <button title="Export PDF" class="btn btn-warning btn-sm fw-bold" onclick='window.location = "{{ route("exportPDF") }}"' type="button">
-                                        <i class="mdi mdi-file-pdf"></i>
-                                        PDF
-                                    </button>
-                                </div>
-
-                                <div class="dropdown d-inline-block mb-3">
-                                    <button title="Preview" class="btn btn-outline-dark btn-sm fw-bold" onclick='window.location = "{{ route("previewPDF") }}"' type="button">
-                                        <i class="mdi mdi-feature-search"></i>
-                                        Preview
-                                    </button>
-                                </div> -->
-                            </div>
-                        </div>
+                        <h1>My Schedule</h1>
                     </div>
 
                     <div class="card-body">
@@ -103,6 +79,6 @@
     </div>
     </div>
 
- <script src="{{asset('plugins/fullcalendar/core-4.3.1/main.min.js')}}"></script>
- <script src="{{asset('plugins/fullcalendar/daygrid-4.3.0/main.min.js')}}"></script>
+    <script src="{{asset('plugins/fullcalendar/core-4.3.1/main.min.js')}}"></script>
+    <script src="{{asset('plugins/fullcalendar/daygrid-4.3.0/main.min.js')}}"></script>
     @include('footer')

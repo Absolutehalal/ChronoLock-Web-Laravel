@@ -55,7 +55,7 @@
                     <!-- Horizontal line with custom class -->
                     <hr class="my-2 custom-hr">
 
-                    <li class="section-title">Section</li>
+                    <li class="section-title">Sections Handled</li>
 
                     <li class="has-sub">
                         <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#users" aria-expanded="false" aria-controls="users">

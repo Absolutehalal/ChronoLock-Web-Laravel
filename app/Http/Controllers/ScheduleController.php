@@ -451,7 +451,7 @@ class ScheduleController extends Controller
             } else if ($schedule->scheduleType == 'regularSchedule') {
                 $ERPSchedules[] = [
                     'id' =>  $schedule->scheduleID,
-                    'title' => $schedule->courseName . " - " . $schedule->instFirstName . " " . $schedule->instLastName,
+                    'title' => $schedule->courseName . " - " . $schedule->program . " " . $schedule->year . $schedule->section,
                     'startTime' => $schedule->startTime,
                     'endTime' => $schedule->endTime,
                     'startRecur' => $schedule->startDate,
