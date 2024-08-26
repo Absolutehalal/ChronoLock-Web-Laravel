@@ -59,7 +59,7 @@
           <div class="card-body card-profile-body">
             @if(Auth::check())
             <div class="profile-avata">
-              <img class="rounded-circle" src="{{ Auth::user()->avatar }}" alt="Avatar Image" style="width: 150px; height: 150px;">
+              <img class="rounded-circle" src="{{ Auth::user()->avatar ?? asset('images/User Icon.png') }}" alt="Avatar Image" style="width: 150px; height: 150px;">
               <span class="h3 d-block mt-3 mb-2">{{ Auth::user()->accountName }}</span>
               <span class="d-block">{{ Auth::user()->email }}</span>
               <span class="d-block">{{ Auth::user()->userType }}</span>
@@ -141,6 +141,15 @@
                   @endforeach
                 </div>
               </li>
+
+              <li class="nav-item">
+                <div class="nav-link">
+                  <span class="text-dark d-block">Course:</span>
+                  @foreach ($classListData as $classTime)
+                  <span class="h5 d-block"> {{ $classTime->courseCode }} - {{ $classTime->courseName }} </span>
+                  @endforeach
+                </div>
+              </li>
             </ul>
 
             <div class="profile-button d-block justify-content-between">
@@ -185,7 +194,7 @@
                 <button class="nav-link" id="pills-attendance-tab" data-bs-toggle="pill" href="attendanceTab" data-bs-target="#pills-attendance" type="button" role="tab" aria-controls="pills-attendance" aria-selected="true">Class Attendance</button>
               </li>
               <li class="nav-item" role="presentation">
-                <button class="nav-link" id="pills-classList-tab" data-bs-toggle="pill" href="listTab" data-bs-target="#pills-classList" type="button" role="tab" aria-controls="pills-classList" aria-selected="false">Class List</button>
+                <button class="nav-link" id="pills-classList-tab" data-bs-toggle="pill" href="listTab" data-bs-target="#pills-classList" type="button" role="tab" aria-controls="pills-classList" aria-selected="false">Students</button>
               </li>
             </ul>
 
@@ -468,7 +477,7 @@
                         <ul id="editIDError"></ul>
                         <div class="form-group">
                           <label>Student ID</label>
-                          <input type="text" class="updateUserID form-control border border-dark border border-dark" id="edit_studentID" name="update_studentID" readonly>
+                          <input type="text" class="updateUserID form-control border border-dark border border-dark" id="edit_studentID" name="update_studentID" disabled>
                         </div>
                       </div>
 
@@ -526,7 +535,7 @@
                       <ul id="editListIDError"></ul>
                       <div class="form-group">
                         <label>Student ID</label>
-                        <input type="text" class="updateListUserID form-control border border-dark border border-dark" id="edit_studentListID" name="update_studentListID" readonly>
+                        <input type="text" class="updateListUserID form-control border border-dark border border-dark" id="edit_studentListID" name="update_studentListID" disabled>
                       </div>
                     </div>
 

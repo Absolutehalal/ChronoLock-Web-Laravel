@@ -160,7 +160,8 @@
                   <th>Date</th>
                   <th>Time</th>
                   <th>Course Code</th>
-                  <th>Program & Section</th>
+                  <th>Course Name</th>
+                  <th>Prog. & Sec.</th>
                   <th>Instructor</th>
                   <th>Instructor ID</th>
                   <th>Remarks</th>
@@ -174,6 +175,7 @@
                   <td>{{ $instructors->formatted_date }}</td>
                   <td>{!! $instructors->formatted_time !!}</td>
                   <td>{{ $instructors->courseCode }}</td>
+                  <td>{{ $instructors->courseName }}</td>
                   <td>{{ $instructors->program }} - {{ $instructors->year }}{{ $instructors->section }}</td>
                   <td>{{ $instructors->instFirstName }} {{ $instructors->instLastName }}</td>
                   <td>{{ $instructors->userID }}</td>
@@ -277,7 +279,7 @@
                 <ul id="editIDError"></ul>
                 <div class="form-group">
                   <label>Instructor ID</label>
-                  <input type="text" class="updateUserID form-control border border-dark border border-dark" id="edit_instructorID" name="update_instructorID" readonly>
+                  <input type="text" class="updateUserID form-control border border-dark border border-dark" id="edit_instructorID" name="update_instructorID" disabled>
 
                 </div>
               </div>

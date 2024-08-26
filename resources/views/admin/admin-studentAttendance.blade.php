@@ -94,7 +94,7 @@
               <form method="GET" action="{{ route('studentAttendanceManagement') }}">
                 <button class="btn btn-primary btn-sm dropdown-toggle fw-bold" type="button" id="courseDropdown" data-toggle="dropdown" aria-expanded="false">
                   <i class="mdi mdi-alpha-c-box"></i>
-                  Course
+                  Program
                 </button>
                 <div class="dropdown-menu scrollable-dropdown" aria-labelledby="courseDropdown">
                   @forelse($studentPrograms as $studentPrograms)
@@ -308,7 +308,7 @@
                 <ul id="editIDError"></ul>
                 <div class="form-group">
                   <label>Student ID</label>
-                  <input type="text" class="updateUserID form-control border border-dark border border-dark" id="edit_studentID" name="update_studentID">
+                  <input type="text" class="updateUserID form-control border border-dark border border-dark" id="edit_studentID" name="update_studentID" disabled>
 
                 </div>
               </div>

@@ -115,6 +115,7 @@
                   <th>LastName</th>
                   <th>UserType</th>
                   <th>Email</th>
+                  <th>Avatar</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -128,6 +129,9 @@
                   <td> {{$user->lastName}} </td>
                   <td> {{$user->userType}} </td>
                   <td> {{$user->email}} </td>
+                  <td class="text-center">
+                    <img src="{{ $user->avatar ?? asset('images/User Icon.png') }}" alt="Avatar" width="35" height="35" class="rounded">
+                  </td>
                   <th>
                     <!-- Example single primary button -->
                     <div class="dropdown d-inline-block">

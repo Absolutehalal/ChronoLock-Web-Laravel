@@ -162,7 +162,7 @@
                   <th>Time</th>
                   <th>Course Code</th>
                   <th>Course Name</th>
-                  <th>Program & Section</th>
+                  <th>Prog. & Sec.</th>
                   <th>Instructor</th>
                   <th>Instructor ID</th>
                   <th>Remarks</th>

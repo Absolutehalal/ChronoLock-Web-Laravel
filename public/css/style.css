@@ -42,6 +42,14 @@
     box-sizing: border-box;
 }
 
+.fc-event-title {
+    white-space: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+}
+
+
 
 #month-picker, .flatpickr-monthSelect-theme-dark .flatpickr-monthSelect-month {
     color: #000000;

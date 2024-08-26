@@ -88,7 +88,7 @@
 
               <div class="dropdown d-inline-block">
                 <button class="btn btn-primary btn-sm dropdown-toggle fw-bold" type="button" id="studentCoursesButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
-                  <i class="mdi mdi-alpha-c-box"></i> Course
+                  <i class="mdi mdi-alpha-c-box"></i> Program
                 </button>
                 <div class="dropdown-menu scrollable-dropdown" aria-labelledby="studentCoursesButton">
                   @forelse ($studentPrograms as $studentPrograms)

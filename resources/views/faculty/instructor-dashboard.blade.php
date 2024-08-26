@@ -229,7 +229,7 @@
                             <div class="card-header">
                                 <h2>Latest Student Enrollees</h2>
                             </div>
-                            <div class="card-body">
+                            <div class="card-body" style="max-height: 330px; overflow-y: auto;">
                                 <table id="exampleTable" class="table table-bordered table-hover no-wrap" style="width: 100%;">
                                     <thead class="table-dark">
                                         <tr>

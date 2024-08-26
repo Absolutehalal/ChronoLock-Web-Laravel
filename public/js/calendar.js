@@ -42,6 +42,7 @@ $(document).ready(function () {
                     if (timeElement) {
                         timeElement.innerHTML = timeText;
                     }
+                    
                 },
                 dayCellClassNames: function (arg) {
                     var currentDate = moment().startOf("day");
@@ -51,6 +52,7 @@ $(document).ready(function () {
                     }
                     return "";
                 },
+                
                 select: function (info) {
                     var start_date = info.startStr;
                     var end_date = info.endStr;

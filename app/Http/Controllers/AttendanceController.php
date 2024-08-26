@@ -24,6 +24,8 @@ class AttendanceController extends Controller
             ->join('class_lists', 'attendances.classID', '=', 'class_lists.classID')
             ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
             ->where('users.userType', '=', 'Faculty')
+            ->orderBy('date', 'desc')
+            ->orderBy('time', 'desc')
             ->get();
 
         foreach ($instructors as $instructor) {
@@ -94,7 +96,8 @@ class AttendanceController extends Controller
                 ->join('class_lists', 'attendances.classID', '=', 'class_lists.classID')
                 ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
                 ->where('users.userType', '=', 'Faculty')
-                ->orderBy('date');
+                ->orderBy('date', 'desc')
+                ->orderBy('time', 'desc');
 
 
             if ($data['selectedMonth']) {
@@ -155,7 +158,8 @@ class AttendanceController extends Controller
             ->join('class_lists', 'attendances.classID', '=', 'class_lists.classID')
             ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
             ->where('users.userType', '=', 'Student')
-            ->orderBy('date')
+            ->orderBy('date', 'desc')
+            ->orderBy('time', 'desc')
             ->get();
 
         foreach ($students as $student) {
@@ -238,7 +242,8 @@ class AttendanceController extends Controller
                 ->join('class_lists', 'attendances.classID', '=', 'class_lists.classID')
                 ->join('schedules', 'schedules.scheduleID', '=', 'class_lists.scheduleID')
                 ->where('users.userType', '=', 'Student')
-                ->orderBy('date');
+                ->orderBy('date', 'desc')
+                ->orderBy('time', 'desc');
 
 
             if ($data['selectedMonth']) {

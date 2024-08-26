@@ -60,14 +60,14 @@
                     <li class="has-sub">
                         <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#users" aria-expanded="false" aria-controls="users">
                             <i class="mdi mdi-alpha-s-box"></i>
-                            <span class="nav-text" data-toggle="tooltip" title="My Class List">My Class List</span> <b class="caret"></b>
+                            <span class="nav-text" data-toggle="tooltip" title="My Class List">Sections</span> <b class="caret"></b>
                         </a>
                         <ul class="collapse" id="users" data-parent="#sidebar-menu">
                             <div class="sub-menu">
                                 @forelse($classes as $class)
                                 @csrf
                                 <li>
-                                    <a class="section" href="{{ route('instructorClassAttendanceAndList', [base64_encode($class->classID)]) }}">{{$class->program}}-{{$class->year}}{{$class->section}}</a>
+                                    <a class="section" href="{{ route('instructorClassAttendanceAndList', [base64_encode($class->classID)]) }}">{{$class->courseCode}} | {{$class->program}}-{{$class->year}}{{$class->section}}</a>
                                 </li>
                                 @empty
                                 <li>
