@@ -160,6 +160,7 @@ class UserController extends Controller
     {
         $users = DB::table('users')
             // ->where('userType', '!=', 'Admin')
+            ->whereNull('deleted_at')  // Exclude soft-deleted users
             ->orderBy('id', 'desc')
             ->get();
         return view('admin.admin-user-management', ['users' => $users]);
@@ -308,6 +309,7 @@ class UserController extends Controller
             'password' => 'required',
             'idNumber' => 'required|unique:users,idNumber',
         ]);
+
         $email = $request->get('email');
         $emailDomain = substr(strrchr($email, "@"), 1);
         $checkEmail = User::where('email', 'LIKE',  $email)->value('email');
@@ -410,19 +412,20 @@ class UserController extends Controller
     {
         try {
             $user = User::findOrFail($id);
-            $deletedID = DB::table('users')->where('id', $id)->value('id');
+            $archivedID = DB::table('users')->where('id', $id)->value('id');
+
             if ($user) {
                 $user->delete();
 
                 // Start Logs
-                $email = DB::table('users')->where('id', $deletedID)->value('email');
-                $userType = DB::table('users')->where('id', $deletedID)->value('userType');
+                $email = DB::table('users')->where('id', $archivedID)->value('email');
+                $userType = DB::table('users')->where('id', $archivedID)->value('userType');
                 $ID = Auth::id();
                 $userID = DB::table('users')->where('id', $ID)->value('idNumber');
                 date_default_timezone_set("Asia/Manila");
                 $date = date("Y-m-d");
                 $time = date("H:i:s");
-                $action = "Deleted a $userType account associated to $email email";
+                $action = "Archived a $userType account associated to $email email";
                 DB::table('user_logs')->insert([
                     'userID' => $userID,
                     'action' => $action,
@@ -450,48 +453,95 @@ class UserController extends Controller
     }
     public function forceDeleteArchive($id)
     {
-        $user = User::withTrashed()->findOrFail($id);
+        try {
+            $user = User::withTrashed()->findOrFail($id);
 
-        if (!$user) {
-            // Handle the case where the user is not found
-            Alert::error('Error', 'User not found');
-            return redirect('/archive');
+            if (!$user) {
+                // Handle the case where the user is not found
+                Alert::error('Error', 'User not found');
+                return redirect('/archive');
+            }
+
+            if ($user) {
+
+                $user->forceDelete();
+
+                // Start Logs
+                $ID = Auth::id();
+                $userID = DB::table('users')->where('id', $ID)->value('idNumber');
+                date_default_timezone_set("Asia/Manila");
+                $date = date("Y-m-d");
+                $time = date("H:i:s");
+                $action = "Deleted a user account";
+                DB::table('user_logs')->insert([
+                    'userID' => $userID,
+                    'action' => $action,
+                    'date' => $date,
+                    'time' => $time,
+                ]);
+                // END Logs
+
+                Alert::success('Success', 'User deleted permanently')
+                    ->autoClose(5000)
+                    ->timerProgressBar()
+                    ->showCloseButton();
+
+                return redirect('/archive');
+            }
+        } catch (\Exception $th) {
+
+            Alert::error("Error", "An error occurred.")
+                ->showCloseButton()
+                ->timerProgressBar();
+
+            return redirect()->back();
         }
-
-        $user->forceDelete();
-
-        Alert::success('Success', 'User deleted permanently')
-            ->autoClose(5000)
-            ->timerProgressBar()
-            ->showCloseButton();
-
-        return redirect('/archive');
     }
 
     public function forceDelete($id)
     {
-        $user = User::findOrFail($id);
+        try {
+            $user = User::findOrFail($id);
 
-        if (!$user) {
-            // Handle the case where the user is not found
-            Alert::error('Error', 'User not found');
-            return redirect('/archive');
+            if ($user) {
+
+                $user->forceDelete();
+
+                // Start Logs
+                $ID = Auth::id();
+                $userID = DB::table('users')->where('id', $ID)->value('idNumber');
+                date_default_timezone_set("Asia/Manila");
+                $date = date("Y-m-d");
+                $time = date("H:i:s");
+                $action = "Deleted a user account";
+                DB::table('user_logs')->insert([
+                    'userID' => $userID,
+                    'action' => $action,
+                    'date' => $date,
+                    'time' => $time,
+                ]);
+                // END Logs
+
+                Alert::success('Success', 'User deleted permanently')
+                    ->autoClose(5000)
+                    ->timerProgressBar()
+                    ->showCloseButton();
+
+                    return redirect('/userManagementPage');
+            }
+        } catch (\Exception $th) {
+
+            Alert::error("Error", "An error occurred.")
+                ->showCloseButton()
+                ->timerProgressBar();
+
+            return redirect()->back();
         }
-
-        $user->forceDelete();
-
-        Alert::success('Success', 'User deleted permanently')
-            ->autoClose(5000)
-            ->timerProgressBar()
-            ->showCloseButton();
-
-        return redirect('/userManagementPage');
     }
 
     public function userArchive()
     {
         $archiveUsers = User::onlyTrashed()->get();
-
 
         return view('admin.admin-user-archive', [
             'archiveUsers' => $archiveUsers
@@ -874,9 +924,9 @@ class UserController extends Controller
     public function deleteRegularSchedule($id)
     {
         $regularSchedule = Schedule::find($id);
-        $deletedID = DB::table('schedules')->where('scheduleID', $id)->value('scheduleID');
-        $courseCode = DB::table('schedules')->where('scheduleID', $deletedID)->value('courseCode');
-        $courseName = DB::table('schedules')->where('scheduleID', $deletedID)->value('courseName');
+        $archivedID = DB::table('schedules')->where('scheduleID', $id)->value('scheduleID');
+        $courseCode = DB::table('schedules')->where('scheduleID', $archivedID)->value('courseCode');
+        $courseName = DB::table('schedules')->where('scheduleID', $archivedID)->value('courseName');
         if ($regularSchedule) {
             $regularSchedule->delete();
 
@@ -1028,8 +1078,8 @@ class UserController extends Controller
     public function deleteMakeUpSchedule($id)
     {
         $makeUpSchedule = Schedule::find($id);
-        $deletedID = DB::table('schedules')->where('scheduleID', $id)->value('scheduleID');
-        $scheduleTitle = DB::table('schedules')->where('scheduleID', $deletedID)->value('scheduleTitle');
+        $archivedID = DB::table('schedules')->where('scheduleID', $id)->value('scheduleID');
+        $scheduleTitle = DB::table('schedules')->where('scheduleID', $archivedID)->value('scheduleTitle');
 
         if ($makeUpSchedule) {
             $makeUpSchedule->delete();

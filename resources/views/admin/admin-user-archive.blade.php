@@ -26,7 +26,9 @@
         });
         NProgress.start();
     </script>
+
     @include('admin.adminSideNav')
+
     <!-- ====================================
       ——— PAGE WRAPPER
       ===================================== -->
@@ -102,7 +104,7 @@
                                                 Actions
                                             </button>
                                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                <a class="dropdown-item restoreBtn" href="#" id="restoreUserBtn" value="{{$user->id}}">
+                                                <a class="dropdown-item restoreBtn btn-sm" href="#" id="restoreUserBtn" value="{{$user->id}}">
                                                     <i class="mdi mdi-backup-restore text-info"></i>
                                                     Restore
                                                 </a>
@@ -112,7 +114,7 @@
                                                     @method('GET')
                                                 </form>
 
-                                                <a class="dropdown-item deleteBtn" href="#" id="deleteUserBtn" value="{{$user->id}}">
+                                                <a class="dropdown-item deleteBtn btn-sm" href="#" id="deleteUserBtn" value="{{$user->id}}">
                                                     <i class="mdi mdi-trash-can text-danger"></i>
                                                     Force Delete
                                                 </a>
@@ -189,6 +191,7 @@
                 });
             });
         });
+        
         document.addEventListener('DOMContentLoaded', function() {
             const restoreAllButton = document.getElementById('restore-all-button');
             restoreAllButton.addEventListener('click', function(event) {

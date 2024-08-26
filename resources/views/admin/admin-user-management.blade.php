@@ -1,12 +1,5 @@
 <!DOCTYPE html>
 
-<!--
- // WEBSITE: https://themefisher.com
- // TWITTER: https://twitter.com/themefisher
- // FACEBOOK: https://www.facebook.com/themefisher
- // GITHUB: https://github.com/themefisher/
--->
-
 <html lang="en" dir="ltr">
 
 <head>
@@ -27,6 +20,7 @@
     NProgress.start();
   </script>
   @include('sweetalert::alert')
+
   @include('admin.adminSideNav')
   <!-- ====================================
       ——— PAGE WRAPPER
@@ -113,9 +107,9 @@
                   <th>#</th>
                   <th>FirstName</th>
                   <th>LastName</th>
+                  <th>ID Number</th>
                   <th>UserType</th>
                   <th>Email</th>
-                  <th>ID Number</th>
                   <th>Avatar</th>
                   <th>Action</th>
                 </tr>
@@ -128,9 +122,9 @@
                   <td> {{$counter}} </td>
                   <td> {{$user->firstName}} </td>
                   <td> {{$user->lastName}} </td>
+                  <td> {{$user->idNumber}} </td>
                   <td> {{$user->userType}} </td>
                   <td> {{$user->email}} </td>
-                  <td> {{$user->idNumber}} </td>
                   <td class="text-center">
                     <img src="{{ $user->avatar ?? asset('images/User Icon.png') }}" alt="Avatar" width="35" height="35" class="rounded">
                   </td>
@@ -153,10 +147,7 @@
                           Force Delete
                         </button>
 
-                        <form id="deleteForm" action="" method="POST" style="display: none;">
-                          @csrf
-                          @method('GET')
-                        </form>
+
                       </div>
                     </div>
                   </th>
@@ -175,30 +166,6 @@
   </div>
   </div>
 
-  <script>
-    // Add event listener to the delete buttons
-    document.querySelectorAll('.deleteForceBtn').forEach(button => {
-      button.addEventListener('click', function(event) {
-        event.preventDefault();
-        const userId = this.getAttribute('value');
-        const deleteForm = document.getElementById('deleteForm');
-        deleteForm.action = `/forceDelete/${userId}`;
-        Swal.fire({
-          title: 'Are you sure?',
-          text: "You won't be able to revert this!",
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
-          confirmButtonText: 'Yes, delete it!'
-        }).then((result) => {
-          if (result.isConfirmed) {
-            deleteForm.submit();
-          }
-        });
-      });
-    });
-  </script>
 
 
   <!-- Add User Modal -->
@@ -256,11 +223,19 @@
               </div>
 
               <div class="col-lg-6">
+                <ul id="idNumberError"></ul>
+                <div class="form-group">
+                  <label>ID Number</label>
+                  <input type="text" class="form-control border border-dark" id="idNumber" name="idNumber" placeholder="Enter ID Number" />
+                </div>
+              </div>
+
+              <div class="col-lg-6">
                 <ul id="passwordError"></ul>
                 <div class="form-group">
                   <label>Temporary Password</label>
                   <div class="input-group">
-                    <input type="password" class="form-control border border-dark" id="password" name="password" placeholder="Generate Password" disabled">
+                    <input type="password" class="form-control border border-dark" id="password" name="password" placeholder="Generate Password" disabled autocomplete="true">
                     <i class="fa fa-eye-slash" id="show-password"></i>
                     <div class="input-group-append">
                       <button class="btn btn-primary btn-sm fw-bold" type="button" id="generate-password">Generate</button>
@@ -309,7 +284,7 @@
 
         <!-- Modal Footer -->
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary btn-pill" id="close" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary btn-pill" id="deleteClose" data-dismiss="modal">Close</button>
           <button type="submit" class="btn btn-danger btn-pill deleteUser">Archive</button>
         </div>
 
@@ -380,7 +355,7 @@
                 <ul id="editEmailError"></ul>
                 <div class="form-group">
                   <label>Email</label>
-                  <input type="text" class="updateEmail form-control border border-dark" id="edit_email" name="updateEmail" placeholder="ex. chrono@my.cspc.edu.ph">
+                  <input type="text" class="userEmail form-control border border-dark" id="edit_email" name="userEmail" placeholder="ex. chrono@my.cspc.edu.ph">
 
                 </div>
               </div>
@@ -407,6 +382,34 @@
       </div>
     </div>
   </div>
+
+
+  <script>
+    // Add event listener to the delete buttons
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('.deleteForceBtn').forEach(button => {
+        button.addEventListener('click', function() {
+          const id = this.value;
+
+          Swal.fire({
+            title: 'Are you sure?',
+            text: "This action cannot be undone!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.href = "/forceDelete/" + id;
+            }
+
+          });
+        });
+      });
+    });
+  </script>
+
 
   <script>
     const firstName = document.getElementById("firstName");
@@ -465,6 +468,7 @@
           'userType': $(userType).val(),
           'email': $(email).val(),
           'password': $(password).val(),
+          'idNumber': $(idNumber).val(),
         }
 
         $.ajaxSetup({
@@ -487,6 +491,8 @@
               $('#lastNameError').addClass('error');
               $('#userTypeError').html("");
               $('#userTypeError').addClass('error');
+              $('#idNumberError').html("");
+              $('#idNumberError').addClass('error');
               $('#emailError').html("");
               $('#emailError').addClass('error');
               $('#passwordError').html("");
@@ -500,6 +506,9 @@
               $.each(response.errors.userType, function(key, err_value) {
                 $('#userTypeError').append('<li>' + err_value + '</li>');
               });
+              $.each(response.errors.idNumber, function(key, err_value) {
+                $('#idNumberError').append('<li>' + err_value + '</li>');
+              });
               $.each(response.errors.email, function(key, err_value) {
                 $('#emailError').append('<li>' + err_value + '</li>');
               });
@@ -511,6 +520,7 @@
               $('#firstNameError').html("");
               $('#lastNameError').html("");
               $('#userTypeError').html("");
+              $('#idNumberError').html("");
               $('#emailError').html("");
               $('#passwordError').html("");
               Swal.fire({
@@ -538,6 +548,7 @@
               $('#firstNameError').html("");
               $('#lastNameError').html("");
               $('#userTypeError').html("");
+              $('#idNumberError').html("");
               $('#emailError').html("");
               $('#passwordError').html("");
               $('.addUser').text('Save');
@@ -547,10 +558,24 @@
                 text: "Email already Exist. Please use a another Email.",
               });
 
+            } else if (response.status === 101) {
+              $('#firstNameError').html("");
+              $('#lastNameError').html("");
+              $('#userTypeError').html("");
+              $('#idNumberError').html("");
+              $('#emailError').html("");
+              $('#passwordError').html("");
+              $('.addUser').text('Save');
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "ID already Exist. Please use a another ID.",
+              });
             } else if (response.status == 300) {
               $('#firstNameError').html("");
               $('#lastNameError').html("");
               $('#userTypeError').html("");
+              $('#idNumberError').html("");
               $('#emailError').html("");
               $('#passwordError').html("");
               $('.addUser').text('Save');
@@ -560,6 +585,24 @@
                 text: "Invalid email. Please use a CSPC email.",
               });
 
+            } else if (response.status === 409) {
+              $('#firstNameError').html("");
+              $('#lastNameError').html("");
+              $('#userTypeError').html("");
+              $('#idNumberError').html("");
+              $('#emailError').html("");
+              $('#passwordError').html("");
+              $('.addUser').text('Save');
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: response.message,
+                timer: 5000,
+                timerProgressBar: true,
+              });
+
+              // $('.updateUser').text('Update');
+              // $("#updateUserModal .close").click()
             }
           }
         });
@@ -611,7 +654,7 @@
           'updateFirstName': $('.updateFirstName').val(),
           'updateLastName': $('.updateLastName').val(),
           'updateUserType': $('.updateUserType').val(),
-          'updateEmail': $('.updateEmail').val(),
+          'userEmail': $('.userEmail').val(),
           'userIdNumber': $('.userIdNumber').val(),
         }
         $.ajaxSetup({
@@ -632,6 +675,8 @@
               $('#editFirstNameError').addClass('error');
               $('#editLastNameError').html("");
               $('#editLastNameError').addClass('error');
+              $('#editUserIdError').html("");
+              $('#editUserIdError').addClass('error');
               $('#editUserTypeError').html("");
               $('#editUserTypeError').addClass('error');
               $('#editEmailError').html("");
@@ -647,7 +692,7 @@
               $.each(response.errors.updateUserType, function(key, err_value) {
                 $('#editUserTypeError').append('<li>' + err_value + '</li>');
               });
-              $.each(response.errors.updateEmail, function(key, err_value) {
+              $.each(response.errors.userEmail, function(key, err_value) {
                 $('#editEmailError').append('<li>' + err_value + '</li>');
               });
               $.each(response.errors.userIdNumber, function(key, err_value) {
@@ -697,6 +742,22 @@
                 title: "Oops...",
                 text: "Email already exist. Please use another email.",
               });
+
+              $("#updateUserModal .close").click()
+            } else if (response.status === 409) {
+              $('#editFirstNameError').html("");
+              $('#editLastNameError').html("");
+              $('#editUserTypeError').html("");
+              $('#editEmailError').html("");
+              $('#editUserIdError').html("");
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: response.message,
+                timer: 5000,
+                timerProgressBar: true,
+              });
+
               $('.updateUser').text('Update');
               $("#updateUserModal .close").click()
             }
@@ -745,7 +806,6 @@
                 buttons: false,
               });
 
-
               window.location.href = "{{route('userManagement')}}", 4000;
             }
           }
@@ -773,5 +833,7 @@
       }
     });
   </script>
+
+
 
   @include('footer')

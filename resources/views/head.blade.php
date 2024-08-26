@@ -64,6 +64,8 @@
 
 
     @include('profile')
+    @include('sweetalert::alert')
+
 
     <script defer src="{{asset('js/profile.js')}}"></script>
     <script defer src="{{asset('js/readonly.js')}}"></script>
