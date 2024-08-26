@@ -522,12 +522,13 @@ class UserController extends Controller
                 ]);
                 // END Logs
 
+
                 Alert::success('Success', 'User deleted permanently')
                     ->autoClose(5000)
                     ->timerProgressBar()
                     ->showCloseButton();
 
-                    return redirect('/userManagementPage');
+                return redirect('/userManagementPage');
             }
         } catch (\Exception $th) {
 

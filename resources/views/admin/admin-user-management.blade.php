@@ -401,14 +401,23 @@
             confirmButtonText: 'Yes, delete it!'
           }).then((result) => {
             if (result.isConfirmed) {
+              // Perform the deletion and redirect to the user management page
               window.location.href = "/forceDelete/" + id;
-            }
 
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: response.message,
+                timer: 5000,
+                timerProgressBar: true,
+              });
+            }
           });
         });
       });
     });
   </script>
+
 
 
   <script>
@@ -764,6 +773,7 @@
           }
         });
       });
+
       $(document).on('mouseover', '.deleteBtn', function() {
         var id = $(this).val();
         $('#deleteID').val(id);
@@ -813,6 +823,8 @@
       });
 
     });
+
+    
   </script>
 
   <script>
