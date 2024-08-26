@@ -72,7 +72,6 @@ $(document).ready(function () {
             });
         }
     });
-    
 
     // Start Logs Table------------
 
@@ -458,21 +457,21 @@ $(document).ready(function () {
         attendanceTable.draw();
     });
 
-        // Schedule Date [See Schedule Management Admin] 
-        flatpickr("#selectedDate1", dateConfig);
-        flatpickr("#selectedDate2", dateConfig);
-        flatpickr("#selectedDate3", dateConfig);
-        flatpickr("#selectedDate4", dateConfig);
+    // Schedule Date [See Schedule Management Admin]
+    flatpickr("#selectedDate1", dateConfig);
+    flatpickr("#selectedDate2", dateConfig);
+    flatpickr("#selectedDate3", dateConfig);
+    flatpickr("#selectedDate4", dateConfig);
 
-        flatpickr("#selectedTime1", timeConfig);
-        flatpickr("#selectedTime2", timeConfig);
-        flatpickr("#selectedTime3", timeConfig);
-        flatpickr("#selectedTime4", timeConfig);
-        flatpickr("#selectedTime5", timeConfig);
-        flatpickr("#selectedTime6", timeConfig);
-        flatpickr("#selectedTime7", timeConfig);
-        flatpickr("#selectedTime8", timeConfig);
-        
+    flatpickr("#selectedTime1", timeConfig);
+    flatpickr("#selectedTime2", timeConfig);
+    flatpickr("#selectedTime3", timeConfig);
+    flatpickr("#selectedTime4", timeConfig);
+    flatpickr("#selectedTime5", timeConfig);
+    flatpickr("#selectedTime6", timeConfig);
+    flatpickr("#selectedTime7", timeConfig);
+    flatpickr("#selectedTime8", timeConfig);
+
     //ADMIN FILTERS START-----------
 
     //admin logs filter
@@ -677,7 +676,7 @@ $(document).ready(function () {
         $("#selectedInstID").val(instructorID);
 
         // Filter DataTable based on the selected inst_name
-        attendanceTable.column(5).search(instructorID).draw();
+        attendanceTable.column(6).search(instructorID).draw();
 
         // Toggle active class for visual indication
         $(".filter-inst-id").removeClass("active");
@@ -693,7 +692,7 @@ $(document).ready(function () {
         $("#selectedInstStatus").val(instructorStatus);
 
         // Filter DataTable based on the selected inst_name
-        attendanceTable.column(6).search(instructorStatus).draw();
+        attendanceTable.column(7).search(instructorStatus).draw();
 
         // Toggle active class for visual indication
         $(".filter-inst-status").removeClass("active");
@@ -726,5 +725,35 @@ $(document).ready(function () {
     $("#resetButton").on("click", function (e) {
         e.preventDefault();
         studentListTable.search("").columns().search("").draw();
+    });
+
+    $("#adminResetButton").on("click", function (e) {
+        e.preventDefault();
+        $(".admin-id").removeClass("active");
+        adminTable.search("").columns().search("").draw();
+    });
+
+    $("#studentResetButton").on("click", function (e) {
+        e.preventDefault();
+        $(".student-id").removeClass("active");
+        studentTable.search("").columns().search("").draw();
+    });
+
+    $("#LabInChargeResetButton").on("click", function (e) {
+        e.preventDefault();
+        $(".lab-in-charge-id").removeClass("active");
+        labInChargeTable.search("").columns().search("").draw();
+    });
+
+    $("#technicianResetButton").on("click", function (e) {
+        e.preventDefault();
+        $(".technician-id").removeClass("active");
+        technicianTable.search("").columns().search("").draw();
+    });
+
+    $("#facultyResetButton").on("click", function (e) {
+        e.preventDefault();
+        $(".faculty-id").removeClass("active");
+        facultyTable.search("").columns().search("").draw();
     });
 });

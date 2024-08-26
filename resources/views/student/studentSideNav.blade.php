@@ -70,9 +70,11 @@
       <div class="sidebar-footer-content">
         <ul class="d-flex">
           <li>
-            <a href="#" id="editProfile" data-toggle="modal" data-target="#modal-profile" data-toggle="tooltip" title="Profile settings">
-              <i class="mdi mdi-settings"></i>
-            </a>
+            <span data-toggle="tooltip" title="Profile settings">
+              <a href="#" data-toggle="modal" data-target="#modal-profile">
+                <i class="mdi mdi-settings"></i>
+              </a>
+            </span>
           </li>
           <li>
             <!-- Logout form -->

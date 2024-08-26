@@ -55,27 +55,31 @@
                     <!-- Horizontal line with custom class -->
                     <hr class="my-2 custom-hr">
 
+
                     <li class="section-title">Sections Handled</li>
 
-                    <li class="has-sub">
-                        <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#users" aria-expanded="false" aria-controls="users">
+                    <li class="has-sub {{ request()->routeIs('instructorClassAttendanceAndList') ? 'active' : '' }}">
+                        <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#users" aria-expanded="{{ request()->routeIs('instructorClassAttendanceAndList') ? 'true' : 'false' }}" aria-controls="users">
                             <i class="mdi mdi-alpha-s-box"></i>
-                            <span class="nav-text" data-toggle="tooltip" title="My Class List">Sections</span> <b class="caret"></b>
+                            <span class="nav-text" data-toggle="tooltip" title="Sections Handled">Sections</span> <b class="caret"></b>
                         </a>
-                        <ul class="collapse" id="users" data-parent="#sidebar-menu">
+                        <ul class="collapse {{ request()->routeIs('instructorClassAttendanceAndList') ? 'show' : '' }}" id="users" data-parent="#sidebar-menu">
                             <div class="sub-menu">
                                 @forelse($classes as $class)
                                 @csrf
                                 <li>
-                                    <a class="section" href="{{ route('instructorClassAttendanceAndList', [base64_encode($class->classID)]) }}">{{$class->courseCode}} | {{$class->program}}-{{$class->year}}{{$class->section}}</a>
+                                    <a class="section" href="{{ route('instructorClassAttendanceAndList', [base64_encode($class->classID)]) }}">
+                                        {{$class->courseCode}} | {{$class->program}}-{{$class->year}}{{$class->section}}
+                                    </a>
                                 </li>
                                 @empty
                                 <li>
                                     <a class="section" href="">None</a>
                                 </li>
                                 @endforelse
-                           
+
                     </li>
+
 
             </div>
         </div>
@@ -84,9 +88,11 @@
             <div class="sidebar-footer-content">
                 <ul class="d-flex">
                     <li>
-                        <a href="#" data-toggle="modal" data-target="#modal-profile" data-toggle="tooltip" title="Profile settings">
-                            <i class="mdi mdi-settings"></i>
-                        </a>
+                        <span data-toggle="tooltip" title="Profile settings">
+                            <a href="#" data-toggle="modal" data-target="#modal-profile">
+                                <i class="mdi mdi-settings"></i>
+                            </a>
+                        </span>
                     </li>
                     <li>
                         <!-- Logout form -->
@@ -101,4 +107,3 @@
         </div>
 </div>
 </aside>
-

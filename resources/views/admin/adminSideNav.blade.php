@@ -55,31 +55,30 @@
           <li>
             <a class="sidenav-item-link" href="{{ route('adminScheduleManagement') }}">
               <i class="mdi mdi-calendar-today "></i>
-              <span class="nav-text" data-toggle="tooltip" title="Schedule">ERP Schedule</span>
+              <span class="nav-text" data-toggle="tooltip" title="ERP Schedule">ERP Schedule</span>
             </a>
           </li>
 
           <li>
             <a class="sidenav-item-link" href="{{ route('appointedSchedules') }}">
               <i class="mdi mdi-calendar-today "></i>
-              <span class="nav-text" data-toggle="tooltip" title="AppointedSchedule">Appointed Schedule</span>
+              <span class="nav-text" data-toggle="tooltip" title="Appointed Schedule">Appointed Schedule</span>
             </a>
           </li>
 
 
-          <li class="has-sub">
-            <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#users" aria-expanded="false" aria-controls="users">
+          <li class="has-sub {{ request()->routeIs('studentAttendanceManagement') || request()->routeIs('instructorAttendanceManagement') ? 'active' : '' }}">
+            <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#users" aria-expanded="{{ request()->routeIs('studentAttendanceManagement') || request()->routeIs('instructorAttendanceManagement') ? 'true' : 'false' }}" aria-controls="users">
               <i class="mdi mdi-book-open-page-variant"></i>
               <span class="nav-text" data-toggle="tooltip" title="Attendance">Attendance</span> <b class="caret"></b>
             </a>
-            <ul class="collapse show" id="users" data-parent="#sidebar-menu">
+            <ul class="collapse {{ request()->routeIs('studentAttendanceManagement') || request()->routeIs('instructorAttendanceManagement') ? 'show' : '' }}" id="users" data-parent="#sidebar-menu">
               <div class="sub-menu">
                 <li>
                   <a class="sidenav-item-link" href="{{ route('studentAttendanceManagement') }}">
                     <span class="nav-text">Student Attendance</span>
                   </a>
                 </li>
-
                 <li>
                   <a class="sidenav-item-link" href="{{ route('instructorAttendanceManagement') }}">
                     <span class="nav-text">Instructor Attendance</span>
@@ -88,6 +87,7 @@
               </div>
             </ul>
           </li>
+
 
           <li>
             <a class="sidenav-item-link" href="{{ route('RFIDManagement') }}">
@@ -107,25 +107,23 @@
             </a>
           </li>
 
-          <li class="has-sub">
-            <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#reports" aria-expanded="false" aria-controls="reports">
+          <li class="has-sub {{ request()->routeIs('studentAttendanceGeneration') || request()->routeIs('instructorAttendanceGeneration') || request()->routeIs('previewPDF') ? 'active' : '' }}">
+            <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#reports" aria-expanded="{{ request()->routeIs('studentAttendanceGeneration') || request()->routeIs('instructorAttendanceGeneration') || request()->routeIs('previewPDF') ? 'true' : 'false' }}" aria-controls="reports">
               <i class="mdi mdi-file-export"></i>
               <span class="nav-text" data-toggle="tooltip" title="Report Generation">Report Generation</span> <b class="caret"></b>
             </a>
-            <ul class="collapse show" id="reports">
+            <ul class="collapse {{ request()->routeIs('studentAttendanceGeneration') || request()->routeIs('instructorAttendanceGeneration') || request()->routeIs('previewPDF') ? 'show' : '' }}" id="reports">
               <div class="sub-menu">
                 <li>
                   <a class="sidenav-item-link" href="{{ route('studentAttendanceGeneration') }}">
                     <span class="nav-text">Student Attendance</span>
                   </a>
                 </li>
-
                 <li>
                   <a class="sidenav-item-link" href="{{ route('instructorAttendanceGeneration') }}">
                     <span class="nav-text">Instructor Attendance</span>
                   </a>
                 </li>
-
                 <li>
                   <a class="sidenav-item-link" href="{{ route('previewPDF') }}">
                     <span class="nav-text">ERP Regular Schedules</span>
@@ -134,6 +132,7 @@
               </div>
             </ul>
           </li>
+
 
           @elseif(Auth()->check() && (Auth()->user()->userType === 'Technician' || Auth()->user()->userType === 'Lab-in-Charge'))
 
@@ -173,9 +172,11 @@
 
             @if(Auth()->check() && (Auth()->user()->userType === 'Admin' || Auth()->user()->userType === 'Technician' || Auth()->user()->userType === 'Lab-in-Charge'))
             <li>
-              <a href="#" data-toggle="modal" data-target="#modal-profile" data-toggle="tooltip" title="Profile settings">
-                <i class="mdi mdi-settings"></i>
-              </a>
+              <span data-toggle="tooltip" title="Profile settings">
+                <a href="#" data-toggle="modal" data-target="#modal-profile">
+                  <i class="mdi mdi-settings"></i>
+                </a>
+              </span>
             </li>
             <li>
               <!-- Logout form -->

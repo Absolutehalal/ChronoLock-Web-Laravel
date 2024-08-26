@@ -24,10 +24,12 @@
                     <ul class="dropdown-menu dropdown-menu-right shadow-sm">
 
                         <li>
-                            <a href="#" id="editProfile" data-toggle="modal" data-target="#modal-profile" data-toggle="tooltip" title="Profile settings">
-                                <i class="mdi mdi-settings fw-bold text-warning"></i>
-                                <span class="nav-text fw-bold text-dark">Account Setting</span>
-                            </a>
+                            <span data-toggle="tooltip" title="Profile settings">
+                                <a href="#" id="editProfile" data-toggle="modal" data-target="#modal-profile">
+                                    <i class="mdi mdi-settings fw-bold text-warning"></i>
+                                    <span class="nav-text fw-bold text-dark">Profile Setting</span>
+                                </a>
+                            </span>
                         </li>
 
                         <li>

@@ -194,7 +194,7 @@
                 <button class="nav-link" id="pills-attendance-tab" data-bs-toggle="pill" href="attendanceTab" data-bs-target="#pills-attendance" type="button" role="tab" aria-controls="pills-attendance" aria-selected="true">Class Attendance</button>
               </li>
               <li class="nav-item" role="presentation">
-                <button class="nav-link" id="pills-classList-tab" data-bs-toggle="pill" href="listTab" data-bs-target="#pills-classList" type="button" role="tab" aria-controls="pills-classList" aria-selected="false">Students</button>
+                <button class="nav-link" id="pills-classList-tab" data-bs-toggle="pill" href="listTab" data-bs-target="#pills-classList" type="button" role="tab" aria-controls="pills-classList" aria-selected="false">Student List</button>
               </li>
             </ul>
 
@@ -241,7 +241,6 @@
 
 
                   <div class="col-xl-3 col-md-3 d-flex justify-content-end">
-                    <!-- Sort button -->
                     <div class="dropdown d-inline-block mb-3 ">
                       <button class="btn btn-warning btn-sm fw-bold" id="resetBtn" type="button">
                         <i class="mdi mdi-alpha-r-box"></i>
@@ -321,7 +320,7 @@
               <div class="tab-pane fade" id="pills-classList" role="tabpanel" aria-labelledby="pills-classList-tab">
                 <div class="row">
                   <div class="col-xl-9 col-md-9">
-                    <!-- Sort button -->
+                  
                     <div class="dropdown d-inline-block mb-3">
                       <form method="GET" action="">
                         <button class="btn btn-primary btn-sm dropdown-toggle fw-bold" type="button" id="studentStatusDropdown" data-toggle="dropdown" aria-expanded="false">
@@ -346,7 +345,7 @@
                   </div>
 
                   <div class="col-xl-3 col-md-3 d-flex justify-content-end">
-                    <!-- Sort button -->
+                  
                     <div class="dropdown d-inline-block mb-3 ">
                       <button class="btn btn-warning btn-sm fw-bold" id="resetButton" type="button">
                         <i class="mdi mdi-alpha-r-box"></i>

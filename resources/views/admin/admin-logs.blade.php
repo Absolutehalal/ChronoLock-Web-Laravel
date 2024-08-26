@@ -15,6 +15,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <title>ChronoLock Admin-RFID Account</title>
+  <script defer src="{{asset('js/logs.js')}}"></script>
 
   @include('head')
 </head>
@@ -80,11 +81,22 @@
             <div class="card card-default shadow">
               <div class="card-header">
                 <h1>Admin Logs</h1>
+
+                <div class="col-xl-3 col-md-3 d-flex justify-content-end">
+                  <div class="dropdown d-inline-block mb-3 ">
+                    <button class="btn btn-warning btn-sm fw-bold" id="adminResetButton" type="button">
+                      <i class="mdi mdi-alpha-r-box"></i>
+                      RESET
+                    </button>
+                  </div>
+                </div>
               </div>
+
+
               <div class="card-body">
 
                 <div class="row">
-                  <div class="col-xl-9 col-md-9">
+                  <div class="col-xl-9 col-md-9 mr-1">
 
                     <div class="dropdown d-inline-block mb-3">
                       <form method="GET" action="">
@@ -95,7 +107,7 @@
                         <div class="dropdown-menu scrollable-dropdown" aria-labelledby="adminIDDropdown">
                           @foreach($adminIDS as $adminID)
                           @csrf
-                          <a class="dropdown-item filter-admin-id" data-value="{{ $adminID->userID }}" href="#">
+                          <a class="dropdown-item filter-admin-id admin-id" data-value="{{ $adminID->userID }}" href="#">
                             {{ $adminID->userID }}-{{ $adminID->firstName }} {{ $adminID->lastName }}
                           </a>
                           @endforeach
@@ -142,9 +154,18 @@
 
           <div class="tab-pane fade" id="nav-labInCharge" role="tabpanel" aria-labelledby="nav-labInCharge-tab">
 
-            <div class="card card-default">
+            <div class="card card-default shadow">
               <div class="card-header">
                 <h1>Lab-in-Charge Logs</h1>
+
+                <div class="col-xl-3 col-md-3 d-flex justify-content-end">
+                  <div class="dropdown d-inline-block mb-3 ">
+                    <button class="btn btn-warning btn-sm fw-bold" id="labInChargeResetButton" type="button">
+                      <i class="mdi mdi-alpha-r-box"></i>
+                      RESET
+                    </button>
+                  </div>
+                </div>
               </div>
               <div class="card-body">
 
@@ -160,7 +181,7 @@
                         <div class="dropdown-menu scrollable-dropdown" aria-labelledby="labInChargeIDDropdown">
                           @foreach($labInChargeIDS as $labInChargeID)
                           @csrf
-                          <a class="dropdown-item filter-labInCharge-id" data-value="{{ $labInChargeID->userID }}" href="#">
+                          <a class="dropdown-item filter-labInCharge-id lab-in-charge-id" data-value="{{ $labInChargeID->userID }}" href="#">
                             {{ $labInChargeID->userID }}-{{ $labInChargeID->firstName }} {{ $labInChargeID->lastName }}
                           </a>
                           @endforeach
@@ -205,9 +226,18 @@
 
 
           <div class="tab-pane fade" id="nav-technician" role="tabpanel" aria-labelledby="nav-technician-tab">
-            <div class="card card-default">
+            <div class="card card-default shadow">
               <div class="card-header">
                 <h1>Technician Logs</h1>
+
+                <div class="col-xl-3 col-md-3 d-flex justify-content-end">
+                  <div class="dropdown d-inline-block mb-3 ">
+                    <button class="btn btn-warning btn-sm fw-bold" id="technicianResetButton" type="button">
+                      <i class="mdi mdi-alpha-r-box"></i>
+                      RESET
+                    </button>
+                  </div>
+                </div>
               </div>
               <div class="card-body">
 
@@ -223,7 +253,7 @@
                         <div class="dropdown-menu scrollable-dropdown" aria-labelledby="technicianIDDropdown">
                           @foreach($technicianIDS as $technicianID)
                           @csrf
-                          <a class="dropdown-item filter-technician-id" data-value="{{ $technicianID->userID }}" href="#">
+                          <a class="dropdown-item filter-technician-id technician-id" data-value="{{ $technicianID->userID }}" href="#">
                             {{ $technicianID->userID }}-{{ $technicianID->firstName }} {{ $technicianID->lastName }}
                           </a>
                           @endforeach
@@ -266,9 +296,18 @@
             </div>
           </div>
           <div class="tab-pane fade" id="nav-faculty" role="tabpanel" aria-labelledby="nav-faculty-tab">
-            <div class="card card-default">
+            <div class="card card-default shadow">
               <div class="card-header">
                 <h1>Faculty Logs</h1>
+
+                <div class="col-xl-3 col-md-3 d-flex justify-content-end">
+                  <div class="dropdown d-inline-block mb-3 ">
+                    <button class="btn btn-warning btn-sm fw-bold" id="facultyResetButton" type="button">
+                      <i class="mdi mdi-alpha-r-box"></i>
+                      RESET
+                    </button>
+                  </div>
+                </div>
               </div>
               <div class="card-body">
 
@@ -284,7 +323,7 @@
                         <div class="dropdown-menu scrollable-dropdown" aria-labelledby="facultyIDDropdown">
                           @foreach($facultyIDS as $facultyID)
                           @csrf
-                          <a class="dropdown-item filter-faculty-id" data-value="{{ $facultyID->userID }}" href="#">
+                          <a class="dropdown-item filter-faculty-id faculty-id" data-value="{{ $facultyID->userID }}" href="#">
                             {{ $facultyID->userID }}-{{ $facultyID->firstName }} {{ $facultyID->lastName }}
                           </a>
                           @endforeach
@@ -326,9 +365,18 @@
             </div>
           </div>
           <div class="tab-pane fade" id="nav-student" role="tabpanel" aria-labelledby="nav-student-tab">
-            <div class="card card-default">
+            <div class="card card-default shadow">
               <div class="card-header">
                 <h1>Student Logs</h1>
+
+                <div class="col-xl-3 col-md-3 d-flex justify-content-end">
+                  <div class="dropdown d-inline-block mb-3 ">
+                    <button class="btn btn-warning btn-sm fw-bold" id="studentResetButton" type="button">
+                      <i class="mdi mdi-alpha-r-box"></i>
+                      RESET
+                    </button>
+                  </div>
+                </div>
               </div>
               <div class="card-body">
 
@@ -344,7 +392,7 @@
                         <div class="dropdown-menu scrollable-dropdown" aria-labelledby="studentIDDropdown">
                           @foreach($studentIDS as $studentID)
                           @csrf
-                          <a class="dropdown-item filter-student-id" data-value="{{ $studentID->userID }}" href="#">
+                          <a class="dropdown-item filter-student-id student-id" data-value="{{ $studentID->userID }}" href="#">
                             {{ $studentID->userID }}-{{ $studentID->firstName }} {{ $studentID->lastName }}
                           </a>
                           @endforeach

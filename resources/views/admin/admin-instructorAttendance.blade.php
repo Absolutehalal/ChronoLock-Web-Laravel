@@ -75,7 +75,7 @@
                   @forelse($instructorsID as $instructorID)
                   @csrf
                   <a class="dropdown-item id-item filter-inst-id" data-value="{{ $instructorID->userID }}" href="#">
-                    {{ $instructorID->userID }}-{{ $instructorID->instFirstName }} {{ $instructorID->instLastName }}
+                    {{ $instructorID->userID }} - {{ $instructorID->instFirstName }} {{ $instructorID->instLastName }}
                   </a>
                   @empty
                   <a class="dropdown-item" data-value="None" href="#">

@@ -115,6 +115,7 @@
                   <th>LastName</th>
                   <th>UserType</th>
                   <th>Email</th>
+                  <th>ID Number</th>
                   <th>Avatar</th>
                   <th>Action</th>
                 </tr>
@@ -129,6 +130,7 @@
                   <td> {{$user->lastName}} </td>
                   <td> {{$user->userType}} </td>
                   <td> {{$user->email}} </td>
+                  <td> {{$user->idNumber}} </td>
                   <td class="text-center">
                     <img src="{{ $user->avatar ?? asset('images/User Icon.png') }}" alt="Avatar" width="35" height="35" class="rounded">
                   </td>
