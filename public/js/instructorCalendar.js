@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
         success: function (response) {
             var schedules = response.ERPSchedules;
             console.log(schedules);
-            var calendar = new FullCalendar.Calendar(calendarEl, {
+            var calendar= new FullCalendar.Calendar(calendarEl, {
                 plugins: ["dayGrid"],
                 defaultView: "dayGridMonth",
 

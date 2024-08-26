@@ -1,12 +1,5 @@
 <!DOCTYPE html>
 
-<!--
- // WEBSITE: https://themefisher.com
- // TWITTER: https://twitter.com/themefisher
- // FACEBOOK: https://www.facebook.com/themefisher
- // GITHUB: https://github.com/themefisher/
--->
-
 <html lang="en" dir="ltr">
 
 <head>
@@ -27,6 +20,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
   <!-- Custom JS -->
   <script src="js/toastr.js"></script>
+  
+  <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
 </head>
 
 <body class="navbar-fixed sidebar-fixed" id="body">
@@ -145,7 +140,7 @@
               <div class="col-xl-12 col-md-12 d-flex justify-content-end">
                 <!-- Sort button -->
                 <div class="dropdown d-inline-block mb-3 mr-3">
-                  <a href="{{ route('adminScheduleManagement') }}" data-toggle="tooltip" title="Go to Schedule" class="btn btn-primary btn-sm fw-bold" type="button">
+                  <a href="{{ route('adminScheduleManagement') }}" title="Add Regular Schedule" class="btn btn-primary btn-sm fw-bold" type="button">
                     <i class=" mdi mdi-calendar-plus"></i>
                     GO TO SCHEDULE
                   </a>
@@ -154,13 +149,11 @@
             </div>
           </div>
 
-
           <div class="card-body">
             <div class="full-calendar mb-5">
               <div id="calendar"></div>
             </div>
           </div>
-
         </div>
         @endif
         @endif
@@ -179,7 +172,7 @@
                   <div class="col-xl-12 col-md-12 d-flex justify-content-end">
 
                     <div class="dropdown d-inline-block ">
-                      <a href="{{ route('userManagement') }}" data-toggle="tooltip" title="Go to User Management"  class="btn-warning btn-sm fw-bold" type="button">
+                      <a href="{{ route('userManagement') }}" class="btn-warning btn-sm fw-bold" type="button">
                         <i class=" mdi mdi-arrow-right"></i>
                         GO TO USER MANAGEMENT
                       </a>
@@ -230,7 +223,7 @@
                   <div class="col-xl-12 col-md-12 d-flex justify-content-end">
 
                     <div class="dropdown d-inline-block ">
-                      <a href="{{ route('RFIDManagement') }}" data-toggle="tooltip" title="Go to RFID Accounts"  class="btn-warning btn-sm fw-bold" type="button">
+                      <a href="{{ route('RFIDManagement') }}" class="btn-warning btn-sm fw-bold" type="button">
                         <i class=" mdi mdi-arrow-right"></i>
                         GO TO RFID ACCOUNTS
                       </a>
