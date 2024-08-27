@@ -218,7 +218,7 @@
                 <ul id="emailError"></ul>
                 <div class="form-group">
                   <label>Email</label>
-                  <input type="text" class="form-control border border-dark" id="email" name="email" placeholder="Enter Email" />
+                  <input type="text" class="form-control border border-dark" id="email" name="email" placeholder="Enter Email" autocomplete="true" />
                 </div>
               </div>
 
@@ -618,7 +618,7 @@
 
       });
 
-      $(document).on('mouseover', '.editBtn', function(e) {
+      $(document).on('click', '.editBtn', function(e) {
         e.preventDefault();
         var id = $(this).val();
         // console.log(userID);
@@ -823,8 +823,6 @@
       });
 
     });
-
-    
   </script>
 
   <script>

@@ -54,7 +54,7 @@
 
         <div class="card card-default shadow card-profile">
 
-          <div class="card-header-bg" style=""></div>
+          <div class="card-header-bg"></div>
 
           <div class="card-body card-profile-body">
             @if(Auth::check())

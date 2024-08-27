@@ -21,6 +21,12 @@ class GoogleAuthController extends Controller
         // Check if the user is already authenticated
         if (Auth::check()) {
             $user = Auth::user();
+
+            Alert::success('Success', 'Login successful.')
+                ->autoClose(3000)
+                ->timerProgressBar()
+                ->showCloseButton();
+
             if ($user->userType === 'Admin' || $user->userType === 'Technician' || $user->userType === 'Lab-in-Charge') {
                 return redirect('/index-dashboard');
             } elseif ($user->userType == 'Student') {

@@ -20,8 +20,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
   <!-- Custom JS -->
   <script src="js/toastr.js"></script>
-  
-  <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
+
 </head>
 
 <body class="navbar-fixed sidebar-fixed" id="body">
@@ -32,9 +31,6 @@
     NProgress.start();
   </script>
 
-
-  @include('sweetalert::alert')
-
   <div id="toast"></div>
 
   @include('admin.adminSideNav')
@@ -44,8 +40,11 @@
   <div class="page-wrapper">
     <!-- Header -->
 
+    @include('sweetalert::alert')
+
     @include('header')
 
+    
     <!-- ====================================
         ——— CONTENT WRAPPER
         ===================================== -->

@@ -62,10 +62,11 @@
     <script src="{{asset('plugins/nprogress/nprogress.js')}}"></script>
     <script src="{{asset('https://code.jquery.com/jquery-3.7.1.min.js')}}" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
+    <!-- SWEET ALERT -->
+    <script src="{{asset('https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.11.1/sweetalert2.min.js')}}" integrity="sha512-Ozu7Km+muKCuIaPcOyNyW8yOw+KvkwsQyehcEnE5nrr0V4IuUqGZUKJDavjSCAA/667Dt2z05WmHHoVVb7Bi+w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link href="{{asset('https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css')}}" rel="stylesheet">
+    <!-- <script src="{{asset('https://cdn.jsdelivr.net/npm/sweetalert2@11')}}"></script> -->
 
-    @include('profile')
-    @include('sweetalert::alert')
-
-
+  
     <script defer src="{{asset('js/profile.js')}}"></script>
     <script defer src="{{asset('js/readonly.js')}}"></script>
