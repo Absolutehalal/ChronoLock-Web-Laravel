@@ -155,7 +155,7 @@ class RFIDController extends Controller
     {
         $RFID_Accounts = DB::table('rfid_accounts')
             ->join('users', 'rfid_accounts.RFID_Code', '=', 'users.RFID_Code')
-            ->where('userType', '!=', 'Admin')
+            // ->where('userType', '!=', 'Admin')
             ->select('users.idNumber', 'users.firstName', 'users.lastName', 'rfid_accounts.RFID_Code', 'users.userType', 'rfid_accounts.RFID_Status', 'rfid_accounts.id')
             ->get();
 

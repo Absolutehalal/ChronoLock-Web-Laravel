@@ -14,7 +14,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <title>ChronoLock Admin-RFID Account</title>
+  <title>ChronoLock Logs</title>
   <script defer src="{{asset('js/logs.js')}}"></script>
 
   @include('head')
@@ -208,16 +208,11 @@
                     @foreach ($labInChargeLogs as $labInChargeLog)
                     <tr>
                       <td> {{$counter}} </td>
-                      <td> 
-                      @if ($labInChargeLog->userID)
+                      <td>
+
                         {{$labInChargeLog->userID}}
-                     @else
-                        <span style="color: #cc0000; font-weight: bold;">No User</span>
-                      @endif
 
                       </td>
-
-                     
                       <td> {{$labInChargeLog->action}} </td>
                       <td> {{$labInChargeLog->formatted_date}} </td>
                       <td> {{$labInChargeLog->formatted_time}} </td>
@@ -359,11 +354,7 @@
                     @foreach ($facultyLogs as $facultyLog)
                     <tr>
                       <td> {{$counter}} </td>
-                      <td>   @if ($facultyLogs->userID)
-                        {{$facultyLogs->userID}}
-                     @else
-                        <span style="color: #cc0000; font-weight: bold;">No User</span>
-                      @endif </td>
+                      <td> {{$facultyLog->userID}} </td>
                       <td> {{$facultyLog->action}} </td>
                       <td> {{$facultyLog->formatted_date}} </td>
                       <td> {{$facultyLog->formatted_time}} </td>
