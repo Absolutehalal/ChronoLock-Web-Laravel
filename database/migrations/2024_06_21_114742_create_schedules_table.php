@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('courseCode', 50)->nullable();
             $table->string('courseName', 50)->nullable();
             $table->string('userID', 50)->nullable();
-            $table->foreign('userID', 50)->references('idNumber')->on('users')->cascadeOnUpdate();
+            $table->foreign('userID', 50)->references('idNumber')->on('users')->cascadeOnUpdate()->cascadeOnDelete();
             $table->string('instFirstName', 50)->nullable();
             $table->string('instLastName', 50)->nullable();
             $table->string('program', 50)->nullable();

@@ -9,7 +9,7 @@ $(document).on('pointerup', '.activateBtn', function(e) {
       type: "GET",
       url: "/processPendingRFID/" + id,
       success: function(response) {
-        // console.log(response);
+         console.log(response);
         if (response.status == 404) {
           Swal.fire({
             icon: "error",

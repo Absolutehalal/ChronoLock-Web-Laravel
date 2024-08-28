@@ -653,7 +653,7 @@ class UserController extends Controller
                 'scheduleWeekDay' => 'required',
                 'scheduleFaculty' => 'required',
             ]);
-
+            $checkDay = $request->input('scheduleWeekDay');
             $facultyID = $request->get('scheduleFaculty');
             $facultyFirstName = DB::table('users')->where('idNumber', $facultyID)->value('firstName');
             $facultyLastName = DB::table('users')->where('idNumber', $facultyID)->value('lastName');
@@ -667,9 +667,11 @@ class UserController extends Controller
             $courseCode =  $request->input('courseCode');
             $checkStartTime = DB::table('schedules')
                 ->whereRaw('? BETWEEN startTime AND endTime', [$startTime])
+                ->where('day','=', $checkDay)
                 ->get();
             $checkEndTime = DB::table('schedules')
                 ->whereRaw('? BETWEEN startTime AND endTime', [$endTime])
+                ->where('day','=', $checkDay)
                 ->get();
             if ($validator->fails()) {
                 return response()->json([
@@ -804,6 +806,7 @@ class UserController extends Controller
                 ]);
             } else {
                 $schedule = Schedule::find($id);
+                $checkDay = $request->input('updateWeekDay');
                 $updatedID = DB::table('schedules')->where('scheduleID', $id)->value('scheduleID');
                 $courseCode = DB::table('schedules')->where('scheduleID', $updatedID)->value('courseCode');
                 $courseName = DB::table('schedules')->where('scheduleID', $updatedID)->value('courseName');
@@ -814,9 +817,13 @@ class UserController extends Controller
                 $day = DB::table('schedules')->where('scheduleID', $updatedID)->value('day');
                 $checkStartTime = DB::table('schedules')
                     ->whereRaw('? BETWEEN startTime AND endTime', [$startTime])
+                    ->where('scheduleID','!=', $id)
+                    ->where('day','=', $checkDay )
                     ->get();
                 $checkEndTime = DB::table('schedules')
                     ->whereRaw('? BETWEEN startTime AND endTime', [$endTime])
+                    ->where('scheduleID','!=', $id)
+                    ->where('day','=', $checkDay )
                     ->get();
 
                 if (($schedule) && (($checkStartTime->isNotEmpty()) || ($checkEndTime->isNotEmpty()))) {

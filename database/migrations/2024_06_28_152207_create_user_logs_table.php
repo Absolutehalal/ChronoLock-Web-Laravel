@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('user_logs', function (Blueprint $table) {
             $table->id('idLogs');
             $table->string('userID', 50)->nullable();
-            $table->foreign('userID')->references('idNumber')->on('users')->cascadeOnUpdate();
-            $table->string('action', 100);  
+            $table->foreign('userID')->references('idNumber')->on('users')->cascadeOnUpdate()->nullOnDelete();
+            $table->string('action', 100);
             $table->date('date')->nullable();
             $table->time('time')->nullable();
             $table->timestamps();

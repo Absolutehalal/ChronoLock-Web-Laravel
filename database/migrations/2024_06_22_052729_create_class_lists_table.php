@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('class_lists', function (Blueprint $table) {
             $table->id('classID');
             $table->unsignedBigInteger('scheduleID')->unique();
-            $table->foreign('scheduleID')->references('scheduleID')->on('schedules');
+            $table->foreign('scheduleID')->references('scheduleID')->on('schedules')->cascadeOnUpdate()->cascadeOnDelete();
             $table->string('semester', 50);
             $table->string('enrollmentKey', 50);
             // $table->primary(['classID', 'scheduleID']);

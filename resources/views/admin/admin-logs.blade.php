@@ -208,7 +208,16 @@
                     @foreach ($labInChargeLogs as $labInChargeLog)
                     <tr>
                       <td> {{$counter}} </td>
-                      <td> {{$labInChargeLog->userID}} </td>
+                      <td> 
+                      @if ($labInChargeLog->userID)
+                        {{$labInChargeLog->userID}}
+                     @else
+                        <span style="color: #cc0000; font-weight: bold;">No User</span>
+                      @endif
+
+                      </td>
+
+                     
                       <td> {{$labInChargeLog->action}} </td>
                       <td> {{$labInChargeLog->formatted_date}} </td>
                       <td> {{$labInChargeLog->formatted_time}} </td>
@@ -350,7 +359,11 @@
                     @foreach ($facultyLogs as $facultyLog)
                     <tr>
                       <td> {{$counter}} </td>
-                      <td> {{$facultyLog->userID}} </td>
+                      <td>   @if ($facultyLogs->userID)
+                        {{$facultyLogs->userID}}
+                     @else
+                        <span style="color: #cc0000; font-weight: bold;">No User</span>
+                      @endif </td>
                       <td> {{$facultyLog->action}} </td>
                       <td> {{$facultyLog->formatted_date}} </td>
                       <td> {{$facultyLog->formatted_time}} </td>

@@ -155,7 +155,7 @@
                 <ul id="rfidError"></ul>
                 <div class="form-group">
                   <label for="rfid code">RFID Code</label>
-                  <input type="text" class="Rfid_Code form-control border border-dark border border-dark" id="rfidCode" name="rfidCode" placeholder="RFID Code" readonly>
+                  <input type="text" class="Rfid_Code form-control border border-dark border border-dark" id="rfidCode" name="rfidCode" placeholder="RFID Code" disabled>
                 </div>
               </div>
 
