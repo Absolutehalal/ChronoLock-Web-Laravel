@@ -122,8 +122,8 @@
                                     </ul>
                                     @php
                                     $classID=$schedule->classID;
-                                    $link= mysqli_connect("sql12.freesqldatabase.com","sql12728459","5bPPipjGJy");
-                                    mysqli_select_db($link, "sql12728459");
+                                    $link= mysqli_connect("localhost","root","");
+                                    mysqli_select_db($link, "chronolock");
                                     $query = "SELECT * FROM student_masterlists WHERE userID ='$userID' AND classID ='$classID'";
                                     $result = mysqli_query($link,$query);
                                     @endphp

@@ -31,7 +31,7 @@
                         </a>
                     </li>
                     <li>
-                        <a class="sidenav-item-link" href="{{route('classSchedules')}}">
+                        <a class="sidenav-item-link" href="{{route('instructorScheduleManagement')}}">
                             <i class="mdi mdi-calendar-check"></i>
                             <span class="nav-text" data-toggle="tooltip" title="ERP Schedules">ERP
                                 Schedules</span>
@@ -45,10 +45,9 @@
                         </a>
                     </li>
                     <li>
-                        <a class="sidenav-item-link" href="{{route('instructorScheduleManagement')}}">
+                        <a class="sidenav-item-link" href="{{route('classSchedules')}}">
                             <i class="mdi mdi-calendar-today"></i>
-                            <span class="nav-text" data-toggle="tooltip" title="My Schedule">My
-                                Schedule</span>
+                            <span class="nav-text" data-toggle="tooltip" title="My Schedule">My Schedule</span>
                         </a>
                     </li>
 

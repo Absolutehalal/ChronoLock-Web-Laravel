@@ -56,7 +56,7 @@
 
         <div class="card card-default shadow">
           <div class="card-header align-items-center px-3 px-md-5">
-            <h1>ERP Schedule</h1>
+            <h1>My Schedule</h1>
             <form method="GET" action="{{ url('/instructorClassSchedules') }}">
               <div class="dropdown d-inline-block mb-3">
                 <button class="btn btn-primary btn-sm dropdown-toggle fw-bold" type="button" id="nameDropdown" data-toggle="dropdown" aria-expanded="false">

@@ -316,6 +316,7 @@ class ScheduleController extends Controller
         $query = DB::table('schedules')
             ->join('users', 'schedules.userID', '=', 'users.idNumber')
             ->where('schedules.scheduleStatus', '=', 'unscheduled')
+            ->where('schedules.userID', '=', $userID)
             ->orderBy('schedules.scheduleID', 'desc');
 
         if ($data['selectedName']) {
@@ -431,9 +432,9 @@ class ScheduleController extends Controller
     public function facultyCalendarSchedules()
     {
         $ERPSchedules = array();
-        $id = Auth::id();
-        $userID = DB::table('users')->where('id', $id)->value('idNumber');
-        $schedule = DB::table('schedules')->where('userID', $userID)->get();
+        $schedule =DB::table('class_lists')
+            ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
+            ->get();
        
 
         foreach ($schedule as $schedule) {

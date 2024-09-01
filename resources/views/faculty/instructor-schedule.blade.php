@@ -62,7 +62,7 @@
 
                 <div class="card card-default shadow">
                     <div class="card-header card-header-border-bottom d-flex justify-content-between align-items-center">
-                        <h1>My Schedule</h1>
+                        <h1>ERP Schedule</h1>
                     </div>
 
                     <div class="card-body">
