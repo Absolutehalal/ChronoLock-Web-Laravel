@@ -38,6 +38,8 @@ if (in_array(config('app.env'), ['local', 'staging'])) {
 
 // Auth::routes();
 
+Route::get('/get-db-config', [UserController::class, 'fetchData'])->name('fetchData');
+
 Route::get('/login', [GoogleAuthController::class, 'login'])->name('login');
 Route::post('/login', [GoogleAuthController::class, 'loginUser'])->name('login.user');
 Route::get('/auth/google', [GoogleAuthController::class, 'redirectToGoogle'])->name('login.google');

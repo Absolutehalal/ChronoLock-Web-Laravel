@@ -667,11 +667,11 @@ class UserController extends Controller
             $courseCode =  $request->input('courseCode');
             $checkStartTime = DB::table('schedules')
                 ->whereRaw('? BETWEEN startTime AND endTime', [$startTime])
-                ->where('day','=', $checkDay)
+                ->where('day', '=', $checkDay)
                 ->get();
             $checkEndTime = DB::table('schedules')
                 ->whereRaw('? BETWEEN startTime AND endTime', [$endTime])
-                ->where('day','=', $checkDay)
+                ->where('day', '=', $checkDay)
                 ->get();
             if ($validator->fails()) {
                 return response()->json([
@@ -817,13 +817,13 @@ class UserController extends Controller
                 $day = DB::table('schedules')->where('scheduleID', $updatedID)->value('day');
                 $checkStartTime = DB::table('schedules')
                     ->whereRaw('? BETWEEN startTime AND endTime', [$startTime])
-                    ->where('scheduleID','!=', $id)
-                    ->where('day','=', $checkDay )
+                    ->where('scheduleID', '!=', $id)
+                    ->where('day', '=', $checkDay)
                     ->get();
                 $checkEndTime = DB::table('schedules')
                     ->whereRaw('? BETWEEN startTime AND endTime', [$endTime])
-                    ->where('scheduleID','!=', $id)
-                    ->where('day','=', $checkDay )
+                    ->where('scheduleID', '!=', $id)
+                    ->where('day', '=', $checkDay)
                     ->get();
 
                 if (($schedule) && (($checkStartTime->isNotEmpty()) || ($checkEndTime->isNotEmpty()))) {
@@ -1410,5 +1410,17 @@ class UserController extends Controller
             ->get();
 
         return response()->json($studentCounts);
+    }
+
+
+    public function fetchData()
+    {
+        return response()->json([
+            'host' => env('DB_HOST'),
+            'user' => env('DB_USERNAME'),
+            'password' => env('DB_PASSWORD'),
+            'database' => env('DB_DATABASE'),
+            'port' => env('DB_PORT'),
+        ]);
     }
 }

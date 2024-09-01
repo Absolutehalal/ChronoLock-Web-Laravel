@@ -7,7 +7,9 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <title>ChronoLock Admin Dashboard</title>
+  @if (Auth::check())
+  <title>ChronoLock {{ Auth::user()->userType }} Dashboard</title>
+  @endif
 
   @include('head')
 
@@ -20,6 +22,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
   <!-- Custom JS -->
   <script src="js/toastr.js"></script>
+
+  <script src='{{asset('https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js')}}'></script>
 
 </head>
 

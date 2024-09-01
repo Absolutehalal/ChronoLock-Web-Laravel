@@ -13,6 +13,7 @@
 
     @include('head')
 </head>
+
 <body class="navbar-fixed sidebar-fixed" id="body">
     <script>
         NProgress.configure({
@@ -72,7 +73,7 @@
                     @forelse($schedules as $schedule)
                     <div class="col-lg-6 col-xl-4 col-xxl-3" style="width: 200%;">
                         <div class="card card-default shadow-md border-dark mt-7">
-                            <div class="card-body text-center" >
+                            <div class="card-body text-center">
                                 <button class="editClassSchedule mb-2" href="javascript:void(0)" data-target="#join-class-schedule-modal" value="{{$schedule->classID}}">
                                     <div class="image mb-3 d-inline-flex mt-n8">
                                         <img src="{{$schedule->avatar ?? asset('images/User Icon.png') }}" width="100" height="100" class="img-fluid rounded-circle d-inline-block" alt="Avatar Image">
@@ -121,8 +122,8 @@
                                     </ul>
                                     @php
                                     $classID=$schedule->classID;
-                                    $link= mysqli_connect("localhost","root","");
-                                    mysqli_select_db($link, "chronolock");
+                                    $link= mysqli_connect("sql12.freesqldatabase.com","sql12728459","5bPPipjGJy");
+                                    mysqli_select_db($link, "sql12728459");
                                     $query = "SELECT * FROM student_masterlists WHERE userID ='$userID' AND classID ='$classID'";
                                     $result = mysqli_query($link,$query);
                                     @endphp
@@ -159,7 +160,7 @@
                                         <div class="profile-content-left px-4">
                                             <div class="card text-center px-0 border-0">
                                                 <div class="card-img mx-auto">
-                                                    <img class="rounded-circle" id="instructorAvatar" alt="Instructor Profile">
+                                                    <img class="rounded-circle" id="instructorAvatar" alt="Instructor Profile" width="150" height="150" >
                                                 </div>
                                                 <div class="card-body">
                                                     <h4> <input type="text" class="input form-control" id="instFirstNameAndLastName" name="instFirstNameAndLastName" disable> </h4>
@@ -215,6 +216,7 @@
                 $('#clearJoinClass')[0].reset();
                 clearJoinClassErrors();
             });
+
             function clearJoinClassErrors() {
                 $('#enrollmentKeyError').empty();
             }

@@ -37,6 +37,7 @@ class Admin
                 'updateRegularSchedule',
                 'deleteRegularSchedule',
                 'deleteMakeUpSchedule',
+                'appointedSchedules',
                 'schedule.import',
                 'exportPDF',
                 'previewPDF',

@@ -154,6 +154,13 @@
             </a>
           </li>
 
+          <li>
+            <a class="sidenav-item-link" href="{{ route('appointedSchedules') }}">
+              <i class="mdi mdi-calendar-today "></i>
+              <span class="nav-text" data-toggle="tooltip" title="Appointed Schedule">Appointed Schedule</span>
+            </a>
+          </li>
+
           <li class="section-title">Others</li>
 
           <li>

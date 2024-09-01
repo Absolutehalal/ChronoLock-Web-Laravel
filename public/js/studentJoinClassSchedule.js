@@ -68,8 +68,9 @@ $(document).ready(function () {
                         $("#startTimeAndEndTime").val(
                             startTime + "-" + endTime
                         );
-                        document.getElementById("instructorAvatar").src =
-                            response.classList.avatar;
+
+                        document.getElementById("instructorAvatar").src = response.classList.avatar ? response.classList.avatar : "/images/User Icon.png";
+
                     }
                 },
             });
