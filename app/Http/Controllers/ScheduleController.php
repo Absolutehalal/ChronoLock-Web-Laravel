@@ -324,6 +324,13 @@ class ScheduleController extends Controller
         }
 
         $data['schedules'] = $query->select('schedules.*', 'users.*')->get();
+        foreach ($data['schedules']  as $schedules) {
+            // Format the date field
+            $schedules->formatted_startDate = Carbon::parse($schedules->startDate)->format('F j, Y');
+            $schedules->formatted_endDate = Carbon::parse($schedules->endDate)->format('F j, Y');
+            $schedules->formatted_startTime = Carbon::parse($schedules->startTime)->format('g:i A');
+            $schedules->formatted_endTime = Carbon::parse($schedules->endTime)->format('g:i A');
+    }
 
         return view('faculty.instructor-class-schedules', $data, ['classes' => $classes]);
     }

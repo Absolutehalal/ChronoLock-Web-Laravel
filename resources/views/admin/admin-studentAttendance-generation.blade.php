@@ -168,15 +168,23 @@
         <div class="card card-default shadow">
           <div class="card-header">
             <h1>Student Attendance Report</h1>
-
-            <div class="d-inline-block mb-3 ms-2">
-              <form action="{{ url('/student-attendance-export') }}" method="GET">
-                <!-- <input type="text" class="form-control border border-primary" id="exportDate" name="selectedDate" value="{{ Request()->date }}"> -->
-                <button class="btn btn-info btn-sm fw-bold" id="exportButton" type="submit">
-                  <i class="mdi mdi-file-download"></i>
-                  Excel
+            <div class="col-xl-12 col-md-12 d-flex justify-content-end">
+              <div class="dropdown d-inline-block mb-3">
+                <button title="Preview" class="btn btn-outline-dark btn-sm fw-bold" onclick='window.location = "{{ route("previewStudentAttendancePDF", ["selected_remarks" => $selected_remarks, "selected_courses" => $selected_courses, "selected_years" => $selected_years, "selectedMonth" => $selectedMonth]) }}"' type="button">
+                  <i class="mdi mdi-feature-search"></i>
+                    PDF
                 </button>
-              </form>
+              </div>
+              
+              <div class="d-inline-block mb-3 ms-2">
+                <form action="{{ url('/student-attendance-export') }}" method="GET">
+                  <!-- <input type="text" class="form-control border border-primary" id="exportDate" name="selectedDate" value="{{ Request()->date }}"> -->
+                  <button class="btn btn-info btn-sm fw-bold" id="exportButton" type="submit">
+                    <i class="mdi mdi-file-download"></i>
+                    Excel
+                  </button>
+                </form>
+              </div>
             </div>
           </div>
 

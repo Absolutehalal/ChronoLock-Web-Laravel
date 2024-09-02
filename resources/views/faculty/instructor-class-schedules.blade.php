@@ -97,30 +97,41 @@
                   <button href="javascript:0" class="editERPSchedule media text-secondary" data-toggle="modal" data-target="#scheduleModal" data-avatar="{{ $schedule->avatar ?? asset('images/scheduleIcon.png') }}" data-inst-first-name="{{ $schedule->instFirstName }}" data-inst-last-name="{{ $schedule->instLastName }}" data-course-name="{{ $schedule->courseName }}" data-course-code="{{ $schedule->courseCode }}" data-program="{{ $schedule->program }}" data-year="{{ $schedule->year }}" data-section="{{ $schedule->section }}" data-schedule-id="{{ $schedule->scheduleID }}">
                     <img src="{{ $schedule->avatar ?? asset('images/scheduleIcon.png') }}" class="mr-3 mt-4 img-fluid rounded schedule" alt="Avatar Image">
                     <div class="media-body">
-                      <h3 class="mt-0 mb-2 text-dark d-flex fw-bold">Instructor: {{ $schedule->instFirstName }} {{ $schedule->instLastName }}</h3>
+                      <h3 class="mt-0 mb-2 text-dark d-flex fw-bold">{{ $schedule->courseCode }} - {{ $schedule->courseName }}</h3>
                       <ul class="list-unstyled text-smoke">
-                        <li class="d-flex">
-                          <i class="mdi mdi-map mr-1"></i>
-                          <label class="mr-1">Course Name:</label>
-                          <span class="text-dark">{{ $schedule->courseName }}</span>
-                        </li>
-                        <li class="d-flex">
-                          <i class="mdi mdi-map mr-1"></i>
-                          <label class="mr-1">Course Code:</label>
-                          <span class="text-dark">{{ $schedule->courseCode }}</span>
-                        </li>
-                        <li class="d-flex">
-                          <i class="mdi mdi-group mr-1"></i>
-                          <label class="mr-1">Program:</label>
-                          <span class="text-dark">{{ $schedule->program }}</span>
-                        </li>
-                        <li class="d-flex">
-                          <i class="mdi mdi-alpha-s-box mr-1"></i>
-                          <label class="mr-1">Year & Section:</label>
-                          <span class="text-dark">{{ $schedule->year }}-{{ $schedule->section }}</span>
-                        </li>
-                      </ul>
-                    </div>
+              
+                            <li class="d-flex">
+                              <i class="mdi mdi-calendar-check mr-1"></i>
+                              <label class="mr-1">Time:</label>
+                              <span class="text-dark">{{ $schedule->formatted_startDate }} - {{ $schedule->formatted_endDate }}</span>
+                            </li>
+                            <li class="d-flex">
+                              <i class="mdi mdi-clock mr-1"></i>
+                              <label class="mr-1">Time:</label>
+                              <span class="text-dark">{{ $schedule->formatted_startTime }} - {{ $schedule->formatted_endTime }}</span>
+                            </li>
+                            <!-- <li class="d-flex">
+                              <i class="mdi mdi-map mr-1"></i>
+                              <label class="mr-1">Course Name:</label>
+                              <span class="text-dark">{{ $schedule->courseName }}</span>
+                            </li> -->
+                            <!-- <li class="d-flex">
+                              <i class="mdi mdi-map mr-1"></i>
+                              <label class="mr-1">Course Code:</label>
+                              <span class="text-dark">{{ $schedule->courseCode }}</span>
+                            </li> -->
+                            <li class="d-flex">
+                              <i class="mdi mdi-group mr-1"></i>
+                              <label class="mr-1">Program:</label>
+                              <span class="text-dark">{{ $schedule->program }}</span>
+                            </li>
+                            <li class="d-flex">
+                              <i class="mdi mdi-alpha-s-box mr-1"></i>
+                              <label class="mr-1">Year & Section:</label>
+                              <span class="text-dark">{{ $schedule->year }}-{{ $schedule->section }}</span>
+                            </li>
+                        </ul>
+                      
                   </button>
                 </div>
               </div>

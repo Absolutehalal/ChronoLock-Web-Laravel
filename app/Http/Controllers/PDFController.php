@@ -69,6 +69,7 @@ class PDFController extends Controller
             ->join('users', 'schedules.userID', '=', 'users.idNumber')
             ->select('schedules.*', 'users.firstName', 'users.lastName')
             ->where('scheduleType', '=', 'regularSchedule')
+            ->orderby('startTime','ASC')
             ->get();
 
         // Days mapping
@@ -129,4 +130,128 @@ class PDFController extends Controller
             return redirect()->back();
         }
     }
+
+
+
+
+    public function previewStudentAttendancePDF(Request $request)
+    {
+        $year = $request->input('selected_year');
+        $program = $request->input('selected_courses');
+        $remarks = $request->input('selected_remarks');
+        $month = $request->input('selectedMonth');
+
+        $students = DB::table('attendances')
+            ->join('users', 'attendances.userID', '=', 'users.idNumber')
+            ->join('class_lists', 'class_lists.classID', '=', 'attendances.classID')
+            ->join('schedules', 'schedules.scheduleID', '=', 'class_lists.scheduleID')
+            ->where('userType', '=', 'Student');
+        try {
+            if ($year) {
+                $students->where('year', '=', $year);
+            }
+            if ($program) {
+                $students->where('program', '=', $program);
+            }
+            if ($remarks) {
+                $students->where('remark', '=', $remarks);
+            }
+            if ($month) {
+                $date = \Carbon\Carbon::createFromFormat('F Y', $month);
+                $students->whereYear('attendances.date', $date->year)
+                    ->whereMonth('attendances.date', $date->month);
+            }
+           
+            $studentAttendances = $students->orderby('lastName','ASC')->get();
+
+            foreach ($studentAttendances as $students) {
+                $students->formatted_date = Carbon::parse($students->date)->format('F j, Y');
+                $students->formatted_time = Carbon::parse($students->time)->format('g:i A');
+               
+            }
+
+            //   $options = new Options();
+            //   $options->set('isHtml5ParserEnabled', true);
+            //   $options->set('isPhpEnabled', false); 
+            $dompdf = new Dompdf();
+
+
+            $imageCSPC = base64_encode(file_get_contents(public_path('images/CSPC.png')));
+            $imageCCS = base64_encode(file_get_contents(public_path('images/CCS.png')));
+            $CHRONOLOCK = base64_encode(file_get_contents(public_path('images/chronolock-small.png')));
+
+            // Load HTML content from a Blade view
+            $studentAttendancePDF = view('admin.admin-generateStudentAttendance-pdf', compact('studentAttendances', 'imageCSPC', 'imageCCS', 'CHRONOLOCK'))->render();
+            $dompdf->loadHtml($studentAttendancePDF);
+
+            // Set paper size and orientation
+            $dompdf->setPaper('A4', 'landscape');
+
+            // Render and stream the PDF
+            $dompdf->render();
+            return $dompdf->stream('student-attendances.pdf', ['Attachment' => 0]);
+        } catch (\Exception $e) {
+            echo $e;
+        }
+    }
+
+
+
+    public function previewFacultyAttendancePDF(Request $request)
+    {
+        $facultyID = $request->input('selected_id');
+        $remarks = $request->input('selected_remarks');
+        $month = $request->input('selectedMonth');
+
+        $faculty = DB::table('attendances')
+            ->join('users', 'attendances.userID', '=', 'users.idNumber')
+            ->join('class_lists', 'class_lists.classID', '=', 'attendances.classID')
+            ->join('schedules', 'schedules.scheduleID', '=', 'class_lists.scheduleID')
+            ->where('userType', '=', 'Faculty');
+        try {
+            if ($facultyID) {
+                $faculty->where('idNumber', '=', $facultyID);
+            }
+            if ($remarks) {
+                $faculty->where('remark', '=', $remarks);
+            }
+            if ($month) {
+                $date = \Carbon\Carbon::createFromFormat('F Y', $month);
+                $faculty->whereYear('attendances.date', $date->year)
+                    ->whereMonth('attendances.date', $date->month);
+            }
+           
+            $facultyAttendances = $faculty->orderby('lastName','ASC')->get();
+
+            foreach ($facultyAttendances as $faculty) {
+                $faculty->formatted_date = Carbon::parse($faculty->date)->format('F j, Y');
+                $faculty->formatted_time = Carbon::parse($faculty->time)->format('g:i A');
+               
+            }
+
+            //   $options = new Options();
+            //   $options->set('isHtml5ParserEnabled', true);
+            //   $options->set('isPhpEnabled', false); 
+            $dompdf = new Dompdf();
+
+
+            $imageCSPC = base64_encode(file_get_contents(public_path('images/CSPC.png')));
+            $imageCCS = base64_encode(file_get_contents(public_path('images/CCS.png')));
+            $CHRONOLOCK = base64_encode(file_get_contents(public_path('images/chronolock-small.png')));
+
+            // Load HTML content from a Blade view
+            $facultyAttendancePDF = view('admin.admin-generateFacultyAttendance-pdf', compact('facultyAttendances', 'imageCSPC', 'imageCCS', 'CHRONOLOCK'))->render();
+            $dompdf->loadHtml($facultyAttendancePDF);
+
+            // Set paper size and orientation
+            $dompdf->setPaper('A4', 'landscape');
+
+            // Render and stream the PDF
+            $dompdf->render();
+            return $dompdf->stream('faculty-attendances.pdf', ['Attachment' => 0]);
+        } catch (\Exception $e) {
+            echo $e;
+        }
+    }
+    
 }

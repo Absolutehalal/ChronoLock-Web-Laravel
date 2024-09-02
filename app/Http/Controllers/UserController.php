@@ -812,8 +812,8 @@ class UserController extends Controller
                 $courseName = DB::table('schedules')->where('scheduleID', $updatedID)->value('courseName');
                 $startDate = DB::table('schedules')->where('scheduleID', $updatedID)->value('startDate');
                 $endDate = DB::table('schedules')->where('scheduleID', $updatedID)->value('endDate');
-                $startTime = DB::table('schedules')->where('scheduleID', $updatedID)->value('startTime');
-                $endTime = DB::table('schedules')->where('scheduleID', $updatedID)->value('endTime');
+                $startTime = $request->input('startTime');
+                $endTime = $request->input('endTime');
                 $day = DB::table('schedules')->where('scheduleID', $updatedID)->value('day');
                 $checkStartTime = DB::table('schedules')
                     ->whereRaw('? BETWEEN startTime AND endTime', [$startTime])

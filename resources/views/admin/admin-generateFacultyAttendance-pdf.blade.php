@@ -16,11 +16,15 @@
         th {
             background-color: #f2f2f2;
         }
-        .empty {
-            color: red;
+        .absent {
+            background-color: red;
             /* Color for the text "EMPTY" */
         }
-        .with-schedule {
+        .late {
+            background-color: yellow;
+            /* Color for the text "EMPTY" */
+        }
+        .present {
             background-color: #b0fc38;
         }
         .CSPCLogo {
@@ -54,7 +58,7 @@
 </head>
 
 <body>
-    <h1 class="header">ERP Laboratory Schedules</h1>
+    <h1 class="header">Faculty Attendance Report</h1>
     <div class="CSPCLogo">
         <img src="data:image/png;base64,{{ $imageCSPC }}" alt="CSPCLogo">
 
@@ -66,35 +70,47 @@
     <br>
 
     <hr>
-
     <table style="margin-top: 4%;">
         <thead>
             <tr>
                 
-                @foreach(['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'] as $day)
-                <th>{{ $day }}</th>
-                @endforeach
+                
+                <th>NO</th>
+                <th>Name</th>
+                <th>User ID</th>
+                <th>Course Code</th>
+                <th>Course Name</th>
+                <th>Program & Section</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Remark</th>
+                
+                
+              
             </tr>
         </thead>
         <tbody>
-            @foreach($formattedSchedules as $instructor => $days)
+        @foreach($facultyAttendances as $faculty)
+            @csrf
             <tr>
-                
-                @foreach(['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'] as $day)
-                <td class="{{ isset($days[$day]) ? 'with-schedule' : '' }}" style="font-size: 15px;">
-                    @if(isset($days[$day]))
-                    @foreach($days[$day] as $schedule)
-                    <div>{{ $instructor }}</div>
-                    <div>{{ $schedule['time'] }}</div>
-                    <div>{{ $schedule['course'] }}</div>
-                    <div>{{ $schedule['programYearSection'] }}</div>
-                    <br>
-                    @endforeach
+                <td>{{ $loop->iteration }}</td>
+                <td>{{ $faculty->firstName }} {{ $faculty->lastName }}</td>
+                <td>{{ $faculty->idNumber }}</td>
+                <td>{{ $faculty->courseCode }}</td>
+                <td>{{ $faculty->courseName }}</td>
+                <td>{{ $faculty->program }} - {{ $faculty->year }}{{ $faculty->section }}</td>
+                <td>{{ $faculty->formatted_date }}</td>
+                <td>{{ $faculty->formatted_time }}</td>
+                    @if($faculty->remark == 'Present')
+                    <td class="{{ 'present' }}" style="font-size: 15px;">Present</td>
+                    @elseif($faculty->remark == 'Absent')
+                    <td class="{{ 'absent' }}" style="font-size: 15px;">Absent</td>
+                    @elseif($faculty->remark == 'Late')
+                    <td class="{{ 'late' }}" style="font-size: 15px;">Late</td>
                     @endif
                 </td>
-                @endforeach
             </tr>
-            @endforeach
+        @endforeach
         </tbody>
     </table>
 

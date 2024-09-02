@@ -117,6 +117,7 @@ Route::group(['middleware' => ['auth', 'admin:Admin']], function () {
     Route::delete('/deleteStudentAttendance/{id}', [AttendanceController::class, 'deleteStudentAttendance'])->name('deleteStudentAttendance');
     Route::get('/student-attendance-generation', [AttendanceController::class, 'studentAttendanceGeneration'])->name('studentAttendanceGeneration');
     Route::get('/student-attendance-export', [AttendanceController::class, 'studentAttendanceExport'])->name('studentAttendanceExport');
+    Route::get('/preview-pdf-Student-Attendance', [PDFController::class, 'previewStudentAttendancePDF'])->name('previewStudentAttendancePDF');
 
     //--------END Admin student attendance Management ROUTES-----------
 
@@ -128,6 +129,7 @@ Route::group(['middleware' => ['auth', 'admin:Admin']], function () {
     Route::delete('/deleteInstructorAttendance/{id}', [AttendanceController::class, 'deleteInstructorAttendance'])->name('deleteAttendance');
     Route::get('/instructor-attendance-generation', [AttendanceController::class, 'instructorAttendanceGeneration'])->name('instructorAttendanceGeneration');
     Route::get('/instructor-attendance-export', [AttendanceController::class, 'instructorAttendanceExport'])->name('instructorAttendanceExport');
+    Route::get('/preview-pdf-Faculty-Attendance', [PDFController::class, 'previewFacultyAttendancePDF'])->name('previewFacultyAttendancePDF');
 
 
     //--------END Admin instructor attendance Management ROUTES-----------
