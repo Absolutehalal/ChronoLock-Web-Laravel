@@ -212,6 +212,29 @@ class ScheduleController extends Controller
         }
     }
 
+    public function status($id){
+        try {
+            $classRecord = ClassList::where('schedules.scheduleID', $id)
+            ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
+            ->first();
+            if ($classRecord) {
+                return response()->json([
+                    'status' => 200,
+                    'classRecord' => $classRecord
+                ]);
+            } else {
+                return response()->json([
+                    'status' => 404,
+                ]);
+            }
+
+        }catch (\Exception $e) {
+            Alert::error('Error', 'Something went wrong. Please try again later.')
+                ->autoClose(5000)
+                ->showCloseButton();
+            return redirect()->back();
+        }
+    }
     public function noClassClassList($id)
     {
         try {
@@ -315,7 +338,7 @@ class ScheduleController extends Controller
 
         $query = DB::table('schedules')
             ->join('users', 'schedules.userID', '=', 'users.idNumber')
-            ->where('schedules.scheduleStatus', '=', 'unscheduled')
+            // ->where('schedules.scheduleStatus', '=', 'unscheduled')
             ->where('schedules.userID', '=', $userID)
             ->orderBy('schedules.scheduleID', 'desc');
 
@@ -332,7 +355,7 @@ class ScheduleController extends Controller
             $schedules->formatted_endTime = Carbon::parse($schedules->endTime)->format('g:i A');
     }
 
-        return view('faculty.instructor-class-schedules', $data, ['classes' => $classes]);
+        return view('faculty.instructor-class-schedules', $data, ['classes' => $classes, 'userID' => $userID]);
     }
 
 
@@ -441,6 +464,7 @@ class ScheduleController extends Controller
         $ERPSchedules = array();
         $schedule =DB::table('class_lists')
             ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
+            ->where('scheduleStatus','=','With Class')
             ->get();
        
 

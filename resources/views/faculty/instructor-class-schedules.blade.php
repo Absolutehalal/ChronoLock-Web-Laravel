@@ -57,7 +57,7 @@
         <div class="card card-default shadow">
           <div class="card-header align-items-center px-3 px-md-5">
             <h1>My Schedule</h1>
-            <form method="GET" action="{{ url('/instructorClassSchedules') }}">
+            <!-- <form method="GET" action="{{ url('/instructorClassSchedules') }}">
               <div class="dropdown d-inline-block mb-3">
                 <button class="btn btn-primary btn-sm dropdown-toggle fw-bold" type="button" id="nameDropdown" data-toggle="dropdown" aria-expanded="false">
                   <i class="mdi mdi-alpha-s-box"></i>
@@ -85,16 +85,17 @@
                   RESET
                 </button>
               </div>
-            </form>
+            </form> -->
+          </div>
           </div>
 
-          <d<div class="card-body px-3 px-md-5">
+          <div class="card-body px-3 px-md-5">
             <div class="row">
               @forelse($schedules as $schedule)
               @csrf
               <div class="col-lg-6 col-xl-6">
                 <div class="card card-default border-dark p-4">
-                  <button href="javascript:0" class="editERPSchedule media text-secondary" data-toggle="modal" data-target="#scheduleModal" data-avatar="{{ $schedule->avatar ?? asset('images/scheduleIcon.png') }}" data-inst-first-name="{{ $schedule->instFirstName }}" data-inst-last-name="{{ $schedule->instLastName }}" data-course-name="{{ $schedule->courseName }}" data-course-code="{{ $schedule->courseCode }}" data-program="{{ $schedule->program }}" data-year="{{ $schedule->year }}" data-section="{{ $schedule->section }}" data-schedule-id="{{ $schedule->scheduleID }}">
+                  <button href="javascript:0" class="editERPSchedule media text-secondary" data-target="#scheduleModal" data-avatar="{{ $schedule->avatar ?? asset('images/scheduleIcon.png') }}" data-inst-first-name="{{ $schedule->instFirstName }}" data-inst-last-name="{{ $schedule->instLastName }}" data-course-name="{{ $schedule->courseName }}" data-course-code="{{ $schedule->courseCode }}" data-program="{{ $schedule->program }}" data-year="{{ $schedule->year }}" data-section="{{ $schedule->section }}" data-schedule-id="{{ $schedule->scheduleID }}" value="{{ $schedule->scheduleID }}">
                     <img src="{{ $schedule->avatar ?? asset('images/scheduleIcon.png') }}" class="mr-3 mt-4 img-fluid rounded schedule" alt="Avatar Image">
                     <div class="media-body">
                       <h3 class="mt-0 mb-2 text-dark d-flex fw-bold">{{ $schedule->courseCode }} - {{ $schedule->courseName }}</h3>
@@ -131,7 +132,26 @@
                               <span class="text-dark">{{ $schedule->year }}-{{ $schedule->section }}</span>
                             </li>
                         </ul>
-                      
+                        @php
+                                        $schedules = $schedule->scheduleID;
+                                        $withClassFacultySchedules = DB::table('schedules')
+                                                            ->where('userID', $userID)
+                                                            ->where('scheduleID', $schedules)
+                                                            ->where('scheduleStatus', 'With Class')
+                                                            ->first();
+                                        $withoutClassFacultySchedules = DB::table('schedules')
+                                                            ->where('userID', $userID)
+                                                            ->where('scheduleID', $schedules)
+                                                            ->where('scheduleStatus', 'Without Class')
+                                                            ->first();
+                        @endphp
+                                    @if ($withClassFacultySchedules)
+                                      <div class="overlay" style="color: #31ce3c">Scheduled</div>
+                                    @elseif ($withoutClassFacultySchedules)
+                                      <div class="overlay" style="color: #FF7F7F">Without Class</div>
+                                    @else
+                                        <div class="overlay" style="color: #FFFF00">Unscheduled</div>
+                                    @endif
                   </button>
                 </div>
               </div>
@@ -154,7 +174,7 @@
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header justify-content-end border-bottom-0">
-          <button type="button" class="btn-close-icon" data-dismiss="modal" aria-label="Close">
+          <button type="button" class="btn-close-icon" onclick="$('#scheduleModal').modal('hide');" aria-label="Close">
             <i class="mdi mdi-close"></i>
           </button>
         </div>
@@ -230,7 +250,7 @@
                   <input type="text" class="form-control border border-dark" placeholder="Enter Enrollment Key" id="enrollmentKey" name="enrollmentKey">
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-danger btn-pill" id="close" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-danger btn-pill" id="close" onclick="$('#scheduleModal').modal('hide');">Close</button>
                   <button type="submit" class="btn btn-primary btn-pill createClassList">Create</button>
                 </div>
                 </form>

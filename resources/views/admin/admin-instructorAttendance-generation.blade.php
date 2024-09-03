@@ -143,7 +143,7 @@
         <div class="card card-default shadow">
           <div class="card-header">
             <h1>Instructor Attendance Report</h1>
-            <div class="col-xl-12 col-md-12 d-flex justify-content-end">
+            <div class="justify-content-end">
               <div class="dropdown d-inline-block mb-3">
                 <button title="Preview" class="btn btn-outline-dark btn-sm fw-bold" onclick='window.location = "{{ route("previewFacultyAttendancePDF", ["selected_id" => $selected_id, "selected_remarks" => $selected_remarks, "selectedMonth" => $selectedMonth]) }}"' type="button">
                   <i class="mdi mdi-feature-search"></i>

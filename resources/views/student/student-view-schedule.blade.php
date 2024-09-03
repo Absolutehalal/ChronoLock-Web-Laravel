@@ -71,7 +71,7 @@
 
                 <div class="row">
                     @forelse($schedules as $schedule)
-                    <div class="col-lg-6 col-xl-4 col-xxl-3" style="width: 200%;">
+                    <div class="col-lg-6 col-xl-4 col-xxl-4" style="width: 200%;">
                         <div class="card card-default shadow-md border-dark mt-7">
                             <div class="card-body text-center">
                                 <button class="editClassSchedule mb-2" href="javascript:void(0)" data-target="#join-class-schedule-modal" value="{{$schedule->classID}}">
@@ -98,7 +98,7 @@
                                         <li class="d-flex">
                                             <i class="mdi mdi-calendar-clock mr-1"></i>
                                             <label class="mr-1">Schedule:</label>
-                                            <span>{{ date('h:i A', strtotime($schedule->startTime)) }}-{{ date('h:i A', strtotime($schedule->endTime)) }}</span>
+                                            <span>{{date('h:i A', strtotime($schedule->startTime))}}-{{ date('h:i A', strtotime($schedule->endTime)) }}</span>
                                         </li>
                                         @php
                                         // Mapping of day numbers
@@ -121,16 +121,16 @@
                                         </li>
                                     </ul>
                                     @php
-                                    $classID=$schedule->classID;
-                                    $link= mysqli_connect("localhost","root","");
-                                    mysqli_select_db($link, "chronolock");
-                                    $query = "SELECT * FROM student_masterlists WHERE userID ='$userID' AND classID ='$classID'";
-                                    $result = mysqli_query($link,$query);
+                                        $classID = $schedule->classID;
+                                        $userEnrollment = DB::table('student_masterlists')
+                                                            ->where('userID', $userID)
+                                                            ->where('classID', $classID)
+                                                            ->first();
                                     @endphp
-                                    @if (mysqli_num_rows($result) === 1 )
-                                    <div class="overlay" style="color: #31ce3c">Enrolled</div>
+                                    @if ($userEnrollment)
+                                        <div class="overlay" style="color: #31ce3c">Enrolled</div>
                                     @else
-                                    <div class="overlay" style="color: #FF7F7F">Get Access</div>
+                                        <div class="overlay" style="color: #FF7F7F">Get Access</div>
                                     @endif
                                 </button>
                             </div>

@@ -174,6 +174,7 @@ Route::group(['middleware' => ['auth', 'faculty:Faculty']], function () {
 
     //--------START instructor edit create classlist  ROUTES---------
     Route::post('/instructorClassSchedules', [ScheduleController::class, 'addClassList'])->name('addClassList');
+    Route::get('/status/{id}', [ScheduleController::class, 'status'])->name('status');
     Route::get('/editInstructorClassList/{id}', [ScheduleController::class, 'editInstructorClass'])->name('editInstructorClass');
     Route::get('/instructorClassSchedules', [ScheduleController::class, 'classSchedules'])->name('classSchedules');
     //--------End instructor edit create classlist  ROUTES---------

@@ -1,11 +1,50 @@
 $(document).ready(function() {
 
-    $(document).on('mouseover', '.editERPSchedule', function(e) {
+    $(document).on('pointerup', '.editERPSchedule', function(e) {
         e.preventDefault();
         var id = $(this).val();
-        console.log(id);
+        let classState = $(this).find(".overlay").text();
+        console.log(classState);
+        if (classState == "Without Class" || classState == "Scheduled") {
+        $.ajax({
+          type: "GET",
+          url: "/status/"+id,
+          success: function(response) {
+            if (response.status == 404) {
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "No Class Record Found!!!",
+                timer: 5000,
+                timerProgressBar: true
+              });
+            }else{
+              console.log(response)
+              let ID = response.classRecord.classID;
+              console.log(ID)
+              var hideID = btoa(ID);
+              console.log(hideID)
+              Swal.fire({
+                title: "Redirecting...",
+                html: "Please wait...",
+                allowEscapeKey: false,
+                allowOutsideClick: false,
+                timer: 2000,
+                didOpen: () => {
+                    Swal.showLoading();
+                },
+            });
+            window.location.href = "/instructorClassAttendanceAndList/" + hideID;
+            }
+          }
+        })
+
+        }else{
+        // console.log(id);
         // // alert(userID);
-   
+        target = $(".editERPSchedule").attr("data-target");
+        $(target).modal("show");
+
 
         $.ajax({
           type: "GET",
@@ -33,7 +72,7 @@ $(document).ready(function() {
             }
           }
         });
-
+      }
       });
 
 
