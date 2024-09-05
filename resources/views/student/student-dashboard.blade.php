@@ -149,8 +149,9 @@
                                         <div class="media media-sm mb-1">
                                             <div class="media-left d-flex align-items-center mt-1">
                                                 <span class="mr-2 fw-bold">{{ $counter }}.</span>
-                                                <img src="{{ $schedule->avatar }}" alt="Instructor Image" style="width: auto;" class="rounded">
+                                                <img src="{{ $schedule->avatar  ?? asset('images/User Icon.png') }}" alt="Instructor Image" width="90" height="90" class="rounded">
                                             </div>
+
                                             @php
                                             // Mapping of day numbers
                                             $dayMapping = [
@@ -165,6 +166,7 @@
                                             // Get the day name from the mapping
                                             $dayName = $dayMapping[$schedule->day];
                                             @endphp
+
                                             <div class="media-body ml-4">
                                                 <span class="title">Instructor: {{ $schedule->instFirstName }} {{ $schedule->instLastName }}</span>
                                                 <p class="text-dark">Course Name: {{ $schedule->courseName }} </p>

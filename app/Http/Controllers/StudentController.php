@@ -1,10 +1,13 @@
 <?php
+
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert;
 use Carbon\Carbon;
+
 class StudentController extends Controller
 {
     // -----------Start student functions-----------
@@ -94,14 +97,16 @@ class StudentController extends Controller
         $currentDate = date('F j, Y'); // Current date
 
         // Fetch schedules for today that belong to the authenticated user
-        $todaySchedules = DB::table('student_masterlists')
+        $todaySchedules =  DB::table('student_masterlists')
             ->join('class_lists', 'class_lists.classID', '=', 'student_masterlists.classID')
             ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
-            ->join('users', 'users.idNumber', '=', 'schedules.userID')
-            ->where('student_masterlists.userID', $userID)
-            ->where('schedules.day', $today)
+            ->join('users', 'users.idNumber', '=', 'student_masterlists.userID')
+            ->where('student_masterlists.userID', '=', $userID)
+            ->where('schedules.day', '=', $today)
             ->orderBy('schedules.startTime', 'asc')
             ->get();
+
+        // dd($today);
 
         // List of Enrolled Courses
         $listEnrolledCourse = DB::table('student_masterlists')

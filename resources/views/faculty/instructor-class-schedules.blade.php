@@ -55,8 +55,8 @@
         </div>
 
         <div class="card card-default shadow">
-          <div class="card-header align-items-center px-3 px-md-5">
-            <h1>My Schedule</h1>
+          <div class="card-header card-header-border-bottom">
+            <h1 class="mb-4">My Schedule</h1>
             <!-- <form method="GET" action="{{ url('/instructorClassSchedules') }}">
               <div class="dropdown d-inline-block mb-3">
                 <button class="btn btn-primary btn-sm dropdown-toggle fw-bold" type="button" id="nameDropdown" data-toggle="dropdown" aria-expanded="false">
@@ -87,80 +87,80 @@
               </div>
             </form> -->
           </div>
-          </div>
+        </div>
 
-          <div class="card-body px-3 px-md-5">
-            <div class="row">
-              @forelse($schedules as $schedule)
-              @csrf
-              <div class="col-lg-6 col-xl-6">
-                <div class="card card-default border-dark p-4">
-                  <button href="javascript:0" class="editERPSchedule media text-secondary" data-target="#scheduleModal" data-avatar="{{ $schedule->avatar ?? asset('images/scheduleIcon.png') }}" data-inst-first-name="{{ $schedule->instFirstName }}" data-inst-last-name="{{ $schedule->instLastName }}" data-course-name="{{ $schedule->courseName }}" data-course-code="{{ $schedule->courseCode }}" data-program="{{ $schedule->program }}" data-year="{{ $schedule->year }}" data-section="{{ $schedule->section }}" data-schedule-id="{{ $schedule->scheduleID }}" value="{{ $schedule->scheduleID }}">
-                    <img src="{{ $schedule->avatar ?? asset('images/scheduleIcon.png') }}" class="mr-3 mt-4 img-fluid rounded schedule" alt="Avatar Image">
-                    <div class="media-body">
-                      <h3 class="mt-0 mb-2 text-dark d-flex fw-bold">{{ $schedule->courseCode }} - {{ $schedule->courseName }}</h3>
-                      <ul class="list-unstyled text-smoke">
-              
-                            <li class="d-flex">
-                              <i class="mdi mdi-calendar-check mr-1"></i>
-                              <label class="mr-1">Time:</label>
-                              <span class="text-dark">{{ $schedule->formatted_startDate }} - {{ $schedule->formatted_endDate }}</span>
-                            </li>
-                            <li class="d-flex">
-                              <i class="mdi mdi-clock mr-1"></i>
-                              <label class="mr-1">Time:</label>
-                              <span class="text-dark">{{ $schedule->formatted_startTime }} - {{ $schedule->formatted_endTime }}</span>
-                            </li>
-                            <!-- <li class="d-flex">
+        <div class="card-body px-3 px-md-5">
+          <div class="row">
+            @forelse($schedules as $schedule)
+            @csrf
+            <div class="col-lg-6 col-xl-6">
+              <div class="card card-default border-dark p-4">
+                <button href="javascript:0" class="editERPSchedule media text-secondary" data-target="#scheduleModal" data-avatar="{{ $schedule->avatar ?? asset('images/scheduleIcon.png') }}" data-inst-first-name="{{ $schedule->instFirstName }}" data-inst-last-name="{{ $schedule->instLastName }}" data-course-name="{{ $schedule->courseName }}" data-course-code="{{ $schedule->courseCode }}" data-program="{{ $schedule->program }}" data-year="{{ $schedule->year }}" data-section="{{ $schedule->section }}" data-schedule-id="{{ $schedule->scheduleID }}" value="{{ $schedule->scheduleID }}">
+                  <img src="{{ $schedule->avatar ?? asset('images/scheduleIcon.png') }}" class="mr-3 mt-4 img-fluid rounded schedule" alt="Avatar Image">
+                  <div class="media-body">
+                    <h3 class="mt-0 mb-2 text-dark d-flex fw-bold">{{ $schedule->courseCode }} - {{ $schedule->courseName }}</h3>
+                    <ul class="list-unstyled text-smoke">
+
+                      <li class="d-flex">
+                        <i class="mdi mdi-calendar-check mr-1"></i>
+                        <label class="mr-1">Time:</label>
+                        <span class="text-dark">{{ $schedule->formatted_startDate }} - {{ $schedule->formatted_endDate }}</span>
+                      </li>
+                      <li class="d-flex">
+                        <i class="mdi mdi-clock mr-1"></i>
+                        <label class="mr-1">Time:</label>
+                        <span class="text-dark">{{ $schedule->formatted_startTime }} - {{ $schedule->formatted_endTime }}</span>
+                      </li>
+                      <!-- <li class="d-flex">
                               <i class="mdi mdi-map mr-1"></i>
                               <label class="mr-1">Course Name:</label>
                               <span class="text-dark">{{ $schedule->courseName }}</span>
                             </li> -->
-                            <!-- <li class="d-flex">
+                      <!-- <li class="d-flex">
                               <i class="mdi mdi-map mr-1"></i>
                               <label class="mr-1">Course Code:</label>
                               <span class="text-dark">{{ $schedule->courseCode }}</span>
                             </li> -->
-                            <li class="d-flex">
-                              <i class="mdi mdi-group mr-1"></i>
-                              <label class="mr-1">Program:</label>
-                              <span class="text-dark">{{ $schedule->program }}</span>
-                            </li>
-                            <li class="d-flex">
-                              <i class="mdi mdi-alpha-s-box mr-1"></i>
-                              <label class="mr-1">Year & Section:</label>
-                              <span class="text-dark">{{ $schedule->year }}-{{ $schedule->section }}</span>
-                            </li>
-                        </ul>
-                        @php
-                                        $schedules = $schedule->scheduleID;
-                                        $withClassFacultySchedules = DB::table('schedules')
-                                                            ->where('userID', $userID)
-                                                            ->where('scheduleID', $schedules)
-                                                            ->where('scheduleStatus', 'With Class')
-                                                            ->first();
-                                        $withoutClassFacultySchedules = DB::table('schedules')
-                                                            ->where('userID', $userID)
-                                                            ->where('scheduleID', $schedules)
-                                                            ->where('scheduleStatus', 'Without Class')
-                                                            ->first();
-                        @endphp
-                                    @if ($withClassFacultySchedules)
-                                      <div class="overlay" style="color: #31ce3c">Scheduled</div>
-                                    @elseif ($withoutClassFacultySchedules)
-                                      <div class="overlay" style="color: #FF7F7F">Without Class</div>
-                                    @else
-                                        <div class="overlay" style="color: #FFFF00">Unscheduled</div>
-                                    @endif
-                  </button>
-                </div>
+                      <li class="d-flex">
+                        <i class="mdi mdi-group mr-1"></i>
+                        <label class="mr-1">Program:</label>
+                        <span class="text-dark">{{ $schedule->program }}</span>
+                      </li>
+                      <li class="d-flex">
+                        <i class="mdi mdi-alpha-s-box mr-1"></i>
+                        <label class="mr-1">Year & Section:</label>
+                        <span class="text-dark">{{ $schedule->year }}-{{ $schedule->section }}</span>
+                      </li>
+                    </ul>
+                    @php
+                    $schedules = $schedule->scheduleID;
+                    $withClassFacultySchedules = DB::table('schedules')
+                    ->where('userID', $userID)
+                    ->where('scheduleID', $schedules)
+                    ->where('scheduleStatus', 'With Class')
+                    ->first();
+                    $withoutClassFacultySchedules = DB::table('schedules')
+                    ->where('userID', $userID)
+                    ->where('scheduleID', $schedules)
+                    ->where('scheduleStatus', 'Without Class')
+                    ->first();
+                    @endphp
+                    @if ($withClassFacultySchedules)
+                    <div class="overlay" style="color: #31ce3c">Scheduled</div>
+                    @elseif ($withoutClassFacultySchedules)
+                    <div class="overlay" style="color: #FF7F7F">Without Class</div>
+                    @else
+                    <div class="overlay" style="color: #FFFF00">Unscheduled</div>
+                    @endif
+                </button>
               </div>
-              @empty
-              <div class="card-body">
-                <p class="text-center fw-bold">No schedules available.</p>
-              </div>
-              @endforelse
             </div>
+            @empty
+            <div class="card-body">
+              <p class="text-center fw-bold">No schedules available.</p>
+            </div>
+            @endforelse
+          </div>
         </div>
       </div>
 
@@ -304,7 +304,7 @@
     });
   </script>
 
-<script>
+  <script>
     document.addEventListener('DOMContentLoaded', function() {
 
       $('#scheduleModal').on('hidden.bs.modal', function() {

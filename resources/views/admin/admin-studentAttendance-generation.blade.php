@@ -198,6 +198,7 @@
                   <th>Time</th>
                   <th>Student Name</th>
                   <th>Student ID</th>
+                  <th>Course</th>
                   <th>Program</th>
                   <th>Year & Section</th>
                   <th>Remarks</th>
@@ -216,6 +217,7 @@
                   </td>
                   <td>{{ $student->firstName }} {{ $student->lastName }}</td>
                   <td>{{ $student->idNumber }}</td>
+                  <td>{{ $student->courseName }}</td>
                   <td>{{ $student->program }}</td>
                   <td>{{ $student->year }}-{{ $student->section }}</td>
                   <td>

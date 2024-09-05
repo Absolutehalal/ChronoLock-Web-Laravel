@@ -47,6 +47,7 @@ class StudentAttendanceExport implements FromCollection, WithHeadings, ShouldAut
             ++$this->index,
             $attendance->firstName . ' ' . $attendance->lastName,
             $attendance->userID,
+            $attendance->courseName,
             $attendance->program,
             $attendance->year . ' - ' . $attendance->section,
             $formattedDate,
@@ -62,6 +63,7 @@ class StudentAttendanceExport implements FromCollection, WithHeadings, ShouldAut
             'S. No',
             'Name',
             'User ID',
+            'Course Name',
             'Program',
             'Year & Section',
             'Date',
@@ -86,14 +88,14 @@ class StudentAttendanceExport implements FromCollection, WithHeadings, ShouldAut
         return [
             AfterSheet::class => function (AfterSheet $event) {
                 // Merge cells for the title
-                $event->sheet->mergeCells('A1:H1');
+                $event->sheet->mergeCells('A1:I1');
                 $event->sheet->setCellValue('A1', 'Student Attendance Report');
 
                 // Set the row height for the heading
                 $event->sheet->getRowDimension(1)->setRowHeight(60);
 
                 // Apply styles to the title
-                $event->sheet->getStyle('A1:H1')->applyFromArray([
+                $event->sheet->getStyle('A1:I1')->applyFromArray([
                     'font' => [
                         'bold' => true,
                         'size' => 30,
@@ -105,7 +107,7 @@ class StudentAttendanceExport implements FromCollection, WithHeadings, ShouldAut
                 ]);
 
                 // Apply bold style to headings
-                $event->sheet->getStyle('A2:H2')->applyFromArray([
+                $event->sheet->getStyle('A2:I2')->applyFromArray([
                     'font' => [
                         'bold' => true,
                         'size' => 13,
@@ -113,7 +115,7 @@ class StudentAttendanceExport implements FromCollection, WithHeadings, ShouldAut
                 ]);
 
                 // Apply conditional formatting for the Remark column (H)
-                $conditionalStyles = $event->sheet->getStyle('H3:H' . $event->sheet->getHighestRow())->getConditionalStyles();
+                $conditionalStyles = $event->sheet->getStyle('H3:I' . $event->sheet->getHighestRow())->getConditionalStyles();
 
                 $conditionalPresent = new \PhpOffice\PhpSpreadsheet\Style\Conditional();
                 $conditionalPresent->setConditionType(\PhpOffice\PhpSpreadsheet\Style\Conditional::CONDITION_CONTAINSTEXT)
@@ -164,10 +166,10 @@ class StudentAttendanceExport implements FromCollection, WithHeadings, ShouldAut
                 $conditionalStyles[] = $conditionalLate;
                 $conditionalStyles[] = $conditionalAbsent;
 
-                $event->sheet->getStyle('H3:H' . $event->sheet->getHighestRow())->setConditionalStyles($conditionalStyles);
+                $event->sheet->getStyle('I3:I' . $event->sheet->getHighestRow())->setConditionalStyles($conditionalStyles);
 
                 // Apply border to the entire table
-                $event->sheet->getStyle('A1:H' . $event->sheet->getHighestRow())->applyFromArray([
+                $event->sheet->getStyle('A1:I' . $event->sheet->getHighestRow())->applyFromArray([
                     'borders' => [
                         'allBorders' => [
                             'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
@@ -193,7 +195,7 @@ class StudentAttendanceExport implements FromCollection, WithHeadings, ShouldAut
                 $drawingRight->setDescription('Logo Right');
                 $drawingRight->setPath(public_path('images/CCS.png')); // Path to your logo image
                 $drawingRight->setHeight(70);
-                $drawingRight->setCoordinates('H1');
+                $drawingRight->setCoordinates('I1');
                 $drawingRight->setOffsetX(-5);
                 $drawingRight->setOffsetY(5);
                 $drawingRight->setWorksheet($event->sheet->getDelegate());

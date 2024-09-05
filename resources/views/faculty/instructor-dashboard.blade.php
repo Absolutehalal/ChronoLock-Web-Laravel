@@ -183,7 +183,7 @@
                                         <div class="media media-sm mb-1">
                                             <div class="media-left d-flex align-items-center mt-1">
                                                 <span class="mr-2 fw-bold">{{ $counter }}.</span>
-                                                <img src="{{ $schedule->avatar }}" alt="Instructor Image" style="width: auto;" class="rounded">
+                                                <img src="{{ $schedule->avatar  ?? asset('images/User Icon.png') }}" alt="Instructor Image" width="90" height="90"  class="rounded">
                                             </div>
 
                                             @php

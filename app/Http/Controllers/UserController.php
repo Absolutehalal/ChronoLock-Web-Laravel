@@ -1309,7 +1309,7 @@ class UserController extends Controller
             ->join('class_lists', 'class_lists.classID', '=', 'student_masterlists.classID')
             ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
             ->join('users', 'users.idNumber', '=', 'schedules.userID')
-            ->where('student_masterlists.userID', $userID)
+            ->where('users.idNumber', '=', $userID)
             ->where('schedules.day', $today)
             ->count();
 
@@ -1333,10 +1333,13 @@ class UserController extends Controller
             ->join('class_lists', 'class_lists.classID', '=', 'student_masterlists.classID')
             ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
             ->join('users', 'users.idNumber', '=', 'schedules.userID')
-            ->where('student_masterlists.userID', $userID)
-            ->where('schedules.day', $today)
+            ->where('users.idNumber', '=', $userID)
+            ->where('schedules.day', '=', $today)
             ->orderBy('schedules.startTime', 'asc')
             ->get();
+
+        // dd($today);
+
 
         return view('faculty.instructor-dashboard', [
             'classes' => $classes,
@@ -1415,12 +1418,18 @@ class UserController extends Controller
 
     public function fetchData()
     {
+
+        // $userTable = DB::table('users')->get();
+        // $schedules = DB::table('schedules')->get();
+
         return response()->json([
             'host' => env('DB_HOST'),
             'user' => env('DB_USERNAME'),
-            'password' => env('DB_PASSWORD'),
             'database' => env('DB_DATABASE'),
+            'password' => env('DB_PASSWORD'),
             'port' => env('DB_PORT'),
+            //'userTable' => $userTable,
+            // 'schedules' => $schedules
         ]);
     }
 }
