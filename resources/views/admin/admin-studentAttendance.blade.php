@@ -210,7 +210,7 @@
                   <td>{!! $students->formatted_time !!}</td>
                   <td>{{ $students->firstName }} {{ $students->lastName }}</td>
                   <td>{{ $students->idNumber }}</td>
-                  <td>{{ $student->courseName }}</td>
+                  <td>{{ $students->courseName }}</td>
                   <td>{{ $students->program }}</td>
                   <td>{{ $students->year }}-{{ $students->section }}</td>
                   <td>

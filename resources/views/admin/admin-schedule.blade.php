@@ -14,7 +14,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <script src='{{asset('https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js')}}'></script> -->
+  <script src="{{asset('https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js')}}"></script> 
 
   <!-- Ajax Student Attendance -->
   <script defer src="js/addRegularSchedule.js"></script>

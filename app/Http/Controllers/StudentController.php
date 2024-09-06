@@ -103,6 +103,7 @@ class StudentController extends Controller
             ->join('users', 'users.idNumber', '=', 'student_masterlists.userID')
             ->where('student_masterlists.userID', '=', $userID)
             ->where('schedules.day', '=', $today)
+            ->where('schedules.scheduleStatus', '=', 'With Class')
             ->orderBy('schedules.startTime', 'asc')
             ->get();
 
