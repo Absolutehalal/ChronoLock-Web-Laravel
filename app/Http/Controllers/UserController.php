@@ -102,7 +102,7 @@ class UserController extends Controller
 
 
             // Create the new user in the database
-            $user = User::create([
+            User::create([
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
                 'idNumber' => $request->idNumber,
