@@ -715,6 +715,7 @@
             @method('put')
             <ul id="makeUpScheduleError"></ul>
             <input type="hidden" id="makeUpScheduleID" class="id form-control ">
+            <input type="hidden" id="day" class="day form-control ">
 
             <div class="row">
               <div class="col-lg-6">

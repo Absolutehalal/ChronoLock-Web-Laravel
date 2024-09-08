@@ -62,12 +62,12 @@ $(document).ready(function() {
               $("#scheduleModal .close").click()
             } else {
               //  console.log(response.attendance);
-              $('#scheduleID').val(response.schedule.scheduleID); 
+              $('#scheduleID').val(response.schedule.scheduleID);
               $('#courseCode').val(response.schedule.courseCode);
-              $('#courseName').val(response.schedule.courseName); 
-              $('#program').val(response.schedule.program); 
-              $('#year').val(response.schedule.year); 
-              $('#section').val(response.schedule.section); 
+              $('#courseName').val(response.schedule.courseName);
+              $('#program').val(response.schedule.program);
+              $('#year').val(response.schedule.year);
+              $('#section').val(response.schedule.section);
               
             }
           }

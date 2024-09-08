@@ -161,7 +161,6 @@ document.addEventListener("DOMContentLoaded", function () {
                                                 $("#facultyError").addClass(
                                                     "error"
                                                 );
-
                                                 $.each(
                                                     response.errors
                                                         .scheduleTitle,
@@ -830,6 +829,10 @@ document.addEventListener("DOMContentLoaded", function () {
                                                 response.makeUpSchedule
                                                     .scheduleID
                                             );
+                                            $("#day").val(
+                                                response.makeUpSchedule
+                                                    .day
+                                            );
                                             // $(
                                             //     "#editMakeUpSelectedFacultyID"
                                             // ).val(
@@ -865,6 +868,8 @@ document.addEventListener("DOMContentLoaded", function () {
                                                 $(".updateEndTime").val(),
                                             updateFaculty:
                                                 $(".updateFaculty").val(),
+                                            day:
+                                                $(".day").val(),
                                         };
                                         console.log(data);
                                         $.ajaxSetup({

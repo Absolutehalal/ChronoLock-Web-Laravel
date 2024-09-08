@@ -976,8 +976,8 @@ class UserController extends Controller
                 'makeUpScheduleStartTime' => 'required',
                 'makeUpScheduleEndTime' => 'required',
                 'faculty' => 'required',
-
             ]);
+            $checkDay = $request->dayOfWeekString;
             $scheduleTitle = $request->get('scheduleTitle');
             $facultyID = $request->get('faculty');
             $duplicateScheduleTitle = DB::table('schedules')->where('scheduleTitle', $scheduleTitle)->get();
@@ -987,9 +987,11 @@ class UserController extends Controller
             $endTime = date("H:i:s", strtotime($request->input('makeUpScheduleEndTime')));
             $checkStartTime = DB::table('schedules')
                 ->whereRaw('? BETWEEN startTime AND endTime', [$startTime])
+                ->where('day', '=', $checkDay)
                 ->get();
             $checkEndTime = DB::table('schedules')
                 ->whereRaw('? BETWEEN startTime AND endTime', [$endTime])
+                ->where('day', '=', $checkDay)
                 ->get();
             $id = Auth::id();
             $userID = DB::table('users')->where('id', $id)->value('idNumber');
@@ -1151,6 +1153,8 @@ class UserController extends Controller
                 'updateSection' => 'required',
                 'updateStartTime' => 'required',
                 'updateEndTime' => 'required',
+                'day' => 'required',
+                
                 // 'updateFaculty' => 'required',
             ]);
             if ($validator->fails()) {
@@ -1163,6 +1167,7 @@ class UserController extends Controller
                 $updatedID = DB::table('schedules')->where('scheduleID', $id)->value('scheduleID');
 
                 // Retrieve existing schedule details
+                $checkDay = $request->input('day');
                 $scheduleTitle = DB::table('schedules')->where('scheduleID', $updatedID)->value('scheduleTitle');
                 $program = DB::table('schedules')->where('scheduleID', $updatedID)->value('program');
                 $year = DB::table('schedules')->where('scheduleID', $updatedID)->value('year');
@@ -1173,9 +1178,13 @@ class UserController extends Controller
                 $ndTime = date("H:i:s", strtotime($request->input('updateEndTime')));
                 $checkStartTime = DB::table('schedules')
                     ->whereRaw('? BETWEEN startTime AND endTime', [$strtTime])
+                    ->where('day', '=', $checkDay)
+                    ->where('scheduleID', '!=', $id)
                     ->get();
                 $checkEndTime = DB::table('schedules')
                     ->whereRaw('? BETWEEN startTime AND endTime', [$ndTime])
+                    ->where('day', '=', $checkDay)
+                    ->where('scheduleID', '!=', $id)
                     ->get();
                 // Update the schedule if it exists
                 if (($makeUpSchedule) && (($checkStartTime->isNotEmpty()) || ($checkEndTime->isNotEmpty()))) {
