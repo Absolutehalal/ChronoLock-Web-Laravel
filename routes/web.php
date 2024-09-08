@@ -191,7 +191,7 @@ Route::group(['middleware' => ['auth', 'faculty:Faculty']], function () {
     //--------END instructor class Attendance and List  ROUTES---------
 
     //--------START instructor Calendar ROUTES---------
-    Route::get('/get-Faculty-Schedules', [ScheduleController::class, 'facultyCalendarSchedules'])->name('facultyCalendarSchedules');
+    Route::get('/get-Faculty-Schedules', [ScheduleController::class, './;;;;;;;;;;;;;;'])->name('facultyCalendarSchedules');
     //--------END instructor Calendar ROUTES---------
 });
 
