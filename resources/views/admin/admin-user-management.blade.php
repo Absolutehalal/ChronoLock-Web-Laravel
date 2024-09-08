@@ -248,7 +248,7 @@
             <!-- Modal Footer -->
             <div class="modal-footer">
               <button type="button" class="btn btn-danger btn-pill" id="downClose" data-dismiss="modal">Close</button>
-              <button type="submit" class="btn btn-primary btn-pill addUser">Save</button>
+              <button type="submit" class="btn btn-primary btn-pill addUser">Send</button>
             </div>
 
           </form>
@@ -524,7 +524,7 @@
               $.each(response.errors.password, function(key, err_value) {
                 $('#passwordError').append('<li>' + err_value + '</li>');
               });
-              $('.addUser').text('Save');
+              $('.addUser').text('Send');
             } else if (response.status == 200) {
               $('#firstNameError').html("");
               $('#lastNameError').html("");
@@ -539,7 +539,7 @@
                 confirmButtonText: "OK"
               }).then((result) => {
                 if (result.isConfirmed) {
-                  $('.addUser').text('Save');
+                  $('.addUser').text('Send');
                   $("#addUserModal .close").click()
 
                   // fetchUsers(); -----------reserve-------------
@@ -560,7 +560,7 @@
               $('#idNumberError').html("");
               $('#emailError').html("");
               $('#passwordError').html("");
-              $('.addUser').text('Save');
+              $('.addUser').text('Send');
               Swal.fire({
                 icon: "error",
                 title: "Oops...",
@@ -574,7 +574,7 @@
               $('#idNumberError').html("");
               $('#emailError').html("");
               $('#passwordError').html("");
-              $('.addUser').text('Save');
+              $('.addUser').text('Send');
               Swal.fire({
                 icon: "error",
                 title: "Oops...",
@@ -587,7 +587,7 @@
               $('#idNumberError').html("");
               $('#emailError').html("");
               $('#passwordError').html("");
-              $('.addUser').text('Save');
+              $('.addUser').text('Send');
               Swal.fire({
                 icon: "error",
                 title: "Oops...",
@@ -601,7 +601,7 @@
               $('#idNumberError').html("");
               $('#emailError').html("");
               $('#passwordError').html("");
-              $('.addUser').text('Save');
+              $('.addUser').text('Send');
               Swal.fire({
                 icon: "error",
                 title: "Oops...",

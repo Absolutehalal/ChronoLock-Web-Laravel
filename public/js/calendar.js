@@ -537,7 +537,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                         // -----------Start edit regular schedule-----------
                         $(document).on(
-                            "pointerup",
+                            "click",
                             ".editRegularSchedule",
                             function (e) {
                                 e.preventDefault();
@@ -747,7 +747,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         // -----------Start edit Make up schedule-----------
 
                         $(document).on(
-                            "pointerup",
+                            "click",
                             ".editMakeUpSchedule",
                             function (e) {
                                 e.preventDefault();
