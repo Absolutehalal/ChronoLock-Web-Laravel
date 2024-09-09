@@ -40,8 +40,8 @@
                     <li>
                         <a class="sidenav-item-link" href="{{route('classListManagement')}}">
                             <i class="mdi mdi-file-document-box-multiple"></i>
-                            <span class="nav-text" data-toggle="tooltip" title="Class List">Class
-                                List</span>
+                            <span class="nav-text" data-toggle="tooltip" title="Class Record">Class
+                                Record</span>
                         </a>
                     </li>
                     <li>

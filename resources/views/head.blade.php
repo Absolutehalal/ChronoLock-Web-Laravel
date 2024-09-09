@@ -67,6 +67,5 @@
     <link href="{{asset('https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css')}}" rel="stylesheet">
     <!-- <script src="{{asset('https://cdn.jsdelivr.net/npm/sweetalert2@11')}}"></script> -->
 
-  
-    <script defer src="{{asset('js/profile.js')}}"></script>
+
     <script defer src="{{asset('js/readonly.js')}}"></script>
