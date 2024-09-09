@@ -190,20 +190,6 @@ class GoogleAuthController extends Controller
                         ->showCloseButton();
                     return redirect()->back(); // Default redirect for other user types
                 }
-            } else {
-
-                // debugging
-                // If user doesn't exist, create a new one
-                $newUser = User::updateOrCreate([
-                    'google_id' => $googleUser->id,
-                ], [
-                    'accountName' => $googleUser->name,
-                    'email' => $googleUser->email,
-                    'password' => '12345', // A temporary password is set for new users - Hash::make('12345678'),
-                    'avatar' => $googleUser->getAvatar(),
-                ]);
-
-                Auth::login($newUser, true);
             }
         } catch (\Exception $e) {
 

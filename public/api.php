@@ -87,10 +87,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $current_time =  $_GET['current_time'];
         $current_date =  $_GET['current_date'];
 
-        $sql = "SELECT classID FROM class_lists JOIN schedules ON 
-      class_lists.scheduleID = schedules.scheduleID 
-      WHERE day = '$current_day_number' AND '$current_time' BETWEEN startTime AND endTime AND 
-      '$current_date' BETWEEN startDate AND endDate";
+        $sql = "SELECT attendances.classID FROM attendances JOIN class_lists ON 
+        class_lists.classID = attendances.classID  JOIN schedules ON 
+        class_lists.scheduleID = schedules.scheduleID
+        WHERE day = '$current_day_number' AND '$current_time' BETWEEN startTime AND endTime AND 
+        '$current_date' BETWEEN startDate AND endDate";
 
         $result = $conn->query($sql);
 
