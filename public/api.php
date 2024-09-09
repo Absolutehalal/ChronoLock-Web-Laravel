@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $sql = "SELECT * FROM users JOIN schedules ON 
       users.idNumber = schedules.userID JOIN class_lists ON 
       schedules.scheduleID = class_lists.scheduleID 
-      WHERE day = '$current_day_number' AND '$current_time' BETWEEN startTime AND endTime AND 
+      WHERE scheduleStatus = 'With Class' AND day = '$current_day_number' AND '$current_time' BETWEEN startTime AND endTime AND 
       '$current_date' BETWEEN startDate AND endDate AND RFID_Code = '$rfidcode'";
 
         $result = $conn->query($sql);
@@ -72,6 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         // Close connection
         $conn->close();
     }
+
 
     if (isset($_GET['what']) && $_GET['what'] == 'get_lab_status') {
         // Create connection
@@ -90,7 +91,79 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $sql = "SELECT attendances.classID FROM attendances JOIN class_lists ON 
         class_lists.classID = attendances.classID  JOIN schedules ON 
         class_lists.scheduleID = schedules.scheduleID
-        WHERE day = '$current_day_number' AND '$current_time' BETWEEN startTime AND endTime AND 
+        WHERE date = '$current_date' AND day = '$current_day_number' AND '$current_time' BETWEEN startTime AND endTime AND 
+        '$current_date' BETWEEN startDate AND endDate";
+
+        $result = $conn->query($sql);
+
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            $response = ["status" => "success", "data" => $row];
+        } else {
+            $response = ["status" => "error"];
+        }
+        // Output the response in JSON format
+        echo json_encode($response);
+
+        // Close connection
+        $conn->close();
+    }
+
+    if (isset($_GET['what']) && $_GET['what'] == 'get_student_count') {
+        // Create connection
+        $conn = new mysqli($servername, $username, $password, $dbname);
+        // Check connection
+        if ($conn->connect_error) {
+            $response = ["status" => "error", "message" => "Connection failed: " . $conn->connect_error];
+            echo json_encode($response);
+            exit();
+        }
+
+        $current_day_number =  $_GET['current_day_number'];
+        $current_time =  $_GET['current_time'];
+        $current_date =  $_GET['current_date'];
+
+        $sql = "SELECT COUNT(attendances.userID) FROM attendances JOIN users ON 
+        users.idNumber = attendances.userID JOIN class_lists ON 
+        class_lists.classID = attendances.classID  JOIN schedules ON 
+        class_lists.scheduleID = schedules.scheduleID
+        WHERE userType = 'Student' AND day = '$current_day_number' AND '$current_time' BETWEEN startTime AND endTime AND 
+        '$current_date' BETWEEN startDate AND endDate";
+
+        $result = $conn->query($sql);
+
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            $response = ["status" => "success", "data" => $row];
+        } else {
+            $response = ["status" => "error"];
+        }
+        // Output the response in JSON format
+        echo json_encode($response);
+
+        // Close connection
+        $conn->close();
+    }
+
+    if (isset($_GET['what']) && $_GET['what'] == 'get_student_total_count') {
+        // Create connection
+        $conn = new mysqli($servername, $username, $password, $dbname);
+        // Check connection
+        if ($conn->connect_error) {
+            $response = ["status" => "error", "message" => "Connection failed: " . $conn->connect_error];
+            echo json_encode($response);
+            exit();
+        }
+
+        $current_day_number =  $_GET['current_day_number'];
+        $current_time =  $_GET['current_time'];
+        $current_date =  $_GET['current_date'];
+
+        $sql = "SELECT COUNT(student_masterlists.userID) FROM student_masterlists JOIN users ON 
+        users.idNumber = student_masterlists.userID JOIN class_lists ON 
+        class_lists.classID = student_masterlists.classID  JOIN schedules ON 
+        class_lists.scheduleID = schedules.scheduleID
+        WHERE userType = 'Student' AND day = '$current_day_number' AND '$current_time' BETWEEN startTime AND endTime AND 
         '$current_date' BETWEEN startDate AND endDate";
 
         $result = $conn->query($sql);
