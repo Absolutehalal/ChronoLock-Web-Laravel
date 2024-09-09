@@ -49,7 +49,7 @@
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{{ route('instructorIndex') }}">Dashboard</a></li>
-                            <li class="breadcrumb-item active"><a href="{{ route('classListManagement') }}">Class List</a></li>
+                            <li class="breadcrumb-item active"><a href="{{ route('classListManagement') }}">Class Record</a></li>
                         </ol>
                     </nav>
 
@@ -63,7 +63,7 @@
 
                 <div class="card card-default shadow">
                     <div class="card-header">
-                        <h1> Class List</h1>
+                        <h1> Class Record</h1>
                     </div>
                     <div class="card-body ">
                         <table id="exampleTable" class="table table-bordered table-hover" style="width:100%">

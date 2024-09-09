@@ -181,8 +181,38 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         } else {
             echo json_encode(['error' => 'Error:']);
         }
+
+        // Output the response in JSON format
+        echo json_encode($response);
+
         $conn->close();
     }
+
+    if (isset($_GET['what']) && $_GET['what'] == 'count_attendance') {
+        // Create connection
+        $conn = new mysqli($servername, $username, $password, $dbname);
+        // Check connection
+        if ($conn->connect_error) {
+            $response = ["status" => "error", "message" => "Connection failed: " . $conn->connect_error];
+            echo json_encode($response);
+            exit();
+        }
+        $user_ID = $_GET['user_ID'];
+        $class_ID = $_GET['class_ID'];
+        $current_date = $_GET['current_date'];
+        $current_time = $_GET['current_time'];
+        $remark = $_GET['remark'];
+
+        $sql = "INSERT INTO attendances (userID,classID,date,time,remark) VALUES ('$user_ID','$class_ID','$current_date','$current_time','$remark')";
+
+        if ($conn->query($sql) === TRUE) {
+            echo json_encode(['message' => 'Attendance inserted successfully']);
+        } else {
+            echo json_encode(['error' => 'Error:']);
+        }
+        $conn->close();
+    }
+
     if (isset($_GET['what']) && $_GET['what'] == 'store_logs_deactivated_RFID_authorized_user') {
         // Create connection
         $conn = new mysqli($servername, $username, $password, $dbname);
@@ -350,7 +380,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $inst_schedule_endDate = $_GET['inst_schedule_endDate'];
 
 
-        $sql = " SELECT * FROM attendances 
+        $sql = "SELECT * FROM attendances 
           JOIN class_lists 
           ON attendances.classID = class_lists.classID 
           JOIN schedules ON class_lists.scheduleID = schedules.scheduleID  

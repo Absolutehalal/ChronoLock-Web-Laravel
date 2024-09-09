@@ -1,5 +1,7 @@
 @include('profile')
 
+<script defer src="{{asset('js/profile.js')}}"></script>
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const input = document.getElementById('excel-file');
