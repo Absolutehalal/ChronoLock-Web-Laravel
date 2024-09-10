@@ -139,7 +139,13 @@ class GoogleAuthController extends Controller
                 if ($existingUser->userType === 'Admin' || $existingUser->userType === 'Technician' || $existingUser->userType === 'Lab-in-Charge') {
                     // If user exists, log them in
                     Auth::login($existingUser, true);
-
+                    if ($existingUser->accountName === Null) {
+                        $existingUser->update([
+                            'google_id' => $googleUser->id,
+                            'accountName' => $googleUser->name,
+                            'avatar' => $googleUser->getAvatar(),
+                        ]);
+                    }
                     Alert::success('Success', 'Login successful.')
                         ->autoClose(3000)
                         ->timerProgressBar()
