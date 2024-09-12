@@ -1,8 +1,8 @@
 <?php
-$servername = "sql12.freesqldatabase.com";
-$username = "sql12724238";
-$password = "f8cI7wVnB5";
-$dbname = "sql12724238";
+$servername = "127.0.0.1";
+$username = "root";
+$password = "";
+$dbname = "chronolock";
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 

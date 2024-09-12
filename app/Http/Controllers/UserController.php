@@ -205,7 +205,7 @@ class UserController extends Controller
                 'errors' => $validator->messages()
             ]);
         } else {
-            if ($emailDomain !== 'my.cspc.edu.ph' || $emailDomain !== 'cspc.edu.ph') {
+            if ($emailDomain !== 'my.cspc.edu.ph' && $emailDomain !== 'cspc.edu.ph') {
                 return response()->json([
                     'status' => 300,
                 ]);

@@ -84,7 +84,7 @@
                     @foreach($myAttendances as $myAttendance)
                     <tr>
                       <td>{{date('F j, Y', strtotime($myAttendance->date))}}</td>
-                      <td>
+                      
                       <td>
                         @if($myAttendance->time)
                         {{ date('h:i A', strtotime($myAttendance->time)) }}
@@ -92,7 +92,7 @@
                         <span style="color: #cc0000; font-weight: bold;">No Record</span>
                         @endif
                       </td>
-                      </td>
+                      
                       <td>{{$myAttendance->instFirstName}} {{$myAttendance->instLastName}}</td>
                       <td>{{$myAttendance->program}}</td>
                       <td>{{$myAttendance->year}}-{{$myAttendance->section}}</td>
