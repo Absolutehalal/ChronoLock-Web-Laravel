@@ -79,7 +79,7 @@ class ProfileController extends Controller
                     'status' => 409,
                     'message' => 'Email has already been taken.',
                 ]);
-            } else if (!str_ends_with($email, '@my.cspc.edu.ph')) {
+            } else if (!str_ends_with($email, '@my.cspc.edu.ph') && !str_ends_with($email, '@cspc.edu.ph')) {
                 return response()->json([
                     'status' => 409,
                     'message' => 'Use your CSPC email only.',

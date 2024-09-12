@@ -69,6 +69,7 @@ class UserController extends Controller
                 'idNumber' => 'required|unique:users,idNumber',
             ]);
 
+            // If validation fails, return back with errors
             if ($validator->fails()) {
                 // Check if the email exists in the users table
                 $userEmailExists = User::where('email', $request->get('email'))->exists();
@@ -100,6 +101,16 @@ class UserController extends Controller
                 }
             }
 
+            // Check if the email has the required domain (@cspc.edu.ph)
+            if (!str_ends_with($request->email, '@cspc.edu.ph')) {
+                Alert::info("Info", "Please use CSPC email only.")
+                    ->autoClose(3000)
+                    ->timerProgressBar()
+                    ->showCloseButton();
+
+                return redirect()->back();
+            }
+
             // Create the new user in the database
             User::create([
                 'email' => $request->email,
@@ -110,13 +121,13 @@ class UserController extends Controller
 
             return redirect('/login');
         } catch (\Exception $e) {
-
             Alert::error("Error", "Something went wrong. Please try again.")
                 ->autoClose(3000)
                 ->timerProgressBar()
                 ->showCloseButton();
         }
     }
+
     // FOR HIDDEN ROUTE
 
     //admin functions
@@ -194,7 +205,7 @@ class UserController extends Controller
                 'errors' => $validator->messages()
             ]);
         } else {
-            if ($emailDomain !== 'my.cspc.edu.ph') {
+            if ($emailDomain !== 'my.cspc.edu.ph' || $emailDomain !== 'cspc.edu.ph') {
                 return response()->json([
                     'status' => 300,
                 ]);
@@ -329,11 +340,12 @@ class UserController extends Controller
                 ]);
             }
 
-            if ($emailDomain !== 'my.cspc.edu.ph') {
+            // Check if the email domain is 'my.cspc.edu.ph' & 'cspc.edu.ph'
+            if ($emailDomain !== 'my.cspc.edu.ph' && $emailDomain !== 'cspc.edu.ph') {
                 return response()->json([
                     'status' => 300,
                 ]);
-            } else if ($email == $checkEmail) {
+            } elseif ($email == $checkEmail) {
                 return response()->json([
                     'status' => 100,
                 ]);
@@ -1153,7 +1165,7 @@ class UserController extends Controller
                 'updateStartTime' => 'required',
                 'updateEndTime' => 'required',
                 'day' => 'required',
-                
+
                 // 'updateFaculty' => 'required',
             ]);
             if ($validator->fails()) {

@@ -52,9 +52,9 @@ class GoogleAuthController extends Controller
 
             $enteredEmail = $request->input('email');
 
-            // Check if the email domain is @my.cspc.edu.ph
-            if (!str_ends_with($enteredEmail, '@my.cspc.edu.ph')) {
-                Alert::warning('Warning', 'Please login only with CSPC email.')
+            // Check if the email domain is either @my.cspc.edu.ph or @cspc.edu.ph
+            if (!str_ends_with($enteredEmail, '@my.cspc.edu.ph') && !str_ends_with($enteredEmail, '@cspc.edu.ph')) {
+                Alert::warning('Warning', 'Please login only with a CSPC email.')
                     ->autoClose(3000)
                     ->timerProgressBar()
                     ->showCloseButton();
@@ -119,16 +119,16 @@ class GoogleAuthController extends Controller
             $googleUser = Socialite::driver('google')->user();
 
             // Check if the email domain is my.cspc.edu.ph
-            // $emailDomain = substr(strrchr($googleUser->getEmail(), "@"), 1);
-            // if ($emailDomain !== 'my.cspc.edu.ph') {
+            $emailDomain = substr(strrchr($googleUser->getEmail(), "@"), 1);
+            if ($emailDomain !== 'my.cspc.edu.ph' && $emailDomain !== 'cspc.edu.ph') {
 
-            //     Alert::error('Error', 'Invalid email domain. Please use your CSPC email.')
-            //         ->autoClose(5000)
-            //         ->timerProgressBar()
-            //         ->showCloseButton();
+                Alert::error('Error', 'Invalid email domain. Please use your CSPC email.')
+                    ->autoClose(5000)
+                    ->timerProgressBar()
+                    ->showCloseButton();
 
-            //     return redirect('/login');
-            // }
+                return redirect('/login');
+            }
 
             // Find user by Google ID
             $existingUser = User::where('email', $googleUser->email)->first();

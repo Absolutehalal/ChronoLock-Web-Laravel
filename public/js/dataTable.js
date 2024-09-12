@@ -368,112 +368,6 @@ $(document).ready(function () {
         }
     });
 
-    // Flatpckr
-    var dateConfig = {
-        dateFormat: "F j, Y",
-    };
-
-    var timeConfig = {
-        enableTime: true,
-        noCalendar: true,
-        dateFormat: "h:i K", // 'h' for 12-hour format, 'i' for minutes, 'K' for AM/PM
-        time_24hr: false, // Use 12-hour time format with AM/PM
-        defaultHour: 8, // Set default hour (e.g., 9 AM)
-        defaultMinute: 0, // Set default minute (e.g., 00 minutes)
-        minDate: "today",
-    };
-
-    // Initialize flatpickr instances for the Datatable
-    flatpickr("#selectedDate", dateConfig);
-    flatpickr("#selectedTime", timeConfig);
-
-    // Focus on the date input when the date icon is clicked
-    $("#dateIcon").on("click", function () {
-        $("#selectedDate").focus();
-    });
-
-    // Focus on the time input when the time icon is clicked
-    $("#timeIcon").on("click", function () {
-        $("#selectedTime").focus();
-    });
-
-    // Custom filter date for the DataTable
-    $("#datepicker").on("click", function () {
-        $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
-            var selectedDate = $("#datepicker input").val(); // Get the selected date from the datepicker input field
-            var tableDate = data[0]; // Get the date from the first column of the table
-
-            // If no date is selected, or the table date matches the selected date, display the row
-            if (selectedDate === "" || tableDate === selectedDate) {
-                return true;
-            }
-            // Otherwise, hide the row
-            return false;
-        });
-    });
-    // Custom filter time for the DataTable
-    $("#timepicker").on("click", function () {
-        $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
-            var selectedTime = $("#timepicker input").val(); // Get the selected time from the timepicker input field
-            var tableTime = data[1]; // Get the time from the second column of the table
-
-            if (selectedTime === "") {
-                return true; // No time selected, show all rows
-            }
-
-            // Extract hours, minutes, and period (AM/PM) from selectedTime and tableTime
-            var selectedTimeParts = selectedTime.split(" "); // Split selectedTime into time and period (AM/PM)
-            var selectedHours = parseInt(
-                selectedTimeParts[0].split(":")[0],
-                10
-            ); // Extract hours from selectedTime and convert to integer
-            var selectedMinutes = parseInt(
-                selectedTimeParts[0].split(":")[1],
-                10
-            ); // Extract minutes from selectedTime and convert to integer
-            var selectedPeriod = selectedTimeParts[1]; // Extract period (AM or PM) from selectedTime
-
-            var tableTimeParts = tableTime.split(" "); // Split tableTime into time and period (AM/PM)
-            var tableHours = parseInt(tableTimeParts[0].split(":")[0], 10); // Extract hours from tableTime and convert to integer
-            var tableMinutes = parseInt(tableTimeParts[0].split(":")[1], 10); // Extract minutes from tableTime and convert to integer
-            var tablePeriod = tableTimeParts[1]; // Extract period (AM or PM) from tableTime
-
-            // Compare hours and minutes to filter rows
-            if (
-                selectedPeriod === tablePeriod && // Ensure selected period matches table period
-                tableHours === selectedHours &&
-                tableMinutes >= selectedMinutes &&
-                tableMinutes < selectedMinutes + 60 // Comparing within the hour range (10:00 AM to 10:59 AM)
-            ) {
-                return true;
-            }
-
-            // Otherwise, hide the row
-            return false;
-        });
-    });
-    // Event listener for date change
-    $("#selectedDate, #selectedTime").on("change", function () {
-        attendanceTable.draw();
-    });
-
-    // Schedule Date [See Schedule Management Admin]
-    flatpickr("#selectedDate1", dateConfig);
-    flatpickr("#selectedDate2", dateConfig);
-    flatpickr("#selectedDate3", dateConfig);
-    flatpickr("#selectedDate4", dateConfig);
-
-    flatpickr("#selectedTime1", timeConfig);
-    flatpickr("#selectedTime2", timeConfig);
-    flatpickr("#selectedTime3", timeConfig);
-    flatpickr("#selectedTime4", timeConfig);
-    flatpickr("#selectedTime5", timeConfig);
-    flatpickr("#selectedTime6", timeConfig);
-    flatpickr("#selectedTime7", timeConfig);
-    flatpickr("#selectedTime8", timeConfig);
-
-    //ADMIN FILTERS START-----------
-
     //admin logs filter
 
     $(".filter-admin-id").on("click", function (e) {
@@ -607,7 +501,7 @@ $(document).ready(function () {
         // Update the selected year in a hidden input (if needed)
         $("#selectedYear").val(year);
         // Filter DataTable based on the selected year
-        attendanceTable.column(5).search(year).draw();
+        attendanceTable.column(6).search(year).draw();
 
         // Toggle active class for visual indication
         $(".filter-year").removeClass("active");
@@ -623,7 +517,7 @@ $(document).ready(function () {
         $("#selectedCourse").val(course);
 
         // Filter DataTable based on the selected course
-        attendanceTable.column(4).search(course).draw();
+        attendanceTable.column(5).search(course).draw();
 
         // Toggle active class for visual indication
         $(".filter-course").removeClass("active");
@@ -639,7 +533,7 @@ $(document).ready(function () {
         $("#selectedStatus").val(status);
 
         // Filter DataTable based on the selected status
-        attendanceTable.column(6).search(status).draw();
+        attendanceTable.column(7).search(status).draw();
 
         // Toggle active class for visual indication
         $(".filter-status").removeClass("active");
@@ -756,4 +650,110 @@ $(document).ready(function () {
         $(".faculty-id").removeClass("active");
         facultyTable.search("").columns().search("").draw();
     });
+
+    // Flatpckr
+    var dateConfig = {
+        dateFormat: "F j, Y",
+    };
+
+    var timeConfig = {
+        enableTime: true,
+        noCalendar: true,
+        dateFormat: "h:i K", // 'h' for 12-hour format, 'i' for minutes, 'K' for AM/PM
+        time_24hr: false, // Use 12-hour time format with AM/PM
+        defaultHour: 8, // Set default hour (e.g., 9 AM)
+        defaultMinute: 0, // Set default minute (e.g., 00 minutes)
+        minDate: "today",
+    };
+
+    // Initialize flatpickr instances for the Datatable
+    flatpickr("#selectedDate", dateConfig);
+    flatpickr("#selectedTime", timeConfig);
+
+    // Focus on the date input when the date icon is clicked
+    $("#dateIcon").on("click", function () {
+        $("#selectedDate").focus();
+    });
+
+    // Focus on the time input when the time icon is clicked
+    $("#timeIcon").on("click", function () {
+        $("#selectedTime").focus();
+    });
+
+    // Custom filter date for the DataTable
+    $("#datepicker").on("click", function () {
+        $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
+            var selectedDate = $("#datepicker input").val(); // Get the selected date from the datepicker input field
+            var tableDate = data[0]; // Get the date from the first column of the table
+
+            // If no date is selected, or the table date matches the selected date, display the row
+            if (selectedDate === "" || tableDate === selectedDate) {
+                return true;
+            }
+            // Otherwise, hide the row
+            return false;
+        });
+    });
+    // Custom filter time for the DataTable
+    $("#timepicker").on("click", function () {
+        $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
+            var selectedTime = $("#timepicker input").val(); // Get the selected time from the timepicker input field
+            var tableTime = data[1]; // Get the time from the second column of the table
+
+            if (selectedTime === "") {
+                return true; // No time selected, show all rows
+            }
+
+            // Extract hours, minutes, and period (AM/PM) from selectedTime and tableTime
+            var selectedTimeParts = selectedTime.split(" "); // Split selectedTime into time and period (AM/PM)
+            var selectedHours = parseInt(
+                selectedTimeParts[0].split(":")[0],
+                10
+            ); // Extract hours from selectedTime and convert to integer
+            var selectedMinutes = parseInt(
+                selectedTimeParts[0].split(":")[1],
+                10
+            ); // Extract minutes from selectedTime and convert to integer
+            var selectedPeriod = selectedTimeParts[1]; // Extract period (AM or PM) from selectedTime
+
+            var tableTimeParts = tableTime.split(" "); // Split tableTime into time and period (AM/PM)
+            var tableHours = parseInt(tableTimeParts[0].split(":")[0], 10); // Extract hours from tableTime and convert to integer
+            var tableMinutes = parseInt(tableTimeParts[0].split(":")[1], 10); // Extract minutes from tableTime and convert to integer
+            var tablePeriod = tableTimeParts[1]; // Extract period (AM or PM) from tableTime
+
+            // Compare hours and minutes to filter rows
+            if (
+                selectedPeriod === tablePeriod && // Ensure selected period matches table period
+                tableHours === selectedHours &&
+                tableMinutes >= selectedMinutes &&
+                tableMinutes < selectedMinutes + 60 // Comparing within the hour range (10:00 AM to 10:59 AM)
+            ) {
+                return true;
+            }
+
+            // Otherwise, hide the row
+            return false;
+        });
+    });
+    // Event listener for date change
+    $("#selectedDate, #selectedTime").on("change", function () {
+        attendanceTable.draw();
+    });
+
+    // Schedule Date [See Schedule Management Admin]
+    flatpickr("#selectedDate1", dateConfig);
+    flatpickr("#selectedDate2", dateConfig);
+    flatpickr("#selectedDate3", dateConfig);
+    flatpickr("#selectedDate4", dateConfig);
+
+    flatpickr("#selectedTime1", timeConfig);
+    flatpickr("#selectedTime2", timeConfig);
+    flatpickr("#selectedTime3", timeConfig);
+    flatpickr("#selectedTime4", timeConfig);
+    flatpickr("#selectedTime5", timeConfig);
+    flatpickr("#selectedTime6", timeConfig);
+    flatpickr("#selectedTime7", timeConfig);
+    flatpickr("#selectedTime8", timeConfig);
+
+    //ADMIN FILTERS START-----------
 });
