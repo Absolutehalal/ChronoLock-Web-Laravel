@@ -343,6 +343,7 @@
                   <select class="updateUserType form-select form-control border border-dark" aria-label="Default select example" id="edit_userType" name="updateUserType">
 
                     <option selected hidden></option>
+                    <option value="Admin">Admin</option>
                     <option value="Lab-in-Charge">Lab-in-Charge</option>
                     <option value="Technician">Technician</option>
                     <option value="Faculty">Faculty</option>

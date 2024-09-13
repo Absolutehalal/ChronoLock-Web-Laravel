@@ -135,13 +135,13 @@
         </div>
 
         <!-- CALENDAR -->
-        <div class="card card-default shadow">
+        <!-- <div class="card card-default shadow">
           <div class="card-header card-header-border-bottom d-flex justify-content-between align-items-center">
             <h1>Schedule</h1>
             <div class="row">
 
               <div class="col-xl-12 col-md-12 d-flex justify-content-end">
-                <!-- Sort button -->
+                
                 <div class="dropdown d-inline-block mb-3 mr-3">
                   <a href="{{ route('adminScheduleManagement') }}" title="Add Regular Schedule" class="btn btn-primary btn-sm fw-bold" type="button">
                     <i class=" mdi mdi-calendar-plus"></i>
@@ -157,7 +157,7 @@
               <div id="calendar"></div>
             </div>
           </div>
-        </div>
+        </div> -->
         @endif
         @endif
 
