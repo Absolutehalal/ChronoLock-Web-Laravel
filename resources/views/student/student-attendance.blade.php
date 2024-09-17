@@ -99,12 +99,12 @@
                       <td>{{$myAttendance->courseCode}}-{{$myAttendance->courseName}}</td>
                       <!-- <td>{{$myAttendance->status}}</td> -->
                       <td>
-                        @if($myAttendance->remark == 'Present')
-                        <span class="badge badge-success">Present</span>
-                        @elseif($myAttendance->remark == 'Absent')
-                        <span class="badge badge-danger">Absent</span>
-                        @elseif($myAttendance->remark == 'Late')
-                        <span class="badge badge-warning">Late</span>
+                        @if($myClassmates->status == 'Regular')
+                        <span class="badge badge-success">Regular</span>
+                        @elseif($myClassmates->status == 'Drop')
+                        <span class="badge badge-danger">Drop</span>
+                        @elseif($myClassmates->status == 'Irregular')
+                        <span class="badge badge-warning">Irregular</span>
                         @endif
                       </td>
 

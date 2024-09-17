@@ -124,7 +124,7 @@
                                 </div>
                                 <div class="text-left">
                                     <p>Lates</p>
-                                    @if($attendanceCounts->absent_count > 0)
+                                    @if($attendanceCounts->late_count > 0)
                                     <span class="h2 d-block">{{ $attendanceCounts->late_count }}</span>
                                     @else
                                     <span class="h2 d-block" style='color: #cc0000'>0</span>

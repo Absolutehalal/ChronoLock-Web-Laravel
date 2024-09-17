@@ -98,14 +98,14 @@ class StudentController extends Controller
 
         // Fetch schedules for today that belong to the authenticated user
         $todaySchedules =  DB::table('student_masterlists')
-            ->join('class_lists', 'class_lists.classID', '=', 'student_masterlists.classID')
-            ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
-            ->join('users', 'users.idNumber', '=', 'student_masterlists.userID')
-            ->where('student_masterlists.userID', '=', $userID)
-            ->where('schedules.day', '=', $today)
-            ->where('schedules.scheduleStatus', '=', 'With Class')
-            ->orderBy('schedules.startTime', 'asc')
-            ->get();
+        ->join('class_lists', 'class_lists.classID', '=', 'student_masterlists.classID')
+        ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
+        ->join('users', 'users.idNumber', '=', 'schedules.userID')
+        ->where('student_masterlists.userID', '=', $userID)
+        ->where('schedules.day', '=', $today)
+        ->where('schedules.scheduleStatus', '=', 'With Class')
+        ->orderBy('schedules.startTime', 'asc')
+        ->get();
 
         // dd($today);
 

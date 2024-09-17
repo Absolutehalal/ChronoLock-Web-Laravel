@@ -218,7 +218,7 @@
                 <ul id="emailError"></ul>
                 <div class="form-group">
                   <label>Email</label>
-                  <input type="text" class="form-control border border-dark" id="email" name="email" placeholder="Enter Email" autocomplete="true" />
+                  <input type="text" class="form-control border border-dark" id="email" name="email" placeholder="Enter Email" autocomplete="true" oninput="this.value = this.value.toLowerCase()" />
                 </div>
               </div>
 
@@ -356,7 +356,7 @@
                 <ul id="editEmailError"></ul>
                 <div class="form-group">
                   <label>Email</label>
-                  <input type="text" class="userEmail form-control border border-dark" id="edit_email" name="userEmail" placeholder="ex. chrono@my.cspc.edu.ph">
+                  <input type="text" class="userEmail form-control border border-dark" id="edit_email" name="userEmail" placeholder="ex. chrono@my.cspc.edu.ph" oninput="this.value = this.value.toLowerCase()">
 
                 </div>
               </div>
