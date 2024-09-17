@@ -54,10 +54,22 @@
               <div class="sub-menu">
                 @forelse($classSchedules as $classSchedule)
                 @csrf
+
+
+                @php
+                $str = "{{$classSchedule->courseName}}";
+                $length = strlen($str);
+                @endphp
+
+                @if($length > 24)
+                <li>
+                  <a class="section" href="{{ route('studentViewAttendance',  [ base64_encode( $classSchedule->classID)]) }}">{{$classSchedule->courseCode}} |<br> {{$classSchedule->courseName}}</a>
+                </li>
+                @else
                 <li>
                   <a class="section" href="{{ route('studentViewAttendance',  [ base64_encode( $classSchedule->classID)]) }}">{{$classSchedule->courseCode}} | {{$classSchedule->courseName}}</a>
                 </li>
-
+                @endif
                 @empty
                 <li>
                   <a class="section" href="" # data-toggle="tooltip" title="Enroll Schedule First"> EMPTY </a>

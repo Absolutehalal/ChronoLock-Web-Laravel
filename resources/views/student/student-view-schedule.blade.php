@@ -163,7 +163,7 @@
                                                     <img class="rounded-circle" id="instructorAvatar" alt="Instructor Profile" width="150" height="150" >
                                                 </div>
                                                 <div class="card-body">
-                                                    <h4> <input type="text" class="input form-control" id="instFirstNameAndLastName" name="instFirstNameAndLastName" disable> </h4>
+                                                    <h4> <input type="text" class="input form-control" id="instFirstNameAndLastName" name="instFirstNameAndLastName" disabled> </h4>
                                                     <form id="clearJoinClass" method="post">
                                                         @csrf
                                                         @method('post')
@@ -179,20 +179,20 @@
                                                 <div class="text-center pb-4">
                                                     <h6 class="pb-2">Program</h6>
                                                     <div class="form-group">
-                                                        <input type="text" class="input form-control" id="program" name="program" disable>
+                                                        <input type="text" class="input form-control" id="program" name="program" disabled>
                                                     </div>
                                                 </div>
                                                 <div class="text-center pb-4">
                                                     <h6 class="pb-2">Year & Section</h6>
                                                     <div class="form-group">
-                                                        <input type="text" class="input form-control" id="yearAndSection" name="yearAndSection" disable>
+                                                        <input type="text" class="input form-control" id="yearAndSection" name="yearAndSection" disabled>
                                                     </div>
                                                 </div>
                                                 <div class="text-center pb-4">
                                                     <ul id="sectionError"></ul>
                                                     <h6 class="pb-2">Schedule</h6>
                                                     <div class="form-group">
-                                                        <input type="text" class="input form-control" id="startTimeAndEndTime" name="startTimeAndEndTime" disable>
+                                                        <input type="text" class="input form-control" id="startTimeAndEndTime" name="startTimeAndEndTime" disabled>
                                                     </div>
                                                 </div>
                                             </div>
