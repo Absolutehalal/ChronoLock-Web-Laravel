@@ -124,6 +124,8 @@
                     <tr>
                       <th>#</th>
                       <th>User ID</th>
+                      <th>First Name</th>
+                      <th>Last Name</th>
                       <th>Action</th>
                       <th>Date</th>
                       <th>Time</th>
@@ -135,6 +137,8 @@
                     <tr>
                       <td> {{$counter}} </td>
                       <td> {{$adminLog->userID}} </td>
+                      <td> {{$adminLog->firstName}} </td>
+                      <td> {{$adminLog->lastName}} </td>
                       <td> {{$adminLog->action}} </td>
                       <td> {{$adminLog->formatted_date}} </td>
                       <td> {{$adminLog->formatted_time}} </td>
@@ -198,6 +202,8 @@
                     <tr>
                       <th>#</th>
                       <th>User ID</th>
+                      <th>First Name</th>
+                      <th>Last Name</th>
                       <th>Action</th>
                       <th>Date</th>
                       <th>Time</th>
@@ -208,11 +214,9 @@
                     @foreach ($labInChargeLogs as $labInChargeLog)
                     <tr>
                       <td> {{$counter}} </td>
-                      <td>
-
-                        {{$labInChargeLog->userID}}
-
-                      </td>
+                      <td>{{$labInChargeLog->userID}}</td>
+                      <td> {{$labInChargeLog->firstName}} </td>
+                      <td> {{$labInChargeLog->lastName}} </td>
                       <td> {{$labInChargeLog->action}} </td>
                       <td> {{$labInChargeLog->formatted_date}} </td>
                       <td> {{$labInChargeLog->formatted_time}} </td>
@@ -274,6 +278,8 @@
                     <tr>
                       <th>#</th>
                       <th>User ID</th>
+                      <th>First Name</th>
+                      <th>Last Name</th>
                       <th>Action</th>
                       <th>Date</th>
                       <th>Time</th>
@@ -285,6 +291,8 @@
                     <tr>
                       <td> {{$counter}} </td>
                       <td> {{$technicianLog->userID}} </td>
+                      <td> {{$technicianLog->firstName}} </td>
+                      <td> {{$technicianLog->lastName}} </td>
                       <td> {{$technicianLog->action}} </td>
                       <td> {{$technicianLog->formatted_date}} </td>
                       <td> {{$technicianLog->formatted_time}} </td>
@@ -344,6 +352,8 @@
                     <tr>
                       <th>#</th>
                       <th>User ID</th>
+                      <th>First Name</th>
+                      <th>Last Name</th>
                       <th>Action</th>
                       <th>Date</th>
                       <th>Time</th>
@@ -355,6 +365,8 @@
                     <tr>
                       <td> {{$counter}} </td>
                       <td> {{$facultyLog->userID}} </td>
+                      <td> {{$facultyLog->firstName}} </td>
+                      <td> {{$facultyLog->lastName}} </td>
                       <td> {{$facultyLog->action}} </td>
                       <td> {{$facultyLog->formatted_date}} </td>
                       <td> {{$facultyLog->formatted_time}} </td>
@@ -413,6 +425,8 @@
                     <tr>
                       <th>#</th>
                       <th>User ID</th>
+                      <th>First Name</th>
+                      <th>Last Name</th>
                       <th>Action</th>
                       <th>Date</th>
                       <th>Time</th>
@@ -424,6 +438,8 @@
                     <tr>
                       <td> {{$counter}} </td>
                       <td> {{$studentLog->userID}} </td>
+                      <td> {{$studentLog->firstName}} </td>
+                      <td> {{$studentLog->lastName}} </td>
                       <td> {{$studentLog->action}} </td>
                       <td> {{$studentLog->formatted_date}} </td>
                       <td> {{$studentLog->formatted_time}} </td>

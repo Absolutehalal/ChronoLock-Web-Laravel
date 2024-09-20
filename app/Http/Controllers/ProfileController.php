@@ -99,8 +99,6 @@ class ProfileController extends Controller
                 $user->lastName = $request->get('profile_lastName');
                 $user->idNumber = $request->get('profile_idNumber');
                 $user->email = $request->get('profile_email');
-                $user->password = $request->get('profile_password');
-
                 // Only update the password if it's not empty
                 if ($request->filled('profile_password')) {
                     $user->password = $request->get('profile_password');
