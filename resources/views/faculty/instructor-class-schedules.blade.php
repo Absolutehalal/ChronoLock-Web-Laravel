@@ -233,7 +233,7 @@
                 <ul id="userIDError"></ul>
                 <div class="form-group">
                   <label>User ID</label>
-                  <input type="text" class="form-control border border-dark" placeholder="Enter Your User ID" id="userID" name="userID">
+                  <input type="text" class="form-control border border-dark" placeholder="Enter Your User ID" id="userID" name="userID" value="{{ Auth::user()->idNumber }}" disabled>
                 </div>
                 <ul id="semesterError"></ul>
                 <div class="form-group">

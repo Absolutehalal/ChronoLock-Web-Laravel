@@ -77,7 +77,7 @@ $(document).on('pointerup', '.activateBtn', function(e) {
 
               // $('#updateUserModal').find('input').val('');
 
-               window.location.href = "/RFIDManagementPage"
+               window.location.href = "/pendingRFIDPage"
             }  else if ((response.status == 500)) {
                 $('#rfidError').html("");
                 $('#userIDError').html("");

@@ -123,7 +123,15 @@
                   <td> {{$user->firstName}} </td>
                   <td> {{$user->lastName}} </td>
                   <td> {{$user->idNumber}} </td>
-                  <td> {{$user->userType}} </td>
+                  <td>
+                    @if($user->userType == 'Admin' || $user->userType == 'Technician' || $user->userType == 'Lab-in-Charge')
+                    <span class="badge badge-success">Admin</span>
+                    @elseif($user->userType == 'Faculty')
+                    <span class="badge badge-danger">Faculty</span>
+                    @elseif($user->userType == 'Student')
+                    <span class="badge badge-warning">Student</span>
+                    @endif
+                  </td>
                   <td> {{$user->email}} </td>
                   <td class="text-center">
                     <img src="{{ $user->avatar ?? asset('images/User Icon.png') }}" alt="Avatar" width="35" height="35" class="rounded">

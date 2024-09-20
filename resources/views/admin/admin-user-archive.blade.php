@@ -46,7 +46,7 @@
                     <!-- Navigation -->
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{ route('index') }}">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('index') }}">Dashboard</a></li>
                             <li class="breadcrumb-item"><a href="{{ route('userManagement') }}">User Management</a></li>
                             <li class="breadcrumb-item active"><a href="{{ route('archive') }}">Archive</a></li>
                         </ol>
@@ -90,12 +90,21 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @php $counter = 1; @endphp
                                 @foreach ($archiveUsers as $user)
                                 <tr>
-                                    <td> {{$user->id}} </td>
+                                    <td> {{$counter}} </td>
                                     <td> {{$user->firstName}} </td>
                                     <td> {{$user->lastName}} </td>
-                                    <td> {{$user->userType}} </td>
+                                    <td>
+                                        @if($user->userType == 'Admin' || $user->userType == 'Technician' || $user->userType == 'Lab-in-Charge')
+                                        <span class="badge badge-success">Admin</span>
+                                        @elseif($user->userType == 'Faculty')
+                                        <span class="badge badge-danger">Faculty</span>
+                                        @elseif($user->userType == 'Student')
+                                        <span class="badge badge-warning">Student</span>
+                                        @endif
+                                    </td>
                                     <td> {{$user->email}} </td>
                                     <th>
                                         <!-- Example single primary button -->
@@ -127,6 +136,7 @@
                                         </div>
                                     </th>
                                 </tr>
+                                @php $counter++; @endphp
                                 @endforeach
                             </tbody>
                         </table>
@@ -191,12 +201,12 @@
                 });
             });
         });
-        
+
         document.addEventListener('DOMContentLoaded', function() {
             const restoreAllButton = document.getElementById('restore-all-button');
             restoreAllButton.addEventListener('click', function(event) {
                 event.preventDefault(); // Prevent the default action (navigation)
-                
+
                 Swal.fire({
                     title: 'Are you sure?',
                     text: "You are about to restore all users.",

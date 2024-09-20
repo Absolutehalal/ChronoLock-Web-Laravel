@@ -74,9 +74,10 @@
             </div> -->
           </div>
           <div class="card-body col-md-12">
-            <table id="exampleTable" class="table table-bordered table-hover no-wrap" style="width:100%">
+            <table id="rfidTable" class="table table-bordered table-hover no-wrap" style="width:100%">
               <thead class="table-dark">
                 <tr>
+                  <th>#</th>
                   <th>User ID</th>
                   <th>Name</th>
                   <th>RFID Code</th>
@@ -86,9 +87,11 @@
                 </tr>
               </thead>
               <tbody>
+                @php $counter = 1; @endphp
                 @foreach($RFID_Accounts as $RFID_Account)
                 @csrf
                 <tr>
+                  <td>{{$counter}}</td>
                   <td>{{ $RFID_Account->idNumber }}</td>
                   <td>{{ $RFID_Account->firstName }} {{ $RFID_Account->lastName }}</td>
                   <td>{{ $RFID_Account->RFID_Code }}</td>
@@ -123,6 +126,7 @@
                     </div>
                   </th>
                 </tr>
+                @php $counter++; @endphp
                 @endforeach
               </tbody>
             </table>

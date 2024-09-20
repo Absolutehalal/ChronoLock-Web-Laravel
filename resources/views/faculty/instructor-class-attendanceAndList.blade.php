@@ -41,7 +41,7 @@
           <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="{{ route('instructorIndex') }}">Dashboard</a></li>
-              <li class="breadcrumb-item active"><a href="inst-class-record.php">Class Attendance & Class List</a></li>
+              <li class="breadcrumb-item active"><a href="inst-class-record.php">Class Attendance & Student List</a></li>
             </ol>
           </nav>
 
@@ -265,9 +265,10 @@
                           <th>Student Name</th>
                           <th>Student ID</th>
                           <th>Course</th>
-                          <th>Year & Section</th>
-                          <th>Remark</th>
-                          <th>Actions</th>
+                          <th>Program</th>
+                          <th>Yr. & Sec.</th>
+                          <th>Remarks</th>
+                          <th>Action</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -278,6 +279,7 @@
                           <td>{{ date('h:i A', strtotime($studAttendance->time)) }}</td>
                           <td>{{$studAttendance->firstName}} {{$studAttendance->lastName}}</td>
                           <td>{{$studAttendance->idNumber}}</td>
+                          <td>{{$studAttendance->courseName}}</td>
                           <td>{{$studAttendance->program}}</td>
                           <td>{{$studAttendance->year}}-{{$studAttendance->section}} </td>
                           <td>
@@ -300,9 +302,9 @@
                                 <button class="dropdown-item btn-sm editAttendanceBtn" type="button" data-toggle="modal" data-target="#studentUpdateAttendanceModal" value="{{$studAttendance->attendanceID}}">
                                   <i class="mdi mdi-circle-edit-outline text-warning"></i>
                                   Edit</button>
-                                <button class="dropdown-item btn-sm deleteAttendanceBtn" type="button" data-toggle="modal" data-target="#studentDeleteAttendanceModal" value="{{$studAttendance->attendanceID}}">
+                                <!-- <button class="dropdown-item btn-sm deleteAttendanceBtn" type="button" data-toggle="modal" data-target="#studentDeleteAttendanceModal" value="{{$studAttendance->attendanceID}}">
                                   <i class="mdi mdi-trash-can text-danger"></i>
-                                  Delete</button>
+                                  Delete</button> -->
                               </div>
                             </div>
                           </th>
@@ -320,7 +322,7 @@
               <div class="tab-pane fade" id="pills-classList" role="tabpanel" aria-labelledby="pills-classList-tab">
                 <div class="row">
                   <div class="col-xl-9 col-md-9">
-                  
+
                     <div class="dropdown d-inline-block mb-3">
                       <form method="GET" action="">
                         <button class="btn btn-primary btn-sm dropdown-toggle fw-bold" type="button" id="studentStatusDropdown" data-toggle="dropdown" aria-expanded="false">
@@ -345,7 +347,7 @@
                   </div>
 
                   <div class="col-xl-3 col-md-3 d-flex justify-content-end">
-                  
+
                     <div class="dropdown d-inline-block mb-3 ">
                       <button class="btn btn-warning btn-sm fw-bold" id="resetButton" type="button">
                         <i class="mdi mdi-alpha-r-box"></i>
@@ -356,10 +358,10 @@
                 </div>
 
 
-                <!-- Class List Table -->
+                <!-- Student List Table -->
                 <div class="card card-default shadow">
                   <div class="card-header">
-                    <h1>My Class List</h1>
+                    <h1>Student List</h1>
                   </div>
                   <div class="card-body ">
                     <table id="studentListTable" class="table table-bordered table-hover no-wrap" style="width:100%">
@@ -398,10 +400,12 @@
                               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 <button class="dropdown-item btn-sm editListBtn" type="button" data-toggle="modal" data-target="#studentUpdateListModal" value="{{$student->MIT_ID}}">
                                   <i class="mdi mdi-circle-edit-outline text-warning"></i>
-                                  Edit </button>
+                                  Edit
+                                </button>
                                 <button class="dropdown-item btn-sm deleteListBtn" type="button" data-toggle="modal" data-target="#studentDeleteListModal" value="{{$student->MIT_ID}}">
                                   <i class="mdi mdi-trash-can text-danger"></i>
-                                  Delete </button>
+                                  Delete
+                                </button>
                               </div>
                             </div>
                           </th>
@@ -586,7 +590,7 @@
                   <i class="fa-solid fa-trash-can text-danger" style="text-align:center; font-size:50px; padding:1rem;"></i>
                 </div>
                 <div class="row">
-                  <h4 style="text-align:center;"> Are you sure you want to delete this Student in your Class List?</h4>
+                  <h4 style="text-align:center;"> Are you sure you want to delete this Student in your Student List?</h4>
                 </div>
             </div> <!-- Modal Boday End-->
 

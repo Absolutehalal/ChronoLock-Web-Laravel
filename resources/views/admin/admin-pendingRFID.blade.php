@@ -83,7 +83,7 @@
 
 
           <div class="card-body">
-            <table id="exampleTable" class="table table-bordered table-hover nowrap" style="width:100%">
+            <table id="rfidTable" class="table table-bordered table-hover nowrap" style="width:100%">
               <thead class="table-dark">
                 <tr>
                   <th scope="col">#</th>
@@ -92,10 +92,11 @@
                 </tr>
               </thead>
               <tbody>
+              @php $counter = 1; @endphp
                 @foreach($pendingRFID as $pendingRFID)
                 @csrf
                 <tr>
-                  <td>{{ $pendingRFID->id }}</td>
+                  <td>{{$counter}}</td>
                   <td>{{ $pendingRFID->RFID_Code }}</td>
                   <th>
                     <!-- Example single primary button -->
@@ -117,6 +118,7 @@
                     </div>
                   </th>
                 </tr>
+                @php $counter++; @endphp
                 @endforeach
               </tbody>
             </table>

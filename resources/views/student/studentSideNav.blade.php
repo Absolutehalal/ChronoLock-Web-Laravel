@@ -61,7 +61,7 @@
                 $length = strlen($str);
                 @endphp
 
-                @if($length > 24)
+                @if($length > 15)
                 <li>
                   <a class="section" href="{{ route('studentViewAttendance',  [ base64_encode( $classSchedule->classID)]) }}">{{$classSchedule->courseCode}} |<br> {{$classSchedule->courseName}}</a>
                 </li>

@@ -17,6 +17,7 @@ class RFIDController extends Controller
     public function pendingRFID()
     {
         $pendingRFID = DB::table('rfid_temps')
+            ->orderBy('id', 'desc')
             ->get();
         return view('admin.admin-pendingRFID', ['pendingRFID' => $pendingRFID]);
     }
@@ -157,6 +158,7 @@ class RFIDController extends Controller
             ->join('users', 'rfid_accounts.RFID_Code', '=', 'users.RFID_Code')
             // ->where('userType', '!=', 'Admin')
             ->select('users.idNumber', 'users.firstName', 'users.lastName', 'rfid_accounts.RFID_Code', 'users.userType', 'rfid_accounts.RFID_Status', 'rfid_accounts.id')
+            ->orderBy('id', 'desc')
             ->get();
 
         return view('admin.admin-RFIDAccount', ['RFID_Accounts' => $RFID_Accounts]);
@@ -245,7 +247,10 @@ class RFIDController extends Controller
     public function autocomplete(Request $request)
     {
         $query = $request->get('query');
-        $number = User::where('idNumber', 'LIKE', "%{$query}%")->get(['idNumber']);
+        // Modify the query to exclude users where RFID_Code is not null
+        $number = User::where('idNumber', 'LIKE', "%{$query}%")
+            ->whereNull('RFID_Code')
+            ->get(['idNumber']);
 
         if ($number->isNotEmpty()) {
             return response()->json(['number' => $number]);
