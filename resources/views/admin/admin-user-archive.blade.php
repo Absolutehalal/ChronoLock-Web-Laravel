@@ -97,8 +97,12 @@
                                     <td> {{$user->firstName}} </td>
                                     <td> {{$user->lastName}} </td>
                                     <td>
-                                        @if($user->userType == 'Admin' || $user->userType == 'Technician' || $user->userType == 'Lab-in-Charge')
-                                        <span class="badge badge-success">Admin</span>
+                                        @if($user->userType == 'Admin')
+                                        <span class="badge badge-primary">Admin</span>
+                                        @elseif($user->userType == 'Technician')
+                                        <span class="badge badge-primary">Technician</span>
+                                        @elseif($user->userType == 'Lab-in-Charge')
+                                        <span class="badge badge-primary">Lab-in-Charge</span>
                                         @elseif($user->userType == 'Faculty')
                                         <span class="badge badge-danger">Faculty</span>
                                         @elseif($user->userType == 'Student')

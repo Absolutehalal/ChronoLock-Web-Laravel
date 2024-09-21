@@ -124,8 +124,12 @@
                   <td> {{$user->lastName}} </td>
                   <td> {{$user->idNumber}} </td>
                   <td>
-                    @if($user->userType == 'Admin' || $user->userType == 'Technician' || $user->userType == 'Lab-in-Charge')
-                    <span class="badge badge-success">Admin</span>
+                    @if($user->userType == 'Admin')
+                    <span class="badge badge-primary">Admin</span>
+                    @elseif($user->userType == 'Technician')
+                    <span class="badge badge-primary">Technician</span>
+                    @elseif($user->userType == 'Lab-in-Charge')
+                    <span class="badge badge-primary">Lab-in-Charge</span>
                     @elseif($user->userType == 'Faculty')
                     <span class="badge badge-danger">Faculty</span>
                     @elseif($user->userType == 'Student')
@@ -364,7 +368,7 @@
                 <ul id="editEmailError"></ul>
                 <div class="form-group">
                   <label>Email</label>
-                  <input type="text" class="userEmail form-control border border-dark" id="edit_email" name="userEmail" placeholder="ex. chrono@my.cspc.edu.ph" oninput="this.value = this.value.toLowerCase()">
+                  <input type="text" class="userEmail form-control border border-dark" id="edit_email" name="userEmail" placeholder="ex. chronolock@my.cspc.edu.ph" oninput="this.value = this.value.toLowerCase()">
 
                 </div>
               </div>
@@ -391,7 +395,6 @@
       </div>
     </div>
   </div>
-
 
   <script>
     // Add event listener to the delete buttons
@@ -600,7 +603,9 @@
               Swal.fire({
                 icon: "error",
                 title: "Oops...",
-                text: "Invalid email. Please use a CSPC email.",
+                text: response.message,
+                timer: 5000,
+                timerProgressBar: true,
               });
 
             } else if (response.status === 409) {
@@ -745,10 +750,12 @@
               Swal.fire({
                 icon: "error",
                 title: "Oops...",
-                text: "Invalid email. Please use a CSPC email.",
+                text: response.message,
+                timer: 5000,
+                timerProgressBar: true,
               });
               $('.updateUser').text('Update');
-              $("#updateUserModal .close").click()
+              // $("#updateUserModal .close").click()
             } else if ((response.status == 500)) {
               $('#editFirstNameError').html("");
               $('#editLastNameError').html("");

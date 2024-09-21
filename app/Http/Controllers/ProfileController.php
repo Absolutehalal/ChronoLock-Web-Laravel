@@ -1,11 +1,14 @@
 <?php
+
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Models\User;
+
 class ProfileController extends Controller
 {
     public function show()
@@ -55,9 +58,10 @@ class ProfileController extends Controller
 
             // Validate that the email has the required domain
             $email = $request->input('profile_email');
-
+            
             $password = $request->input('profile_password');
-
+            // Get the authenticated user type
+            $userType = Auth::user()->userType;
 
             // Check if the idNumber is already taken by another user
             $checkIdNumber = User::where('idNumber', $request->input('profile_idNumber'))
@@ -79,12 +83,20 @@ class ProfileController extends Controller
                     'status' => 409,
                     'message' => 'Email has already been taken.',
                 ]);
-            } else if (!str_ends_with($email, '@my.cspc.edu.ph') && !str_ends_with($email, '@cspc.edu.ph')) {
+            } else if (!str_ends_with($email, '@my.cspc.edu.ph') && $userType === 'Student') {
                 return response()->json([
                     'status' => 409,
-                    'message' => 'Use your CSPC email only.',
+                    'message' => 'Use your CSPC Student Email only.',
                 ]);
+            } else if ($userType === 'Admin' || $userType === 'Faculty' || $userType === 'Lab-in-Charge' || $userType === 'Technician') {
+                if (!str_ends_with($email, '@cspc.edu.ph')) {
+                    return response()->json([
+                        'status' => 409,
+                        'message' => 'Use your CSPC Employee Email only.',
+                    ]);
+                }
             }
+
 
             // Get the user by ID
             $user = User::find($id);

@@ -115,7 +115,7 @@
             <div class="col-lg-6">
               <div class="form-group mt-4">
                 <label for="edit-userType">User Type</label>
-                <input type="text" class="form-control border-dark" id="edit-userType" name="update-userType" placeholder="Input User Type" readonly>
+                <input type="text" class="profile_userType form-control border-dark" id="edit-userType" name="update-userType" placeholder="Input User Type" readonly>
               </div>
             </div>
 

@@ -30,7 +30,6 @@ class UserController extends Controller
     public function import_excel(Request $request)
     {
         try {
-
             // Validate the incoming request to ensure a file is present
             $request->validate([
                 'excel-file' => 'required|file|mimes:xls,xlsx'
@@ -103,7 +102,7 @@ class UserController extends Controller
 
             // Check if the email has the required domain (@cspc.edu.ph)
             if (!str_ends_with($request->email, '@cspc.edu.ph')) {
-                Alert::info("Info", "Please use CSPC email only.")
+                Alert::info("Info", "Please use CSPC Employee Email only.")
                     ->autoClose(3000)
                     ->timerProgressBar()
                     ->showCloseButton();
@@ -195,7 +194,7 @@ class UserController extends Controller
             'userIdNumber' => 'required',
         ]);
 
-        $email = $request->get('userEmail');
+        $email = $request->input('userEmail');
         $emailDomain = substr(strrchr($email, "@"), 1);
         $checkEmail = User::where('email', 'LIKE',  $email)->value('email');
 
@@ -205,79 +204,85 @@ class UserController extends Controller
                 'errors' => $validator->messages()
             ]);
         } else {
-            if ($emailDomain !== 'my.cspc.edu.ph' && $emailDomain !== 'cspc.edu.ph') {
+
+            // If the user type is 'faculty, 'lab-in-charge', 'technician', check that the domain is 'cspc.edu.ph'
+            if (in_array($request->input('updateUserType'), ['Admin', 'Faculty', 'Lab-in-Charge', 'Technician']) && $emailDomain !== 'cspc.edu.ph') {
                 return response()->json([
                     'status' => 300,
+                    'message' => 'Invalid email. Please use a valid CSPC Employee Email.'
+                ]);
+            } else if ($request->input('updateUserType') === 'Student' && $emailDomain !== 'my.cspc.edu.ph') {
+                return response()->json([
+                    'status' => 300,
+                    'message' => 'Invalid email. Please use a valid CSPC Student Email.'
                 ]);
             } else if ($checkEmail == $email) {
 
                 // Check if the idNumber is already taken by another user
-                $checkIdNumber = User::where('idNumber', $request->input('userIdNumber'))
+                $checkIdNumberDB = User::where('idNumber', $request->input('userIdNumber'))
                     ->where('id', '!=', $id)
                     ->first();
 
                 // Check if the email is already taken by another user
-                $checkEmail = User::where('email', $request->input('userEmail'))
+                $checkEmailDB = User::where('email', $request->input('userEmail'))
                     ->where('id', '!=', $id)
                     ->first();
 
-                if ($checkIdNumber) {
+                if ($checkIdNumberDB) {
                     return response()->json([
                         'status' => 409,
                         'message' => 'ID Number has already been taken.',
                     ]);
-                } else if ($checkEmail) {
+                } else if ($checkEmailDB) {
                     return response()->json([
                         'status' => 409,
                         'message' => 'Email has already been taken.',
                     ]);
                 }
-                $user = User::find($id);
-                $updatedID = DB::table('users')->where('id', $id)->value('id');
-                $idNumber = DB::table('users')->where('id', $updatedID)->value('idNumber');
-                $firstName = DB::table('users')->where('id', $updatedID)->value('firstName');
-                $lastName = DB::table('users')->where('id', $updatedID)->value('lastName');
-                $userType = DB::table('users')->where('id', $updatedID)->value('userType');
-                $email = DB::table('users')->where('id', $updatedID)->value('email');
-                if ($user) {
-                    $user->firstName = $request->input('updateFirstName');
-                    $user->lastName = $request->input('updateLastName');
-                    $user->userType = $request->input('updateUserType');
-                    $user->email = $request->input('userEmail');
-                    $user->idNumber = $request->input('userIdNumber');
-                    $user->update();
+            }
 
-                    // Start Logs
-                    $inputFirstName = $request->input('updateFirstName');
-                    $inputLastName =  $request->input('updateLastName');
-                    $inputUserType = $request->input('updateUserType');
-                    $inputEmail =  $request->input('userEmail');
-                    $inputIdNumber = $request->input('userIdNumber');
-                    $id = Auth::id();
-                    $userID = DB::table('users')->where('id', $id)->value('idNumber');
-                    date_default_timezone_set("Asia/Manila");
-                    $date = date("Y-m-d");
-                    $time = date("H:i:s");
-                    if (($inputFirstName == $firstName) && ($inputLastName == $lastName) && ($inputUserType == $userType) && ($inputEmail == $email) && ($inputIdNumber == $idNumber)) {
-                        $action = "Attempt update on $email account : $userType User ID - $idNumber";
-                    } else {
-                        $action = "Updated $email account : $inputUserType User ID - $idNumber";
-                    }
-                    DB::table('user_logs')->insert([
-                        'userID' => $userID,
-                        'action' => $action,
-                        'date' => $date,
-                        'time' => $time,
-                    ]);
-                    // END Logs
+            $user = User::find($id);
+            $updatedID = DB::table('users')->where('id', $id)->value('id');
+            $idNumber = DB::table('users')->where('id', $updatedID)->value('idNumber');
+            $firstName = DB::table('users')->where('id', $updatedID)->value('firstName');
+            $lastName = DB::table('users')->where('id', $updatedID)->value('lastName');
+            $userType = DB::table('users')->where('id', $updatedID)->value('userType');
+            $email = DB::table('users')->where('id', $updatedID)->value('email');
 
-                    return response()->json([
-                        'status' => 200,
-                    ]);
+            if ($user) {
+                $user->firstName = $request->input('updateFirstName');
+                $user->lastName = $request->input('updateLastName');
+                $user->userType = $request->input('updateUserType');
+                $user->email = $request->input('userEmail');
+                $user->idNumber = $request->input('userIdNumber');
+                $user->update();
+
+                // Start Logs
+                $inputFirstName = $request->input('updateFirstName');
+                $inputLastName =  $request->input('updateLastName');
+                $inputUserType = $request->input('updateUserType');
+                $inputEmail =  $request->input('userEmail');
+                $inputIdNumber = $request->input('userIdNumber');
+                $id = Auth::id();
+                $userID = DB::table('users')->where('id', $id)->value('idNumber');
+                date_default_timezone_set("Asia/Manila");
+                $date = date("Y-m-d");
+                $time = date("H:i:s");
+                if (($inputFirstName == $firstName) && ($inputLastName == $lastName) && ($inputUserType == $userType) && ($inputEmail == $email) && ($inputIdNumber == $idNumber)) {
+                    $action = "Attempt update on $email account : $userType User ID - $idNumber";
+                } else {
+                    $action = "Updated $email account : $inputUserType User ID - $idNumber";
                 }
-            } else if ($checkEmail != "") {
+                DB::table('user_logs')->insert([
+                    'userID' => $userID,
+                    'action' => $action,
+                    'date' => $date,
+                    'time' => $time,
+                ]);
+                // END Logs
+
                 return response()->json([
-                    'status' => 500,
+                    'status' => 200,
                 ]);
             }
         }
@@ -340,16 +345,24 @@ class UserController extends Controller
                 ]);
             }
 
-            // Check if the email domain is 'my.cspc.edu.ph' & 'cspc.edu.ph'
-            if ($emailDomain !== 'my.cspc.edu.ph' && $emailDomain !== 'cspc.edu.ph') {
+            // check that the domain is 'cspc.edu.ph'
+            if (in_array($request->input('userType'), ['Faculty', 'Lab-in-Charge', 'Technician']) && $emailDomain !== 'cspc.edu.ph') {
                 return response()->json([
                     'status' => 300,
+                    'message' => 'Invalid email. Please use a valid CSPC Employee Email.'
                 ]);
-            } elseif ($email == $checkEmail) {
+            }
+            // Check if the email domain is 'my.cspc.edu.ph' 
+            else if ($request->input('userType') === 'Student' && $emailDomain !== 'my.cspc.edu.ph') {
+                return response()->json([
+                    'status' => 300,
+                    'message' => "Invalid email. Please use a CSPC Student email."
+                ]);
+            } else if ($email == $checkEmail) {
                 return response()->json([
                     'status' => 100,
                 ]);
-            } elseif ($checkIdNumber) {
+            } else if ($checkIdNumber) {
                 return response()->json([
                     'status' => 101,
                 ]);
@@ -492,7 +505,7 @@ class UserController extends Controller
                 ]);
                 // END Logs
 
-                Alert::success('Success', 'User deleted permanently')
+                Alert::success('Success', 'User Deleted Permanently')
                     ->autoClose(5000)
                     ->timerProgressBar()
                     ->showCloseButton();
@@ -534,7 +547,7 @@ class UserController extends Controller
                 // END Logs
 
 
-                Alert::success('Success', 'User deleted permanently')
+                Alert::success('Success', 'User Deleted Permanently')
                     ->autoClose(5000)
                     ->timerProgressBar()
                     ->showCloseButton();
