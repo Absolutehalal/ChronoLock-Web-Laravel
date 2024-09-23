@@ -2,7 +2,7 @@
 $servername = "127.0.0.1";
 $username = "root";
 $password = "";
-$dbname = "chronolock";
+$dbname = "sql12724238";
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
@@ -119,6 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             exit();
         }
 
+        $current_date= $_GET['current_date'];
         $current_day_number =  $_GET['current_day_number'];
         $current_time =  $_GET['current_time'];
         $current_date =  $_GET['current_date'];
@@ -127,8 +128,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         users.idNumber = attendances.userID JOIN class_lists ON 
         class_lists.classID = attendances.classID  JOIN schedules ON 
         class_lists.scheduleID = schedules.scheduleID
-        WHERE userType = 'Student' AND day = '$current_day_number' AND '$current_time' BETWEEN startTime AND endTime AND 
-        '$current_date' BETWEEN startDate AND endDate";
+        WHERE userType = 'Student' AND scheduleStatus = 'With Class' AND day = '$current_day_number' AND '$current_time' BETWEEN startTime AND endTime AND 
+        '$current_date' BETWEEN startDate AND endDate AND date = '$current_date'";
 
         $result = $conn->query($sql);
 
@@ -163,7 +164,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         users.idNumber = student_masterlists.userID JOIN class_lists ON 
         class_lists.classID = student_masterlists.classID  JOIN schedules ON 
         class_lists.scheduleID = schedules.scheduleID
-        WHERE userType = 'Student' AND day = '$current_day_number' AND '$current_time' BETWEEN startTime AND endTime AND 
+        WHERE userType = 'Student' AND scheduleStatus= 'With Class' AND day = '$current_day_number' AND '$current_time' BETWEEN startTime AND endTime AND 
         '$current_date' BETWEEN startDate AND endDate";
 
         $result = $conn->query($sql);
@@ -332,7 +333,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             echo json_encode($response);
             exit();
         }
-
+        $current_date = $_GET['current_date'];
         $instructor_ID =  $_GET['instructor_ID'];
         $class_id =  $_GET['class_id'];
         $student_day_number =  $_GET['student_day_number'];
@@ -347,7 +348,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
           ON attendances.classID = class_lists.classID 
           JOIN schedules ON class_lists.scheduleID = schedules.scheduleID  
           WHERE attendances.userID = '$instructor_ID' AND attendances.classID = '$class_id' AND
-          day = '$student_day_number' AND time BETWEEN '$student_startTime_check' AND '$student_endTime_check' AND date BETWEEN '$student_schedule_start_date_check' AND '$student_schedule_end_date_check'";
+          day = '$student_day_number' AND time BETWEEN '$student_startTime_check' AND '$student_endTime_check' AND date BETWEEN '$student_schedule_start_date_check' AND '$student_schedule_end_date_check' AND date = '$current_date'";
 
         $result = $conn->query($sql);
 
@@ -373,7 +374,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             echo json_encode($response);
             exit();
         }
-
+        $current_date = $_GET['current_date'];
         $inst_ID =  $_GET['inst_ID'];
         $class_id =  $_GET['class_id'];
         $day =  $_GET['day'];
@@ -388,7 +389,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
           ON attendances.classID = class_lists.classID 
           JOIN schedules ON class_lists.scheduleID = schedules.scheduleID  
           WHERE attendances.userID = '$inst_ID' AND attendances.classID = '$class_id' AND
-          day = '$day' AND time BETWEEN '$inst_startTime' AND '$inst_endTime' AND date BETWEEN '$instschedule_startDate' AND '$inst_schedule_endDate'";
+          day = '$day' AND time BETWEEN '$inst_startTime' AND '$inst_endTime' AND date BETWEEN '$instschedule_startDate' AND '$inst_schedule_endDate' AND date = '$current_date'";
 
         $result = $conn->query($sql);
 
@@ -414,7 +415,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             echo json_encode($response);
             exit();
         }
-
+        $current_date = $_GET['current_date'];
         $student_ID =  $_GET['student_ID'];
         $class_id =  $_GET['class_id'];
         $day =  $_GET['day'];
@@ -429,7 +430,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
           ON attendances.classID = class_lists.classID 
           JOIN schedules ON class_lists.scheduleID = schedules.scheduleID  
           WHERE attendances.userID = '$student_ID' AND attendances.classID = '$class_id' AND
-          day = '$day' AND time BETWEEN '$inst_startTime' AND '$inst_endTime' AND date BETWEEN '$instschedule_startDate' AND '$inst_schedule_endDate'";
+          day = '$day' AND time BETWEEN '$inst_startTime' AND '$inst_endTime' AND date BETWEEN '$instschedule_startDate' AND '$inst_schedule_endDate' AND date = '$current_date'";
 
         $result = $conn->query($sql);
 
