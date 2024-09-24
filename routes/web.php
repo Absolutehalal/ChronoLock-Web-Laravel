@@ -81,6 +81,8 @@ Route::group(['middleware' => ['auth', 'admin:Admin']], function () {
     Route::get('/archive', [UserController::class, 'userArchive'])->name('archive');
     Route::get('/restore/{id}', [UserController::class, 'restore'])->name('restore');
     Route::get('/restore-all-users', [UserController::class, 'restoreAllUsers'])->name('restoreAllUsers');
+    Route::post('/delete-selected-users', [UserController::class, 'deleteSelectedUsers'])->name('deleteSelectedUsers');
+
 
     //--------END userManagement ROUTES-----------
 

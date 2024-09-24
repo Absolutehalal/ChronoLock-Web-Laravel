@@ -85,95 +85,120 @@
 
         <!-- END -->
 
+
         <!-- table -->
-        <div class="card card-default shadow">
-          <div class="card-header">
-            <h1>User Management</h1>
-            <div class="row">
-              <div class="col-xl-12 col-md-12 d-flex justify-content-end">
-                <div class="dropdown d-inline-block mb-3 mr-3">
-                  <a class="btn btn-primary btn-sm fw-bold" href="archive">
-                    <i class=" mdi mdi-archive"></i>
-                    Archives
-                  </a>
+        <form action="{{ route('deleteSelectedUsers') }}" method="POST" id="bulkDeleteForm">
+          @csrf
+          <div class="card card-default shadow">
+            <div class="card-header">
+              <h1>User Management</h1>
+              <div class="row">
+                <div class="col-xl-12 col-md-12 d-flex justify-content-between">
+                  <div class="mb-3 mr-2">
+                    <button type="button" class="btn btn-outline-dark btn-sm fw-bold" id="selectAllBtn">
+                      <i class="mdi mdi-account"></i> Select All User
+                      <input type="hidden" class="btn btn-danger btn-sm fw-bold" id="selectAll" />
+                    </button>
+                  </div>
+
+                  <div class="mb-3 mr-2">
+                    <button type="button" class="btn btn-outline-danger btn-sm fw-bold" id="deleteSelectedBtn">
+                      <i class="mdi mdi-archive"></i> Delete Selected
+                    </button>
+                  </div>
+
+                  <div class="mb-3">
+                    <a class="btn btn-outline-info btn-sm fw-bold" href="archive">
+                      <i class="mdi mdi-archive"></i> Archives
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div class="card-body">
-            <table id="exampleTable" class="table table-bordered table-hover nowrap" style="width:100%">
-              <thead class="table-dark">
-                <tr>
-                  <th>#</th>
-                  <th>FirstName</th>
-                  <th>LastName</th>
-                  <th>ID Number</th>
-                  <th>UserType</th>
-                  <th>Email</th>
-                  <th>Avatar</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                @php $counter = 1; @endphp
+        </form>
 
-                @foreach ($users as $user)
-                <tr>
-                  <td> {{$counter}} </td>
-                  <td> {{$user->firstName}} </td>
-                  <td> {{$user->lastName}} </td>
-                  <td> {{$user->idNumber}} </td>
-                  <td>
-                    @if($user->userType == 'Admin')
-                    <span class="badge badge-primary">Admin</span>
-                    @elseif($user->userType == 'Technician')
-                    <span class="badge badge-primary">Technician</span>
-                    @elseif($user->userType == 'Lab-in-Charge')
-                    <span class="badge badge-primary">Lab-in-Charge</span>
-                    @elseif($user->userType == 'Faculty')
-                    <span class="badge badge-danger">Faculty</span>
-                    @elseif($user->userType == 'Student')
-                    <span class="badge badge-warning">Student</span>
-                    @endif
-                  </td>
-                  <td> {{$user->email}} </td>
-                  <td class="text-center">
-                    <img src="{{ $user->avatar ?? asset('images/User Icon.png') }}" alt="Avatar" width="35" height="35" class="rounded">
-                  </td>
-                  <th>
-                    <!-- Example single primary button -->
-                    <div class="dropdown d-inline-block">
-                      <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
-                        Actions
+
+        <div class="card-body">
+          <table id="exampleTable" class="table table-bordered table-hover nowrap" style="width:100%">
+            <thead class="table-dark">
+              <tr>
+                <th>#</th>
+                <th>No.</th>
+                <th>FirstName</th>
+                <th>LastName</th>
+                <th>ID Number</th>
+                <th>UserType</th>
+                <th>Email</th>
+                <th>Avatar</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              @php $counter = 1; @endphp
+
+              @foreach ($users as $user)
+              <tr>
+                <td class="text-center">
+                  <input type="checkbox" name="user_ids[]" class="userCheckbox" value="{{ $user->id }}">
+                </td>
+                <td> {{$counter}} </td>
+                <td> {{$user->firstName}} </td>
+                <td> {{$user->lastName}} </td>
+                <td> {{$user->idNumber}} </td>
+                <td>
+                  @if($user->userType == 'Admin')
+                  <span class="badge badge-primary">Admin</span>
+                  @elseif($user->userType == 'Technician')
+                  <span class="badge badge-primary">Technician</span>
+                  @elseif($user->userType == 'Lab-in-Charge')
+                  <span class="badge badge-primary">Lab-in-Charge</span>
+                  @elseif($user->userType == 'Faculty')
+                  <span class="badge badge-danger">Faculty</span>
+                  @elseif($user->userType == 'Student')
+                  <span class="badge badge-warning">Student</span>
+                  @endif
+                </td>
+                <td> {{$user->email}} </td>
+                <td class="text-center">
+                  <img src="{{ $user->avatar ?? asset('images/User Icon.png') }}" alt="Avatar" width="35" height="35" class="rounded">
+                </td>
+                <th>
+                  <!-- Example single primary button -->
+                  <div class="dropdown d-inline-block">
+                    <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+                      Actions
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                      <button class="dropdown-item btn-sm  editBtn" type="button" data-toggle="modal" data-target="#updateUserModal" value="{{$user->id}}">
+                        <i class="mdi mdi-circle-edit-outline text-warning"></i>
+                        Edit</button>
+                      <button class="dropdown-item btn-sm deleteBtn" type="button" data-toggle="modal" data-target="#deleteUserModal" value="{{$user->id}}">
+                        <i class="mdi mdi-archive text-info"></i>
+                        Archive</button>
+
+                      <button class="dropdown-item btn-sm deleteForceBtn" href="#" id="deleteUserBtn" value="{{$user->id}}">
+                        <i class="mdi mdi-trash-can text-danger"></i>
+                        Force Delete
                       </button>
-                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <button class="dropdown-item btn-sm  editBtn" type="button" data-toggle="modal" data-target="#updateUserModal" value="{{$user->id}}">
-                          <i class="mdi mdi-circle-edit-outline text-warning"></i>
-                          Edit</button>
-                        <button class="dropdown-item btn-sm deleteBtn" type="button" data-toggle="modal" data-target="#deleteUserModal" value="{{$user->id}}">
-                          <i class="mdi mdi-archive text-info"></i>
-                          Archive</button>
-
-                        <button class="dropdown-item btn-sm deleteForceBtn" href="#" id="deleteUserBtn" value="{{$user->id}}">
-                          <i class="mdi mdi-trash-can text-danger"></i>
-                          Force Delete
-                        </button>
 
 
-                      </div>
                     </div>
-                  </th>
-                </tr>
+                  </div>
+                </th>
+              </tr>
 
-                @php $counter++; @endphp
-                @endforeach
-              </tbody>
-            </table>
+              @php $counter++; @endphp
+              @endforeach
+            </tbody>
+          </table>
 
-          </div>
+
+
+
         </div>
       </div>
     </div>
+  </div>
   </div>
   </div>
   </div>
@@ -430,6 +455,50 @@
     });
   </script>
 
+  <script>
+    // Function to handle both select/deselect and button click
+    document.getElementById('selectAllBtn').addEventListener('click', function() {
+      var checkBox = document.getElementById('selectAll');
+      checkBox.checked = !checkBox.checked; // Toggle the checkbox state
+
+      // Select/Deselect all checkboxes based on the state of 'selectAll'
+      var checkboxes = document.querySelectorAll('.userCheckbox');
+      for (var checkbox of checkboxes) {
+        checkbox.checked = checkBox.checked;
+      }
+    });
+  </script>
+
+  <script>
+    // Ensure that the script runs after the DOM is fully loaded
+    document.addEventListener('DOMContentLoaded', function() {
+      // Ensure check/uncheck of 'selectAll' directly affects other checkboxes
+      document.getElementById('selectAll').addEventListener('click', function() {
+        var checkboxes = document.querySelectorAll('.userCheckbox');
+        for (var checkbox of checkboxes) {
+          checkbox.checked = this.checked;
+        }
+      });
+    });
+  </script>
+
+  <script>
+    document.getElementById('deleteSelectedBtn').addEventListener('click', function(e) {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, delete it!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          document.getElementById('bulkDeleteForm').submit();
+        }
+      });
+    });
+  </script>
 
 
   <script>

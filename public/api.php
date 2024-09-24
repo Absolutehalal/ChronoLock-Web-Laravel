@@ -119,7 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             exit();
         }
 
-        $current_date= $_GET['current_date'];
+        $current_date = $_GET['current_date'];
         $current_day_number =  $_GET['current_day_number'];
         $current_time =  $_GET['current_time'];
         $current_date =  $_GET['current_date'];

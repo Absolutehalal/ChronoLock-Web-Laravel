@@ -608,6 +608,30 @@ class UserController extends Controller
         return redirect('/userManagementPage');
     }
 
+    public function deleteSelectedUsers(Request $request)
+    {
+        // Ensure that at least one checkbox is selected
+        if (!empty($request->user_ids)) {
+            // Delete the users based on the selected IDs
+            User::whereIn('id', $request->user_ids)->forceDelete();
+
+            Alert::success('Success', 'Users Deleted Successfully')
+                ->autoClose(5000)
+                ->timerProgressBar()
+                ->showCloseButton();
+
+            return back();
+        }
+
+        Alert::info('No Users', 'No selected users to be deleted')
+            ->autoClose(5000)
+            ->timerProgressBar()
+            ->showCloseButton();
+
+        return back();
+    }
+
+
 
     //schedule management page
     public function getSchedules()

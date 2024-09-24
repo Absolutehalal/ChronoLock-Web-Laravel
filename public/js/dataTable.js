@@ -14,6 +14,8 @@ $(document).ready(function () {
         language: {
             searchPlaceholder: "Search Here",
         },
+        order: [[1, "asc"]],
+        columnDefs: [{ type: "id", targets: 2 }],
     });
 
     // Highlight search term
@@ -733,7 +735,7 @@ $(document).ready(function () {
             return false;
         });
     });
-    
+
     // Custom filter time for the DataTable
     $("#timepicker").on("click", function () {
         $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
@@ -767,7 +769,7 @@ $(document).ready(function () {
                 tableHours === selectedHours &&
                 tableMinutes >= selectedMinutes &&
                 tableMinutes < selectedMinutes + 60 // Comparing within the hour range (10:00 AM to 10:59 AM)
-                ) {
+            ) {
                 return true;
             }
 

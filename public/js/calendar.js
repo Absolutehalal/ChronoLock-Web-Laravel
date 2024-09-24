@@ -463,7 +463,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                         // -----------Start delete regular schedule-----------
                         $(document).on(
-                            "click",
+                            "pointerup",
                             ".deleteRegularSchedule",
                             function (e) {
                                 e.preventDefault();
@@ -537,7 +537,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                         // -----------Start edit regular schedule-----------
                         $(document).on(
-                            "click",
+                            "pointerup",
                             ".editRegularSchedule",
                             function (e) {
                                 e.preventDefault();
@@ -747,7 +747,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         // -----------Start edit Make up schedule-----------
 
                         $(document).on(
-                            "click",
+                            "pointerup",
                             ".editMakeUpSchedule",
                             function (e) {
                                 e.preventDefault();
@@ -830,8 +830,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                                     .scheduleID
                                             );
                                             $("#day").val(
-                                                response.makeUpSchedule
-                                                    .day
+                                                response.makeUpSchedule.day
                                             );
                                             // $(
                                             //     "#editMakeUpSelectedFacultyID"
@@ -868,8 +867,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                                 $(".updateEndTime").val(),
                                             updateFaculty:
                                                 $(".updateFaculty").val(),
-                                            day:
-                                                $(".day").val(),
+                                            day: $(".day").val(),
                                         };
                                         console.log(data);
                                         $.ajaxSetup({
