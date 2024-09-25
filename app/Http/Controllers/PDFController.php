@@ -69,7 +69,8 @@ class PDFController extends Controller
             ->join('users', 'schedules.userID', '=', 'users.idNumber')
             ->select('schedules.*', 'users.firstName', 'users.lastName')
             ->where('scheduleType', '=', 'regularSchedule')
-            ->orderby('startTime','ASC')
+            ->orderby('day', 'ASC')
+            ->orderby('startTime', 'ASC')
             ->get();
 
         // Days mapping
@@ -161,13 +162,12 @@ class PDFController extends Controller
                 $students->whereYear('attendances.date', $date->year)
                     ->whereMonth('attendances.date', $date->month);
             }
-           
-            $studentAttendances = $students->orderby('lastName','ASC')->get();
+
+            $studentAttendances = $students->orderby('lastName', 'ASC')->get();
 
             foreach ($studentAttendances as $students) {
                 $students->formatted_date = Carbon::parse($students->date)->format('F j, Y');
                 $students->formatted_time = Carbon::parse($students->time)->format('g:i A');
-               
             }
 
             //   $options = new Options();
@@ -220,13 +220,12 @@ class PDFController extends Controller
                 $faculty->whereYear('attendances.date', $date->year)
                     ->whereMonth('attendances.date', $date->month);
             }
-           
-            $facultyAttendances = $faculty->orderby('lastName','ASC')->get();
+
+            $facultyAttendances = $faculty->orderby('lastName', 'ASC')->get();
 
             foreach ($facultyAttendances as $faculty) {
                 $faculty->formatted_date = Carbon::parse($faculty->date)->format('F j, Y');
                 $faculty->formatted_time = Carbon::parse($faculty->time)->format('g:i A');
-               
             }
 
             //   $options = new Options();
@@ -253,5 +252,4 @@ class PDFController extends Controller
             echo $e;
         }
     }
-    
 }
