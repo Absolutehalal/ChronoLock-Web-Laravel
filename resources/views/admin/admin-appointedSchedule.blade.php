@@ -82,7 +82,7 @@
                                         @foreach ($regularClasses as $regularClasses)
                                         <tr>
                                             <td>{{ $regularClasses->program }} {{ $regularClasses->year }}-{{ $regularClasses->section }}</td>
-                                            <td>{{ $regularClasses->courseCode }}-{{ $regularClasses->courseName }}</td>
+                                            <td>{{ strtoupper($regularClasses->courseCode) }}-{{ ucwords($regularClasses->courseName) }}</td>
                                             <td>
                                                 @if($regularClasses->scheduleStatus == 'With Class')
                                                 <span class="badge badge-success">With Class</span>

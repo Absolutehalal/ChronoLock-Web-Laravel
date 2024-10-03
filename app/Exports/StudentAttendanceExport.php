@@ -45,8 +45,8 @@ class StudentAttendanceExport implements FromCollection, WithHeadings, ShouldAut
 
         return [
             ++$this->index,
-            $attendance->firstName . ' ' . $attendance->lastName,
-            $attendance->userID,
+            ucwords($attendance->firstName) . ' ' . ucwords($attendance->lastName),
+            ucwords($attendance->userID),
             $attendance->courseName,
             $attendance->program,
             $attendance->year . ' - ' . $attendance->section,

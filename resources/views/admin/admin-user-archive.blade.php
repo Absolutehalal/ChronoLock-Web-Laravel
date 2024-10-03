@@ -94,8 +94,8 @@
                                 @foreach ($archiveUsers as $user)
                                 <tr>
                                     <td> {{$counter}} </td>
-                                    <td> {{$user->firstName}} </td>
-                                    <td> {{$user->lastName}} </td>
+                                    <td> {{ucwords($user->firstName)}} </td>
+                                    <td> {{ucwords($user->lastName)}} </td>
                                     <td>
                                         @if($user->userType == 'Admin')
                                         <span class="badge badge-primary">Admin</span>

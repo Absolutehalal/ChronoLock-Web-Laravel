@@ -68,7 +68,7 @@
                                 @csrf
                                 <li>
                                     <a class="section" href="{{ route('instructorClassAttendanceAndList', [base64_encode($class->classID)]) }}">
-                                        {{$class->courseCode}} | {{$class->program}}-{{$class->year}}{{$class->section}}
+                                        {{strtoupper($class->courseCode)}} | {{$class->program}}-{{$class->year}}{{$class->section}}
                                     </a>
                                 </li>
                                 @empty

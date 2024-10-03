@@ -146,7 +146,7 @@
                 <div class="nav-link">
                   <span class="text-dark d-block">Course:</span>
                   @foreach ($classListData as $classTime)
-                  <span class="h5 d-block"> {{ $classTime->courseCode }} - {{ $classTime->courseName }} </span>
+                  <span class="h5 d-block"> {{ strtoupper($classTime->courseCode) }} - {{ ucwords($classTime->courseName) }} </span>
                   @endforeach
                 </div>
               </li>
@@ -277,8 +277,8 @@
                         <tr>
                           <td>{{ date('F j, Y', strtotime($studAttendance->date)) }}</td>
                           <td>{{ date('h:i A', strtotime($studAttendance->time)) }}</td>
-                          <td>{{$studAttendance->firstName}} {{$studAttendance->lastName}}</td>
-                          <td>{{$studAttendance->idNumber}}</td>
+                          <td>{{ ucwords($studAttendance->firstName) }} {{ ucwords($studAttendance->lastName) }}</td>
+                          <td>{{ ucwords($studAttendance->idNumber) }}</td>
                           <td>{{$studAttendance->courseName}}</td>
                           <td>{{$studAttendance->program}}</td>
                           <td>{{$studAttendance->year}}-{{$studAttendance->section}} </td>
@@ -379,7 +379,7 @@
                         @foreach ($students as $student)
                         @csrf
                         <tr>
-                          <td>{{$student->firstName}} {{$student->lastName}}</td>
+                          <td>{{ ucwords($student->firstName) }} {{ ucwords($student->lastName) }}</td>
                           <td>{{$student->idNumber}}</td>
                           <td>{{$student->program}}</td>
                           <td>{{$student->year}}-{{$student->section}}</td>

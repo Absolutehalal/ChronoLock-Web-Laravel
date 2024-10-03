@@ -96,8 +96,8 @@ $(document).ready(function () {
 
     // Highlight search term
     rfidTable.on("draw", function () {
-        var body = $(table.table().body());
-        var searchTerm = table.search();
+        var body = $(rfidTable.table().body());
+        var searchTerm = rfidTable.search();
 
         // Clear previous highlights
         body.unmark();

@@ -173,10 +173,10 @@
               <div class="dropdown d-inline-block mb-3">
                 <button title="Preview" class="btn btn-outline-dark btn-sm fw-bold" onclick='window.location = "{{ route("previewStudentAttendancePDF", ["selected_remarks" => $selected_remarks, "selected_courses" => $selected_courses, "selected_years" => $selected_years, "selectedMonth" => $selectedMonth]) }}"' type="button">
                   <i class="mdi mdi-feature-search"></i>
-                    PDF
+                  PDF
                 </button>
               </div>
-              
+
               <div class="d-inline-block mb-3">
                 <form action="{{ url('/student-attendance-export') }}" method="GET">
                   <!-- <input type="text" class="form-control border border-primary" id="exportDate" name="selectedDate" value="{{ Request()->date }}"> -->
@@ -215,9 +215,9 @@
                     <span style="color: #cc0000; font-weight: bold;">No Record</span>
                     @endif
                   </td>
-                  <td>{{ $student->firstName }} {{ $student->lastName }}</td>
-                  <td>{{ $student->idNumber }}</td>
-                  <td>{{ $student->courseName }}</td>
+                  <td>{{ ucwords($student->firstName) }} {{ ucwords($student->lastName) }}</td>
+                  <td>{{ ucwords($student->idNumber) }}</td>
+                  <td>{{ ucwords($student->courseName) }}</td>
                   <td>{{ $student->program }}</td>
                   <td>{{ $student->year }}-{{ $student->section }}</td>
                   <td>

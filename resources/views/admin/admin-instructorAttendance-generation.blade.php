@@ -147,7 +147,7 @@
               <div class="dropdown d-inline-block mb-3">
                 <button title="Preview" class="btn btn-outline-dark btn-sm fw-bold" onclick='window.location = "{{ route("previewFacultyAttendancePDF", ["selected_id" => $selected_id, "selected_remarks" => $selected_remarks, "selectedMonth" => $selectedMonth]) }}"' type="button">
                   <i class="mdi mdi-feature-search"></i>
-                    PDF
+                  PDF
                 </button>
               </div>
 
@@ -188,10 +188,10 @@
                     <span style="color: #cc0000; font-weight: bold;">No Record</span>
                     @endif
                   </td>
-                  <td>{{ $instructors->courseCode }}</td>
-                  <td>{{ $instructors->courseName }}</td>
+                  <td>{{ strtoupper($instructors->courseCode) }}</td>
+                  <td>{{ ucwords($instructors->courseName) }}</td>
                   <td>{{ $instructors->program }} - {{ $instructors->year }}{{ $instructors->section }}</td>
-                  <td>{{ $instructors->instFirstName }} {{ $instructors->instLastName }}</td>
+                  <td>{{ ucwords($instructors->instFirstName) }} {{ ucwords($instructors->instLastName) }}</td>
                   <td>{{ $instructors->userID }}</td>
                   <td>
                     @if($instructors->remark == 'Present')

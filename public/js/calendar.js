@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function () {
             url: "/getSchedules",
             success: function (response) {
                 var schedules = response.ERPSchedules;
-                console.log(schedules);
+                // console.log(schedules);
 
                 var calendar = new FullCalendar.Calendar(calendarEl, {
                     headerToolbar: {

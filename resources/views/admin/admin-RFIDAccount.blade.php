@@ -92,8 +92,8 @@
                 @csrf
                 <tr>
                   <td>{{$counter}}</td>
-                  <td>{{ $RFID_Account->idNumber }}</td>
-                  <td>{{ $RFID_Account->firstName }} {{ $RFID_Account->lastName }}</td>
+                  <td>{{ ucwords($RFID_Account->idNumber) }}</td>
+                  <td>{{ ucwords($RFID_Account->firstName) }} {{ ucwords($RFID_Account->lastName) }}</td>
                   <td>{{ $RFID_Account->RFID_Code }}</td>
                   <td>{{ $RFID_Account->userType }} </td>
                   <td>

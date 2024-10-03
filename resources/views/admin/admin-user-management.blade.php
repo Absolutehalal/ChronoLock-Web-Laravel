@@ -139,11 +139,11 @@
               @foreach ($users as $user)
               <tr>
                 <td class="text-center">
-                  <input type="checkbox" name="user_ids[]" class="userCheckbox" value="{{ $user->id }}">
+                  <input type="checkbox" name="user_ids[]" class="userCheckbox" value="{{ $user->idNumber }}">
                 </td>
                 <td> {{$counter}} </td>
-                <td> {{$user->firstName}} </td>
-                <td> {{$user->lastName}} </td>
+                <td> {{ ucwords($user->firstName) }} </td>
+                <td> {{ ucwords($user->lastName) }} </td>
                 <td> {{$user->idNumber}} </td>
                 <td>
                   @if($user->userType == 'Admin')
@@ -191,9 +191,6 @@
               @endforeach
             </tbody>
           </table>
-
-
-
 
         </div>
       </div>
@@ -425,7 +422,9 @@
     // Add event listener to the delete buttons
     document.addEventListener('DOMContentLoaded', function() {
       document.querySelectorAll('.deleteForceBtn').forEach(button => {
-        button.addEventListener('click', function() {
+        button.addEventListener('click', function(e) {
+          e.preventDefault();
+
           const id = this.value;
 
           Swal.fire({
@@ -440,7 +439,7 @@
             if (result.isConfirmed) {
               // Perform the deletion and redirect to the user management page
               window.location.href = "/forceDelete/" + id;
-
+            } else {
               Swal.fire({
                 icon: "error",
                 title: "Oops...",
@@ -454,6 +453,7 @@
       });
     });
   </script>
+
 
   <script>
     // Function to handle both select/deselect and button click

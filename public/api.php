@@ -333,6 +333,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             echo json_encode($response);
             exit();
         }
+        
         $current_date = $_GET['current_date'];
         $instructor_ID =  $_GET['instructor_ID'];
         $class_id =  $_GET['class_id'];

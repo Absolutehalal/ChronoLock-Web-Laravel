@@ -48,7 +48,7 @@
 
     @include('header')
 
-    
+
     <!-- ====================================
         ——— CONTENT WRAPPER
         ===================================== -->
@@ -135,13 +135,13 @@
         </div>
 
         <!-- CALENDAR -->
-        <!-- <div class="card card-default shadow">
+        <div class="card card-default shadow">
           <div class="card-header card-header-border-bottom d-flex justify-content-between align-items-center">
             <h1>Schedule</h1>
             <div class="row">
 
               <div class="col-xl-12 col-md-12 d-flex justify-content-end">
-                
+
                 <div class="dropdown d-inline-block mb-3 mr-3">
                   <a href="{{ route('adminScheduleManagement') }}" title="Add Regular Schedule" class="btn btn-primary btn-sm fw-bold" type="button">
                     <i class=" mdi mdi-calendar-plus"></i>
@@ -157,7 +157,7 @@
               <div id="calendar"></div>
             </div>
           </div>
-        </div> -->
+        </div>
         @endif
         @endif
 
@@ -200,8 +200,8 @@
                       @csrf
                       <tr>
                         <td> {{$counter}} </td>
-                        <td> {{$user->firstName}} </td>
-                        <td> {{$user->lastName}} </td>
+                        <td> {{ucwords($user->firstName)}} </td>
+                        <td> {{ucwords($user->lastName)}} </td>
                         <td> {{$user->email}} </td>
                       </tr>
                       @php $counter++; @endphp
@@ -253,7 +253,7 @@
                       <tr>
                         <td> {{$counter}} </td>
                         <td> {{$rfid->RFID_Code}} </td>
-                        <td> {{$rfid->firstName}} {{$rfid->lastName}} </td>
+                        <td> {{ucwords($rfid->firstName)}} {{ucwords($rfid->lastName)}} </td>
                         <td> {{$rfid->userType}} </td>
                         <td>
                           @if($rfid->RFID_Status == 'Activated')

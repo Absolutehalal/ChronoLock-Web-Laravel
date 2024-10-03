@@ -612,15 +612,42 @@ class UserController extends Controller
     {
         // Ensure that at least one checkbox is selected
         if (!empty($request->user_ids)) {
-            // Delete the users based on the selected IDs
-            User::whereIn('id', $request->user_ids)->forceDelete();
+            try {
+                // Delete the users based on the selected IDs
+                $users = User::whereIn('idNumber', $request->user_ids)->get();
 
-            Alert::success('Success', 'Users Deleted Successfully')
-                ->autoClose(5000)
-                ->timerProgressBar()
-                ->showCloseButton();
+                foreach ($users as $user) {
+                    $user->forceDelete();
 
-            return back();
+                    // Log the deletion
+                    $ID = Auth::id();
+                    $userID = DB::table('users')->where('id', $ID)->value('idNumber');
+                    date_default_timezone_set("Asia/Manila");
+                    $date = date("Y-m-d");
+                    $time = date("H:i:s");
+                    $action = "Deleted a user accounts: " . $user->idNumber;
+                    DB::table('user_logs')->insert([
+                        'userID' => $userID,
+                        'action' => $action,
+                        'date' => $date,
+                        'time' => $time,
+                    ]);
+                }
+
+                Alert::success('Success', 'Users Deleted Successfully')
+                    ->autoClose(5000)
+                    ->timerProgressBar()
+                    ->showCloseButton();
+
+                return back();
+            } catch (\Exception $e) {
+                Alert::error('Error', 'An error occurred during deletion.')
+                    ->autoClose(5000)
+                    ->timerProgressBar()
+                    ->showCloseButton();
+
+                return back();
+            }
         }
 
         Alert::info('No Users', 'No selected users to be deleted')
@@ -630,6 +657,7 @@ class UserController extends Controller
 
         return back();
     }
+
 
 
 

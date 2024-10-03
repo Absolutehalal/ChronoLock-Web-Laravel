@@ -98,7 +98,7 @@
                 <button href="javascript:0" class="editERPSchedule media text-secondary" data-target="#scheduleModal" data-avatar="{{ $schedule->avatar ?? asset('images/scheduleIcon.png') }}" data-inst-first-name="{{ $schedule->instFirstName }}" data-inst-last-name="{{ $schedule->instLastName }}" data-course-name="{{ $schedule->courseName }}" data-course-code="{{ $schedule->courseCode }}" data-program="{{ $schedule->program }}" data-year="{{ $schedule->year }}" data-section="{{ $schedule->section }}" data-schedule-id="{{ $schedule->scheduleID }}" value="{{ $schedule->scheduleID }}">
                   <img src="{{ $schedule->avatar ?? asset('images/scheduleIcon.png') }}" class="mr-3 mt-4 img-fluid rounded schedule" alt="Avatar Image">
                   <div class="media-body">
-                    <h3 class="mt-0 mb-2 text-dark d-flex fw-bold">{{ $schedule->courseCode }} - {{ $schedule->courseName }}</h3>
+                    <h3 class="mt-0 mb-2 text-dark d-flex fw-bold">{{ strtoupper($schedule->courseCode) }} - {{ ucwords($schedule->courseName) }}</h3>
                     <ul class="list-unstyled text-smoke">
 
                       <li class="d-flex">

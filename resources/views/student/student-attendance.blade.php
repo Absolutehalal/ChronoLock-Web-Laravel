@@ -1,12 +1,5 @@
 <!DOCTYPE html>
 
-<!--
- // WEBSITE: https://themefisher.com
- // TWITTER: https://twitter.com/themefisher
- // FACEBOOK: https://www.facebook.com/themefisher
- // GITHUB: https://github.com/themefisher/
--->
-
 <html lang="en" dir="ltr">
 
 <head>
@@ -61,9 +54,9 @@
             <div class="card card-default shadow">
               <div class="card-header">
                 @if($h1=='')
-                <h1> My Attendance</h1>
+                <h2> My Attendance</h2>
                 @else
-                <h1> My @php echo $h1 @endphp Attendance</h1>
+                <h2> My @php echo $h1 @endphp Attendance</h2>
                 @endif
               </div>
               <div class="card-body" style=" overflow-x:auto;">
@@ -73,18 +66,18 @@
                       <th>Date</th>
                       <th>Time</th>
                       <th>Instructor</th>
-                      <th>Program</th>
-                      <th>Year & Section</th>
                       <th>Course</th>
                       <!-- <th>Status</th> -->
                       <th>Remark</th>
+                      <th>Program</th>
+                      <th>Year & Section</th>
                     </tr>
                   </thead>
                   <tbody>
                     @foreach($myAttendances as $myAttendance)
                     <tr>
                       <td>{{date('F j, Y', strtotime($myAttendance->date))}}</td>
-                      
+
                       <td>
                         @if($myAttendance->time)
                         {{ date('h:i A', strtotime($myAttendance->time)) }}
@@ -92,22 +85,21 @@
                         <span style="color: #cc0000; font-weight: bold;">No Record</span>
                         @endif
                       </td>
-                      
                       <td>{{$myAttendance->instFirstName}} {{$myAttendance->instLastName}}</td>
-                      <td>{{$myAttendance->program}}</td>
-                      <td>{{$myAttendance->year}}-{{$myAttendance->section}}</td>
                       <td>{{$myAttendance->courseCode}}-{{$myAttendance->courseName}}</td>
                       <!-- <td>{{$myAttendance->status}}</td> -->
                       <td>
-                        @if($myClassmates->status == 'Regular')
-                        <span class="badge badge-success">Regular</span>
-                        @elseif($myClassmates->status == 'Drop')
-                        <span class="badge badge-danger">Drop</span>
-                        @elseif($myClassmates->status == 'Irregular')
-                        <span class="badge badge-warning">Irregular</span>
+                        @if($myAttendance->remark== 'Present')
+                        <span class="badge badge-success">Present</span>
+                        @elseif($myAttendance->remark == 'Absent')
+                        <span class="badge badge-danger">Absent</span>
+                        @elseif($myAttendance->remark == 'Late')
+                        <span class="badge badge-warning">Late</span>
                         @endif
                       </td>
-
+                      <td>{{$myAttendance->program}}</td>
+                      <td>{{$myAttendance->year}}-{{$myAttendance->section}}</td>
+                      
                     </tr>
                     @endforeach
                   </tbody>
@@ -126,12 +118,12 @@
                 <h2>@php echo ($programTitle) @endphp Classmates Enrolled</h2>
                 @endif
               </div>
-              <div class="card-body py-0" data-simplebar style="height: 392px;">
+              <div class="card-body py-0" data-simplebar style="height: 460px;">
                 <table class="table table-bordered table-hover no wrap mt-1">
                   <thead class="table-dark text-center">
                     <tr>
                       <th>Name</th>
-                      <th>Yr. & Sec.</th>
+                      <!-- <th>Yr. & Sec.</th> -->
                       <th>Status</th>
                     </tr>
                   </thead>
@@ -139,9 +131,18 @@
                   <tbody class="text-center">
                     @foreach($myClassmates as $myClassmates)
                     <tr>
-                      <td>{{$myClassmates->firstName}} {{$myClassmates->lastName}}</td>
-                      <td>{{$myClassmates->year}}-{{$myClassmates->section}}</td>
-                      <td>{{$myClassmates->status}}</td>
+                      <td>{{ ucwords($myClassmates->firstName) }} {{ ucwords($myClassmates->lastName) }}</td>
+                      <!-- <td>{{$myClassmates->year}}-{{$myClassmates->section}}</td> -->
+                      <!-- <td>{{$myClassmates->status}}</td> -->
+                      <td>
+                        @if($myClassmates->status == 'Regular')
+                        <span class="badge badge-success">Regular</span>
+                        @elseif($myClassmates->status == 'Irregular')
+                        <span class="badge badge-danger">Irregular</span>
+                        @elseif($myClassmates->status == 'Drop')
+                        <span class="badge badge-warning">Drop</span>
+                        @endif
+                      </td>
                     </tr>
                     @endforeach
                   </tbody>

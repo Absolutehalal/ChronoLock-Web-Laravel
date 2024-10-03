@@ -243,7 +243,7 @@ class AttendanceController extends Controller
                 ->join('schedules', 'schedules.scheduleID', '=', 'class_lists.scheduleID')
                 ->where('users.userType', '=', 'Student')
                 ->orderBy('date', 'desc')
-                ->orderBy('time', 'desc');
+                ->orderBy('time', 'asc');
 
 
             if ($data['selectedMonth']) {
@@ -625,15 +625,23 @@ class AttendanceController extends Controller
                 ->where('idNumber', '=', $userID)
                 ->get();
 
+            // $h1 =  DB::table('class_lists')
+            //     ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
+            //     ->where('class_lists.classID', '=', $decode)
+            //     ->value('courseName');
+
             $h1 =  DB::table('class_lists')
                 ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
                 ->where('class_lists.classID', '=', $decode)
-                ->value('courseName');
+                ->select(DB::raw("CONCAT(schedules.courseCode, ' - ', schedules.courseName) as courseDetails"))
+                ->value('courseDetails'); // Get the concatenated value directly
+
 
             $programTitle =  DB::table('class_lists')
                 ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
                 ->where('class_lists.classID', '=', $decode)
-                ->value('program');
+                ->select(DB::raw("CONCAT(schedules.program, ' - ', schedules.year, schedules.section) as programTitle"))
+                ->value('programTitle');
 
             return view('student.student-attendance', [
                 'classSchedules' => $classSchedules,

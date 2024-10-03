@@ -85,6 +85,7 @@ class PDFController extends Controller
         ];
 
 
+
         try {
             $formattedSchedules = [];
             foreach ($schedules as $schedule) {
@@ -95,14 +96,19 @@ class PDFController extends Controller
                 $formatted_endTime = Carbon::parse($schedule->endTime)->format('g:i A');
                 $programYearSection = $schedule->program . '-' . $schedule->year . $schedule->section;
                 $time = $formatted_startTime . ' - ' . $formatted_endTime;
-                $course = $schedule->courseCode . ' | ' . $schedule->courseName;
+                $course = $schedule->courseCode;
+                // $course = $schedule->courseCode . ' | ' . $schedule->courseName;
 
-                $formattedSchedules[$instructor][$day][] = [
+                $formattedSchedules[$day][][] = [
+                    'instructor' => $instructor,
                     'time' => $time,
                     'course' => $course,
                     'programYearSection' => $programYearSection
                 ];
             }
+
+            // dd($formattedSchedules);
+
 
             //   $options = new Options();
             //   $options->set('isHtml5ParserEnabled', true);
@@ -125,10 +131,11 @@ class PDFController extends Controller
             $dompdf->render();
             return $dompdf->stream('schedules.pdf', ['Attachment' => 0]);
         } catch (\Exception $e) {
-            Alert::error('Error', 'Something went wrong. Please try again later.')
-                ->autoClose(5000)
-                ->showCloseButton();
-            return redirect()->back();
+            echo $e;
+            // Alert::error('Error', 'Something went wrong. Please try again later.')
+            //     ->autoClose(5000)
+            //     ->showCloseButton();
+            // return redirect()->back();
         }
     }
 
@@ -146,7 +153,9 @@ class PDFController extends Controller
             ->join('users', 'attendances.userID', '=', 'users.idNumber')
             ->join('class_lists', 'class_lists.classID', '=', 'attendances.classID')
             ->join('schedules', 'schedules.scheduleID', '=', 'class_lists.scheduleID')
-            ->where('userType', '=', 'Student');
+            ->where('userType', '=', 'Student')
+            ->orderby('time', 'ASC');
+
         try {
             if ($year) {
                 $students->where('year', '=', $year);
@@ -207,7 +216,9 @@ class PDFController extends Controller
             ->join('users', 'attendances.userID', '=', 'users.idNumber')
             ->join('class_lists', 'class_lists.classID', '=', 'attendances.classID')
             ->join('schedules', 'schedules.scheduleID', '=', 'class_lists.scheduleID')
-            ->where('userType', '=', 'Faculty');
+            ->where('userType', '=', 'Faculty')
+            ->orderby('time', 'ASC');
+
         try {
             if ($facultyID) {
                 $faculty->where('idNumber', '=', $facultyID);

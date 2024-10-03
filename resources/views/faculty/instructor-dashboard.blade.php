@@ -203,9 +203,9 @@
                                             @endphp
 
                                             <div class="media-body ml-4">
-                                                <span class="title">Instructor: {{ $schedule->instFirstName }} {{ $schedule->instLastName }}</span>
-                                                <p class="text-dark">Course Name: {{ $schedule->courseName }} </p>
-                                                <p class="text-dark">Course Code: {{ $schedule->courseCode }} </p>
+                                                <span class="title">Instructor: {{ ucwords($schedule->instFirstName) }} {{ ucwords($schedule->instLastName) }}</span>
+                                                <p class="text-dark">Course Name: {{ ucwords($schedule->courseName) }} </p>
+                                                <p class="text-dark">Course Code: {{ strtoupper($schedule->courseCode) }} </p>
                                                 <p class="text-dark">Time: {{ date('h:i A', strtotime($schedule->startTime)) }} -
                                                     {{ date('h:i A', strtotime($schedule->endTime)) }}
                                                 </p>
