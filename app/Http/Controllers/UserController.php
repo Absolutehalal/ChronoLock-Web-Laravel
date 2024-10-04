@@ -1396,6 +1396,7 @@ class UserController extends Controller
             ->join('users', 'users.idNumber', '=', 'schedules.userID')
             ->where('users.idNumber', '=', $userID)
             ->where('schedules.day', $today)
+            ->distinct('schedules.scheduleID')
             ->count();
 
         // Fetch the 15 latest students enrolled in the authenticated user's class list
@@ -1406,7 +1407,7 @@ class UserController extends Controller
             ->where('schedules.userID', '=', $userID)
             ->where('users.userType', 'Student')
             ->orderBy('student_masterlists.created_at', 'desc') // Adjust field name as needed
-            // ->limit(20)
+            ->limit(20)
             ->get();
 
         // TODAY'S SCHEDULE
@@ -1419,11 +1420,12 @@ class UserController extends Controller
             ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
             ->join('users', 'users.idNumber', '=', 'schedules.userID')
             ->where('users.idNumber', '=', $userID)
-            ->where('schedules.day', '=', $today)
-            ->orderBy('schedules.startTime', 'asc')
+            ->where('schedules.day', $today)
+            ->distinct() // Ensure distinct schedules
+            ->select('schedules.*') // Select only schedules
             ->get();
 
-        // dd($today);
+        // dd($todaySchedules);
 
 
         return view('faculty.instructor-dashboard', [

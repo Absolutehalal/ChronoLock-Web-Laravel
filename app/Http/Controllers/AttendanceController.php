@@ -243,7 +243,7 @@ class AttendanceController extends Controller
                 ->join('schedules', 'schedules.scheduleID', '=', 'class_lists.scheduleID')
                 ->where('users.userType', '=', 'Student')
                 ->orderBy('date', 'desc')
-                ->orderBy('time', 'asc');
+                ->orderBy('time', 'desc');
 
 
             if ($data['selectedMonth']) {

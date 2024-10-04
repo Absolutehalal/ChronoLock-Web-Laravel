@@ -56,7 +56,7 @@
 
         <div class="card card-default shadow">
           <div class="card-header card-header-border-bottom">
-            <h1 class="mb-4">My Schedule</h1>
+            <h1 class="mb-4">My Assigned Schedule</h1>
             <!-- <form method="GET" action="{{ url('/instructorClassSchedules') }}">
               <div class="dropdown d-inline-block mb-3">
                 <button class="btn btn-primary btn-sm dropdown-toggle fw-bold" type="button" id="nameDropdown" data-toggle="dropdown" aria-expanded="false">
@@ -98,14 +98,36 @@
                 <button href="javascript:0" class="editERPSchedule media text-secondary" data-target="#scheduleModal" data-avatar="{{ $schedule->avatar ?? asset('images/scheduleIcon.png') }}" data-inst-first-name="{{ $schedule->instFirstName }}" data-inst-last-name="{{ $schedule->instLastName }}" data-course-name="{{ $schedule->courseName }}" data-course-code="{{ $schedule->courseCode }}" data-program="{{ $schedule->program }}" data-year="{{ $schedule->year }}" data-section="{{ $schedule->section }}" data-schedule-id="{{ $schedule->scheduleID }}" value="{{ $schedule->scheduleID }}">
                   <img src="{{ $schedule->avatar ?? asset('images/scheduleIcon.png') }}" class="mr-3 mt-4 img-fluid rounded schedule" alt="Avatar Image">
                   <div class="media-body">
-                    <h3 class="mt-0 mb-2 text-dark d-flex fw-bold">{{ strtoupper($schedule->courseCode) }} - {{ ucwords($schedule->courseName) }}</h3>
+                    <h3 class="mt-0 mb-2 text-dark d-flex text-left fw-bold">{{ strtoupper($schedule->courseCode) }} - {{ ucwords($schedule->courseName) }}</h3>
                     <ul class="list-unstyled text-smoke">
 
                       <li class="d-flex">
                         <i class="mdi mdi-calendar-check mr-1"></i>
-                        <label class="mr-1">Time:</label>
+                        <label class="mr-1">Date:</label>
                         <span class="text-dark">{{ $schedule->formatted_startDate }} - {{ $schedule->formatted_endDate }}</span>
                       </li>
+
+                      @php
+                      // Mapping of day numbers
+                      $dayMapping = [
+                      0 => 'Sunday',
+                      1 => 'Monday',
+                      2 => 'Tuesday',
+                      3 => 'Wednesday',
+                      4 => 'Thursday',
+                      5 => 'Friday',
+                      6 => 'Saturday'
+                      ];
+
+                      // Get the day name from the mapping
+                      $dayName = $dayMapping[$schedule->day];
+                      @endphp
+                      <li class="d-flex">
+                        <i class="mdi mdi-calendar-check mr-1"></i>
+                        <label class="mr-1">Day:</label>
+                        <span class="text-dark">{{ $dayName }}</span>
+                      </li>
+
                       <li class="d-flex">
                         <i class="mdi mdi-clock mr-1"></i>
                         <label class="mr-1">Time:</label>

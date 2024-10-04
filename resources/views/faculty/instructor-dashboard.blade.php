@@ -173,7 +173,7 @@
                     <div class="col-xl-6">
                         <div class="card card-default shadow">
                             <div class="card-header">
-                                <h2>Today's Class Schedule</h2>
+                                <h2>My Today's Class Schedule</h2>
                             </div>
                             <div class="card-body">
                                 <ul class="list-group" style="max-height: 330px; overflow-y: auto;">
@@ -230,14 +230,14 @@
                                 <h2>Latest Student Enrollees</h2>
                             </div>
                             <div class="card-body" style="max-height: 330px; overflow-y: auto;">
-                                <table id="exampleTable" class="table table-bordered table-hover no-wrap" style="width: 100%;">
+                                <table class="table table-bordered table-hover no-wrap" style="width: 100%;">
                                     <thead class="table-dark">
                                         <tr>
                                             <th>#</th>
                                             <th>Name</th>
                                             <th>Course</th>
                                             <!-- <th>Program</th> -->
-                                            <th>Year & Section</th>
+                                            <th>Yr. & Sect.</th>
                                             <th>Enrollment Date</th>
                                             <!-- <th>Enrollment Time</th> -->
                                             <!-- Add other headers as needed -->
@@ -247,8 +247,8 @@
                                         @php $counter = 1; @endphp
                                         @foreach($latestStudents as $enrolee)
                                         <tr>
-                                            <td>{{$counter}}</td>
-                                            <td>{{ $enrolee->firstName }} {{ $enrolee->lastName }}</td>
+                                            <td> {{ $counter }} </td>
+                                            <td>{{ ucwords($enrolee->firstName) }} {{ ucwords($enrolee->lastName) }}</td>
                                             <td>{{ $enrolee->courseName }} - {{ $enrolee->courseCode }}</td>
                                            
                                             <td>{{ $enrolee->program }} | {{ $enrolee->year }}-{{ $enrolee->section }}</td>

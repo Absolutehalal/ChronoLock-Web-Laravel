@@ -329,8 +329,8 @@ $(document).ready(function () {
     // End Logs Table------------
 
     //----Start Class List Table-----
-
     var studentListTable = $("#studentListTable").DataTable({
+
         // scrollX: true,
         // "searching": false, order: [[0, 'asc']],
         rowReorder: true,

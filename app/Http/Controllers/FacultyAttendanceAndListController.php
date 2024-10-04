@@ -29,6 +29,8 @@ class FacultyAttendanceAndListController extends Controller
                 })
                 ->where('attendances.classID', '=', $decode)
                 ->where('users.userType', '=', 'Student')
+                ->orderBy('date', 'desc')
+                ->orderBy('time', 'desc')
                 ->get();
 
             // Instructor My Class List - Students
