@@ -1,12 +1,4 @@
 <!DOCTYPE html>
-
-<!--
- // WEBSITE: https://themefisher.com
- // TWITTER: https://twitter.com/themefisher
- // FACEBOOK: https://www.facebook.com/themefisher
- // GITHUB: https://github.com/themefisher/
--->
-
 <html lang="en" dir="ltr">
 
 <head>
@@ -18,6 +10,7 @@
 
   <!-- Ajax RFID Account -->
   <script defer src="js/adminRFIDAccountManagement.js"></script>
+
   @include('head')
 </head>
 
@@ -122,6 +115,10 @@
                           Activate
                         </button>
                         @endif
+                        <button class="dropdown-item deleteBtn btn-sm" type="button" data-toggle="modal" data-target="#deleteRFIDModal" value="{{ $RFID_Account->id }}"">
+                          <i class="mdi mdi-trash-can text-danger"></i>
+                          Delete
+                        </button>
                       </div>
                     </div>
                   </th>
@@ -182,6 +179,7 @@
     </div>
   </div>
   </div>
+  </div>
 
 
   <!-- Deactivation Modal -->
@@ -211,6 +209,42 @@
         <div class="modal-footer justify-content-center">
           <button type="button" class="btn btn-danger " id="close" data-dismiss="modal">Cancel</button>
           <button type="submit" class="btn btn-info deactivate"></i>Deactivate</button>
+        </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+  </div>
+  </div>
+
+  <!-- Delete RFID Modal -->
+  <div class="modal fade" id="deleteRFIDModal" tabindex="-1" role="dialog" aria-labelledby="deleteRFID" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteRFID" style="text-align:center;">Delete User RFID</h5>
+          <button type="button" class="close" id="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form method="post">
+            @csrf
+            @method('delete')
+            <input type="hidden" id="deleteRFID_ID" class="id form-control ">
+            <div class="row">
+              <i class="fa-solid fa-trash-can text-danger" style="text-align:center; font-size:50px; padding:1rem;"></i>
+            </div>
+            <div class="row">
+              <h4 style="text-align:center;"> Are you sure you want to delete this User RFID?</h4>
+            </div>
+        </div> <!-- Modal Boday End-->
+
+        <!-- Modal Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary btn-pill" id="close" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-danger btn-pill deleteUserRFID">Delete</button>
         </div>
 
         </form>

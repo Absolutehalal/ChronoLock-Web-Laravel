@@ -76,12 +76,11 @@ $(document).ready(function () {
     });
 
     var rfidTable = $("#rfidTable").DataTable({
-        // scrollX: true,?
+        // scrollX: true,
         // "searching": false, order: [[0, 'asc']],
         rowReorder: true,
         pagingType: "simple_numbers",
         responsive: true,
-        topEnd: null,
         rowReorder: {
             selector: "td:nth-child(2)",
         },
@@ -330,7 +329,6 @@ $(document).ready(function () {
 
     //----Start Class List Table-----
     var studentListTable = $("#studentListTable").DataTable({
-
         // scrollX: true,
         // "searching": false, order: [[0, 'asc']],
         rowReorder: true,

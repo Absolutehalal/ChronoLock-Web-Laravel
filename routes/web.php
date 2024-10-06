@@ -137,14 +137,18 @@ Route::group(['middleware' => ['auth', 'admin:Admin']], function () {
     //--------END Admin instructor attendance Management ROUTES-----------
 
     //--------START Admin Pending RFID ROUTES---------  
+    Route::get('/pendingRFIDPage', [RFIDController::class, 'pendingRFID'])->name('pendingRFID');
     Route::get('/processPendingRFID/{id}', [RFIDController::class, 'processPendingRFID'])->name('processPendingRFID');
     Route::put('/activatePendingRFID', [RFIDController::class, 'activatePendingRFID'])->name('activatePendingRFID');
     Route::delete('/deletePendingRFID/{id}', [RFIDController::class, 'deletePendingRFID'])->name('deletePendingRFID');
-    Route::get('/pendingRFIDPage', [RFIDController::class, 'pendingRFID'])->name('pendingRFID');
+
 
     Route::put('/deactivateRFID/{id}', [RFIDController::class, 'deactivateRFID'])->name('deactivateRFID');
     Route::put('/activateRFID/{id}', [RFIDController::class, 'activateRFID'])->name('activateRFID');
     Route::get('/RFIDManagementPage', [RFIDController::class, 'RFIDManagement'])->name('RFIDManagement');
+
+    Route::delete('/deleteUserRFID/{id}', [RFIDController::class, 'deleteUserRFID'])->name('deleteUserRFID');
+
 
     Route::get('/autocomplete', [RFIDController::class, 'autocomplete'])->name('autocomplete');
     //--------End Admin Pending RFID ROUTES---------  

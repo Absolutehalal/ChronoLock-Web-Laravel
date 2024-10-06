@@ -67,9 +67,8 @@
           <div class="card-header">
             <h1>RFID Pending Request</h1>
 
-            <div class="row">
+            <!-- <div class="row">
               <div class="col-xl-12 col-md-12 d-flex justify-content-end">
-                <!-- Sort button -->
                 <div class="dropdown d-inline-block ">
                   <button class="btn btn-primary btn-sm fw-bold" type="button" data-toggle="modal" data-target="#pendingRFIDModal">
                     <i class=" mdi mdi-calendar-plus"></i>
@@ -77,7 +76,7 @@
                   </button>
                 </div>
               </div>
-            </div>
+            </div> -->
           </div>
 
 
@@ -86,13 +85,13 @@
             <table id="rfidTable" class="table table-bordered table-hover nowrap" style="width:100%">
               <thead class="table-dark">
                 <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">RFID Code</th>
-                  <th scope="col">Options</th>
+                  <th>#</th>
+                  <th>RFID Code</th>
+                  <th>Options</th>
                 </tr>
               </thead>
               <tbody>
-              @php $counter = 1; @endphp
+                @php $counter = 1; @endphp
                 @foreach($pendingRFID as $pendingRFID)
                 @csrf
                 <tr>
@@ -149,7 +148,7 @@
             @csrf
             @method('put')
 
-            <div class="row">
+            <div class=" row">
 
               <input type="hidden" id="pendingRFID_ID" class="form-control ">
 
