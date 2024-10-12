@@ -81,7 +81,7 @@ Route::group(['middleware' => ['auth', 'admin:Admin']], function () {
     Route::get('/archive', [UserController::class, 'userArchive'])->name('archive');
     Route::get('/restore/{id}', [UserController::class, 'restore'])->name('restore');
     Route::get('/restore-all-users', [UserController::class, 'restoreAllUsers'])->name('restoreAllUsers');
-
+    Route::post('/delete-selected-users', [UserController::class, 'deleteSelectedUsers'])->name('deleteSelectedUsers');
     //--------END userManagement ROUTES-----------
 
     //--------START schedule Management Routes----------
@@ -143,7 +143,7 @@ Route::group(['middleware' => ['auth', 'admin:Admin']], function () {
     Route::put('/deactivateRFID/{id}', [RFIDController::class, 'deactivateRFID'])->name('deactivateRFID');
     Route::put('/activateRFID/{id}', [RFIDController::class, 'activateRFID'])->name('activateRFID');
     Route::get('/RFIDManagementPage', [RFIDController::class, 'RFIDManagement'])->name('RFIDManagement');
-
+    Route::delete('/deleteUserRFID/{id}', [RFIDController::class, 'deleteUserRFID'])->name('deleteUserRFID');
     Route::get('/autocomplete', [RFIDController::class, 'autocomplete'])->name('autocomplete');
     //--------End Admin Pending RFID ROUTES---------  
 
@@ -193,6 +193,12 @@ Route::group(['middleware' => ['auth', 'faculty:Faculty']], function () {
     //--------START instructor Calendar ROUTES---------
     Route::get('/get-Faculty-Schedules', [ScheduleController::class, 'facultyCalendarSchedules'])->name('facultyCalendarSchedules');
     //--------END instructor Calendar ROUTES---------
+
+    Route::get('/student-attendance-export', [AttendanceController::class, 'studentAttendanceExport'])->name('studentAttendanceExport');
+    Route::get('/faculty-student-attendance-generation', [AttendanceController::class, 'facultyStudentAttendanceGeneration'])->name('facultyStudentAttendanceGeneration');
+    Route::get('/faculty-student-list-generation', [FacultyAttendanceAndListController::class, 'facultyStudentListGeneration'])->name('facultyStudentListGeneration');
+    Route::get('/preview-pdf-student-attendance', [PDFController::class, 'facultyPreviewStudentAttendancePDF'])->name('facultyPreviewStudentAttendancePDF');
+    Route::get('/preview-pdf-student-list', [PDFController::class, 'facultyPreviewStudentListPDF'])->name('facultyPreviewStudentListPDF');
 });
 
 

@@ -108,7 +108,7 @@
                           @foreach($adminIDS as $adminID)
                           @csrf
                           <a class="dropdown-item filter-admin-id admin-id" data-value="{{ $adminID->userID }}" href="#">
-                            {{ $adminID->userID }}-{{ $adminID->firstName }} {{ $adminID->lastName }}
+                          {{ ucwords($adminID->userID) }}-{{ ucwords($adminID->firstName) }} {{ ucwords($adminID->lastName) }}
                           </a>
                           @endforeach
                         </div>
@@ -124,8 +124,7 @@
                     <tr>
                       <th>#</th>
                       <th>User ID</th>
-                      <th>First Name</th>
-                      <th>Last Name</th>
+                      <th>Name</th>
                       <th>Action</th>
                       <th>Date</th>
                       <th>Time</th>
@@ -136,9 +135,8 @@
                     @foreach ($adminLogs as $adminLog)
                     <tr>
                       <td> {{$counter}} </td>
-                      <td> {{$adminLog->userID}} </td>
-                      <td> {{$adminLog->firstName}} </td>
-                      <td> {{$adminLog->lastName}} </td>
+                      <td> {{ ucwords($adminLog->userID) }} </td>
+                      <td> {{ ucwords($adminLog->firstName)}} {{ucwords($adminLog->lastName) }} </td>
                       <td> {{$adminLog->action}} </td>
                       <td> {{$adminLog->formatted_date}} </td>
                       <td> {{$adminLog->formatted_time}} </td>
@@ -186,7 +184,7 @@
                           @foreach($labInChargeIDS as $labInChargeID)
                           @csrf
                           <a class="dropdown-item filter-labInCharge-id lab-in-charge-id" data-value="{{ $labInChargeID->userID }}" href="#">
-                            {{ $labInChargeID->userID }}-{{ $labInChargeID->firstName }} {{ $labInChargeID->lastName }}
+                          {{ ucwords($labInChargeID->userID) }}-{{ ucwords($labInChargeID->firstName) }} {{ ucwords($labInChargeID->lastName) }}
                           </a>
                           @endforeach
                         </div>
@@ -202,8 +200,7 @@
                     <tr>
                       <th>#</th>
                       <th>User ID</th>
-                      <th>First Name</th>
-                      <th>Last Name</th>
+                      <th>Name</th>
                       <th>Action</th>
                       <th>Date</th>
                       <th>Time</th>
@@ -214,9 +211,8 @@
                     @foreach ($labInChargeLogs as $labInChargeLog)
                     <tr>
                       <td> {{$counter}} </td>
-                      <td>{{$labInChargeLog->userID}}</td>
-                      <td> {{$labInChargeLog->firstName}} </td>
-                      <td> {{$labInChargeLog->lastName}} </td>
+                      <td> {{ ucwords($labInChargeLog->userID) }} </td>
+                      <td> {{ucwords($labInChargeLog->firstName)}} {{ucwords($labInChargeLog->lastName)}} </td>
                       <td> {{$labInChargeLog->action}} </td>
                       <td> {{$labInChargeLog->formatted_date}} </td>
                       <td> {{$labInChargeLog->formatted_time}} </td>
@@ -262,7 +258,7 @@
                           @foreach($technicianIDS as $technicianID)
                           @csrf
                           <a class="dropdown-item filter-technician-id technician-id" data-value="{{ $technicianID->userID }}" href="#">
-                            {{ $technicianID->userID }}-{{ $technicianID->firstName }} {{ $technicianID->lastName }}
+                          {{ ucwords($technicianID->userID) }}-{{ ucwords($technicianID->firstName) }} {{ ucwords($technicianID->lastName) }}
                           </a>
                           @endforeach
                         </div>
@@ -278,8 +274,7 @@
                     <tr>
                       <th>#</th>
                       <th>User ID</th>
-                      <th>First Name</th>
-                      <th>Last Name</th>
+                      <th>Name</th>
                       <th>Action</th>
                       <th>Date</th>
                       <th>Time</th>
@@ -290,9 +285,8 @@
                     @foreach ($technicianLogs as $technicianLog)
                     <tr>
                       <td> {{$counter}} </td>
-                      <td> {{$technicianLog->userID}} </td>
-                      <td> {{$technicianLog->firstName}} </td>
-                      <td> {{$technicianLog->lastName}} </td>
+                      <td> {{ ucwords($technicianLog->userID) }} </td>
+                      <td> {{ ucwords($technicianLog->firstName)}} {{ucwords($technicianLog->lastName) }} </td>
                       <td> {{$technicianLog->action}} </td>
                       <td> {{$technicianLog->formatted_date}} </td>
                       <td> {{$technicianLog->formatted_time}} </td>
@@ -336,7 +330,7 @@
                           @foreach($facultyIDS as $facultyID)
                           @csrf
                           <a class="dropdown-item filter-faculty-id faculty-id" data-value="{{ $facultyID->userID }}" href="#">
-                            {{ $facultyID->userID }}-{{ $facultyID->firstName }} {{ $facultyID->lastName }}
+                          {{ ucwords($facultyID->userID) }}-{{ ucwords($facultyID->firstName) }} {{ ucwords($facultyID->lastName) }}
                           </a>
                           @endforeach
                         </div>
@@ -352,8 +346,7 @@
                     <tr>
                       <th>#</th>
                       <th>User ID</th>
-                      <th>First Name</th>
-                      <th>Last Name</th>
+                      <th>Name</th>
                       <th>Action</th>
                       <th>Date</th>
                       <th>Time</th>
@@ -364,9 +357,8 @@
                     @foreach ($facultyLogs as $facultyLog)
                     <tr>
                       <td> {{$counter}} </td>
-                      <td> {{$facultyLog->userID}} </td>
-                      <td> {{$facultyLog->firstName}} </td>
-                      <td> {{$facultyLog->lastName}} </td>
+                      <td> {{ ucwords($facultyLog->userID) }} </td>
+                      <td> {{ucwords($facultyLog->firstName)}} {{ucwords($facultyLog->lastName)}} </td>
                       <td> {{$facultyLog->action}} </td>
                       <td> {{$facultyLog->formatted_date}} </td>
                       <td> {{$facultyLog->formatted_time}} </td>
@@ -409,7 +401,7 @@
                           @foreach($studentIDS as $studentID)
                           @csrf
                           <a class="dropdown-item filter-student-id student-id" data-value="{{ $studentID->userID }}" href="#">
-                            {{ $studentID->userID }}-{{ $studentID->firstName }} {{ $studentID->lastName }}
+                          {{ ucwords($studentID->userID) }}-{{ ucwords($studentID->firstName) }} {{ ucwords($studentID->lastName) }}
                           </a>
                           @endforeach
                         </div>
@@ -425,8 +417,7 @@
                     <tr>
                       <th>#</th>
                       <th>User ID</th>
-                      <th>First Name</th>
-                      <th>Last Name</th>
+                      <th>Name</th>
                       <th>Action</th>
                       <th>Date</th>
                       <th>Time</th>
@@ -437,9 +428,8 @@
                     @foreach ($studentLogs as $studentLog)
                     <tr>
                       <td> {{$counter}} </td>
-                      <td> {{$studentLog->userID}} </td>
-                      <td> {{$studentLog->firstName}} </td>
-                      <td> {{$studentLog->lastName}} </td>
+                      <td> {{ ucwords($studentLog->userID) }} </td>
+                      <td> {{ ucwords($studentLog->firstName)}} {{ucwords($studentLog->lastName) }} </td>
                       <td> {{$studentLog->action}} </td>
                       <td> {{$studentLog->formatted_date}} </td>
                       <td> {{$studentLog->formatted_time}} </td>

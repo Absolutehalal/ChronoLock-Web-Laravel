@@ -1,8 +1,7 @@
 <?php
 $servername = "127.0.0.1";
 $username = "root";
-$password = "";
-$dbname = "chronolock";
+$password = "";$dbname = "chronolock";
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
@@ -127,7 +126,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         users.idNumber = attendances.userID JOIN class_lists ON 
         class_lists.classID = attendances.classID  JOIN schedules ON 
         class_lists.scheduleID = schedules.scheduleID
-        WHERE userType = 'Student' AND day = '$current_day_number' AND '$current_time' BETWEEN startTime AND endTime AND 
+        WHERE userType = 'Student' AND scheduleStatus = 'With Class' AND day = '$current_day_number' AND '$current_time' BETWEEN startTime AND endTime AND 
         '$current_date' BETWEEN startDate AND endDate AND date = '$current_date'";
 
         $result = $conn->query($sql);
@@ -163,7 +162,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         users.idNumber = student_masterlists.userID JOIN class_lists ON 
         class_lists.classID = student_masterlists.classID  JOIN schedules ON 
         class_lists.scheduleID = schedules.scheduleID
-        WHERE userType = 'Student' AND day = '$current_day_number' AND '$current_time' BETWEEN startTime AND endTime AND 
+        WHERE userType = 'Student' AND scheduleStatus= 'With Class' AND day = '$current_day_number' AND '$current_time' BETWEEN startTime AND endTime AND 
         '$current_date' BETWEEN startDate AND endDate";
 
         $result = $conn->query($sql);

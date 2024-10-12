@@ -41,7 +41,7 @@
           <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="{{ route('instructorIndex') }}">Dashboard</a></li>
-              <li class="breadcrumb-item active"><a href="inst-class-record.php">Class Attendance & Class List</a></li>
+              <li class="breadcrumb-item active"><a href="inst-class-record.php">Class Attendance & Student List</a></li>
             </ol>
           </nav>
 
@@ -146,7 +146,7 @@
                 <div class="nav-link">
                   <span class="text-dark d-block">Course:</span>
                   @foreach ($classListData as $classTime)
-                  <span class="h5 d-block"> {{ $classTime->courseCode }} - {{ $classTime->courseName }} </span>
+                  <span class="h5 d-block"> {{ strtoupper($classTime->courseCode) }} - {{ ucwords($classTime->courseName) }} </span>
                   @endforeach
                 </div>
               </li>
@@ -265,9 +265,10 @@
                           <th>Student Name</th>
                           <th>Student ID</th>
                           <th>Course</th>
-                          <th>Year & Section</th>
-                          <th>Remark</th>
-                          <th>Actions</th>
+                          <th>Program</th>
+                          <th>Yr. & Sec.</th>
+                          <th>Remarks</th>
+                          <th>Action</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -276,8 +277,9 @@
                         <tr>
                           <td>{{ date('F j, Y', strtotime($studAttendance->date)) }}</td>
                           <td>{{ date('h:i A', strtotime($studAttendance->time)) }}</td>
-                          <td>{{$studAttendance->firstName}} {{$studAttendance->lastName}}</td>
-                          <td>{{$studAttendance->idNumber}}</td>
+                          <td>{{ ucwords($studAttendance->firstName) }} {{ ucwords($studAttendance->lastName) }}</td>
+                          <td>{{ ucwords($studAttendance->idNumber) }}</td>
+                          <td>{{$studAttendance->courseName}}</td>
                           <td>{{$studAttendance->program}}</td>
                           <td>{{$studAttendance->year}}-{{$studAttendance->section}} </td>
                           <td>
@@ -356,15 +358,16 @@
                 </div>
 
 
-                <!-- Class List Table -->
+              <!-- Student List Table -->
                 <div class="card card-default shadow">
                   <div class="card-header">
-                    <h1>My Class List</h1>
+                    <h1>Student List</h1>
                   </div>
                   <div class="card-body ">
                     <table id="studentListTable" class="table table-bordered table-hover no-wrap" style="width:100%">
                       <thead class="table-dark">
                         <tr>
+                          <th>#</th>
                           <th>Student Name</th>
                           <th>Student ID</th>
                           <th>Program</th>
@@ -374,10 +377,12 @@
                         </tr>
                       </thead>
                       <tbody>
+                      @php $counter = 1; @endphp
                         @foreach ($students as $student)
                         @csrf
                         <tr>
-                          <td>{{$student->firstName}} {{$student->lastName}}</td>
+                          <td> {{$counter}} </td>
+                          <td>{{ ucwords($student->firstName) }} {{ ucwords($student->lastName) }}</td>
                           <td>{{$student->idNumber}}</td>
                           <td>{{$student->program}}</td>
                           <td>{{$student->year}}-{{$student->section}}</td>
@@ -406,6 +411,7 @@
                             </div>
                           </th>
                         </tr>
+                        @php $counter++; @endphp
                         @endforeach
 
                       </tbody>
@@ -586,7 +592,7 @@
                   <i class="fa-solid fa-trash-can text-danger" style="text-align:center; font-size:50px; padding:1rem;"></i>
                 </div>
                 <div class="row">
-                  <h4 style="text-align:center;"> Are you sure you want to delete this Student in your Class List?</h4>
+                  <h4 style="text-align:center;"> Are you sure you want to delete this Student in your Student List?</h4>
                 </div>
             </div> <!-- Modal Boday End-->
 

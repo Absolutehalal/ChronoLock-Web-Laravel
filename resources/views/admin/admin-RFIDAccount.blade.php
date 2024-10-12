@@ -1,11 +1,6 @@
 <!DOCTYPE html>
 
-<!--
- // WEBSITE: https://themefisher.com
- // TWITTER: https://twitter.com/themefisher
- // FACEBOOK: https://www.facebook.com/themefisher
- // GITHUB: https://github.com/themefisher/
--->
+
 
 <html lang="en" dir="ltr">
 
@@ -74,7 +69,7 @@
             </div> -->
           </div>
           <div class="card-body col-md-12">
-            <table id="exampleTable" class="table table-bordered table-hover no-wrap" style="width:100%">
+            <table id="rfidTable" class="table table-bordered table-hover no-wrap" style="width:100%">
               <thead class="table-dark">
                 <tr>
                   <th>User ID</th>
@@ -89,8 +84,9 @@
                 @foreach($RFID_Accounts as $RFID_Account)
                 @csrf
                 <tr>
-                  <td>{{ $RFID_Account->idNumber }}</td>
-                  <td>{{ $RFID_Account->firstName }} {{ $RFID_Account->lastName }}</td>
+                  <td>{{$counter}}</td>
+                  <td>{{ ucwords($RFID_Account->idNumber) }}</td>
+                  <td>{{ ucwords($RFID_Account->firstName) }} {{ ucwords($RFID_Account->lastName) }}</td>
                   <td>{{ $RFID_Account->RFID_Code }}</td>
                   <td>{{ $RFID_Account->userType }} </td>
                   <td>
@@ -119,10 +115,15 @@
                           Activate
                         </button>
                         @endif
+                        <button class="dropdown-item deleteBtn btn-sm" type="button" data-toggle="modal" data-target="#deleteRFIDModal" value="{{ $RFID_Account->id }}"">
+                          <i class="mdi mdi-trash-can text-danger"></i>
+                          Delete
+                        </button>
                       </div>
                     </div>
                   </th>
                 </tr>
+                @php $counter++; @endphp
                 @endforeach
               </tbody>
             </table>
@@ -210,7 +211,40 @@
         </div>
 
         </form>
+      </div>
+    </div>
+  </div>
+  </div>
+  </div>
+  <!-- Delete RFID Modal -->
+  <div class="modal fade" id="deleteRFIDModal" tabindex="-1" role="dialog" aria-labelledby="deleteRFID" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteRFID" style="text-align:center;">Delete User RFID</h5>
+          <button type="button" class="close" id="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form method="post">
+            @csrf
+            @method('delete')
+            <input type="hidden" id="deleteRFID_ID" class="id form-control ">
+            <div class="row">
+              <i class="fa-solid fa-trash-can text-danger" style="text-align:center; font-size:50px; padding:1rem;"></i>
+            </div>
+            <div class="row">
+              <h4 style="text-align:center;"> Are you sure you want to delete this User RFID?</h4>
+            </div>
+        </div> <!-- Modal Boday End-->
+        <!-- Modal Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary btn-pill" id="close" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-danger btn-pill deleteUserRFID">Delete</button>
+        </div>
 
+        </form>
       </div>
     </div>
   </div>

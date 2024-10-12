@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Exports;
-
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
@@ -11,15 +9,22 @@ use Maatwebsite\Excel\Concerns\WithCustomStartCell;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\AfterSheet;
 use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
+use PhpOffice\PhpSpreadsheet\Style\Conditional;
+use PhpOffice\PhpSpreadsheet\Style\Border;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
+use PhpOffice\PhpSpreadsheet\Style\Color;
 
 class StudentAttendanceExport implements FromCollection, WithHeadings, ShouldAutoSize, WithMapping, WithTitle, WithCustomStartCell, WithEvents
 {
     protected $collection;
     protected $index = 0;
+    protected $hasRecords; // To check if there are records
 
     public function __construct($collection)
     {
         $this->collection = $collection;
+        $this->hasRecords = $collection->isNotEmpty(); // Set flag based on whether records exist
     }
 
     public function collection()
@@ -29,6 +34,11 @@ class StudentAttendanceExport implements FromCollection, WithHeadings, ShouldAut
 
     public function map($attendance): array
     {
+        // Handle "No Record Found" case
+        if (!$attendance) {
+            return ['No Record Found'];
+        }
+
         // Format the date
         $formattedDate = \DateTime::createFromFormat('Y-m-d', $attendance->date)->format('F j, Y');
 
@@ -39,21 +49,19 @@ class StudentAttendanceExport implements FromCollection, WithHeadings, ShouldAut
             $formattedTime = 'No Record';
         }
 
-
         // Capitalize the remark
         $remark = strtoupper($attendance->remark);
 
         return [
             ++$this->index,
-            $attendance->firstName . ' ' . $attendance->lastName,
-            $attendance->userID,
+            ucwords($attendance->firstName) . ' ' . ucwords($attendance->lastName),
+            ucwords($attendance->userID),
             $attendance->courseName,
             $attendance->program,
             $attendance->year . ' - ' . $attendance->section,
             $formattedDate,
             $formattedTime,
             $remark,
-            // Add other fields you need to map here, e.g., $attendance->field_name,
         ];
     }
 
@@ -69,7 +77,6 @@ class StudentAttendanceExport implements FromCollection, WithHeadings, ShouldAut
             'Date',
             'Time',
             'Remark',
-            // Add other headings you need here, e.g., 'Field Name',
         ];
     }
 
@@ -77,132 +84,233 @@ class StudentAttendanceExport implements FromCollection, WithHeadings, ShouldAut
     {
         return 'Student Attendance Report';
     }
-
     public function startCell(): string
     {
         return 'A2';
     }
-
     public function registerEvents(): array
     {
         return [
             AfterSheet::class => function (AfterSheet $event) {
-                // Merge cells for the title
-                $event->sheet->mergeCells('A1:I1');
-                $event->sheet->setCellValue('A1', 'Student Attendance Report');
+                $sheet = $event->sheet->getDelegate();
 
-                // Set the row height for the heading
-                $event->sheet->getRowDimension(1)->setRowHeight(60);
+                // Check if no records are available
+                if (!$this->hasRecords) {
+                    // Merge and center "No Record Found"
+                    $sheet->mergeCells('A3:I3');
+                    $sheet->setCellValue('A3', 'No Record Found');
+                    $sheet->getStyle('A3')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+                    $sheet->getStyle('A3')->getFont()->setBold(true)->setSize(15);
 
-                // Apply styles to the title
-                $event->sheet->getStyle('A1:I1')->applyFromArray([
-                    'font' => [
-                        'bold' => true,
-                        'size' => 30,
-                    ],
-                    'alignment' => [
-                        'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
-                        'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
-                    ],
-                ]);
 
-                // Apply bold style to headings
-                $event->sheet->getStyle('A2:I2')->applyFromArray([
-                    'font' => [
-                        'bold' => true,
-                        'size' => 13,
-                    ],
-                ]);
+                    // Merge cells for the title
+                    $sheet->mergeCells('A1:I1');
+                    $sheet->setCellValue('A1', 'Student Attendance Report');
 
-                // Apply conditional formatting for the Remark column (H)
-                $conditionalStyles = $event->sheet->getStyle('H3:I' . $event->sheet->getHighestRow())->getConditionalStyles();
+                    // Set row height for the heading
+                    $sheet->getRowDimension(1)->setRowHeight(60);
 
-                $conditionalPresent = new \PhpOffice\PhpSpreadsheet\Style\Conditional();
-                $conditionalPresent->setConditionType(\PhpOffice\PhpSpreadsheet\Style\Conditional::CONDITION_CONTAINSTEXT)
-                    ->setOperatorType(\PhpOffice\PhpSpreadsheet\Style\Conditional::OPERATOR_CONTAINSTEXT)
-                    ->setText('PRESENT')
-                    ->getStyle()
-                    ->applyFromArray([
+                    // Apply styles to the title
+                    $sheet->getStyle('A1:I1')->applyFromArray([
                         'font' => [
-                            'color' => ['argb' => \PhpOffice\PhpSpreadsheet\Style\Color::COLOR_BLACK],
+                            'bold' => true,
+                            'size' => 30,
                         ],
-                        'fill' => [
-                            'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                            'startColor' => ['argb' => 'FF00FF00'], // Green background
+                        'alignment' => [
+                            'horizontal' => Alignment::HORIZONTAL_CENTER,
+                            'vertical' => Alignment::VERTICAL_CENTER,
                         ],
                     ]);
 
-                $conditionalLate = new \PhpOffice\PhpSpreadsheet\Style\Conditional();
-                $conditionalLate->setConditionType(\PhpOffice\PhpSpreadsheet\Style\Conditional::CONDITION_CONTAINSTEXT)
-                    ->setOperatorType(\PhpOffice\PhpSpreadsheet\Style\Conditional::OPERATOR_CONTAINSTEXT)
-                    ->setText('LATE')
-                    ->getStyle()
-                    ->applyFromArray([
+                    // Apply bold style to headings
+                    $sheet->getStyle('A2:I2')->applyFromArray([
                         'font' => [
-                            'color' => ['argb' => \PhpOffice\PhpSpreadsheet\Style\Color::COLOR_BLACK],
-                        ],
-                        'fill' => [
-                            'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                            'startColor' => ['argb' => 'FFFFFF00'], // Yellow background
+                            'bold' => true,
+                            'size' => 13,
                         ],
                     ]);
 
-                $conditionalAbsent = new \PhpOffice\PhpSpreadsheet\Style\Conditional();
-                $conditionalAbsent->setConditionType(\PhpOffice\PhpSpreadsheet\Style\Conditional::CONDITION_CONTAINSTEXT)
-                    ->setOperatorType(\PhpOffice\PhpSpreadsheet\Style\Conditional::OPERATOR_CONTAINSTEXT)
-                    ->setText('ABSENT')
-                    ->getStyle()
-                    ->applyFromArray([
-                        'font' => [
-                            'color' => ['argb' => \PhpOffice\PhpSpreadsheet\Style\Color::COLOR_WHITE],
-                        ],
-                        'fill' => [
-                            'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                            'startColor' => ['argb' => 'FFFF0000'], // Red background
+                    // Conditional formatting logic for the remark column
+                    // Define conditional formatting rules for Present, Late, and Absent
+                    $conditionalStyles = $sheet->getStyle('I3:I' . $sheet->getHighestRow())->getConditionalStyles();
+
+                    $conditionalPresent = new Conditional();
+                    $conditionalPresent->setConditionType(Conditional::CONDITION_CONTAINSTEXT)
+                        ->setOperatorType(Conditional::OPERATOR_CONTAINSTEXT)
+                        ->setText('PRESENT')
+                        ->getStyle()
+                        ->applyFromArray([
+                            'font' => ['color' => ['argb' => Color::COLOR_BLACK]],
+                            'fill' => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['argb' => 'FF00FF00']], // Green background
+                        ]);
+
+                    $conditionalLate = new Conditional();
+                    $conditionalLate->setConditionType(Conditional::CONDITION_CONTAINSTEXT)
+                        ->setOperatorType(Conditional::OPERATOR_CONTAINSTEXT)
+                        ->setText('LATE')
+                        ->getStyle()
+                        ->applyFromArray([
+                            'font' => ['color' => ['argb' => Color::COLOR_BLACK]],
+                            'fill' => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['argb' => 'FFFFFF00']], // Yellow background
+                        ]);
+
+                    $conditionalAbsent = new Conditional();
+                    $conditionalAbsent->setConditionType(Conditional::CONDITION_CONTAINSTEXT)
+                        ->setOperatorType(Conditional::OPERATOR_CONTAINSTEXT)
+                        ->setText('ABSENT')
+                        ->getStyle()
+                        ->applyFromArray([
+                            'font' => ['color' => ['argb' => Color::COLOR_WHITE]],
+                            'fill' => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['argb' => 'FFFF0000']], // Red background
+                        ]);
+
+                    $conditionalStyles[] = $conditionalPresent;
+                    $conditionalStyles[] = $conditionalLate;
+                    $conditionalStyles[] = $conditionalAbsent;
+
+                    $sheet->getStyle('I3:I' . $sheet->getHighestRow())->setConditionalStyles($conditionalStyles);
+
+                    // Apply border to the entire table
+                    $sheet->getStyle('A1:I' . $sheet->getHighestRow())->applyFromArray([
+                        'borders' => [
+                            'allBorders' => [
+                                'borderStyle' => Border::BORDER_THIN,
+                                'color' => ['argb' => 'FF000000'],
+                            ],
                         ],
                     ]);
 
-                $conditionalStyles[] = $conditionalPresent;
-                $conditionalStyles[] = $conditionalLate;
-                $conditionalStyles[] = $conditionalAbsent;
+                    // Insert left logo
+                    $drawingLeft = new Drawing();
+                    $drawingLeft->setName('Logo Left');
+                    $drawingLeft->setDescription('Logo Left');
+                    $drawingLeft->setPath(public_path('images/CSPC.png')); // Path to logo
+                    $drawingLeft->setHeight(70);
+                    $drawingLeft->setCoordinates('A1');
+                    $drawingLeft->setOffsetX(5);
+                    $drawingLeft->setOffsetY(5);
+                    $drawingLeft->setWorksheet($sheet);
 
-                $event->sheet->getStyle('I3:I' . $event->sheet->getHighestRow())->setConditionalStyles($conditionalStyles);
+                    // Insert right logo
+                    $drawingRight = new Drawing();
+                    $drawingRight->setName('Logo Right');
+                    $drawingRight->setDescription('Logo Right');
+                    $drawingRight->setPath(public_path('images/CCS.png')); // Path to logo
+                    $drawingRight->setHeight(70);
+                    $drawingRight->setCoordinates('I1');
+                    $drawingRight->setOffsetX(-5);
+                    $drawingRight->setOffsetY(5);
+                    $drawingRight->setWorksheet($sheet);
 
-                // Apply border to the entire table
-                $event->sheet->getStyle('A1:I' . $event->sheet->getHighestRow())->applyFromArray([
-                    'borders' => [
-                        'allBorders' => [
-                            'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
-                            'color' => ['argb' => 'FF000000'],
+                    // Fit to one page
+                    $sheet->getPageSetup()->setFitToWidth(1);
+                    $sheet->getPageSetup()->setFitToHeight(0);
+                } else {
+                    // If there are records, proceed with normal setup
+
+                    // Merge cells for the title
+                    $sheet->mergeCells('A1:I1');
+                    $sheet->setCellValue('A1', 'Student Attendance Report');
+
+                    // Set row height for the heading
+                    $sheet->getRowDimension(1)->setRowHeight(60);
+
+                    // Apply styles to the title
+                    $sheet->getStyle('A1:I1')->applyFromArray([
+                        'font' => [
+                            'bold' => true,
+                            'size' => 30,
                         ],
-                    ],
-                ]);
+                        'alignment' => [
+                            'horizontal' => Alignment::HORIZONTAL_CENTER,
+                            'vertical' => Alignment::VERTICAL_CENTER,
+                        ],
+                    ]);
 
-                // Insert logo on the left side of the heading
-                $drawingLeft = new Drawing();
-                $drawingLeft->setName('Logo Left');
-                $drawingLeft->setDescription('Logo Left');
-                $drawingLeft->setPath(public_path('images/CSPC.png')); // Path to your logo image
-                $drawingLeft->setHeight(70);
-                $drawingLeft->setCoordinates('A1');
-                $drawingLeft->setOffsetX(5);
-                $drawingLeft->setOffsetY(5);
-                $drawingLeft->setWorksheet($event->sheet->getDelegate());
+                    // Apply bold style to headings
+                    $sheet->getStyle('A2:I2')->applyFromArray([
+                        'font' => [
+                            'bold' => true,
+                            'size' => 13,
+                        ],
+                    ]);
 
-                // Insert logo on the right side of the heading
-                $drawingRight = new Drawing();
-                $drawingRight->setName('Logo Right');
-                $drawingRight->setDescription('Logo Right');
-                $drawingRight->setPath(public_path('images/CCS.png')); // Path to your logo image
-                $drawingRight->setHeight(70);
-                $drawingRight->setCoordinates('I1');
-                $drawingRight->setOffsetX(-5);
-                $drawingRight->setOffsetY(5);
-                $drawingRight->setWorksheet($event->sheet->getDelegate());
+                    // Conditional formatting logic for the remark column
+                    // Define conditional formatting rules for Present, Late, and Absent
+                    $conditionalStyles = $sheet->getStyle('I3:I' . $sheet->getHighestRow())->getConditionalStyles();
 
-                // Fit sheet to one page
-                $event->sheet->getPageSetup()->setFitToWidth(1);
-                $event->sheet->getPageSetup()->setFitToHeight(0);
+                    $conditionalPresent = new Conditional();
+                    $conditionalPresent->setConditionType(Conditional::CONDITION_CONTAINSTEXT)
+                        ->setOperatorType(Conditional::OPERATOR_CONTAINSTEXT)
+                        ->setText('PRESENT')
+                        ->getStyle()
+                        ->applyFromArray([
+                            'font' => ['color' => ['argb' => Color::COLOR_BLACK]],
+                            'fill' => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['argb' => 'FF00FF00']], // Green background
+                        ]);
+
+                    $conditionalLate = new Conditional();
+                    $conditionalLate->setConditionType(Conditional::CONDITION_CONTAINSTEXT)
+                        ->setOperatorType(Conditional::OPERATOR_CONTAINSTEXT)
+                        ->setText('LATE')
+                        ->getStyle()
+                        ->applyFromArray([
+                            'font' => ['color' => ['argb' => Color::COLOR_BLACK]],
+                            'fill' => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['argb' => 'FFFFFF00']], // Yellow background
+                        ]);
+
+                    $conditionalAbsent = new Conditional();
+                    $conditionalAbsent->setConditionType(Conditional::CONDITION_CONTAINSTEXT)
+                        ->setOperatorType(Conditional::OPERATOR_CONTAINSTEXT)
+                        ->setText('ABSENT')
+                        ->getStyle()
+                        ->applyFromArray([
+                            'font' => ['color' => ['argb' => Color::COLOR_WHITE]],
+                            'fill' => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['argb' => 'FFFF0000']], // Red background
+                        ]);
+
+                    $conditionalStyles[] = $conditionalPresent;
+                    $conditionalStyles[] = $conditionalLate;
+                    $conditionalStyles[] = $conditionalAbsent;
+
+                    $sheet->getStyle('I3:I' . $sheet->getHighestRow())->setConditionalStyles($conditionalStyles);
+
+                    // Apply border to the entire table
+                    $sheet->getStyle('A1:I' . $sheet->getHighestRow())->applyFromArray([
+                        'borders' => [
+                            'allBorders' => [
+                                'borderStyle' => Border::BORDER_THIN,
+                                'color' => ['argb' => 'FF000000'],
+                            ],
+                        ],
+                    ]);
+
+                    // Insert left logo
+                    $drawingLeft = new Drawing();
+                    $drawingLeft->setName('Logo Left');
+                    $drawingLeft->setDescription('Logo Left');
+                    $drawingLeft->setPath(public_path('images/CSPC.png')); // Path to logo
+                    $drawingLeft->setHeight(70);
+                    $drawingLeft->setCoordinates('A1');
+                    $drawingLeft->setOffsetX(5);
+                    $drawingLeft->setOffsetY(5);
+                    $drawingLeft->setWorksheet($sheet);
+
+                    // Insert right logo
+                    $drawingRight = new Drawing();
+                    $drawingRight->setName('Logo Right');
+                    $drawingRight->setDescription('Logo Right');
+                    $drawingRight->setPath(public_path('images/CCS.png')); // Path to logo
+                    $drawingRight->setHeight(70);
+                    $drawingRight->setCoordinates('I1');
+                    $drawingRight->setOffsetX(-5);
+                    $drawingRight->setOffsetY(5);
+                    $drawingRight->setWorksheet($sheet);
+
+                    // Fit to one page
+                    $sheet->getPageSetup()->setFitToWidth(1);
+                    $sheet->getPageSetup()->setFitToHeight(0);
+                }
             },
         ];
     }

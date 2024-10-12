@@ -169,6 +169,21 @@
               <span class="nav-text" data-toggle="tooltip" title="Logs">Logs</span>
             </a>
           </li>
+          <li class="has-sub {{ request()->routeIs('studentAttendanceGeneration') || request()->routeIs('instructorAttendanceGeneration') || request()->routeIs('previewPDF') ? 'active' : '' }}">
+            <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#reports" aria-expanded="{{ request()->routeIs('studentAttendanceGeneration') || request()->routeIs('instructorAttendanceGeneration') || request()->routeIs('previewPDF') ? 'true' : 'false' }}" aria-controls="reports">
+              <i class="mdi mdi-file-export"></i>
+              <span class="nav-text" data-toggle="tooltip" title="Report Generation">Report Generation</span> <b class="caret"></b>
+            </a>
+            <ul class="collapse {{ request()->routeIs('studentAttendanceGeneration') || request()->routeIs('instructorAttendanceGeneration') || request()->routeIs('previewPDF') ? 'show' : '' }}" id="reports">
+              <div class="sub-menu">
+                <li>
+                  <a class="sidenav-item-link" href="{{ route('previewPDF') }}">
+                    <span class="nav-text">ERP Regular Schedules</span>
+                  </a>
+                </li>
+              </div>
+            </ul>
+          </li>
           @endif
         </ul>
       </div>

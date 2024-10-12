@@ -7,7 +7,7 @@
         </button>
 
         @if(Auth::check())
-        <span class="page-title">Hello, {{ Auth::user()->firstName }} {{ Auth::user()->lastName }} | ID: {{ Auth::user()->idNumber }}</span>
+        <span class="page-title">Hello, {{ ucwords(Auth::user()->firstName) }} {{ ucwords(Auth::user()->lastName) }} | ID: {{ ucwords(Auth::user()->idNumber) }}</span>
         @endif
 
         <div class="navbar-right">

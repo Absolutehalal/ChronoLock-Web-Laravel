@@ -86,77 +86,117 @@
         <!-- END -->
 
         <!-- table -->
-        <div class="card card-default shadow">
-          <div class="card-header">
-            <h1>User Management</h1>
-            <div class="row">
-              <div class="col-xl-12 col-md-12 d-flex justify-content-end">
-                <div class="dropdown d-inline-block mb-3 mr-3">
-                  <a class="btn btn-primary btn-sm fw-bold" href="archive">
-                    <i class=" mdi mdi-archive"></i>
-                    Archives
-                  </a>
+        <form action="{{ route('deleteSelectedUsers') }}" method="POST" id="bulkDeleteForm">
+          @csrf
+          <div class="card card-default shadow">
+            <div class="card-header">
+              <h1>User Management</h1>
+              <div class="row">
+                <div class="col-xl-12 col-md-12 d-flex justify-content-between">
+                  <div class="mb-3">
+                    <!-- Dropdown Button -->
+                    <div class="dropdown">
+                      <button class="btn btn-outline-dark btn-sm fw-bold dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="mdi mdi-account"></i> User Actions
+                      </button>
+                      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <li>
+                          <button type="button" class="dropdown-item" id="selectAllBtn">
+                            <i class="mdi mdi-account"></i> Select All User
+                            <input type="hidden" class="btn btn-danger btn-sm fw-bold" id="selectAll" />
+                          </button>
+                        </li>
+                        <li>
+                          <button type="button" class="dropdown-item" id="deleteSelectedBtn">
+                            <i class="mdi mdi-archive"></i> Delete Selected
+                          </button>
+                        </li>
+                        <li>
+                          <a class="dropdown-item" href="archive">
+                            <i class="mdi mdi-archive"></i> Archives
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
                 </div>
               </div>
+
             </div>
-          </div>
-          <div class="card-body">
-            <table id="exampleTable" class="table table-bordered table-hover nowrap" style="width:100%">
-              <thead class="table-dark">
-                <tr>
-                  <th>#</th>
-                  <th>FirstName</th>
-                  <th>LastName</th>
-                  <th>ID Number</th>
-                  <th>UserType</th>
-                  <th>Email</th>
-                  <th>Avatar</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                @php $counter = 1; @endphp
+        </form>
+        <div class="card-body">
+          <table id="exampleTable" class="table table-bordered table-hover nowrap" style="width:100%">
+            <thead class="table-dark">
+              <tr>
+                <th>#</th>
+                <th>No.</th>
+                <th>FirstName</th>
+                <th>LastName</th>
+                <th>ID Number</th>
+                <th>UserType</th>
+                <th>Email</th>
+                <th>Avatar</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              @php $counter = 1; @endphp
 
-                @foreach ($users as $user)
-                <tr>
-                  <td> {{$counter}} </td>
-                  <td> {{$user->firstName}} </td>
-                  <td> {{$user->lastName}} </td>
-                  <td> {{$user->idNumber}} </td>
-                  <td> {{$user->userType}} </td>
-                  <td> {{$user->email}} </td>
-                  <td class="text-center">
-                    <img src="{{ $user->avatar ?? asset('images/User Icon.png') }}" alt="Avatar" width="35" height="35" class="rounded">
-                  </td>
-                  <th>
-                    <!-- Example single primary button -->
-                    <div class="dropdown d-inline-block">
-                      <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
-                        Actions
+              @foreach ($users as $user)
+              <tr>
+                <td class="text-center">
+                  <input type="checkbox" name="user_ids[]" class="userCheckbox" value="{{ $user->idNumber }}">
+                </td>
+                <td> {{$counter}} </td>
+                <td> {{ ucwords($user->firstName) }} </td>
+                <td> {{ ucwords($user->lastName) }} </td>
+                <td> {{$user->idNumber}} </td>
+                <td>
+                  @if($user->userType == 'Admin')
+                  <span class="badge badge-primary">Admin</span>
+                  @elseif($user->userType == 'Technician')
+                  <span class="badge badge-primary">Technician</span>
+                  @elseif($user->userType == 'Lab-in-Charge')
+                  <span class="badge badge-primary">Lab-in-Charge</span>
+                  @elseif($user->userType == 'Faculty')
+                  <span class="badge badge-danger">Faculty</span>
+                  @elseif($user->userType == 'Student')
+                  <span class="badge badge-warning">Student</span>
+                  @endif
+                </td>
+                <td> {{$user->email}} </td>
+                <td class="text-center">
+                  <img src="{{ $user->avatar ?? asset('images/User Icon.png') }}" alt="Avatar" width="35" height="35" class="rounded">
+                </td>
+                <th>
+                  <!-- Example single primary button -->
+                  <div class="dropdown d-inline-block">
+                    <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+                      Actions
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                      <button class="dropdown-item btn-sm  editBtn" type="button" data-toggle="modal" data-target="#updateUserModal" value="{{$user->id}}">
+                        <i class="mdi mdi-circle-edit-outline text-warning"></i>
+                        Edit</button>
+                      <button class="dropdown-item btn-sm deleteBtn" type="button" data-toggle="modal" data-target="#deleteUserModal" value="{{$user->id}}">
+                        <i class="mdi mdi-archive text-info"></i>
+                        Archive</button>
+
+                      <button class="dropdown-item btn-sm deleteForceBtn" href="#" id="deleteUserBtn" value="{{$user->id}}">
+                        <i class="mdi mdi-trash-can text-danger"></i>
+                        Force Delete
                       </button>
-                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <button class="dropdown-item btn-sm  editBtn" type="button" data-toggle="modal" data-target="#updateUserModal" value="{{$user->id}}">
-                          <i class="mdi mdi-circle-edit-outline text-warning"></i>
-                          Edit</button>
-                        <button class="dropdown-item btn-sm deleteBtn" type="button" data-toggle="modal" data-target="#deleteUserModal" value="{{$user->id}}">
-                          <i class="mdi mdi-archive text-info"></i>
-                          Archive</button>
-
-                        <button class="dropdown-item btn-sm deleteForceBtn" href="#" id="deleteUserBtn" value="{{$user->id}}">
-                          <i class="mdi mdi-trash-can text-danger"></i>
-                          Force Delete
-                        </button>
 
 
-                      </div>
                     </div>
-                  </th>
-                </tr>
+                  </div>
+                </th>
+              </tr>
 
-                @php $counter++; @endphp
-                @endforeach
-              </tbody>
-            </table>
+              @php $counter++; @endphp
+              @endforeach
+            </tbody>
+          </table>
 
           </div>
         </div>
@@ -356,7 +396,7 @@
                 <ul id="editEmailError"></ul>
                 <div class="form-group">
                   <label>Email</label>
-                  <input type="text" class="userEmail form-control border border-dark" id="edit_email" name="userEmail" placeholder="ex. chrono@my.cspc.edu.ph" oninput="this.value = this.value.toLowerCase()">
+                  <input type="text" class="userEmail form-control border border-dark" id="edit_email" name="userEmail" placeholder="ex. chronolock@my.cspc.edu.ph" oninput="this.value = this.value.toLowerCase()">
 
                 </div>
               </div>
@@ -389,7 +429,8 @@
     // Add event listener to the delete buttons
     document.addEventListener('DOMContentLoaded', function() {
       document.querySelectorAll('.deleteForceBtn').forEach(button => {
-        button.addEventListener('click', function() {
+        button.addEventListener('click', function(e) {
+          e.preventDefault();
           const id = this.value;
 
           Swal.fire({
@@ -404,7 +445,7 @@
             if (result.isConfirmed) {
               // Perform the deletion and redirect to the user management page
               window.location.href = "/forceDelete/" + id;
-
+            } else {
               Swal.fire({
                 icon: "error",
                 title: "Oops...",
@@ -419,6 +460,49 @@
     });
   </script>
 
+<script>
+    // Function to handle both select/deselect and button click
+    document.getElementById('selectAllBtn').addEventListener('click', function() {
+      var checkBox = document.getElementById('selectAll');
+      checkBox.checked = !checkBox.checked; // Toggle the checkbox state
+      // Select/Deselect all checkboxes based on the state of 'selectAll'
+      var checkboxes = document.querySelectorAll('.userCheckbox');
+      for (var checkbox of checkboxes) {
+        checkbox.checked = checkBox.checked;
+      }
+    });
+  </script>
+
+  <script>
+    // Ensure that the script runs after the DOM is fully loaded
+    document.addEventListener('DOMContentLoaded', function() {
+      // Ensure check/uncheck of 'selectAll' directly affects other checkboxes
+      document.getElementById('selectAll').addEventListener('click', function() {
+        var checkboxes = document.querySelectorAll('.userCheckbox');
+        for (var checkbox of checkboxes) {
+          checkbox.checked = this.checked;
+        }
+      });
+    });
+  </script>
+
+  <script>
+    document.getElementById('deleteSelectedBtn').addEventListener('click', function(e) {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, delete it!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          document.getElementById('bulkDeleteForm').submit();
+        }
+      });
+    });
+  </script>
 
 
   <script>
@@ -592,7 +676,9 @@
               Swal.fire({
                 icon: "error",
                 title: "Oops...",
-                text: "Invalid email. Please use a CSPC email.",
+                text: response.message,
+                timer: 5000,
+                timerProgressBar: true,
               });
 
             } else if (response.status === 409) {
@@ -737,10 +823,12 @@
               Swal.fire({
                 icon: "error",
                 title: "Oops...",
-                text: "Invalid email. Please use a CSPC email.",
+                text: response.message,
+                timer: 5000,
+                timerProgressBar: true,
               });
               $('.updateUser').text('Update');
-              $("#updateUserModal .close").click()
+              // $("#updateUserModal .close").click()
             } else if ((response.status == 500)) {
               $('#editFirstNameError').html("");
               $('#editLastNameError').html("");

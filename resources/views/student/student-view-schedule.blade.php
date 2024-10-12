@@ -1,19 +1,13 @@
 <!DOCTYPE html>
-
 <html lang="en" dir="ltr">
-
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-
     <script defer src="js/studentJoinClassSchedule.js"></script>
-
     <title>ChronoLock: Student Enroll Schedule</title>
-
     @include('head')
 </head>
-
 <body class="navbar-fixed sidebar-fixed" id="body">
     <script>
         NProgress.configure({
@@ -68,22 +62,26 @@
                     </div>
                 </div>
 
-
                 <div class="row">
                     @forelse($schedules as $schedule)
-                    <div class="col-lg-6 col-xl-4 col-xxl-4" style="width: 200%;">
+                    <div class="col-lg-4 col-xl-4 col-xxl-4" style="width: 200%;">
                         <div class="card card-default shadow-md border-dark mt-7">
                             <div class="card-body text-center">
                                 <button class="editClassSchedule mb-2" href="javascript:void(0)" data-target="#join-class-schedule-modal" value="{{$schedule->classID}}">
                                     <div class="image mb-3 d-inline-flex mt-n8">
                                         <img src="{{$schedule->avatar ?? asset('images/User Icon.png') }}" width="100" height="100" class="img-fluid rounded-circle d-inline-block" alt="Avatar Image">
                                     </div>
-                                    <h5 class="card-title">{{$schedule->instFirstName }} {{$schedule->instLastName }}</h5>
+                                    <h5 class="card-title">{{ucwords($schedule->courseName)}}</h5>
                                     <ul class="list-unstyled d-inline-block">
                                         <li class="d-flex mb-1">
+                                            <i class="mdi mdi-alpha-i-box mr-1"></i>
+                                            <label class="mr-1">Instructor Name:</label>
+                                            <span>{{ucwords($schedule->instFirstName) }} {{ ucwords($schedule->instLastName) }}</span>
+                                        </li>
+                                        <li class="d-flex mb-1">
                                             <i class="mdi mdi-alpha-c-box mr-1"></i>
-                                            <label class="mr-1">Course:</label>
-                                            <span>{{$schedule->courseName}}-{{$schedule->courseCode}}</span>
+                                            <label class="mr-1">Course Code:</label>
+                                            <span>{{ucwords($schedule->courseCode)}}</span>
                                         </li>
                                         <li class="d-flex">
                                             <i class="mdi mdi-group mr-1"></i>
@@ -94,11 +92,6 @@
                                             <i class="mdi mdi-alpha-s-box mr-1"></i>
                                             <label class="mr-1">Year & Section:</label>
                                             <span>{{$schedule->year}}-{{$schedule->section}}</span>
-                                        </li>
-                                        <li class="d-flex">
-                                            <i class="mdi mdi-calendar-clock mr-1"></i>
-                                            <label class="mr-1">Schedule:</label>
-                                            <span>{{date('h:i A', strtotime($schedule->startTime))}}-{{ date('h:i A', strtotime($schedule->endTime)) }}</span>
                                         </li>
                                         @php
                                         // Mapping of day numbers
@@ -119,32 +112,35 @@
                                             <label class="mr-1">Day:</label>
                                             <span>{{ $dayName }}</span>
                                         </li>
+                                        <li class="d-flex">
+                                            <i class="mdi mdi-calendar-clock mr-1"></i>
+                                            <label class="mr-1">Time:</label>
+                                            <span>{{date('h:i A', strtotime($schedule->startTime))}}-{{ date('h:i A', strtotime($schedule->endTime)) }}</span>
+                                        </li>
+
                                     </ul>
                                     @php
-                                        $classID = $schedule->classID;
-                                        $userEnrollment = DB::table('student_masterlists')
-                                                            ->where('userID', $userID)
-                                                            ->where('classID', $classID)
-                                                            ->first();
+                                    $classID = $schedule->classID;
+                                    $userEnrollment = DB::table('student_masterlists')
+                                    ->where('userID', $userID)
+                                    ->where('classID', $classID)
+                                    ->first();
                                     @endphp
                                     @if ($userEnrollment)
-                                        <div class="overlay" style="color: #31ce3c">Enrolled</div>
+                                    <div class="overlay" style="color: #31ce3c">Enrolled</div>
                                     @else
-                                        <div class="overlay" style="color: #FF7F7F">Get Access</div>
+                                    <div class="overlay" style="color: #FF7F7F">Get Access</div>
                                     @endif
                                 </button>
                             </div>
                         </div>
                     </div>
-
                     @empty
                     <div class="card-body justify-content-center">
                         <span class="text-center fw-bold">No schedules available.</span>
                     </div>
                     @endforelse
-
                 </div>
-
                 <!-- Join Class Modal -->
                 <div class="modal fade" id="join-class-schedule-modal" tabindex="-1" role="dialog" aria-labelledby="joinClass" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered modal-md" role="document">
@@ -160,7 +156,7 @@
                                         <div class="profile-content-left px-4">
                                             <div class="card text-center px-0 border-0">
                                                 <div class="card-img mx-auto">
-                                                    <img class="rounded-circle" id="instructorAvatar" alt="Instructor Profile" width="150" height="150" >
+                                                    <img class="rounded-circle" id="instructorAvatar" alt="Instructor Profile" width="150" height="150">
                                                 </div>
                                                 <div class="card-body">
                                                     <h4> <input type="text" class="input form-control" id="instFirstNameAndLastName" name="instFirstNameAndLastName" disabled> </h4>
@@ -216,7 +212,6 @@
                 $('#clearJoinClass')[0].reset();
                 clearJoinClassErrors();
             });
-
             function clearJoinClassErrors() {
                 $('#enrollmentKeyError').empty();
             }

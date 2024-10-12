@@ -84,8 +84,8 @@
                                 <tr>
                                     <td>{{ $classes->program }}</td>
                                     <td>{{ $classes->year }}-{{ $classes->section }}</td>
-                                    <td>{{ $classes->courseCode }}</td>
-                                    <td>{{ $classes->courseName }}</td>
+                                    <td>{{ strtoupper($classes->courseCode) }}</td>
+                                    <td>{{ ucwords($classes->courseName) }}</td>
                                     <td>{{ $classes->semester }}</td>
                                     <td>{{ $classes->enrollmentKey }}</td>
                                     <td>

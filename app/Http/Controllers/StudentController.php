@@ -122,6 +122,7 @@ class StudentController extends Controller
         // Count attendance records
         $attendanceCounts = DB::table('attendances') // Assuming the table is named 'attendance'
             ->where('userID', $userID)
+            ->where('classID', '!=', 'Null')
             ->selectRaw('
             SUM(CASE WHEN remark = "Present" THEN 1 ELSE 0 END) as present_count,
             SUM(CASE WHEN remark = "Absent" THEN 1 ELSE 0 END) as absent_count,

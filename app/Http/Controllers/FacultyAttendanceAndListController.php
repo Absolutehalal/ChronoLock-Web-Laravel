@@ -29,6 +29,8 @@ class FacultyAttendanceAndListController extends Controller
                 })
                 ->where('attendances.classID', '=', $decode)
                 ->where('users.userType', '=', 'Student')
+                ->orderBy('date', 'desc')
+                ->orderBy('time', 'desc')
                 ->get();
 
             // Instructor My Class List - Students
@@ -38,6 +40,7 @@ class FacultyAttendanceAndListController extends Controller
                 ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
                 ->where('student_masterlists.classID', '=', $decode)
                 ->where('users.userType', '=', 'Student')
+                ->orderBy('lastname', 'asc')
                 ->distinct()
                 ->get();
 
@@ -394,4 +397,94 @@ class FacultyAttendanceAndListController extends Controller
             ]);
         }
     }
+
+    public function facultyStudentListGeneration(Request $request)
+    {
+        try {
+
+            $id = Auth::id();
+            $userID = DB::table('users')->where('id', $id)->value('idNumber');
+
+            $classes = DB::table('class_lists')
+                ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
+                ->where('schedules.userID', '=', $userID)
+                ->get();
+
+            // Get the class IDs from the classes handled by the faculty
+            $classIDs = $classes->pluck('classID')->toArray();
+
+            // Course
+            $data['selected_programs'] = $request->query('selected_programs');
+            $data['studentPrograms'] = Attendance::select('program')
+                ->join('users', 'attendances.userID', '=', 'users.idNumber')
+                ->join('class_lists', 'attendances.classID', '=', 'class_lists.classID')
+                ->join('schedules', 'schedules.scheduleID', '=', 'class_lists.scheduleID')
+                ->where('users.userType', 'Student')
+                ->where('schedules.userID', '=', $userID)
+                ->distinct()
+                ->get();
+
+            // Year
+            $data['selected_years'] = $request->query('selected_years');
+            $data['studentYears'] = Attendance::select('year', 'section')
+                ->join('users', 'attendances.userID', '=', 'users.idNumber')
+                ->join('class_lists', 'attendances.classID', '=', 'class_lists.classID')
+                ->join('schedules', 'schedules.scheduleID', '=', 'class_lists.scheduleID')
+                ->where('users.userType', '=', 'Student')
+                ->where('schedules.userID', '=', $userID)
+                ->distinct()
+                ->get();
+
+            // Status
+            $data['student_status'] = $request->query('student_status');
+            $data['studentStatus'] = DB::table('student_masterlists')
+                ->join('users', 'student_masterlists.userID', '=', 'users.idNumber')
+                ->orderByRaw("FIELD(student_masterlists.status, 'REGULAR', 'IRREGULAR', 'DROP')")
+                ->where('users.userType', '=', 'Student')
+                ->whereIn('student_masterlists.classID', $classIDs)
+                ->select('student_masterlists.status')
+                ->distinct()
+                ->get();
+
+            // Query for attendance data
+            $query = DB::table('student_masterlists')
+                ->join('users', 'student_masterlists.userID', '=', 'users.idNumber')
+                ->join('class_lists', 'student_masterlists.classID', '=', 'class_lists.classID')
+                ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
+                ->whereIn('student_masterlists.classID', $classIDs)
+                ->where('users.userType', '=', 'Student')
+                ->orderBy('section', 'ASC')
+                ->orderBy('year', 'ASC')
+                ->orderBy('lastname', 'ASC')
+                ->distinct();
+
+
+            if ($data['selected_programs']) {
+                $query->where('program', $data['selected_programs']);
+            }
+
+            if ($data['selected_years']) {
+                $query->where('year', explode('-', $data['selected_years'])[0])
+                    ->where('section', explode('-', $data['selected_years'])[1]);
+            }
+
+            if ($data['student_status']) {
+                $query->where('student_masterlists.status', $data['student_status']);
+            }
+
+            // dd($query);
+
+            $data['studentList'] = $query->get();
+
+            // Store the filtered query in the session
+            session(['student_list_query' => $query->toSql(), 'student_list_bindings' => $query->getBindings()]);
+
+            return view('faculty.instructor-studentList-generation', $data, ['classes' => $classes]);
+        } catch (\Exception $e) {
+            Alert::error('Error', 'Something went wrong. Please try again later.')
+                ->autoClose(5000)
+                ->showCloseButton();
+            return redirect()->back();
+        }
+    }   
 }

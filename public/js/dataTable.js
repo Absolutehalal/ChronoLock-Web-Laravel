@@ -14,6 +14,8 @@ $(document).ready(function () {
         language: {
             searchPlaceholder: "Search Here",
         },
+        order: [[1, "asc"]],
+        columnDefs: [{ type: "id", targets: 2 }],
     });
 
     // Highlight search term
@@ -72,7 +74,43 @@ $(document).ready(function () {
             });
         }
     });
+    var rfidTable = $("#rfidTable").DataTable({
+        // scrollX: true,
+        // "searching": false, order: [[0, 'asc']],
+        rowReorder: true,
+        pagingType: "simple_numbers",
+        responsive: true,
+        rowReorder: {
+            selector: "td:nth-child(2)",
+        },
+        // stateSave: false,
+        mark: true,
+        language: {
+            searchPlaceholder: "Search Here",
+        },
+        order: [[0, "asc"]],
+        columnDefs: [{ type: "id", targets: 1 }],
+    });
 
+    // Highlight search term
+    rfidTable.on("draw", function () {
+        var body = $(rfidTable.table().body());
+        var searchTerm = rfidTable.search();
+
+        // Clear previous highlights
+        body.unmark();
+
+        if (searchTerm) {
+            // Highlight new search term in specific columns (excluding the Actions column)
+            body.find("td").each(function () {
+                var cell = $(this);
+                // Highlight in all columns except the last one (assuming it's the Actions column)
+                if (!cell.hasClass("action-cell")) {
+                    cell.mark(searchTerm);
+                }
+            });
+        }
+    });
     // Start Logs Table------------
 
     //admin table
@@ -754,6 +792,7 @@ $(document).ready(function () {
     flatpickr("#selectedTime6", timeConfig);
     flatpickr("#selectedTime7", timeConfig);
     flatpickr("#selectedTime8", timeConfig);
-
+    flatpickr("#selectedStartDate", dateConfig);
+    flatpickr("#selectedEndDate", dateConfig);
     //ADMIN FILTERS START-----------
 });

@@ -103,7 +103,7 @@ class UserController extends Controller
 
             // Check if the email has the required domain (@cspc.edu.ph)
             if (!str_ends_with($request->email, '@cspc.edu.ph')) {
-                Alert::info("Info", "Please use CSPC email only.")
+                Alert::info("Info", "Please use CSPC Employee Email only.")
                     ->autoClose(3000)
                     ->timerProgressBar()
                     ->showCloseButton();
@@ -195,7 +195,7 @@ class UserController extends Controller
             'userIdNumber' => 'required',
         ]);
 
-        $email = $request->get('userEmail');
+        $email = $request->input('userEmail');
         $emailDomain = substr(strrchr($email, "@"), 1);
         $checkEmail = User::where('email', 'LIKE',  $email)->value('email');
 
@@ -205,109 +205,108 @@ class UserController extends Controller
                 'errors' => $validator->messages()
             ]);
         } else {
-            if ($emailDomain !== 'my.cspc.edu.ph' && $emailDomain !== 'cspc.edu.ph') {
+           // If the user type is 'faculty, 'lab-in-charge', 'technician', check that the domain is 'cspc.edu.ph'
+           if (in_array($request->input('updateUserType'), ['Admin', 'Faculty', 'Lab-in-Charge', 'Technician']) && $emailDomain !== 'cspc.edu.ph') {
+            return response()->json([
+                'status' => 300,
+                'message' => 'Invalid email. Please use a valid CSPC Employee Email.'
+            ]);
+        } else if ($request->input('updateUserType') === 'Student' && $emailDomain !== 'my.cspc.edu.ph') {
+            return response()->json([
+                'status' => 300,
+                'message' => 'Invalid email. Please use a valid CSPC Student Email.'
+            ]);
+        } else if ($checkEmail == $email) {
+
+            // Check if the idNumber is already taken by another user
+            $checkIdNumberDB = User::where('idNumber', $request->input('userIdNumber'))
+                ->where('id', '!=', $id)
+                ->first();
+
+            // Check if the email is already taken by another user
+            $checkEmailDB = User::where('email', $request->input('userEmail'))
+                ->where('id', '!=', $id)
+                ->first();
+
+            if ($checkIdNumberDB) {
                 return response()->json([
-                    'status' => 300,
+                    'status' => 409,
+                    'message' => 'ID Number has already been taken.',
                 ]);
-            } else if ($checkEmail == $email) {
-
-                // Check if the idNumber is already taken by another user
-                $checkIdNumber = User::where('idNumber', $request->input('userIdNumber'))
-                    ->where('id', '!=', $id)
-                    ->first();
-
-                // Check if the email is already taken by another user
-                $checkEmail = User::where('email', $request->input('userEmail'))
-                    ->where('id', '!=', $id)
-                    ->first();
-
-                if ($checkIdNumber) {
-                    return response()->json([
-                        'status' => 409,
-                        'message' => 'ID Number has already been taken.',
-                    ]);
-                } else if ($checkEmail) {
-                    return response()->json([
-                        'status' => 409,
-                        'message' => 'Email has already been taken.',
-                    ]);
-                }
-                $user = User::find($id);
-                $updatedID = DB::table('users')->where('id', $id)->value('id');
-                $idNumber = DB::table('users')->where('id', $updatedID)->value('idNumber');
-                $firstName = DB::table('users')->where('id', $updatedID)->value('firstName');
-                $lastName = DB::table('users')->where('id', $updatedID)->value('lastName');
-                $userType = DB::table('users')->where('id', $updatedID)->value('userType');
-                $email = DB::table('users')->where('id', $updatedID)->value('email');
-                if ($user) {
-                    $user->firstName = $request->input('updateFirstName');
-                    $user->lastName = $request->input('updateLastName');
-                    $user->userType = $request->input('updateUserType');
-                    $user->email = $request->input('userEmail');
-                    $user->idNumber = $request->input('userIdNumber');
-                    $user->update();
-
-                    // Start Logs
-                    $inputFirstName = $request->input('updateFirstName');
-                    $inputLastName =  $request->input('updateLastName');
-                    $inputUserType = $request->input('updateUserType');
-                    $inputEmail =  $request->input('userEmail');
-                    $inputIdNumber = $request->input('userIdNumber');
-                    $id = Auth::id();
-                    $userID = DB::table('users')->where('id', $id)->value('idNumber');
-                    date_default_timezone_set("Asia/Manila");
-                    $date = date("Y-m-d");
-                    $time = date("H:i:s");
-                    if (($inputFirstName == $firstName) && ($inputLastName == $lastName) && ($inputUserType == $userType) && ($inputEmail == $email) && ($inputIdNumber == $idNumber)) {
-                        $action = "Attempt update on $email account : $userType User ID - $idNumber";
-                    } else {
-                        $action = "Updated $email account : $inputUserType User ID - $idNumber";
-                    }
-                    DB::table('user_logs')->insert([
-                        'userID' => $userID,
-                        'action' => $action,
-                        'date' => $date,
-                        'time' => $time,
-                    ]);
-                    // END Logs
-
-                    return response()->json([
-                        'status' => 200,
-                    ]);
-                }
-            } else if ($checkEmail != "") {
+            } else if ($checkEmailDB) {
                 return response()->json([
-                    'status' => 500,
+                    'status' => 409,
+                    'message' => 'Email has already been taken.',
                 ]);
             }
         }
-        // if ($emailDomain !== 'my.cspc.edu.ph') {
 
-        //     Alert::error('Error', 'Invalid email. Please use a CSPC email.')
-        //         ->autoClose(5000)
-        //         ->timerProgressBar()
-        //         ->showCloseButton();
+        $user = User::find($id);
+        $updatedID = DB::table('users')->where('id', $id)->value('id');
+        $idNumber = DB::table('users')->where('id', $updatedID)->value('idNumber');
+        $firstName = DB::table('users')->where('id', $updatedID)->value('firstName');
+        $lastName = DB::table('users')->where('id', $updatedID)->value('lastName');
+        $userType = DB::table('users')->where('id', $updatedID)->value('userType');
+        $email = DB::table('users')->where('id', $updatedID)->value('email');
 
-        //     return redirect('/userManagementPage');
-        // }else if($checkEmail == $email){
+        if ($user) {
+            $user->firstName = $request->input('updateFirstName');
+            $user->lastName = $request->input('updateLastName');
+            $user->userType = $request->input('updateUserType');
+            $user->email = $request->input('userEmail');
+            $user->idNumber = $request->input('userIdNumber');
+            $user->update();
 
-        //     $user->update($data);
+            // Start Logs
+            $inputFirstName = $request->input('updateFirstName');
+            $inputLastName =  $request->input('updateLastName');
+            $inputUserType = $request->input('updateUserType');
+            $inputEmail =  $request->input('userEmail');
+            $inputIdNumber = $request->input('userIdNumber');
+            $id = Auth::id();
+            $userID = DB::table('users')->where('id', $id)->value('idNumber');
+            date_default_timezone_set("Asia/Manila");
+            $date = date("Y-m-d");
+            $time = date("H:i:s");
+            if (($inputFirstName == $firstName) && ($inputLastName == $lastName) && ($inputUserType == $userType) && ($inputEmail == $email) && ($inputIdNumber == $idNumber)) {
+                $action = "Attempt update on $email account : $userType User ID - $idNumber";
+            } else {
+                $action = "Updated $email account : $inputUserType User ID - $idNumber";
+            }
+            DB::table('user_logs')->insert([
+                'userID' => $userID,
+                'action' => $action,
+                'date' => $date,
+                'time' => $time,
+            ]);
+            // END Logs
 
-        //     Alert::success('Success', 'Update successful.')
-        //         ->autoClose(3000)
-        //         ->timerProgressBar()
-        //         ->showCloseButton();
-        //     return redirect()->intended('/userManagementPage');
-        // }else if($checkEmail != ""){
-
-        //     Alert::error('Error', 'Email already exist. Please use another email.')
-        // ->autoClose(5000)
-        // ->timerProgressBar()
-        // ->showCloseButton();
-
-        //     return redirect('/userManagementPage');
-        // }
+            return response()->json([
+                'status' => 200,
+            ]);
+        }
     }
+    // if ($emailDomain !== 'my.cspc.edu.ph') {
+    //     Alert::error('Error', 'Invalid email. Please use a CSPC email.')
+    //         ->autoClose(5000)
+    //         ->timerProgressBar()
+    //         ->showCloseButton();
+    //     return redirect('/userManagementPage');
+    // }else if($checkEmail == $email){
+    //     $user->update($data);
+    //     Alert::success('Success', 'Update successful.')
+    //         ->autoClose(3000)
+    //         ->timerProgressBar()
+    //         ->showCloseButton();
+    //     return redirect()->intended('/userManagementPage');
+    // }else if($checkEmail != ""){
+    //     Alert::error('Error', 'Email already exist. Please use another email.')
+    // ->autoClose(5000)
+    // ->timerProgressBar()
+    // ->showCloseButton();
+    //     return redirect('/userManagementPage');
+    // }
+}
 
     public function addUser(Request $request)
     {
@@ -340,20 +339,28 @@ class UserController extends Controller
                 ]);
             }
 
-            // Check if the email domain is 'my.cspc.edu.ph' & 'cspc.edu.ph'
-            if ($emailDomain !== 'my.cspc.edu.ph' && $emailDomain !== 'cspc.edu.ph') {
-                return response()->json([
-                    'status' => 300,
-                ]);
-            } elseif ($email == $checkEmail) {
-                return response()->json([
-                    'status' => 100,
-                ]);
-            } elseif ($checkIdNumber) {
-                return response()->json([
-                    'status' => 101,
-                ]);
-            } else {
+           // check that the domain is 'cspc.edu.ph'
+           if (in_array($request->input('userType'), ['Faculty', 'Lab-in-Charge', 'Technician']) && $emailDomain !== 'cspc.edu.ph') {
+            return response()->json([
+                'status' => 300,
+                'message' => 'Invalid email. Please use a valid CSPC Employee Email.'
+            ]);
+        }
+        // Check if the email domain is 'my.cspc.edu.ph' 
+        else if ($request->input('userType') === 'Student' && $emailDomain !== 'my.cspc.edu.ph') {
+            return response()->json([
+                'status' => 300,
+                'message' => "Invalid email. Please use a CSPC Student email."
+            ]);
+        } else if ($email == $checkEmail) {
+            return response()->json([
+                'status' => 100,
+            ]);
+        } else if ($checkIdNumber) {
+            return response()->json([
+                'status' => 101,
+            ]);
+        } else {
                 $user = new User;
                 $user->firstName = $request->input('firstName');
                 $user->lastName = $request->input('lastName');
@@ -492,7 +499,7 @@ class UserController extends Controller
                 ]);
                 // END Logs
 
-                Alert::success('Success', 'User deleted permanently')
+                Alert::success('Success', 'User Deleted Permanently')
                     ->autoClose(5000)
                     ->timerProgressBar()
                     ->showCloseButton();
@@ -534,7 +541,7 @@ class UserController extends Controller
                 // END Logs
 
 
-                Alert::success('Success', 'User deleted permanently')
+                Alert::success('Success', 'User Deleted Permanently')
                     ->autoClose(5000)
                     ->timerProgressBar()
                     ->showCloseButton();
@@ -595,6 +602,55 @@ class UserController extends Controller
         return redirect('/userManagementPage');
     }
 
+    public function deleteSelectedUsers(Request $request)
+    {
+        // Ensure that at least one checkbox is selected
+        if (!empty($request->user_ids)) {
+            try {
+                // Delete the users based on the selected IDs
+                $users = User::whereIn('idNumber', $request->user_ids)->get();
+
+                foreach ($users as $user) {
+                    $user->forceDelete();
+
+                    // Log the deletion
+                    $ID = Auth::id();
+                    $userID = DB::table('users')->where('id', $ID)->value('idNumber');
+                    date_default_timezone_set("Asia/Manila");
+                    $date = date("Y-m-d");
+                    $time = date("H:i:s");
+                    $action = "Deleted a user accounts: " . $user->idNumber;
+                    DB::table('user_logs')->insert([
+                        'userID' => $userID,
+                        'action' => $action,
+                        'date' => $date,
+                        'time' => $time,
+                    ]);
+                }
+
+                Alert::success('Success', 'Users Deleted Successfully')
+                    ->autoClose(5000)
+                    ->timerProgressBar()
+                    ->showCloseButton();
+
+                return back();
+            } catch (\Exception $e) {
+                Alert::error('Error', 'An error occurred during deletion.')
+                    ->autoClose(5000)
+                    ->timerProgressBar()
+                    ->showCloseButton();
+
+                return back();
+            }
+        }
+
+        Alert::info('No Users', 'No selected users to be deleted')
+            ->autoClose(5000)
+            ->timerProgressBar()
+            ->showCloseButton();
+
+        return back();
+    }
 
     //schedule management page
     public function getSchedules()
@@ -1331,6 +1387,7 @@ class UserController extends Controller
             ->join('users', 'users.idNumber', '=', 'schedules.userID')
             ->where('users.idNumber', '=', $userID)
             ->where('schedules.day', $today)
+            ->distinct('schedules.scheduleID')
             ->count();
 
         // Fetch the 15 latest students enrolled in the authenticated user's class list
@@ -1341,7 +1398,7 @@ class UserController extends Controller
             ->where('schedules.userID', '=', $userID)
             ->where('users.userType', 'Student')
             ->orderBy('student_masterlists.created_at', 'desc') // Adjust field name as needed
-            // ->limit(20)
+            ->limit(20)
             ->get();
 
         // TODAY'S SCHEDULE
@@ -1354,11 +1411,12 @@ class UserController extends Controller
             ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
             ->join('users', 'users.idNumber', '=', 'schedules.userID')
             ->where('users.idNumber', '=', $userID)
-            ->where('schedules.day', '=', $today)
-            ->orderBy('schedules.startTime', 'asc')
+            ->where('schedules.day', $today)
+            ->distinct() // Ensure distinct schedules
+            ->select('schedules.*') // Select only schedules
             ->get();
 
-        // dd($today);
+        // dd($todaySchedules);
 
 
         return view('faculty.instructor-dashboard', [

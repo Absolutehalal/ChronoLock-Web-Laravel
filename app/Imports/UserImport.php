@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Imports;
-
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\ToModel;
@@ -12,31 +10,21 @@ use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Concerns\WithValidation;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\Importable;
-
-
-
 class UserImport implements ToCollection, ToModel, WithHeadingRow
 {
-
     use Importable;
-
     private $current = 0;
-
     private $errors = [];
-
     /**
      * @param Collection $collection
      */
-    public function collection(Collection $collection)
-    {
-    }
+    public function collection(Collection $collection) {}
 
 
     // public function model(array $row)
     // {
     //     // Find the existing user by email
     //     $existingUser = User::where('email', $row['email'])->first();
-
     //     if ($existingUser) {
     //         // Update existing user
     //         $existingUser->update([
@@ -59,65 +47,135 @@ class UserImport implements ToCollection, ToModel, WithHeadingRow
     // }
 
 
+    // public function model(array $row)
+    // {
+    //     // Find user by email
+    //     $existingUser = User::where('email', $row['email'])->first();
+
+    //     if ($existingUser) {
+    //         // Update existing user
+    //         $existingUser->update([
+    //             'firstName' => $row['firstname'], // 'database name'  => $row['excel file header']
+    //             'lastName'  => $row['lastname'],
+    //             'idNumber'  => $row['uid'],
+    //             'userType'  => $row['type'],
+    //         ]);
+
+    //         // Start Logs
+    //         $id = Auth::id();
+    //         $userID = DB::table('users')->where('id', $id)->value('idNumber');
+    //         $email =  $row['email'];
+    //         date_default_timezone_set("Asia/Manila");
+    //         $date = date("Y-m-d");
+    //         $time = date("H:i:s");
+    //         $action = "Updated $email Account";
+    //         DB::table('user_logs')->insert([
+    //             'userID' => $userID,
+    //             'action' => $action,
+    //             'date' => $date,
+    //             'time' => $time,
+    //         ]);
+    //         // END Logs
+    //         return $existingUser; // Return the updated user
+
+
+    //     } else {
+    //         // Create new user
+    //         User::create([
+    //             'firstName' => $row['firstname'],
+    //             'lastName'  => $row['lastname'],
+    //             'email'     => $row['email'],
+    //             'idNumber'  => $row['uid'],
+    //             'userType'  => $row['type'],
+    //         ]);
+
+    //         // Start Logs
+    //         $email =  $row['email'];
+    //         $id = Auth::id();
+    //         $userID = DB::table('users')->where('id', $id)->value('idNumber');
+    //         date_default_timezone_set("Asia/Manila");
+    //         $date = date("Y-m-d");
+    //         $time = date("H:i:s");
+    //         $action = "imported new user: $email";
+    //         DB::table('user_logs')->insert([
+    //             'userID' => $userID,
+    //             'action' => $action,
+    //             'date' => $date,
+    //             'time' => $time,
+    //         ]);
+    //         // END Logs
+
+    //     }
+    // }
+
+
     public function model(array $row)
     {
+        // Normalize data by trimming extra spaces and standardizing formats
+        $email = trim($row['email']);
+        $firstName = trim($row['firstname']);
+        $lastName = trim($row['lastname']);
+        $idNumber = trim($row['uid']);
+        $userType = trim($row['type']);
+
         // Find user by email
-        $existingUser = User::where('email', $row['email'])->first();
+        $existingUser = User::where('email', $email)->first();
 
         if ($existingUser) {
             // Update existing user
             $existingUser->update([
-                'firstName' => $row['firstname'], // 'database name'  => $row['excel file header']
-                'lastName'  => $row['lastname' ],
-                'idNumber'  => $row['uid'      ],
-                'userType'  => $row['type'     ],
-            ]);  
+                'firstName' => $firstName,
+                'lastName'  => $lastName,
+                'idNumber'  => $idNumber,
+                'userType'  => $userType,
+            ]);
+
             // Start Logs
-             $id = Auth::id();
-             $userID =DB::table('users')->where('id', $id)->value('idNumber');
-             $email =  $row['email'];
-             date_default_timezone_set("Asia/Manila");
-             $date = date("Y-m-d");
-             $time = date("H:i:s");
-             $action = "Updated $email Account";
-             DB::table('user_logs')->insert([
-                 'userID' => $userID,
-                 'action' => $action,
-                 'date' => $date,
-                 'time' => $time,
-             ]);
-             // END Logs
+            $id = Auth::id();
+            $userID = DB::table('users')->where('id', $id)->value('idNumber');
+            date_default_timezone_set("Asia/Manila");
+            $date = date("Y-m-d");
+            $time = date("H:i:s");
+            $action = "Updated $email Account";
+            DB::table('user_logs')->insert([
+                'userID' => $userID,
+                'action' => $action,
+                'date' => $date,
+                'time' => $time,
+            ]);
+            // END Logs
+
             return $existingUser; // Return the updated user
 
-           
-        } 
-        else {
+        } else {
             // Create new user
-             User::create([
-                'firstName' => $row['firstname'],
-                'lastName'  => $row['lastname' ],
-                'email'     => $row['email'    ],
-                'idNumber'  => $row['uid'      ],
-                'userType'  => $row['type'     ],
+            $newUser = User::create([
+                'firstName' => $firstName,
+                'lastName'  => $lastName,
+                'email'     => $email,
+                'idNumber'  => $idNumber,
+                'userType'  => $userType,
             ]);
-              // Start Logs
-              $email =  $row['email'];
-              $id = Auth::id();
-              $userID =DB::table('users')->where('id', $id)->value('idNumber');
-              date_default_timezone_set("Asia/Manila");
-              $date = date("Y-m-d");
-              $time = date("H:i:s");
-              $action = "imported new user: $email";
-              DB::table('user_logs')->insert([
-                  'userID' => $userID,
-                  'action' => $action,
-                  'date' => $date,
-                  'time' => $time,
-              ]);
-              // END Logs
 
+            // Start Logs
+            $id = Auth::id();
+            $userID = DB::table('users')->where('id', $id)->value('idNumber');
+            date_default_timezone_set("Asia/Manila");
+            $date = date("Y-m-d");
+            $time = date("H:i:s");
+            $action = "Imported new user: $email";
+            DB::table('user_logs')->insert([
+                'userID' => $userID,
+                'action' => $action,
+                'date' => $date,
+                'time' => $time,
+            ]);
+            // END Logs
+
+            return $newUser; // Return the newly created user
         }
     }
+
 
 
     public function getErrors()

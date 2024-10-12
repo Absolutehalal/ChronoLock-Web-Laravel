@@ -174,10 +174,10 @@
                 <tr>
                   <td>{{ $instructors->formatted_date }}</td>
                   <td>{!! $instructors->formatted_time !!}</td>
-                  <td>{{ $instructors->courseCode }}</td>
-                  <td>{{ $instructors->courseName }}</td>
+                  <td>{{ strtoupper($instructors->courseCode) }}</td>
+                  <td>{{ ucwords($instructors->courseName) }}</td>
                   <td>{{ $instructors->program }} - {{ $instructors->year }}{{ $instructors->section }}</td>
-                  <td>{{ $instructors->instFirstName }} {{ $instructors->instLastName }}</td>
+                  <td>{{ ucwords($instructors->instFirstName) }} {{ ucwords($instructors->instLastName) }}</td>
                   <td>{{ $instructors->userID }}</td>
                   <td>
                     @if($instructors->remark == 'Present')

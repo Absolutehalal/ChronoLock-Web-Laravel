@@ -208,9 +208,9 @@
                 <tr>
                   <td>{{ $students->formatted_date }}</td>
                   <td>{!! $students->formatted_time !!}</td>
-                  <td>{{ $students->firstName }} {{ $students->lastName }}</td>
-                  <td>{{ $students->idNumber }}</td>
-                  <td>{{ $students->courseName }}</td>
+                  <td>{{ ucwords($students->firstName) }} {{ ucwords($students->lastName) }}</td>
+                  <td>{{ ucwords($students->idNumber) }}</td>
+                  <td>{{ ucwords($students->courseName) }}</td>
                   <td>{{ $students->program }}</td>
                   <td>{{ $students->year }}-{{ $students->section }}</td>
                   <td>

@@ -46,7 +46,7 @@
                     <!-- Navigation -->
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{ route('index') }}">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('index') }}">Dashboard</a></li>
                             <li class="breadcrumb-item"><a href="{{ route('userManagement') }}">User Management</a></li>
                             <li class="breadcrumb-item active"><a href="{{ route('archive') }}">Archive</a></li>
                         </ol>
@@ -90,12 +90,25 @@
                                 </tr>
                             </thead>
                             <tbody>
+                            @php $counter = 1; @endphp
                                 @foreach ($archiveUsers as $user)
                                 <tr>
-                                    <td> {{$user->id}} </td>
-                                    <td> {{$user->firstName}} </td>
-                                    <td> {{$user->lastName}} </td>
-                                    <td> {{$user->userType}} </td>
+                                    <td> {{$counter}} </td>
+                                    <td> {{ucwords($user->firstName)}} </td>
+                                    <td> {{ucwords($user->lastName)}} </td>
+                                    <td>
+                                        @if($user->userType == 'Admin')
+                                        <span class="badge badge-primary">Admin</span>
+                                        @elseif($user->userType == 'Technician')
+                                        <span class="badge badge-primary">Technician</span>
+                                        @elseif($user->userType == 'Lab-in-Charge')
+                                        <span class="badge badge-primary">Lab-in-Charge</span>
+                                        @elseif($user->userType == 'Faculty')
+                                        <span class="badge badge-danger">Faculty</span>
+                                        @elseif($user->userType == 'Student')
+                                        <span class="badge badge-warning">Student</span>
+                                        @endif
+                                    </td>
                                     <td> {{$user->email}} </td>
                                     <th>
                                         <!-- Example single primary button -->
@@ -127,6 +140,7 @@
                                         </div>
                                     </th>
                                 </tr>
+                                @php $counter++; @endphp
                                 @endforeach
                             </tbody>
                         </table>

@@ -1,19 +1,25 @@
 <!DOCTYPE html>
+
 <!--
  // WEBSITE: https://themefisher.com
  // TWITTER: https://twitter.com/themefisher
  // FACEBOOK: https://www.facebook.com/themefisher
  // GITHUB: https://github.com/themefisher/
 -->
+
 <html lang="en" dir="ltr">
+
 <head>
   <meta charset="utf-8" />
   <meta name="csrf-token" content="{{ csrf_token() }}" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>ChronoLock Admin-Student Attendance Generation</title>
+
+  <title>ChronoLock Faculty-Student Attendance Generation</title>
+
   @include('head')
 </head>
+
 <body class="navbar-fixed sidebar-fixed" id="body">
   <script>
     NProgress.configure({
@@ -21,44 +27,53 @@
     });
     NProgress.start();
   </script>
-  @include('admin.adminSideNav')
+
+  @include('faculty.instructorSideNav')
   <!-- ====================================
       ——— PAGE WRAPPER
       ===================================== -->
+
   <div class="page-wrapper">
     <!-- Header -->
     @include('header')
+
     <!-- ====================================
         ——— CONTENT WRAPPER
         ===================================== -->
     <div class="content-wrapper">
       <div class="content">
+
+
         <div class="d-flex justify-content-between align-items-center">
           <!-- Navigation -->
           <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-              <li class="breadcrumb-item"><a href="{{ route('index') }}">Dashboard</a></li>
-              <li class="breadcrumb-item active"><a href="{{ route('studentAttendanceGeneration') }}">Report Generation</a></li>
-              <li class="breadcrumb-item active"><a href="{{ route('studentAttendanceGeneration') }}">Student Attendance</a></li>
+              <li class="breadcrumb-item"><a href="{{ route('instructorIndex') }}">Dashboard</a></li>
+              <li class="breadcrumb-item active"><a href="{{ route('facultyStudentAttendanceGeneration') }}">Report Generation</a></li>
+              <li class="breadcrumb-item active"><a href="{{ route('facultyStudentAttendanceGeneration') }}">Student Attendance</a></li>
             </ol>
           </nav>
+
           <!-- Live Date and Time -->
           <div>
             <p class="text-center date-time mb-3" id="liveDateTime">Your Date and Time</p>
           </div>
         </div>
+
         <!-- DROPRDOWN NAV -->
+
         <div class="row">
           <div class="col-xl-9 col-md-9">
             <!-- Example single primary button -->
-            <form action="{{ url('/student-attendance-generation') }}" method="GET">
+
+            <form action="{{ url('/faculty-student-attendance-generation') }}" method="GET">
 
               <div class="dropdown d-inline-block">
                 <div class="input-group date" id="month-picker">
                   <input class="form-control border-primary" type="search" name="search_courses" value="" placeholder="Search Course" autocomplete="false" id="search_courses">
                   <div class="input-group-append">
                     <div class="input-group text-light btn btn-primary btn-sm" id="dateIcon">
-                      <i class="mdi mdi-database-search"></i> 
+                      <i class="mdi mdi-database-search"></i>
                     </div>
                   </div>
                 </div>
@@ -151,13 +166,15 @@
 
 
           <div class="col-xl-3 col-md-3 d-flex justify-content-end">
+
             <div class="dropdown d-inline-block mb-3 mr-1">
               <button class="btn btn-danger btn-sm fw-bold" type="submit">
                 <i class="mdi mdi-sort"></i> Filter
               </button>
             </div>
             </form>
-            <form action="{{ url('/student-attendance-generation')}}" method="GET">
+
+            <form action="{{ url('/faculty-student-attendance-generation')}}" method="GET">
               <div class="dropdown d-inline-block mb-3 ">
                 <button class="btn btn-warning btn-sm fw-bold" type="submit">
                   <i class="mdi mdi-alpha-r-box"></i>
@@ -165,7 +182,9 @@
                 </button>
               </div>
             </form>
+
           </div>
+
         </div>
         <!-- END -->
 
@@ -177,7 +196,7 @@
 
               <div class="dropdown d-inline-block mb-3">
                 <button title="Preview" class="btn btn-outline-dark btn-sm fw-bold"
-                  onclick='window.location = "{{ route("previewStudentAttendancePDF", ["selected_remarks" => $selected_remarks, "selected_programs" => $selected_programs, "selected_years" => $selected_years, "selected_StartDate" => $selected_StartDate, "selected_EndDate" => $selected_EndDate, "search_courses" => $search_courses]) }}"' type="button"> <i class="mdi mdi-feature-search"></i>
+                  onclick='window.location = "{{ route("facultyPreviewStudentAttendancePDF", ["selected_remarks" => $selected_remarks, "selected_programs" => $selected_programs, "selected_years" => $selected_years, "selected_StartDate" => $selected_StartDate, "selected_EndDate" => $selected_EndDate, "search_courses" => $search_courses]) }}"' type="button"> <i class="mdi mdi-feature-search"></i>
                   PDF
                 </button>
               </div>
@@ -191,8 +210,10 @@
                   </button>
                 </form>
               </div>
+
             </div>
           </div>
+
           <div class="card-body ">
             <table id="AttendanceTable" class="table table-bordered table-hover no-wrap" style="width:100%">
               <thead class="table-dark">
@@ -239,12 +260,20 @@
           </div>
         </div>
         <!-- END -->
+
+
+
+
       </div>
     </div>
   </div>
+
+
   </div>
   </div>
+
   </div>
+
   <script>
     document.addEventListener("DOMContentLoaded", function() {
       document.querySelectorAll('.course-item').forEach(function(item) {
@@ -270,6 +299,7 @@
       });
     });
   </script>
+
   <script>
     document.addEventListener("DOMContentLoaded", function() {
       const monthPicker = flatpickr("#selectedMonth", {
@@ -302,4 +332,4 @@
 
 
 
-  @include('footer')
+  @include('footer')    
