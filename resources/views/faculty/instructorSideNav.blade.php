@@ -1,9 +1,6 @@
 <script defer src="{{asset('js/activePage.js')}}"></script>
 
 
-<!-- ====================================
-    ——— WRAPPER
-    ===================================== -->
 <div class="wrapper">
     <!-- ====================================
           ——— LEFT SIDEBAR WITH OUT FOOTER
@@ -30,18 +27,17 @@
                                 Dashboard</span>
                         </a>
                     </li>
+
                     <li>
                         <a class="sidenav-item-link" href="{{route('instructorScheduleManagement')}}">
                             <i class="mdi mdi-calendar-check"></i>
-                            <span class="nav-text" data-toggle="tooltip" title="ERP Schedules">ERP
-                                Schedules</span>
+                            <span class="nav-text" data-toggle="tooltip" title="ERP Schedules">ERP Schedules</span>
                         </a>
                     </li>
                     <li>
                         <a class="sidenav-item-link" href="{{route('classListManagement')}}">
                             <i class="mdi mdi-file-document-box-multiple"></i>
-                            <span class="nav-text" data-toggle="tooltip" title="Class Record">Class
-                                Record</span>
+                            <span class="nav-text" data-toggle="tooltip" title="Class Record">Class Record</span>
                         </a>
                     </li>
                     <li>
@@ -77,32 +73,61 @@
                                 </li>
                                 @endforelse
 
+                            </div>
+                        </ul>
+
                     </li>
 
+                    <li class="section-title">Others</li>
 
-            </div>
-        </div>
-
-        <div class="sidebar-footer">
-            <div class="sidebar-footer-content">
-                <ul class="d-flex">
-                    <li>
-                        <span data-toggle="tooltip" title="Profile settings">
-                            <a href="#" data-toggle="modal" data-target="#modal-profile">
-                                <i class="mdi mdi-settings"></i>
-                            </a>
-                        </span>
-                    </li>
-                    <li>
-                        <!-- Logout form -->
-                        <form id="logout-faculty" action="{{ route('logout') }}" method="POST" style="display: none;">
-                            @csrf
-                        </form>
-                        <a href="#" onclick="event.preventDefault(); document.getElementById('logout-faculty').submit();" data-toggle="tooltip" title="Logout">
-                            <i class="mdi mdi-logout-variant"></i>
+                    <li class="has-sub {{ request()->routeIs('facultyStudentAttendanceGeneration')  ? 'active' : '' }}">
+                        <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#reports" aria-expanded="{{ request()->routeIs('facultyStudentAttendanceGeneration') || request()->routeIs('facultyStudentListGeneration')  ? 'true' : 'false' }}" aria-controls="reports">
+                            <i class="mdi mdi-file-export"></i>
+                            <span class="nav-text" data-toggle="tooltip" title="Report Generation">Report Generation</span> <b class="caret"></b>
                         </a>
+                        <ul class="collapse {{ request()->routeIs('facultyStudentAttendanceGeneration') || request()->routeIs('facultyStudentListGeneration') ? 'show' : '' }}" id="reports">
+                            <div class="sub-menu">
+                                <li>
+                                    <a class="sidenav-item-link" href="{{ route('facultyStudentAttendanceGeneration') }}">
+                                        <span class="nav-text">Student Attendance</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="sidenav-item-link" href="{{ route('facultyStudentListGeneration') }}">
+                                        <span class="nav-text">Student List</span>
+                                    </a>
+                                </li>
+                            </div>
+                        </ul>
+                    </li>
+
                 </ul>
+
             </div>
-        </div>
-</div>
-</aside>
+
+
+
+            <div class="sidebar-footer">
+                <div class="sidebar-footer-content">
+                    <ul class="d-flex">
+                        <li>
+                            <span data-toggle="tooltip" title="Profile settings">
+                                <a href="#" data-toggle="modal" data-target="#modal-profile">
+                                    <i class="mdi mdi-settings"></i>
+                                </a>
+                            </span>
+                        </li>
+                        <li>
+                            <!-- Logout form -->
+                            <form id="logout-faculty" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                @csrf
+                            </form>
+                            <a href="#" onclick="event.preventDefault(); document.getElementById('logout-faculty').submit();" data-toggle="tooltip" title="Logout">
+                                <i class="mdi mdi-logout-variant"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+    </aside>

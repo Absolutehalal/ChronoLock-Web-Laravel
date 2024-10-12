@@ -65,8 +65,11 @@ class AttendanceController extends Controller
     public function instructorAttendanceGeneration(Request $request)
     {
         try {
-            // Month
-            $data['selectedMonth'] = $request->query('selectedMonth');
+            // Get the selected start and end dates from the request
+            $data['selected_StartDate'] = $request->query('selected_StartDate');
+            $data['selected_EndDate'] = $request->query('selected_EndDate');
+            $data['search_course'] = $request->query('search_course');
+
 
             // REMARKS
             $data['selected_remarks'] = $request->query('selected_remarks');
@@ -100,10 +103,22 @@ class AttendanceController extends Controller
                 ->orderBy('time', 'desc');
 
 
-            if ($data['selectedMonth']) {
-                $date = \Carbon\Carbon::createFromFormat('F Y', $data['selectedMonth']);
-                $query->whereYear('attendances.date', $date->year)
-                    ->whereMonth('attendances.date', $date->month);
+            // Apply the date range filter
+            if ($data['selected_StartDate'] && $data['selected_EndDate']) {
+                // Convert "October 7, 2024" and similar formats to "2024-10-07"
+                $startDate = Carbon::parse($data['selected_StartDate'])->format('Y-m-d');
+                $endDate = Carbon::parse($data['selected_EndDate'])->format('Y-m-d');
+
+                // Filter between start and end dates
+                $query->whereBetween('attendances.date', [$startDate, $endDate]);
+            } elseif ($data['selected_StartDate']) {
+                // If only start date is selected, apply start date filter
+                $startDate = Carbon::parse($data['selected_StartDate'])->format('Y-m-d');
+                $query->where('attendances.date', '>=', $startDate);
+            } elseif ($data['selected_EndDate']) {
+                // If only end date is selected, apply end date filter
+                $endDate = Carbon::parse($data['selected_EndDate'])->format('Y-m-d');
+                $query->where('attendances.date', '<=', $endDate);
             }
 
             if ($data['selected_remarks']) {
@@ -113,6 +128,14 @@ class AttendanceController extends Controller
             if ($data['selected_id']) {
                 $query->where('attendances.userID', $data['selected_id']);
             };
+
+            if ($data['search_course']) {
+                // Adjusting the course name search with LIKE for partial match
+                $query->where(function ($query) use ($data) {
+                    $query->where('schedules.courseName', 'LIKE', '%' . $data['search_course'] . '%')
+                        ->orWhere('schedules.courseCode', 'LIKE', '%' . $data['search_course'] . '%');
+                });
+            }
 
             $data['instructorDetails'] = $query->get();
 
@@ -201,12 +224,13 @@ class AttendanceController extends Controller
     public function studentAttendanceGeneration(Request $request)
     {
         try {
-            // Month
-            $data['selectedMonth'] = $request->query('selectedMonth');
+            // Get the selected start and end dates from the request
+            $data['selected_StartDate'] = $request->query('selected_StartDate');
+            $data['selected_EndDate'] = $request->query('selected_EndDate');
+            $data['search_courses'] = $request->query('search_courses');
 
             // Course
-            $data['selected_courses'] = $request->query('selected_courses');
-
+            $data['selected_programs'] = $request->query('selected_programs');
             $data['studentPrograms'] = Attendance::select('program')
                 ->join('users', 'attendances.userID', '=', 'users.idNumber')
                 ->join('class_lists', 'attendances.classID', '=', 'class_lists.classID')
@@ -215,10 +239,8 @@ class AttendanceController extends Controller
                 ->distinct()
                 ->get();
 
-
             // Year
             $data['selected_years'] = $request->query('selected_years');
-
             $data['studentYears'] = Attendance::select('year', 'section')
                 ->join('users', 'attendances.userID', '=', 'users.idNumber')
                 ->join('class_lists', 'attendances.classID', '=', 'class_lists.classID')
@@ -229,7 +251,6 @@ class AttendanceController extends Controller
 
             // Remark
             $data['selected_remarks'] = $request->query('selected_remarks');
-
             $data['studentRemarks'] = Attendance::select('attendances.remark')
                 ->join('users', 'attendances.userID', '=', 'users.idNumber')
                 ->distinct()
@@ -237,6 +258,7 @@ class AttendanceController extends Controller
                 ->orderByRaw("FIELD(attendances.remark, 'PRESENT', 'ABSENT', 'LATE')")
                 ->get();
 
+            // Query for attendance data
             $query = Attendance::select('users.*', 'class_lists.*', 'attendances.*', 'schedules.*')
                 ->join('users', 'attendances.userID', '=', 'users.idNumber')
                 ->join('class_lists', 'attendances.classID', '=', 'class_lists.classID')
@@ -246,24 +268,43 @@ class AttendanceController extends Controller
                 ->orderBy('time', 'desc');
 
 
-            if ($data['selectedMonth']) {
-                $date = \Carbon\Carbon::createFromFormat('F Y', $data['selectedMonth']);
-                $query->whereYear('attendances.date', $date->year)
-                    ->whereMonth('attendances.date', $date->month);
+            // Apply the date range filter
+            if ($data['selected_StartDate'] && $data['selected_EndDate']) {
+                // Convert "October 7, 2024" and similar formats to "2024-10-07"
+                $startDate = Carbon::parse($data['selected_StartDate'])->format('Y-m-d');
+                $endDate = Carbon::parse($data['selected_EndDate'])->format('Y-m-d');
+
+                // Filter between start and end dates
+                $query->whereBetween('attendances.date', [$startDate, $endDate]);
+            } elseif ($data['selected_StartDate']) {
+                // If only start date is selected, apply start date filter
+                $startDate = Carbon::parse($data['selected_StartDate'])->format('Y-m-d');
+                $query->where('attendances.date', '=', $startDate);
+            } elseif ($data['selected_EndDate']) {
+                // If only end date is selected, apply end date filter
+                $endDate = Carbon::parse($data['selected_EndDate'])->format('Y-m-d');
+                $query->where('attendances.date', '=', $endDate);
             }
 
-            if ($data['selected_courses']) {
-                $query->where('program', $data['selected_courses']);
-            };
+            if ($data['selected_programs']) {
+                $query->where('program', $data['selected_programs']);
+            }
 
             if ($data['selected_years']) {
-                $query->where('year', $data['selected_years']);
-            };
+                $query->where('year', explode('-', $data['selected_years'])[0])
+                    ->where('section', explode('-', $data['selected_years'])[1]);
+            }
 
             if ($data['selected_remarks']) {
                 $query->where('remark', $data['selected_remarks']);
-            };
+            }
 
+            if ($data['search_courses']) {
+                // Adjusting the course name search with LIKE for partial match
+                $query->where(function ($query) use ($data) {
+                    $query->where('schedules.courseName', 'LIKE', '%' . $data['search_courses'] . '%');
+                });
+            }
 
             $data['studentDetails'] = $query->get();
 
@@ -272,13 +313,13 @@ class AttendanceController extends Controller
 
             return view('admin.admin-studentAttendance-generation', $data);
         } catch (\Exception $e) {
-
             Alert::error('Error', 'Something went wrong. Please try again later.')
                 ->autoClose(5000)
                 ->showCloseButton();
             return redirect()->back();
         }
     }
+
 
     public function studentAttendanceExport(Request $request)
     {
@@ -577,6 +618,229 @@ class AttendanceController extends Controller
             }
         } catch (\Exception $e) {
 
+            Alert::error('Error', 'Something went wrong. Please try again later.')
+                ->autoClose(5000)
+                ->showCloseButton();
+            return redirect()->back();
+        }
+    }
+
+
+    public function facultyStudentAttendanceGeneration(Request $request)
+    {
+        try {
+            $id = Auth::id();
+            $userID = DB::table('users')->where('id', $id)->value('idNumber');
+
+            $classes = DB::table('class_lists')
+                ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
+                ->where('schedules.userID', '=', $userID)
+                ->get();
+
+
+            // Get the selected start and end dates from the request
+            $data['selected_StartDate'] = $request->query('selected_StartDate');
+            $data['selected_EndDate'] = $request->query('selected_EndDate');
+            $data['search_courses'] = $request->query('search_courses');
+
+            // Course
+            $data['selected_programs'] = $request->query('selected_programs');
+            $data['studentPrograms'] = Attendance::select('program')
+                ->join('users', 'attendances.userID', '=', 'users.idNumber')
+                ->join('class_lists', 'attendances.classID', '=', 'class_lists.classID')
+                ->join('schedules', 'schedules.scheduleID', '=', 'class_lists.scheduleID')
+                ->where('users.userType', 'Student')
+                ->where('schedules.userID', '=', $userID)
+                ->distinct()
+                ->get();
+
+            // Year
+            $data['selected_years'] = $request->query('selected_years');
+            $data['studentYears'] = Attendance::select('year', 'section')
+                ->join('users', 'attendances.userID', '=', 'users.idNumber')
+                ->join('class_lists', 'attendances.classID', '=', 'class_lists.classID')
+                ->join('schedules', 'schedules.scheduleID', '=', 'class_lists.scheduleID')
+                ->where('users.userType', '=', 'Student')
+                ->where('schedules.userID', '=', $userID)
+                ->distinct()
+                ->get();
+
+            // Remark
+            $data['selected_remarks'] = $request->query('selected_remarks');
+            $data['studentRemarks'] = Attendance::select('attendances.remark')
+                ->join('users', 'attendances.userID', '=', 'users.idNumber')
+                ->distinct()
+                ->where('users.userType', '=', 'Student')
+                ->orderByRaw("FIELD(attendances.remark, 'PRESENT', 'ABSENT', 'LATE')")
+                ->get();
+
+            // Query for attendance data
+            $query = Attendance::select('users.*', 'class_lists.*', 'attendances.*', 'schedules.*')
+                ->join('users', 'attendances.userID', '=', 'users.idNumber')
+                ->join('class_lists', 'attendances.classID', '=', 'class_lists.classID')
+                ->join('schedules', 'schedules.scheduleID', '=', 'class_lists.scheduleID')
+                ->where('users.userType', '=', 'Student')
+                ->where('schedules.userID', '=', $userID)
+                ->orderBy('date', 'desc')
+                ->orderBy('time', 'desc');
+
+
+            // Apply the date range filter
+            if ($data['selected_StartDate'] && $data['selected_EndDate']) {
+                // Convert "October 7, 2024" and similar formats to "2024-10-07"
+                $startDate = Carbon::parse($data['selected_StartDate'])->format('Y-m-d');
+                $endDate = Carbon::parse($data['selected_EndDate'])->format('Y-m-d');
+
+                // Filter between start and end dates
+                $query->whereBetween('attendances.date', [$startDate, $endDate]);
+            } elseif ($data['selected_StartDate']) {
+                // If only start date is selected, apply start date filter
+                $startDate = Carbon::parse($data['selected_StartDate'])->format('Y-m-d');
+                $query->where('attendances.date', '=', $startDate);
+            } elseif ($data['selected_EndDate']) {
+                // If only end date is selected, apply end date filter
+                $endDate = Carbon::parse($data['selected_EndDate'])->format('Y-m-d');
+                $query->where('attendances.date', '=', $endDate);
+            }
+
+            if ($data['selected_programs']) {
+                $query->where('program', $data['selected_programs']);
+            }
+
+            if ($data['selected_years']) {
+                $query->where('year', explode('-', $data['selected_years'])[0])
+                    ->where('section', explode('-', $data['selected_years'])[1]);
+            }
+
+            if ($data['selected_remarks']) {
+                $query->where('remark', $data['selected_remarks']);
+            }
+
+            if ($data['search_courses']) {
+                // Adjusting the course name search with LIKE for partial match
+                $query->where(function ($query) use ($data) {
+                    $query->where('schedules.courseName', 'LIKE', '%' . $data['search_courses'] . '%');
+                });
+            }
+
+            $data['studentDetails'] = $query->get();
+
+            // Store the filtered query in the session
+            session(['attendance_query' => $query->toSql(), 'attendance_bindings' => $query->getBindings()]);
+
+            return view('faculty.instructor-studentAttendance-generation', $data, ['classes' => $classes]);
+        } catch (\Exception $e) {
+            Alert::error('Error', 'Something went wrong. Please try again later.')
+                ->autoClose(5000)
+                ->showCloseButton();
+            return redirect()->back();
+        }
+    }
+
+    public function facultyStudentListGeneration(Request $request)
+    {
+        try {
+            $id = Auth::id();
+            $userID = DB::table('users')->where('id', $id)->value('idNumber');
+
+            $classes = DB::table('class_lists')
+                ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
+                ->where('schedules.userID', '=', $userID)
+                ->get();
+
+
+            // Get the selected start and end dates from the request
+            $data['selected_StartDate'] = $request->query('selected_StartDate');
+            $data['selected_EndDate'] = $request->query('selected_EndDate');
+            $data['search_courses'] = $request->query('search_courses');
+
+            // Course
+            $data['selected_programs'] = $request->query('selected_programs');
+            $data['studentPrograms'] = Attendance::select('program')
+                ->join('users', 'attendances.userID', '=', 'users.idNumber')
+                ->join('class_lists', 'attendances.classID', '=', 'class_lists.classID')
+                ->join('schedules', 'schedules.scheduleID', '=', 'class_lists.scheduleID')
+                ->where('users.userType', 'Student')
+                ->where('schedules.userID', '=', $userID)
+                ->distinct()
+                ->get();
+
+            // Year
+            $data['selected_years'] = $request->query('selected_years');
+            $data['studentYears'] = Attendance::select('year', 'section')
+                ->join('users', 'attendances.userID', '=', 'users.idNumber')
+                ->join('class_lists', 'attendances.classID', '=', 'class_lists.classID')
+                ->join('schedules', 'schedules.scheduleID', '=', 'class_lists.scheduleID')
+                ->where('users.userType', '=', 'Student')
+                ->where('schedules.userID', '=', $userID)
+                ->distinct()
+                ->get();
+
+            // Remark
+            $data['selected_remarks'] = $request->query('selected_remarks');
+            $data['studentRemarks'] = Attendance::select('attendances.remark')
+                ->join('users', 'attendances.userID', '=', 'users.idNumber')
+                ->distinct()
+                ->where('users.userType', '=', 'Student')
+                ->orderByRaw("FIELD(attendances.remark, 'PRESENT', 'ABSENT', 'LATE')")
+                ->get();
+
+            // Query for attendance data
+            $query = Attendance::select('users.*', 'class_lists.*', 'attendances.*', 'schedules.*')
+                ->join('users', 'attendances.userID', '=', 'users.idNumber')
+                ->join('class_lists', 'attendances.classID', '=', 'class_lists.classID')
+                ->join('schedules', 'schedules.scheduleID', '=', 'class_lists.scheduleID')
+                ->where('users.userType', '=', 'Student')
+                ->where('schedules.userID', '=', $userID)
+                ->orderBy('date', 'desc')
+                ->orderBy('time', 'desc');
+
+
+            // Apply the date range filter
+            if ($data['selected_StartDate'] && $data['selected_EndDate']) {
+                // Convert "October 7, 2024" and similar formats to "2024-10-07"
+                $startDate = Carbon::parse($data['selected_StartDate'])->format('Y-m-d');
+                $endDate = Carbon::parse($data['selected_EndDate'])->format('Y-m-d');
+
+                // Filter between start and end dates
+                $query->whereBetween('attendances.date', [$startDate, $endDate]);
+            } elseif ($data['selected_StartDate']) {
+                // If only start date is selected, apply start date filter
+                $startDate = Carbon::parse($data['selected_StartDate'])->format('Y-m-d');
+                $query->where('attendances.date', '=', $startDate);
+            } elseif ($data['selected_EndDate']) {
+                // If only end date is selected, apply end date filter
+                $endDate = Carbon::parse($data['selected_EndDate'])->format('Y-m-d');
+                $query->where('attendances.date', '=', $endDate);
+            }
+
+            if ($data['selected_programs']) {
+                $query->where('program', $data['selected_programs']);
+            }
+
+            if ($data['selected_years']) {
+                $query->where('year', explode('-', $data['selected_years'])[0])
+                    ->where('section', explode('-', $data['selected_years'])[1]);
+            }
+
+            if ($data['selected_remarks']) {
+                $query->where('remark', $data['selected_remarks']);
+            }
+
+            if ($data['search_courses']) {
+                // Adjusting the course name search with LIKE for partial match
+                $query->where(function ($query) use ($data) {
+                    $query->where('schedules.courseName', 'LIKE', '%' . $data['search_courses'] . '%');
+                });
+            }
+
+            $data['studentDetails'] = $query->get();
+
+            // Store the filtered query in the session
+            session(['attendance_query' => $query->toSql(), 'attendance_bindings' => $query->getBindings()]);
+
+            return view('faculty.instructor-studentAttendance-generation', $data, ['classes' => $classes]);
+        } catch (\Exception $e) {
             Alert::error('Error', 'Something went wrong. Please try again later.')
                 ->autoClose(5000)
                 ->showCloseButton();

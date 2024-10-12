@@ -796,5 +796,8 @@ $(document).ready(function () {
     flatpickr("#selectedTime7", timeConfig);
     flatpickr("#selectedTime8", timeConfig);
 
+    flatpickr("#selectedStartDate", dateConfig);
+    flatpickr("#selectedEndDate", dateConfig);
+
     //ADMIN FILTERS START-----------
 });

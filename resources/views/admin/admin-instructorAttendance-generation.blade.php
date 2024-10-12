@@ -48,7 +48,7 @@
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="{{ route('index') }}">Dashboard</a></li>
               <li class="breadcrumb-item active"><a href="{{ route('instructorAttendanceGeneration') }}">Report Generation</a></li>
-              <li class="breadcrumb-item active"><a href="{{ route('instructorAttendanceGeneration') }}">Student Attendance</a></li>
+              <li class="breadcrumb-item active"><a href="{{ route('instructorAttendanceGeneration') }}">Instructor Attendance</a></li>
             </ol>
           </nav>
 
@@ -65,57 +65,86 @@
             <form action="{{ url('/instructor-attendance-generation') }}" method="GET">
 
               <div class="dropdown d-inline-block">
-                <button class="btn btn-primary btn-sm dropdown-toggle fw-bold" type="button" id="instructorIDButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
-                  <i class="mdi mdi-alpha-i-box"></i> Instructor ID
-                </button>
-                <div class="dropdown-menu scrollable-dropdown" aria-labelledby="instructorIDButton">
-                  @forelse ($instructorID as $instructorID)
-                  @csrf
-                  <a class="dropdown-item id-item @if ($instructorID == $instructorID->userID) active @endif" data-value="{{ $instructorID->userID }}" href="#">
-                    {{ $instructorID->userID }} - {{ $instructorID->instFirstName }} {{ $instructorID->instLastName }}
-                  </a>
-                  @empty
-                  <a class="dropdown-item" data-value="None" href="#">
-                    None
-                  </a>
-                  @endforelse
-                </div>
-                <input type="hidden" name="selected_id" id="selected_id" value="">
-              </div>
-
-              <div class="dropdown d-inline-block">
-                <button class="btn btn-primary btn-sm dropdown-toggle fw-bold" type="button" id="instructorRemarksButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
-                  <i class="mdi mdi-alpha-r-box"></i> Remarks
-                </button>
-                <div class="dropdown-menu scrollable-dropdown" aria-labelledby="instructorRemarksButton">
-                  @forelse ($instructorRemarks as $remarks)
-                  @csrf
-                  <a class="dropdown-item remark-item @if ($remarks == $remarks->remark) active @endif" href="#" data-value="{{ $remarks->remark }}">
-                    {{ $remarks->remark }}
-                  </a>
-                  @empty
-                  <a class="dropdown-item" data-value="None" href="#">
-                    None
-                  </a>
-                  @endforelse
-                </div>
-                <input type="hidden" name="selected_remarks" id="selected_remarks" value="">
-              </div>
-
-              <div class="dropdown d-inline-block mb-2">
-                <div class="input-group" id="month-picker">
-                  <input class="form-control border border-primary" type="text" placeholder="Month" value="{{ $selectedMonth }}" name="selectedMonth" id="selectedMonth">
+                <div class="input-group date" id="month-picker">
+                  <input class="form-control border-primary" type="search" name="search_course" id="search_course" value="" placeholder="Search Course" autocomplete="false" >
                   <div class="input-group-append">
-                    <div class="input-group text text-light btn btn-primary btn-sm" id="monthIcon">
-                      <i class="mdi mdi-calendar-search"></i>
+                    <div class="input-group text-light btn btn-primary btn-sm" id="dateIcon">
+                      <i class="mdi mdi-database-search"></i>
                     </div>
                   </div>
                 </div>
               </div>
 
 
-          </div>
+              <div class="dropdown d-inline-block">
+                <div class="input-group date" id="month-picker">
+                  <input type="datetime-local" class="form-control border border-primary" placeholder="Start Date" value="{{ $selected_StartDate }}" name="selected_StartDate" id="selectedStartDate">
+                  <div class="input-group-append">
+                    <div class="input-group text-light btn btn-primary btn-sm" id="dateIcon">
+                      <i class="mdi mdi-calendar "></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
+              <div class="dropdown d-inline-block">
+                <div class="input-group date" id="month-picker">
+                  <input type="datetime-local" class="form-control border border-primary" placeholder="End Date" value="{{ $selected_EndDate }}" name="selected_EndDate" id="selectedEndDate">
+                  <div class="input-group-append">
+                    <div class="input-group text-light btn btn-primary btn-sm" id="dateIcon">
+                      <i class="mdi mdi-calendar "></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-xl-9 col-md-9 mb-2 mt-1">
+
+
+                  <div class="dropdown d-inline-block">
+                    <button class="btn btn-primary btn-sm dropdown-toggle fw-bold" type="button" id="instructorIDButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+                      <i class="mdi mdi-alpha-i-box"></i> Instructor ID
+                    </button>
+                    <div class="dropdown-menu scrollable-dropdown" aria-labelledby="instructorIDButton">
+                      @forelse ($instructorID as $instructorID)
+                      @csrf
+                      <a class="dropdown-item id-item @if ($instructorID == $instructorID->userID) active @endif" data-value="{{ $instructorID->userID }}" href="#">
+                        {{ $instructorID->userID }} - {{ $instructorID->instFirstName }} {{ $instructorID->instLastName }}
+                      </a>
+                      @empty
+                      <a class="dropdown-item" data-value="None" href="#">
+                        None
+                      </a>
+                      @endforelse
+                    </div>
+                    <input type="hidden" name="selected_id" id="selected_id" value="">
+                  </div>
+
+                  <div class="dropdown d-inline-block">
+                    <button class="btn btn-primary btn-sm dropdown-toggle fw-bold" type="button" id="instructorRemarksButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+                      <i class="mdi mdi-alpha-r-box"></i> Remarks
+                    </button>
+                    <div class="dropdown-menu scrollable-dropdown" aria-labelledby="instructorRemarksButton">
+                      @forelse ($instructorRemarks as $remarks)
+                      @csrf
+                      <a class="dropdown-item remark-item @if ($remarks == $remarks->remark) active @endif" href="#" data-value="{{ $remarks->remark }}">
+                        {{ $remarks->remark }}
+                      </a>
+                      @empty
+                      <a class="dropdown-item" data-value="None" href="#">
+                        None
+                      </a>
+                      @endforelse
+                    </div>
+                    <input type="hidden" name="selected_remarks" id="selected_remarks" value="">
+                  </div>
+
+                </div>
+              </div>
+              <!-- END -->
+
+          </div>
 
           <div class="col-xl-3 col-md-3 d-flex justify-content-end">
 
@@ -145,7 +174,7 @@
             <h1>Instructor Attendance Report</h1>
             <div class="justify-content-end">
               <div class="dropdown d-inline-block mb-3">
-                <button title="Preview" class="btn btn-outline-dark btn-sm fw-bold" onclick='window.location = "{{ route("previewFacultyAttendancePDF", ["selected_id" => $selected_id, "selected_remarks" => $selected_remarks, "selectedMonth" => $selectedMonth]) }}"' type="button">
+                <button title="Preview" class="btn btn-outline-dark btn-sm fw-bold" onclick='window.location = "{{ route("previewFacultyAttendancePDF", ["selected_id" => $selected_id, "selected_remarks" => $selected_remarks, "selected_StartDate" => $selected_StartDate, "selected_EndDate" => $selected_EndDate, "search_course" => $search_course]) }}"' type="button">
                   <i class="mdi mdi-feature-search"></i>
                   PDF
                 </button>

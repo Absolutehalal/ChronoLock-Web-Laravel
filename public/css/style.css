@@ -114,7 +114,7 @@
 }
 
 #month-picker {
-    max-width: 210px; 
+    max-width: 215px; 
     max-height: 200px;
 }
 
@@ -548,6 +548,13 @@ progress {
 [type="search"] {
     outline-offset: -2px;
     -webkit-appearance: none;
+    font-weight: bold;
+}
+
+.input-group:not(.has-validation)>.dropdown-toggle:nth-last-child(n+3), .input-group:not(.has-validation)>.form-floating:not(:last-child)>.form-control, .input-group:not(.has-validation)>.form-floating:not(:last-child)>.form-select, .input-group:not(.has-validation)>:not(:last-child):not(.dropdown-toggle):not(.dropdown-menu):not(.form-floating) {
+    font-weight: bold;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
 }
 
 [type="search"]::-webkit-search-decoration {
@@ -15882,7 +15889,7 @@ table.dataTable thead .sorting {
     padding-left: 1.625rem;
     padding-right: 1.625rem;
     padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
+    padding-bottom: 0.5rem;search
     border-radius: 5px;
     height: 2.7rem;
     box-shadow: 0px 1px 2px 0px rgba(28, 29, 36, 0.1),
@@ -18333,26 +18340,25 @@ html[dir="rtl"] .sidebar li > a .caret:before {
 .overlay {
     position: absolute;
     top: 50%;
+    /* bottom:0; */
     left: 50%;
-  transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
     background: rgb(0, 0, 0);
-    background: rgba(60,60,60); /* Black see-through */
+    background: rgba(60,60,60,60); /* Black see-through */
     color: #f1f1f1;
     width: 100%;
     transition: .5s ease;
     opacity:0;
     color: white;
     font-size: 20px;
-
     text-align: center;
     background-clip: border-box;
     border: 1px solid #e5e9f2;
     font-weight: bold;
-   
   }
 
-  .card:hover .overlay {
-    opacity: 1;
+   .overlay {
+    opacity: 0.5;
   }
 
 

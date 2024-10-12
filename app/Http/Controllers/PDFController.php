@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Dompdf\Options;
 use Dompdf\Dompdf;
 use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Facades\Auth;
 
 class PDFController extends Controller
 {
@@ -144,92 +145,285 @@ class PDFController extends Controller
 
     public function previewStudentAttendancePDF(Request $request)
     {
-        $year = $request->input('selected_year');
-        $program = $request->input('selected_courses');
+        $yearSection = $request->input('selected_years'); // Change to match the name in your Blade
+        $program = $request->input('selected_programs');
         $remarks = $request->input('selected_remarks');
-        $month = $request->input('selectedMonth');
+        $startDate = $request->input('selected_StartDate');
+        $endDate = $request->input('selected_EndDate');
+        $course = $request->input('search_courses');
 
         $students = DB::table('attendances')
             ->join('users', 'attendances.userID', '=', 'users.idNumber')
             ->join('class_lists', 'class_lists.classID', '=', 'attendances.classID')
             ->join('schedules', 'schedules.scheduleID', '=', 'class_lists.scheduleID')
             ->where('userType', '=', 'Student')
-            ->orderby('time', 'ASC');
+            ->orderBy('date', 'ASC')
+            ->orderBy('time', 'ASC')
+            ->orderBy('year', 'ASC')
+            ->orderBy('section', 'ASC');
 
         try {
-            if ($year) {
-                $students->where('year', '=', $year);
+            if ($course) {
+                // Apply the course filter using LIKE for partial matching
+                $students->where('schedules.courseName', 'LIKE', '%' . $course . '%');
             }
+
+            if ($yearSection) {
+                list($year, $section) = explode('-', $yearSection); // Split the year and section
+                $students->where('year', '=', $year)
+                    ->where('section', '=', $section); // Add section filter
+            }
+
             if ($program) {
                 $students->where('program', '=', $program);
             }
+
             if ($remarks) {
                 $students->where('remark', '=', $remarks);
             }
-            if ($month) {
-                $date = \Carbon\Carbon::createFromFormat('F Y', $month);
-                $students->whereYear('attendances.date', $date->year)
-                    ->whereMonth('attendances.date', $date->month);
+
+
+            if ($startDate && $endDate) {
+                // Convert the start and end dates to the 'Y-m-d' format
+                $startDate = Carbon::parse($startDate)->format('Y-m-d');
+                $endDate = Carbon::parse($endDate)->format('Y-m-d');
+
+                $students->whereBetween('attendances.date', [$startDate, $endDate]);
+            } elseif ($startDate) {
+                // If only start date is selected, apply start date filter
+                $startDate = Carbon::parse($startDate)->format('Y-m-d');
+                $students->where('attendances.date', '=', $startDate);
+            } elseif ($endDate) {
+                // If only end date is selected, apply end date filter
+                $endDate = Carbon::parse($endDate)->format('Y-m-d');
+                $students->where('attendances.date', '=', $endDate);
             }
 
-            $studentAttendances = $students->orderby('lastName', 'ASC')->get();
+            $studentAttendances = $students->orderBy('lastName', 'ASC')->get();
 
-            foreach ($studentAttendances as $students) {
-                $students->formatted_date = Carbon::parse($students->date)->format('F j, Y');
-                $students->formatted_time = Carbon::parse($students->time)->format('g:i A');
+            foreach ($studentAttendances as $student) {
+                $student->formatted_date = Carbon::parse($student->date)->format('F j, Y');
+                $student->formatted_time = Carbon::parse($student->time)->format('g:i A');
             }
 
-            //   $options = new Options();
-            //   $options->set('isHtml5ParserEnabled', true);
-            //   $options->set('isPhpEnabled', false); 
             $dompdf = new Dompdf();
-
 
             $imageCSPC = base64_encode(file_get_contents(public_path('images/CSPC.png')));
             $imageCCS = base64_encode(file_get_contents(public_path('images/CCS.png')));
             $CHRONOLOCK = base64_encode(file_get_contents(public_path('images/chronolock-small.png')));
 
-            // Load HTML content from a Blade view
             $studentAttendancePDF = view('admin.admin-generateStudentAttendance-pdf', compact('studentAttendances', 'imageCSPC', 'imageCCS', 'CHRONOLOCK'))->render();
             $dompdf->loadHtml($studentAttendancePDF);
 
-            // Set paper size and orientation
             $dompdf->setPaper('A4', 'landscape');
-
-            // Render and stream the PDF
             $dompdf->render();
+
             return $dompdf->stream('student-attendances.pdf', ['Attachment' => 0]);
         } catch (\Exception $e) {
             echo $e;
         }
     }
 
+    public function facultyPreviewStudentAttendancePDF(Request $request)
+    {
+        $id = Auth::id();
+        $userID = DB::table('users')->where('id', $id)->value('idNumber');
+
+        $yearSection = $request->input('selected_years'); // Change to match the name in your Blade
+        $program = $request->input('selected_programs');
+        $remarks = $request->input('selected_remarks');
+        $startDate = $request->input('selected_StartDate');
+        $endDate = $request->input('selected_EndDate');
+        $course = $request->input('search_courses');
+
+        $students = DB::table('attendances')
+            ->join('users', 'attendances.userID', '=', 'users.idNumber')
+            ->join('class_lists', 'class_lists.classID', '=', 'attendances.classID')
+            ->join('schedules', 'schedules.scheduleID', '=', 'class_lists.scheduleID')
+            ->where('userType', '=', 'Student')
+            ->where('schedules.userID', '=', $userID)
+            ->orderBy('date', 'ASC')
+            ->orderBy('time', 'ASC')
+            ->orderBy('year', 'ASC')
+            ->orderBy('section', 'ASC');
+
+        try {
+            if ($course) {
+                // Apply the course filter using LIKE for partial matching
+                $students->where('schedules.courseName', 'LIKE', '%' . $course . '%');
+            }
+
+            if ($yearSection) {
+                list($year, $section) = explode('-', $yearSection); // Split the year and section
+                $students->where('year', '=', $year)
+                    ->where('section', '=', $section); // Add section filter
+            }
+
+            if ($program) {
+                $students->where('program', '=', $program);
+            }
+
+            if ($remarks) {
+                $students->where('remark', '=', $remarks);
+            }
+
+
+            if ($startDate && $endDate) {
+                // Convert the start and end dates to the 'Y-m-d' format
+                $startDate = Carbon::parse($startDate)->format('Y-m-d');
+                $endDate = Carbon::parse($endDate)->format('Y-m-d');
+
+                $students->whereBetween('attendances.date', [$startDate, $endDate]);
+            } elseif ($startDate) {
+                // If only start date is selected, apply start date filter
+                $startDate = Carbon::parse($startDate)->format('Y-m-d');
+                $students->where('attendances.date', '=', $startDate);
+            } elseif ($endDate) {
+                // If only end date is selected, apply end date filter
+                $endDate = Carbon::parse($endDate)->format('Y-m-d');
+                $students->where('attendances.date', '=', $endDate);
+            }
+
+            $studentAttendances = $students->orderBy('lastName', 'ASC')->get();
+
+            foreach ($studentAttendances as $student) {
+                $student->formatted_date = Carbon::parse($student->date)->format('F j, Y');
+                $student->formatted_time = Carbon::parse($student->time)->format('g:i A');
+            }
+
+            $dompdf = new Dompdf();
+
+            $imageCSPC = base64_encode(file_get_contents(public_path('images/CSPC.png')));
+            $imageCCS = base64_encode(file_get_contents(public_path('images/CCS.png')));
+            $CHRONOLOCK = base64_encode(file_get_contents(public_path('images/chronolock-small.png')));
+
+            $studentAttendancePDF = view('faculty.instructor-generateStudentAttendance-pdf', compact('studentAttendances', 'imageCSPC', 'imageCCS', 'CHRONOLOCK'))->render();
+            $dompdf->loadHtml($studentAttendancePDF);
+
+            $dompdf->setPaper('A4', 'landscape');
+            $dompdf->render();
+
+            return $dompdf->stream('student-attendances.pdf', ['Attachment' => 0]);
+        } catch (\Exception $e) {
+            echo $e;
+        }
+    }
+
+    public function facultyPreviewStudentListPDF(Request $request)
+    {
+        $id = Auth::id();
+        $userID = DB::table('users')->where('id', $id)->value('idNumber');
+
+        $classes = DB::table('class_lists')
+            ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
+            ->where('schedules.userID', '=', $userID)
+            ->get();
+
+        $yearSection = $request->input('selected_years'); // Change to match the name in your Blade
+        $program = $request->input('selected_programs');
+        $status = $request->input('student_status');
+
+
+        $classIDs = $classes->pluck('classID')->toArray();
+
+        // Query for attendance data
+        $students = DB::table('student_masterlists')
+            ->join('users', 'student_masterlists.userID', '=', 'users.idNumber')
+            ->join('class_lists', 'student_masterlists.classID', '=', 'class_lists.classID')
+            ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
+            ->whereIn('student_masterlists.classID', $classIDs)
+            ->where('users.userType', '=', 'Student')
+            ->orderBy('section', 'ASC')
+            ->orderBy('year', 'ASC')
+            ->distinct();
+
+        try {
+
+            if ($yearSection) {
+                list($year, $section) = explode('-', $yearSection); // Split the year and section
+                $students->where('year', '=', $year)
+                    ->where('section', '=', $section); // Add section filter
+            }
+
+            if ($program) {
+                $students->where('program', '=', $program);
+            }
+
+            if ($status) {
+                $students->where('student_masterlists.status', '=', $status);
+            }
+
+            $studentList = $students->orderBy('lastName', 'ASC')->get();
+
+
+            $dompdf = new Dompdf();
+
+            $imageCSPC = base64_encode(file_get_contents(public_path('images/CSPC.png')));
+            $imageCCS = base64_encode(file_get_contents(public_path('images/CCS.png')));
+            $CHRONOLOCK = base64_encode(file_get_contents(public_path('images/chronolock-small.png')));
+
+            $studentListPDF = view('faculty.instructor-generateStudentList-pdf', compact('studentList', 'imageCSPC', 'imageCCS', 'CHRONOLOCK'))->render();
+            $dompdf->loadHtml($studentListPDF);
+
+            $dompdf->setPaper('A4', 'landscape');
+            $dompdf->render();
+
+            return $dompdf->stream('student-list.pdf', ['Attachment' => 0]);
+        } catch (\Exception $e) {
+            echo $e;
+        }
+    }
 
 
     public function previewFacultyAttendancePDF(Request $request)
     {
         $facultyID = $request->input('selected_id');
         $remarks = $request->input('selected_remarks');
-        $month = $request->input('selectedMonth');
+        $startDate = $request->input('selected_StartDate');
+        $endDate = $request->input('selected_EndDate');
+        $course = $request->input('search_course');
 
         $faculty = DB::table('attendances')
             ->join('users', 'attendances.userID', '=', 'users.idNumber')
             ->join('class_lists', 'class_lists.classID', '=', 'attendances.classID')
             ->join('schedules', 'schedules.scheduleID', '=', 'class_lists.scheduleID')
             ->where('userType', '=', 'Faculty')
-            ->orderby('time', 'ASC');
+            ->orderBy('date', 'ASC')
+            ->orderBy('time', 'ASC');
 
         try {
+
+            if ($course) {
+                // Group the course filter to ensure it applies only to faculty
+                $faculty->where(function ($query) use ($course) {
+                    $query->where('schedules.courseName', 'LIKE', '%' . $course . '%')
+                        ->orWhere('schedules.courseCode', 'LIKE', '%' . $course . '%');
+                });
+            }
+
             if ($facultyID) {
                 $faculty->where('idNumber', '=', $facultyID);
             }
+
             if ($remarks) {
                 $faculty->where('remark', '=', $remarks);
             }
-            if ($month) {
-                $date = \Carbon\Carbon::createFromFormat('F Y', $month);
-                $faculty->whereYear('attendances.date', $date->year)
-                    ->whereMonth('attendances.date', $date->month);
+
+
+            if ($startDate && $endDate) {
+                // Convert the start and end dates to the 'Y-m-d' format
+                $startDate = Carbon::parse($startDate)->format('Y-m-d');
+                $endDate = Carbon::parse($endDate)->format('Y-m-d');
+
+                $faculty->whereBetween('attendances.date', [$startDate, $endDate]);
+            } elseif ($startDate) {
+                // If only start date is selected, apply start date filter
+                $startDate = Carbon::parse($startDate)->format('Y-m-d');
+                $faculty->where('attendances.date', '=', $startDate);
+            } elseif ($endDate) {
+                // If only end date is selected, apply end date filter
+                $endDate = Carbon::parse($endDate)->format('Y-m-d');
+                $faculty->where('attendances.date', '=', $endDate);
             }
 
             $facultyAttendances = $faculty->orderby('lastName', 'ASC')->get();

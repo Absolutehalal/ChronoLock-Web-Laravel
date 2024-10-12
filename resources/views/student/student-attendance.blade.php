@@ -129,7 +129,7 @@
                   </thead>
 
                   <tbody class="text-center">
-                    @foreach($myClassmates as $myClassmates)
+                    @forelse($myClassmates as $myClassmates)
                     <tr>
                       <td>{{ ucwords($myClassmates->firstName) }} {{ ucwords($myClassmates->lastName) }}</td>
                       <!-- <td>{{$myClassmates->year}}-{{$myClassmates->section}}</td> -->
@@ -144,7 +144,11 @@
                         @endif
                       </td>
                     </tr>
-                    @endforeach
+                    @empty
+                    <tr></tr>
+                      <td colspan="2" class="text-center">No Classmates Enrolled Yet</td>
+                    </tr>
+                    @endforelse
                   </tbody>
                 </table>
               </div>

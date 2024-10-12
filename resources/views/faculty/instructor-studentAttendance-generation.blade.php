@@ -15,7 +15,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <title>ChronoLock Admin-Student Attendance Generation</title>
+  <title>ChronoLock Faculty-Student Attendance Generation</title>
 
   @include('head')
 </head>
@@ -28,10 +28,11 @@
     NProgress.start();
   </script>
 
-  @include('admin.adminSideNav')
+  @include('faculty.instructorSideNav')
   <!-- ====================================
       ——— PAGE WRAPPER
       ===================================== -->
+
   <div class="page-wrapper">
     <!-- Header -->
     @include('header')
@@ -47,9 +48,9 @@
           <!-- Navigation -->
           <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-              <li class="breadcrumb-item"><a href="{{ route('index') }}">Dashboard</a></li>
-              <li class="breadcrumb-item active"><a href="{{ route('studentAttendanceGeneration') }}">Report Generation</a></li>
-              <li class="breadcrumb-item active"><a href="{{ route('studentAttendanceGeneration') }}">Student Attendance</a></li>
+              <li class="breadcrumb-item"><a href="{{ route('instructorIndex') }}">Dashboard</a></li>
+              <li class="breadcrumb-item active"><a href="{{ route('facultyStudentAttendanceGeneration') }}">Report Generation</a></li>
+              <li class="breadcrumb-item active"><a href="{{ route('facultyStudentAttendanceGeneration') }}">Student Attendance</a></li>
             </ol>
           </nav>
 
@@ -65,14 +66,14 @@
           <div class="col-xl-9 col-md-9">
             <!-- Example single primary button -->
 
-            <form action="{{ url('/student-attendance-generation') }}" method="GET">
+            <form action="{{ url('/faculty-student-attendance-generation') }}" method="GET">
 
               <div class="dropdown d-inline-block">
                 <div class="input-group date" id="month-picker">
                   <input class="form-control border-primary" type="search" name="search_courses" value="" placeholder="Search Course" autocomplete="false" id="search_courses">
                   <div class="input-group-append">
                     <div class="input-group text-light btn btn-primary btn-sm" id="dateIcon">
-                      <i class="mdi mdi-database-search"></i> 
+                      <i class="mdi mdi-database-search"></i>
                     </div>
                   </div>
                 </div>
@@ -173,7 +174,7 @@
             </div>
             </form>
 
-            <form action="{{ url('/student-attendance-generation')}}" method="GET">
+            <form action="{{ url('/faculty-student-attendance-generation')}}" method="GET">
               <div class="dropdown d-inline-block mb-3 ">
                 <button class="btn btn-warning btn-sm fw-bold" type="submit">
                   <i class="mdi mdi-alpha-r-box"></i>
@@ -195,7 +196,7 @@
 
               <div class="dropdown d-inline-block mb-3">
                 <button title="Preview" class="btn btn-outline-dark btn-sm fw-bold"
-                  onclick='window.location = "{{ route("previewStudentAttendancePDF", ["selected_remarks" => $selected_remarks, "selected_programs" => $selected_programs, "selected_years" => $selected_years, "selected_StartDate" => $selected_StartDate, "selected_EndDate" => $selected_EndDate, "search_courses" => $search_courses]) }}"' type="button"> <i class="mdi mdi-feature-search"></i>
+                  onclick='window.location = "{{ route("facultyPreviewStudentAttendancePDF", ["selected_remarks" => $selected_remarks, "selected_programs" => $selected_programs, "selected_years" => $selected_years, "selected_StartDate" => $selected_StartDate, "selected_EndDate" => $selected_EndDate, "search_courses" => $search_courses]) }}"' type="button"> <i class="mdi mdi-feature-search"></i>
                   PDF
                 </button>
               </div>

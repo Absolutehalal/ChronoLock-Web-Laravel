@@ -367,6 +367,7 @@
                     <table id="studentListTable" class="table table-bordered table-hover no-wrap" style="width:100%">
                       <thead class="table-dark">
                         <tr>
+                          <th>#</th>
                           <th>Student Name</th>
                           <th>Student ID</th>
                           <th>Program</th>
@@ -376,9 +377,11 @@
                         </tr>
                       </thead>
                       <tbody>
+                        @php $counter = 1; @endphp
                         @foreach ($students as $student)
                         @csrf
                         <tr>
+                          <td> {{$counter}} </td>
                           <td>{{ ucwords($student->firstName) }} {{ ucwords($student->lastName) }}</td>
                           <td>{{$student->idNumber}}</td>
                           <td>{{$student->program}}</td>
@@ -410,6 +413,7 @@
                             </div>
                           </th>
                         </tr>
+                        @php $counter++; @endphp
                         @endforeach
 
                       </tbody>

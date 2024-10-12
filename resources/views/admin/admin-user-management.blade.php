@@ -94,26 +94,35 @@
               <h1>User Management</h1>
               <div class="row">
                 <div class="col-xl-12 col-md-12 d-flex justify-content-between">
-                  <div class="mb-3 mr-2">
-                    <button type="button" class="btn btn-outline-dark btn-sm fw-bold" id="selectAllBtn">
-                      <i class="mdi mdi-account"></i> Select All User
-                      <input type="hidden" class="btn btn-danger btn-sm fw-bold" id="selectAll" />
-                    </button>
-                  </div>
-
-                  <div class="mb-3 mr-2">
-                    <button type="button" class="btn btn-outline-danger btn-sm fw-bold" id="deleteSelectedBtn">
-                      <i class="mdi mdi-archive"></i> Delete Selected
-                    </button>
-                  </div>
-
                   <div class="mb-3">
-                    <a class="btn btn-outline-info btn-sm fw-bold" href="archive">
-                      <i class="mdi mdi-archive"></i> Archives
-                    </a>
+                    <!-- Dropdown Button -->
+                    <div class="dropdown">
+                      <button class="btn btn-outline-dark btn-sm fw-bold dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="mdi mdi-account"></i> User Actions
+                      </button>
+                      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <li>
+                          <button type="button" class="dropdown-item" id="selectAllBtn">
+                            <i class="mdi mdi-account"></i> Select All User
+                            <input type="hidden" class="btn btn-danger btn-sm fw-bold" id="selectAll" />
+                          </button>
+                        </li>
+                        <li>
+                          <button type="button" class="dropdown-item" id="deleteSelectedBtn">
+                            <i class="mdi mdi-archive"></i> Delete Selected
+                          </button>
+                        </li>
+                        <li>
+                          <a class="dropdown-item" href="archive">
+                            <i class="mdi mdi-archive"></i> Archives
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
               </div>
+
             </div>
         </form>
 

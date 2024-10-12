@@ -71,19 +71,19 @@
 
                 <div class="row">
                     @forelse($schedules as $schedule)
-                    <div class="col-lg-6 col-xl-4 col-xxl-4" style="width: 200%;">
+                    <div class="col-lg-4 col-xl-4 col-xxl-4" style="width: 200%;">
                         <div class="card card-default shadow-md border-dark mt-7">
                             <div class="card-body text-center">
                                 <button class="editClassSchedule mb-2" href="javascript:void(0)" data-target="#join-class-schedule-modal" value="{{$schedule->classID}}">
                                     <div class="image mb-3 d-inline-flex mt-n8">
                                         <img src="{{$schedule->avatar ?? asset('images/User Icon.png') }}" width="100" height="100" class="img-fluid rounded-circle d-inline-block" alt="Avatar Image">
                                     </div>
-                                    <h5 class="card-title">{{ucwords($schedule->instFirstName) }} {{ ucwords($schedule->instLastName) }}</h5>
+                                    <h5 class="card-title">{{ucwords($schedule->courseName)}}</h5>
                                     <ul class="list-unstyled d-inline-block">
                                         <li class="d-flex mb-1">
-                                            <i class="mdi mdi-alpha-c-box mr-1"></i>
-                                            <label class="mr-1">Course Name:</label>
-                                            <span>{{ucwords($schedule->courseName)}}</span>
+                                            <i class="mdi mdi-alpha-i-box mr-1"></i>
+                                            <label class="mr-1">Instructor Name:</label>
+                                            <span>{{ucwords($schedule->instFirstName) }} {{ ucwords($schedule->instLastName) }}</span>
                                         </li>
                                         <li class="d-flex mb-1">
                                             <i class="mdi mdi-alpha-c-box mr-1"></i>

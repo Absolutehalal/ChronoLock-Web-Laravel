@@ -90,7 +90,7 @@
             <tr>
 
 
-                <th>S. NO</th>
+                <th>No.</th>
                 <th>Name</th>
                 <th>User ID</th>
                 <th>Course Name</th>
@@ -105,7 +105,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($studentAttendances as $student)
+            @forelse($studentAttendances as $student)
             @csrf
             <tr>
                 <td>{{ $loop->iteration }}</td>
@@ -113,20 +113,24 @@
                 <td>{{ ucwords($student->idNumber) }}</td>
                 <td>{{ $student->courseName }}</td>
                 <td>{{ $student->program }}</td>
-                <td>{{ $student->year }}-{{ $student->section }}</td>
+                <td>{{ $student->year }} - {{ $student->section }}</td>
                 <td>{{ $student->formatted_date }}</td>
                 <td>{{ $student->formatted_time }}</td>
                 @if($student->remark == 'Present')
-                <td class="{{ 'present' }}" style="font-size: 15px;">Present</td>
+                <td class="present" style="font-size: 15px;">Present</td>
                 @elseif($student->remark == 'Absent')
-                <td class="{{ 'absent' }}" style="font-size: 15px;">Absent</td>
+                <td class="absent" style="font-size: 15px;">Absent</td>
                 @elseif($student->remark == 'Late')
-                <td class="{{ 'late' }}" style="font-size: 15px;">Late</td>
+                <td class="late" style="font-size: 15px;">Late</td>
                 @endif
-                </td>
             </tr>
-            @endforeach
+            @empty
+            <tr>
+                <td colspan="9" style="text-align: center;">No records found.</td>
+            </tr>
+            @endforelse
         </tbody>
+
     </table>
 
 

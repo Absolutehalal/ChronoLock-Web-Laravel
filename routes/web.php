@@ -199,6 +199,12 @@ Route::group(['middleware' => ['auth', 'faculty:Faculty']], function () {
     //--------START instructor Calendar ROUTES---------
     Route::get('/get-Faculty-Schedules', [ScheduleController::class, 'facultyCalendarSchedules'])->name('facultyCalendarSchedules');
     //--------END instructor Calendar ROUTES---------
+
+    Route::get('/student-attendance-export', [AttendanceController::class, 'studentAttendanceExport'])->name('studentAttendanceExport');
+    Route::get('/faculty-student-attendance-generation', [AttendanceController::class, 'facultyStudentAttendanceGeneration'])->name('facultyStudentAttendanceGeneration');
+    Route::get('/faculty-student-list-generation', [FacultyAttendanceAndListController::class, 'facultyStudentListGeneration'])->name('facultyStudentListGeneration');
+    Route::get('/preview-pdf-student-attendance', [PDFController::class, 'facultyPreviewStudentAttendancePDF'])->name('facultyPreviewStudentAttendancePDF');
+    Route::get('/preview-pdf-student-list', [PDFController::class, 'facultyPreviewStudentListPDF'])->name('facultyPreviewStudentListPDF');
 });
 
 
