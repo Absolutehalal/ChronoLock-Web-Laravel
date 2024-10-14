@@ -132,25 +132,11 @@ $(document).on('click', '.createRegularSchedule', function(e) {
         $("#addRegularScheduleModal .close").click()
 
         Swal.fire({
-          icon: "warning",
-          title: "Warning",
-          text: "Regular Schedule Created. Conflict in schedules!!! Fix schedule status of either schedules conflicting with each other",
+          icon: "error",
+          title: "Error",
+          text: "Conflict with existing Regular schedule!!!",
           confirmButtonText: "OK",
-        }).then((result) => {
-            if (result.isConfirmed) {
-                Swal.fire({
-                    title: "Redirecting...",
-                    html: "Please wait...",
-                    allowEscapeKey: false,
-                    allowOutsideClick: false,
-                    timer: 2000,
-                    didOpen: () => {
-                        Swal.showLoading();
-                    },
-                });
-                window.location.href = "/AppointedSchedules";
-            }
-            });
+        })
         }
       }
     });

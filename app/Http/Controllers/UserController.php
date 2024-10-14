@@ -729,55 +729,52 @@ class UserController extends Controller
             $startDate = date('Y-m-d', strtotime($request->input('scheduleStartDate')));
             $endDate = date('Y-m-d', strtotime($request->input('scheduleEndDate')));
             $courseCode =  $request->input('courseCode');
+            // $checkStartTime = DB::table('schedules')
+            //     ->whereRaw('? BETWEEN startTime AND endTime', [$startTime])
+            //     ->where('day', '=', $checkDay)
+            //     ->get();
             $checkStartTime = DB::table('schedules')
-                ->whereRaw('? BETWEEN startTime AND endTime', [$startTime])
+                ->where('startTime', '<', $startTime)
+                ->where('endTime', '>', $startTime)
+                ->where('scheduleType', 'regularSchedule')
                 ->where('day', '=', $checkDay)
                 ->get();
+            // $checkEndTime = DB::table('schedules')
+            //     ->whereRaw('? BETWEEN startTime AND endTime', [$endTime])
+            //     ->where('day', '=', $checkDay)
+            //     ->get();
             $checkEndTime = DB::table('schedules')
-                ->whereRaw('? BETWEEN startTime AND endTime', [$endTime])
+                ->where('startTime', '<', $endTime)
+                ->where('endTime', '>', $endTime)
+                ->where('scheduleType', 'regularSchedule')
                 ->where('day', '=', $checkDay)
                 ->get();
+
+            $checkSameSchedule = DB::table('schedules')
+                ->where('startTime',  $startTime)
+                ->where('endTime', $endTime)
+                ->where('scheduleType', 'regularSchedule')
+                ->where('day', '=', $checkDay)
+                ->get();
+
+            $checkOverlappingSchedule = DB::table('schedules')
+                ->where('endTime', '>', $startTime)
+                ->where('endTime', '<', $endTime)
+                ->where('scheduleType', 'regularSchedule')
+                ->where('day', '=', $checkDay)
+                ->get();
+                
             if ($validator->fails()) {
                 return response()->json([
                     'status' => 400,
                     'errors' => $validator->messages()
                 ]);
-            } else if (($checkStartTime->isNotEmpty()) || ($checkEndTime->isNotEmpty())) {
+            } else if (($checkStartTime->isNotEmpty()) || ($checkEndTime->isNotEmpty()) || ($checkSameSchedule->isNotEmpty()) || ($checkOverlappingSchedule->isNotEmpty())) {
 
-                $newRegularSchedule = new Schedule;
-                $newRegularSchedule->courseCode =  $request->input('courseCode');
-                $newRegularSchedule->courseName = $request->input('courseName');
-                $newRegularSchedule->userID = $request->input('scheduleFaculty');
-                $newRegularSchedule->instFirstName = $facultyFirstName;
-                $newRegularSchedule->instLastName = $facultyLastName;
-                $newRegularSchedule->userID = $request->input('scheduleFaculty');
-                $newRegularSchedule->program = $request->input('scheduleProgram');
-                $newRegularSchedule->year = $request->input('scheduleYear');
-                $newRegularSchedule->section = $request->input('scheduleSection');
-                $newRegularSchedule->startTime = $startTime;
-                $newRegularSchedule->endTime = $endTime;
-                $newRegularSchedule->startDate = $startDate;
-                $newRegularSchedule->endDate = $endDate;
-                $newRegularSchedule->day = $request->input('scheduleWeekDay');
-                $newRegularSchedule->scheduleStatus = 'unscheduled';
-                $newRegularSchedule->scheduleType = 'regularSchedule';
-                $newRegularSchedule->save();
-
-                // Start Logs
-                date_default_timezone_set("Asia/Manila");
-                $date = date("Y-m-d");
-                $time = date("H:i:s");
-                $action = "Added New Regular Schedule for $courseCode";
-                DB::table('user_logs')->insert([
-                    'userID' => $userID,
-                    'action' => $action,
-                    'date' => $date,
-                    'time' => $time,
-                ]);
-                // END Logs
                 return response()->json([
                     'status' => 300,
                 ]);
+
             } else {
                 $newRegularSchedule = new Schedule;
                 $newRegularSchedule->courseCode =  $request->input('courseCode');
@@ -1049,14 +1046,36 @@ class UserController extends Controller
             $facultyLastName = DB::table('users')->where('idNumber', $facultyID)->value('lastName');
             $startTime = date("H:i:s", strtotime($request->input('makeUpScheduleStartTime')));
             $endTime = date("H:i:s", strtotime($request->input('makeUpScheduleEndTime')));
+
+            //--------------------------
             $checkStartTime = DB::table('schedules')
-                ->whereRaw('? BETWEEN startTime AND endTime', [$startTime])
+                ->where('startTime', '<', $startTime)
+                ->where('endTime', '>', $startTime)
+                ->where('scheduleType', 'makeUpSchedule')
                 ->where('day', '=', $checkDay)
                 ->get();
+       
             $checkEndTime = DB::table('schedules')
-                ->whereRaw('? BETWEEN startTime AND endTime', [$endTime])
+                ->where('startTime', '<', $endTime)
+                ->where('endTime', '>', $endTime)
+                ->where('scheduleType', 'makeUpSchedule')
                 ->where('day', '=', $checkDay)
                 ->get();
+
+            $checkSameSchedule = DB::table('schedules')
+                ->where('startTime',  $startTime)
+                ->where('endTime', $endTime)
+                ->where('scheduleType', 'makeUpSchedule')
+                ->where('day', '=', $checkDay)
+                ->get();
+
+            $checkOverlappingSchedule = DB::table('schedules')
+                ->where('endTime', '>', $startTime)
+                ->where('endTime', '<', $endTime)
+                ->where('scheduleType', 'makeUpSchedule')
+                ->where('day', '=', $checkDay)
+                ->get();
+            //--------------------------
             $id = Auth::id();
             $userID = DB::table('users')->where('id', $id)->value('idNumber');
             $newSchedule = $request->input('scheduleTitle');
@@ -1070,38 +1089,8 @@ class UserController extends Controller
                 return response()->json([
                     'status' => 100,
                 ]);
-            } else if (($checkStartTime->isNotEmpty()) || ($checkEndTime->isNotEmpty())) {
-                $makeUpSchedule = new Schedule;
-                $makeUpSchedule->courseCode = $request->input('makeUpCourseCode');
-                $makeUpSchedule->courseName = $request->input('makeUpCourseName');
-                $makeUpSchedule->userID =  $request->input('faculty');
-                $makeUpSchedule->scheduleTitle = $request->input('scheduleTitle');
-                $makeUpSchedule->instFirstName = $facultyFirstName;
-                $makeUpSchedule->instLastName = $facultyLastName;
-                $makeUpSchedule->program = $request->input('program');
-                $makeUpSchedule->year = $request->input('year');
-                $makeUpSchedule->section = $request->input('section');
-                $makeUpSchedule->startTime = $startTime;
-                $makeUpSchedule->endTime = $endTime;
-                $makeUpSchedule->startDate = $request->start_date;
-                $makeUpSchedule->endDate = $request->end_date;
-                $makeUpSchedule->day = $request->dayOfWeekString;
-                $makeUpSchedule->scheduleStatus = 'unscheduled';
-                $makeUpSchedule->scheduleType = 'makeUpSchedule';
-                $makeUpSchedule->save();
+            } else if (($checkStartTime->isNotEmpty()) || ($checkEndTime->isNotEmpty()) || ($checkSameSchedule->isNotEmpty()) || ($checkOverlappingSchedule->isNotEmpty())) {
 
-                // Start Logs
-                date_default_timezone_set("Asia/Manila");
-                $date = date("Y-m-d");
-                $time = date("H:i:s");
-                $action = "Added Make Up Schedule ($newSchedule)";
-                DB::table('user_logs')->insert([
-                    'userID' => $userID,
-                    'action' => $action,
-                    'date' => $date,
-                    'time' => $time,
-                ]);
-                // END Logs
                 return response()->json([
                     'status' => 300,
                 ]);
