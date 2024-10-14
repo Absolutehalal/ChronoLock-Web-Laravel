@@ -98,6 +98,8 @@ Route::group(['middleware' => ['auth', 'admin:Admin']], function () {
     Route::post('/scheduleManagementPage/import', [ScheduleController::class, 'import_schedule'])->name('schedule.import');
     Route::get('/generate-pdf', [PDFController::class, 'exportPDF'])->name('exportPDF');
     Route::get('/preview-pdf', [PDFController::class, 'previewPDF'])->name('previewPDF');
+    Route::get('/closeERPLaboratory', [ScheduleController::class, 'closeERPLaboratory'])->name('closeERPLaboratory');
+    Route::get('/openERPLaboratory', [ScheduleController::class, 'openERPLaboratory'])->name('openERPLaboratory');
     //--------END schedule Management Routes----------
 
     //--------START ClassList Management Routes----------

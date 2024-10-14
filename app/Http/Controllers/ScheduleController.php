@@ -509,4 +509,78 @@ class ScheduleController extends Controller
         return view('faculty.instructor-schedule', ['schedules' => $schedules]);
 
     }
+
+    public function closeERPLaboratory(){
+        
+        $maintenance = new Schedule;
+        $maintenance->scheduleStatus = 'maintenance';
+        $maintenance->save();
+        $existingSchedule = Schedule::where('scheduleStatus', 'maintenance')->first();
+
+        if ($existingSchedule) {
+            // Start Logs
+            $ID = Auth::id();
+            $userID = DB::table('users')->where('id', $ID)->value('idNumber');
+            date_default_timezone_set("Asia/Manila");
+            $date = date("Y-m-d");
+            $time = date("H:i:s");
+            $action = "Closed ERP Laboratory for Maintenance";
+            DB::table('user_logs')->insert([
+                'userID' => $userID,
+                'action' => $action,
+                'date' => $date,
+                'time' => $time,
+            ]);
+            // END Logs
+
+           Alert::Success("ERP Laboratory Closed")
+                ->showCloseButton()
+                ->timerProgressBar();
+
+            return redirect()->back();
+      } else {
+        Alert::Warning("Failed to Close ERP Laboratory")
+        ->showCloseButton()
+        ->timerProgressBar();
+
+        return redirect()->back();
+      }
+    }
+
+
+    public function openERPLaboratory(){
+
+        $liftMaintenance = Schedule::where('scheduleStatus', 'maintenance')->first();
+        $liftMaintenance->delete();
+      
+
+        if ($liftMaintenance) {
+            // Start Logs
+            $ID = Auth::id();
+            $userID = DB::table('users')->where('id', $ID)->value('idNumber');
+            date_default_timezone_set("Asia/Manila");
+            $date = date("Y-m-d");
+            $time = date("H:i:s");
+            $action = "Lifted ERP Laboratory Maintenance";
+            DB::table('user_logs')->insert([
+                'userID' => $userID,
+                'action' => $action,
+                'date' => $date,
+                'time' => $time,
+            ]);
+            // END Logs
+
+           Alert::Success("ERP Laboratory Opened")
+                ->showCloseButton()
+                ->timerProgressBar();
+
+            return redirect()->back();
+      } else {
+        Alert::Warning("Failed to Open ERP Laboratory")
+        ->showCloseButton()
+        ->timerProgressBar();
+
+        return redirect()->back();
+      }
+    }
 }

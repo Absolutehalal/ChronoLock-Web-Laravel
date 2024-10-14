@@ -98,6 +98,31 @@
             <div class="row">
 
               <div class="col-xl-12 col-md-12 d-flex justify-content-end">
+              @if($maintenance != null)
+               
+              <div class="d-inline-block mb-3">
+                <form action="{{ url('/openERPLaboratory') }}" method="GET">
+                  <!-- <input type="text" class="form-control border border-primary" id="exportDate" name="selectedDate" value="{{ Request()->date }}"> -->
+                  <button class="openERPButton btn btn-outline-success btn-sm fw-bold" id="openERPButton" type="submit">
+                    <i class="mdi mdi-lock-open-outline"></i>
+                      Open Laboratory
+                  </button>
+                </form>
+              </div>
+
+              @else
+              <div class="d-inline-block mb-3">
+                <form action="{{ url('/closeERPLaboratory') }}" method="GET">
+                  <!-- <input type="text" class="form-control border border-primary" id="exportDate" name="selectedDate" value="{{ Request()->date }}"> -->
+                  <button class="closeERPButton btn btn-outline-danger btn-sm fw-bold" id="closeERPButton" type="submit">
+                    <i class="mdi mdi-lock-outline"></i>
+                      Close Laboratory
+                  </button>
+                </form>
+              </div>
+              @endif
+        
+              
                 <!-- Sort button -->
                 <!-- <div class="dropdown d-inline-block mb-3 mr-3">
                   <button title="Add Regular Schedule" class="btn btn-primary btn-sm fw-bold" type="button" data-toggle="modal" data-target="#addRegularScheduleModal">

@@ -691,17 +691,14 @@ class UserController extends Controller
     }
     public function adminScheduleManagement()
     {
-        // $user = Schedule::find(65);
-        // $users= Schedule::where('courseCode', 'ITEC222')->get();
-
+        $maintenance = Schedule::where('scheduleStatus', 'maintenance')->first();
         $instructorsID = User::select('idNumber', 'firstName', 'lastName', 'userType')
             ->orderBy('firstName')
             ->where('userType', '=', 'Faculty')
             ->distinct()
             ->get();
-        return view('admin.admin-schedule', ['instructorsID' => $instructorsID]);
+        return view('admin.admin-schedule', ['instructorsID' => $instructorsID, 'maintenance' => $maintenance]);
     }
-
 
 
     public function createRegularSchedule(Request $request)
