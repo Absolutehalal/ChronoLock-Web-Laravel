@@ -326,11 +326,27 @@ document.addEventListener("DOMContentLoaded", function () {
                                                     "#makeUpScheduleModal .close"
                                                 ).click();
                                                 Swal.fire({
-                                                    icon: "error",
-                                                    title: "Error",
-                                                    text: "Conflict with existing Make Up Schedule!!!",
+                                                    icon: "warning",
+                                                    title: "Warning",
+                                                    text: "Conflict in schedules!!! Fix schedule status of conflicting schedules ",
                                                     confirmButtonText: "OK",
-                                                })
+                                                }).then((result) => {
+                                                    if (result.isConfirmed) {
+                                                        Swal.fire({
+                                                            title: "Redirecting...",
+                                                            html: "Please wait...",
+                                                            allowEscapeKey: false,
+                                                            allowOutsideClick: false,
+                                                            timer: 2000,
+                                                            didOpen: () => {
+                                                                Swal.showLoading();
+                                                            },
+                                                        });
+
+                                                        window.location.href =
+                                                            "/AppointedSchedules";
+                                                    }
+                                                });
                                             } else if (response.status == 100) {
                                                 $("#titleError").html("");
                                                 $("#programError").html("");
@@ -701,25 +717,8 @@ document.addEventListener("DOMContentLoaded", function () {
                                             Swal.fire({
                                                 icon: "warning",
                                                 title: "Warning",
-                                                text: "Regular Schedule Updated. Conflict in schedules!!! Fix schedule status of either schedules conflicting with each other",
-                                                confirmButtonText: "OK",
-                                            }).then((result) => {
-                                                if (result.isConfirmed) {
-                                                    Swal.fire({
-                                                        title: "Redirecting...",
-                                                        html: "Please wait...",
-                                                        allowEscapeKey: false,
-                                                        allowOutsideClick: false,
-                                                        timer: 2000,
-                                                        didOpen: () => {
-                                                            Swal.showLoading();
-                                                        },
-                                                    });
-
-                                                    window.location.href =
-                                                        "/AppointedSchedules";
-                                                }
-                                            });
+                                                text: "Conflict with existing Regular schedule!!!",
+                                            })
                                         }
                                     },
                                 });
@@ -1091,7 +1090,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                                     Swal.fire({
                                                         icon: "warning",
                                                         title: "Warning",
-                                                        text: "Make Up Schedule Updated. Conflict in schedules!!! Fix schedule status of either schedules conflicting with each other",
+                                                        text: "Make Up Schedule Updated. Conflict in schedules!!! Fix schedule status of conflicting schedules",
                                                         confirmButtonText: "OK",
                                                     }).then((result) => {
                                                         if (

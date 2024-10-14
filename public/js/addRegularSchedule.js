@@ -135,7 +135,6 @@ $(document).on('click', '.createRegularSchedule', function(e) {
           icon: "error",
           title: "Error",
           text: "Conflict with existing Regular schedule!!!",
-          confirmButtonText: "OK",
         })
         }
       }

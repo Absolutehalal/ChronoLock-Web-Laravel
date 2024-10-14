@@ -93,6 +93,8 @@
                                         <span class="badge badge-success">With Class</span>
                                         @elseif($classes->scheduleStatus == 'Without Class')
                                         <span class="badge badge-danger">Without Class</span>
+                                        @elseif($classes->scheduleStatus == 'Locked')
+                                        <span class="badge badge-warning">Locked</span>
                                         @endif
                                     </td>
                                     <th>
@@ -108,6 +110,22 @@
                                                 <button class="dropdown-item btn-sm deleteClassListBtn" type="button" data-toggle="modal" data-target="#classListDeleteModal" value="{{$classes->classID}}">
                                                     <i class="mdi mdi-trash-can text-danger"></i>
                                                     Delete</button>
+
+                                                @if ($classes->scheduleStatus == "With Class")
+                                                <form action="{{ route('lockClass', ($classes->classID)) }}" method="GET">
+                                                    <button class="dropdown-item btn-sm lockClassBtn" id="lockClass"  type="submit">
+                                                        <i class="mdi mdi-lock-outline text-danger"></i>
+                                                        Lock
+                                                    </button>
+                                                </form>
+                                                @elseif ($classes->scheduleStatus == "Locked")
+                                                <form action="{{ route('openClass', ($classes->classID)) }}" method="GET">
+                                                    <button class="dropdown-item btn-sm openClassBtn" id="openClass"  type="submit">
+                                                        <i class="mdi mdi-lock-open-outline text-success"></i>
+                                                        Unlock
+                                                    </button>
+                                                </form>
+                                                @endif
 
                                                 @if ($classes->scheduleStatus == "With Class")
                                                 <button class="dropdown-item btn-sm withoutClassBtn" type="button" data-toggle="modal" data-target="#withoutClassModal" value="{{$classes->classID}}">

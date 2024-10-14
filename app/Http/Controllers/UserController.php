@@ -732,6 +732,11 @@ class UserController extends Controller
             // $checkStartTime = DB::table('schedules')
             //     ->whereRaw('? BETWEEN startTime AND endTime', [$startTime])
             //     ->where('day', '=', $checkDay)
+            //     ->get(); 
+            
+            // $checkEndTime = DB::table('schedules')
+            //     ->whereRaw('? BETWEEN startTime AND endTime', [$endTime])
+            //     ->where('day', '=', $checkDay)
             //     ->get();
             $checkStartTime = DB::table('schedules')
                 ->where('startTime', '<', $startTime)
@@ -739,10 +744,7 @@ class UserController extends Controller
                 ->where('scheduleType', 'regularSchedule')
                 ->where('day', '=', $checkDay)
                 ->get();
-            // $checkEndTime = DB::table('schedules')
-            //     ->whereRaw('? BETWEEN startTime AND endTime', [$endTime])
-            //     ->where('day', '=', $checkDay)
-            //     ->get();
+           
             $checkEndTime = DB::table('schedules')
                 ->where('startTime', '<', $endTime)
                 ->where('endTime', '>', $endTime)
@@ -876,63 +878,57 @@ class UserController extends Controller
                 $startTime = $request->input('startTime');
                 $endTime = $request->input('endTime');
                 $day = DB::table('schedules')->where('scheduleID', $updatedID)->value('day');
+
+                // $checkStartTime = DB::table('schedules')
+                //     ->whereRaw('? BETWEEN startTime AND endTime', [$startTime])
+                //     ->where('scheduleID', '!=', $id)
+                //     ->where('day', '=', $checkDay)
+                //     ->get();
+                // $checkEndTime = DB::table('schedules')
+                //     ->whereRaw('? BETWEEN startTime AND endTime', [$endTime])
+                //     ->where('scheduleID', '!=', $id)
+                //     ->where('day', '=', $checkDay)
+                //     ->get();
+
+                //-----------
                 $checkStartTime = DB::table('schedules')
-                    ->whereRaw('? BETWEEN startTime AND endTime', [$startTime])
-                    ->where('scheduleID', '!=', $id)
+                    ->where('startTime', '<', $startTime)
+                    ->where('endTime', '>', $startTime)
+                    ->where('scheduleType', 'regularSchedule')
                     ->where('day', '=', $checkDay)
+                    ->where('scheduleID', '!=', $id)
                     ->get();
+               
                 $checkEndTime = DB::table('schedules')
-                    ->whereRaw('? BETWEEN startTime AND endTime', [$endTime])
-                    ->where('scheduleID', '!=', $id)
+                    ->where('startTime', '<', $endTime)
+                    ->where('endTime', '>', $endTime)
+                    ->where('scheduleType', 'regularSchedule')
                     ->where('day', '=', $checkDay)
+                    ->where('scheduleID', '!=', $id)
                     ->get();
-
-                if (($schedule) && (($checkStartTime->isNotEmpty()) || ($checkEndTime->isNotEmpty()))) {
-                    $strtTime = date("H:i:s", strtotime($request->input('startTime')));
-                    $ndTime = date("H:i:s", strtotime($request->input('endTime')));
-
-                    $strtDate = date('Y-m-d', strtotime($request->input('startDate')));
-                    $ndDate = date('Y-m-d', strtotime($request->input('endDate')));
-
-                    $schedule->courseCode = $request->input('updateCourseCode');
-                    $schedule->courseName = $request->input('updateCourseName');
-                    $schedule->startDate = $strtDate;
-                    $schedule->endDate = $ndDate;
-                    $schedule->startTime =  $strtTime;
-                    $schedule->endTime =  $ndTime;
-                    $schedule->day = $request->input('updateWeekDay');
-                    $schedule->update();
-
-                    // Start Logs
-                    $inputCourseCode = $request->input('updateCourseCode');
-                    $inputCourseName = $request->input('updateCourseName');
-                    $inputStartTime =   $strtTime;
-                    $inputEndTime = $ndTime;
-                    $inputStartDate =   $strtDate;
-                    $inputEndDate = $ndDate;
-                    $inputDay = $request->input('updateWeekDay');
-
-                    $id = Auth::id();
-                    $userID = DB::table('users')->where('id', $id)->value('idNumber');
-                    date_default_timezone_set("Asia/Manila");
-                    $date = date("Y-m-d");
-                    $time = date("H:i:s");
-                    if (($inputCourseCode == $courseCode) && ($inputCourseName == $courseName) && ($inputStartTime == $startTime) && ($inputEndTime == $endTime)  && ($inputStartDate == $startDate)  && ($inputEndDate == $endDate) && ($inputDay == $day)) {
-                        $action = "Attempt update on $courseCode schedule";
-                    } else {
-                        $action = "Updated $courseCode schedule";
-                    }
-                    DB::table('user_logs')->insert([
-                        'userID' => $userID,
-                        'action' => $action,
-                        'date' => $date,
-                        'time' => $time,
-                    ]);
-                    // END Logs
-
+    
+                $checkSameSchedule = DB::table('schedules')
+                    ->where('startTime',  $startTime)
+                    ->where('endTime', $endTime)
+                    ->where('scheduleType', 'regularSchedule')
+                    ->where('day', '=', $checkDay)
+                    ->where('scheduleID', '!=', $id)
+                    ->get();
+    
+                $checkOverlappingSchedule = DB::table('schedules')
+                    ->where('endTime', '>', $startTime)
+                    ->where('endTime', '<', $endTime)
+                    ->where('scheduleType', 'regularSchedule')
+                    ->where('day', '=', $checkDay)
+                    ->where('scheduleID', '!=', $id)
+                    ->get();
+                //----------
+                if (($schedule) && (($checkStartTime->isNotEmpty()) || ($checkEndTime->isNotEmpty()) || ($checkSameSchedule->isNotEmpty()) || ($checkOverlappingSchedule->isNotEmpty()))) {
+                   
                     return response()->json([
                         'status' => 300,
                     ]);
+                    
                 } else if ($schedule) {
 
                     $strtTime = date("H:i:s", strtotime($request->input('startTime')));
@@ -1051,28 +1047,24 @@ class UserController extends Controller
             $checkStartTime = DB::table('schedules')
                 ->where('startTime', '<', $startTime)
                 ->where('endTime', '>', $startTime)
-                ->where('scheduleType', 'makeUpSchedule')
                 ->where('day', '=', $checkDay)
                 ->get();
-       
+   
             $checkEndTime = DB::table('schedules')
                 ->where('startTime', '<', $endTime)
                 ->where('endTime', '>', $endTime)
-                ->where('scheduleType', 'makeUpSchedule')
                 ->where('day', '=', $checkDay)
                 ->get();
 
             $checkSameSchedule = DB::table('schedules')
                 ->where('startTime',  $startTime)
                 ->where('endTime', $endTime)
-                ->where('scheduleType', 'makeUpSchedule')
                 ->where('day', '=', $checkDay)
                 ->get();
 
             $checkOverlappingSchedule = DB::table('schedules')
                 ->where('endTime', '>', $startTime)
                 ->where('endTime', '<', $endTime)
-                ->where('scheduleType', 'makeUpSchedule')
                 ->where('day', '=', $checkDay)
                 ->get();
             //--------------------------
@@ -1090,7 +1082,38 @@ class UserController extends Controller
                     'status' => 100,
                 ]);
             } else if (($checkStartTime->isNotEmpty()) || ($checkEndTime->isNotEmpty()) || ($checkSameSchedule->isNotEmpty()) || ($checkOverlappingSchedule->isNotEmpty())) {
+                
+                $makeUpSchedule = new Schedule;
+                $makeUpSchedule->courseCode = $request->input('makeUpCourseCode');
+                $makeUpSchedule->courseName = $request->input('makeUpCourseName');
+                $makeUpSchedule->userID =  $request->input('faculty');
+                $makeUpSchedule->scheduleTitle = $request->input('scheduleTitle');
+                $makeUpSchedule->instFirstName = $facultyFirstName;
+                $makeUpSchedule->instLastName = $facultyLastName;
+                $makeUpSchedule->program = $request->input('program');
+                $makeUpSchedule->year = $request->input('year');
+                $makeUpSchedule->section = $request->input('section');
+                $makeUpSchedule->startTime = $startTime;
+                $makeUpSchedule->endTime = $endTime;
+                $makeUpSchedule->startDate = $request->start_date;
+                $makeUpSchedule->endDate = $request->end_date;
+                $makeUpSchedule->day = $request->dayOfWeekString;
+                $makeUpSchedule->scheduleStatus = 'unscheduled';
+                $makeUpSchedule->scheduleType = 'makeUpSchedule';
+                $makeUpSchedule->save();
 
+                // Start Logs
+                date_default_timezone_set("Asia/Manila");
+                $date = date("Y-m-d");
+                $time = date("H:i:s");
+                $action = "Added Make Up Schedule ($newSchedule)";
+                DB::table('user_logs')->insert([
+                    'userID' => $userID,
+                    'action' => $action,
+                    'date' => $date,
+                    'time' => $time,
+                ]);
+                // END Logs
                 return response()->json([
                     'status' => 300,
                 ]);
@@ -1229,18 +1252,39 @@ class UserController extends Controller
                 $endTime = DB::table('schedules')->where('scheduleID', $updatedID)->value('endTime');
                 $strtTime = date("H:i:s", strtotime($request->input('updateStartTime')));
                 $ndTime = date("H:i:s", strtotime($request->input('updateEndTime')));
+             
+
+                //------------------
                 $checkStartTime = DB::table('schedules')
-                    ->whereRaw('? BETWEEN startTime AND endTime', [$strtTime])
+                    ->where('startTime', '<', $strtTime)
+                    ->where('endTime', '>', $strtTime)
                     ->where('day', '=', $checkDay)
                     ->where('scheduleID', '!=', $id)
                     ->get();
+    
                 $checkEndTime = DB::table('schedules')
-                    ->whereRaw('? BETWEEN startTime AND endTime', [$ndTime])
+                    ->where('startTime', '<', $ndTime)
+                    ->where('endTime', '>', $ndTime)
                     ->where('day', '=', $checkDay)
                     ->where('scheduleID', '!=', $id)
                     ->get();
+
+                $checkSameSchedule = DB::table('schedules')
+                    ->where('startTime',  $strtTime)
+                    ->where('endTime', $ndTime)
+                    ->where('day', '=', $checkDay)
+                    ->where('scheduleID', '!=', $id)
+                    ->get();
+
+                $checkOverlappingSchedule = DB::table('schedules')
+                    ->where('endTime', '>', $strtTime)
+                    ->where('endTime', '<', $ndTime)
+                    ->where('day', '=', $checkDay)
+                    ->where('scheduleID', '!=', $id)
+                    ->get();
+                //------------------
                 // Update the schedule if it exists
-                if (($makeUpSchedule) && (($checkStartTime->isNotEmpty()) || ($checkEndTime->isNotEmpty()))) {
+                if (($makeUpSchedule) && (($checkStartTime->isNotEmpty()) || ($checkEndTime->isNotEmpty()) || ($checkSameSchedule->isNotEmpty()) || ($checkOverlappingSchedule->isNotEmpty()))) {
 
                     // Update schedule details
                     $makeUpSchedule->scheduleTitle = $request->input('updateScheduleTitle');

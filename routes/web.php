@@ -165,21 +165,23 @@ Route::group(['middleware' => ['auth', 'faculty:Faculty']], function () {
     Route::get('/student-status-counts-chart', [UserController::class, 'getStudentStatusCountsChart'])->name('getStudentStatusCountsChart');
     Route::get('/student-counts-chart', [UserController::class, 'getStudentCountsByClass'])->name('getStudentCountsByClass');
 
-    //--------START Class List  ROUTES---------
+    //--------START Class Record  ROUTES---------
     Route::get('/instructorClassList', [ScheduleController::class, 'classListManagement'])->name('classListManagement');
     Route::get('/edit-Class-List/{id}', [ScheduleController::class, 'editClassList'])->name('editClassList');
     Route::put('/noClass-Class-List/{id}', [ScheduleController::class, 'noClassClassList'])->name('noClassClassList');
     Route::put('/withClass-Class-List/{id}', [ScheduleController::class, 'withClassClassList'])->name('withClassClassList');
     Route::put('/update-Class-List/{id}', [ScheduleController::class, 'updateClassList'])->name('updateClassList');
     Route::delete('/delete-Class-List/{id}', [ScheduleController::class, 'deleteClassList'])->name('deleteClassList');
-    //--------END Class List  ROUTES---------
+    Route::get('/lockClass/{id}', [ScheduleController::class, 'lockClass'])->name('lockClass');
+    Route::get('/openClass/{id}', [ScheduleController::class, 'openClass'])->name('openClass');
+    //--------END Class Record  ROUTES---------
 
-    //--------START instructor edit create classlist  ROUTES---------
+    //--------START instructor edit create classRecord  ROUTES---------
     Route::post('/instructorClassSchedules', [ScheduleController::class, 'addClassList'])->name('addClassList');
     Route::get('/status/{id}', [ScheduleController::class, 'status'])->name('status');
     Route::get('/editInstructorClassList/{id}', [ScheduleController::class, 'editInstructorClass'])->name('editInstructorClass');
     Route::get('/instructorClassSchedules', [ScheduleController::class, 'classSchedules'])->name('classSchedules');
-    //--------End instructor edit create classlist  ROUTES---------
+    //--------End instructor edit create classRecord  ROUTES---------
 
     //--------START instructor class Attendance and List  ROUTES---------
     Route::get('/instructorClassAttendanceAndList/{id}', [FacultyAttendanceAndListController::class, 'instructorClassAttendanceAndList'])->name('instructorClassAttendanceAndList');

@@ -583,4 +583,88 @@ class ScheduleController extends Controller
         return redirect()->back();
       }
     }
+
+    public function lockClass($id){
+
+        $class = DB::table('class_lists')
+        ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
+        ->where('class_lists.classID', $id)  
+        ->select('schedules.scheduleID') // Select the scheduleID to identify the schedule record
+        ->first();
+
+        if ($class) {
+
+             DB::table('schedules')
+                ->where('scheduleID', $class->scheduleID)
+                ->update(['scheduleStatus' => 'Locked']);
+            // Start Logs
+            $ID = Auth::id();
+            $userID = DB::table('users')->where('id', $ID)->value('idNumber');
+            date_default_timezone_set("Asia/Manila");
+            $date = date("Y-m-d");
+            $time = date("H:i:s");
+            $action = "Locked Class Schedule";
+            DB::table('user_logs')->insert([
+                'userID' => $userID,
+                'action' => $action,
+                'date' => $date,
+                'time' => $time,
+            ]);
+            // END Logs
+
+           Alert::Success("Class Successfully Locked")
+                ->showCloseButton()
+                ->timerProgressBar();
+
+            return redirect()->back();
+      } else {
+        Alert::Warning("Failed to Lock Class")
+        ->showCloseButton()
+        ->timerProgressBar();
+
+        return redirect()->back();
+      }
+    }
+
+    public function openClass($id){
+
+        $class = DB::table('class_lists')
+        ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
+        ->where('class_lists.classID', $id)  
+        ->select('schedules.scheduleID') // Select the scheduleID to identify the schedule record
+        ->first();
+
+        if ($class) {
+
+             DB::table('schedules')
+                ->where('scheduleID', $class->scheduleID)
+                ->update(['scheduleStatus' => 'With Class']);
+            // Start Logs
+            $ID = Auth::id();
+            $userID = DB::table('users')->where('id', $ID)->value('idNumber');
+            date_default_timezone_set("Asia/Manila");
+            $date = date("Y-m-d");
+            $time = date("H:i:s");
+            $action = "Opened Class Schedule";
+            DB::table('user_logs')->insert([
+                'userID' => $userID,
+                'action' => $action,
+                'date' => $date,
+                'time' => $time,
+            ]);
+            // END Logs
+
+           Alert::Success("Class Successfully Opened")
+                ->showCloseButton()
+                ->timerProgressBar();
+
+            return redirect()->back();
+      } else {
+        Alert::Warning("Failed to Open Class")
+        ->showCloseButton()
+        ->timerProgressBar();
+
+        return redirect()->back();
+      }
+    }
 }
