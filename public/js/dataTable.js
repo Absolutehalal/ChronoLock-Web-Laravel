@@ -3,12 +3,12 @@ $(document).ready(function () {
     var table = $("#exampleTable").DataTable({
         // scrollX: true,?
         // "searching": false, order: [[0, 'asc']],
-        rowReorder: true,
+        rowReorder: false,
         pagingType: "simple_numbers",
         responsive: true,
-        rowReorder: {
-            selector: "td:nth-child(2)",
-        },
+         // rowReorder: {
+        //     selector: "td:nth-child(2)",
+        // },
         // stateSave: false,
         mark: true,
         language: {
@@ -41,13 +41,13 @@ $(document).ready(function () {
     var tableTwo = $("#exampleTable2").DataTable({
         // scrollX: true,?
         // "searching": false, order: [[0, 'asc']],
-        rowReorder: true,
+        rowReorder: false,
         pagingType: "simple_numbers",
         responsive: true,
         topEnd: null,
-        rowReorder: {
-            selector: "td:nth-child(2)",
-        },
+        // rowReorder: {
+        //     selector: "td:nth-child(2)",
+        // },
         // stateSave: false,
         mark: true,
         language: {
@@ -78,12 +78,12 @@ $(document).ready(function () {
     var rfidTable = $("#rfidTable").DataTable({
         // scrollX: true,
         // "searching": false, order: [[0, 'asc']],
-        rowReorder: true,
+        rowReorder: false,
         pagingType: "simple_numbers",
         responsive: true,
-        rowReorder: {
-            selector: "td:nth-child(2)",
-        },
+        // rowReorder: {
+        //     selector: "td:nth-child(2)",
+        // },
         // stateSave: false,
         mark: true,
         language: {
@@ -120,19 +120,19 @@ $(document).ready(function () {
     var adminTable = $("#adminTable").DataTable({
         // scrollX: true,
         // "searching": false, order: [[0, 'asc']],
-        rowReorder: true,
+        rowReorder: false,
         pagingType: "simple_numbers",
         responsive: true,
-        rowReorder: {
-            selector: "td:nth-child(2)",
-        },
+        // rowReorder: {
+        //     selector: "td:nth-child(2)",
+        // },
         // stateSave: false,
         mark: true,
         language: {
             searchPlaceholder: "Search Here",
         },
         order: [[0, "asc"]],
-        columnDefs: [{ type: "id", targets: 1 }],
+        // columnDefs: [{ type: "id", targets: 1 }],
     });
 
     // Highlight search term
@@ -162,12 +162,12 @@ $(document).ready(function () {
     var labInChargeTable = $("#labInChargeTable").DataTable({
         // scrollX: true,
         // "searching": false, order: [[0, 'asc']],
-        rowReorder: true,
+        rowReorder: false,
         pagingType: "simple_numbers",
         responsive: true,
-        rowReorder: {
-            selector: "td:nth-child(2)",
-        },
+        // rowReorder: {
+        //     selector: "td:nth-child(2)",
+        // },
         // stateSave: false,
         mark: true,
         language: {
@@ -204,12 +204,11 @@ $(document).ready(function () {
     var technicianTable = $("#technicianTable").DataTable({
         // scrollX: true,
         // "searching": false, order: [[0, 'asc']],
-        rowReorder: true,
+        rowReorder: false,
         pagingType: "simple_numbers",
-        responsive: true,
-        rowReorder: {
-            selector: "td:nth-child(2)",
-        },
+        // rowReorder: {
+        //     selector: "td:nth-child(2)",
+        // },
         // stateSave: false,
         mark: true,
         language: {
@@ -246,12 +245,12 @@ $(document).ready(function () {
     var facultyTable = $("#facultyTable").DataTable({
         // scrollX: true,
         // "searching": false, order: [[0, 'asc']],
-        rowReorder: true,
+        rowReorder: false,
         pagingType: "simple_numbers",
         responsive: true,
-        rowReorder: {
-            selector: "td:nth-child(2)",
-        },
+        // rowReorder: {
+        //     selector: "td:nth-child(2)",
+        // },
         // stateSave: false,
         mark: true,
         language: {
@@ -288,12 +287,12 @@ $(document).ready(function () {
     var studentTable = $("#studentTable").DataTable({
         // scrollX: true,
         // "searching": false, order: [[0, 'asc']],
-        rowReorder: true,
+        rowReorder: false,
         pagingType: "simple_numbers",
         responsive: true,
-        rowReorder: {
-            selector: "td:nth-child(2)",
-        },
+        // rowReorder: {
+        //     selector: "td:nth-child(2)",
+        // },
         // stateSave: false,
         mark: true,
         language: {
@@ -331,12 +330,12 @@ $(document).ready(function () {
     var studentListTable = $("#studentListTable").DataTable({
         // scrollX: true,
         // "searching": false, order: [[0, 'asc']],
-        rowReorder: true,
+        rowReorder: false,
         pagingType: "simple_numbers",
         responsive: true,
-        rowReorder: {
-            selector: "td:nth-child(2)",
-        },
+        // rowReorder: {
+        //     selector: "td:nth-child(2)",
+        // },
         // stateSave: false,
         mark: true,
         language: {
@@ -370,12 +369,12 @@ $(document).ready(function () {
     var attendanceTable = $("#AttendanceTable").DataTable({
         // scrollX: true,
         // "searching": false, order: [[0, 'asc']],
-        rowReorder: true,
+        rowReorder: false,
         pagingType: "simple_numbers",
         responsive: true,
-        rowReorder: {
-            selector: "td:nth-child(2)",
-        },
+        // rowReorder: {
+        //     selector: "td:nth-child(2)",
+        // },
         // stateSave: false,
         mark: true,
         language: {

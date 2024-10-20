@@ -141,8 +141,6 @@ class PDFController extends Controller
     }
 
 
-
-
     public function previewStudentAttendancePDF(Request $request)
     {
         $yearSection = $request->input('selected_years'); // Change to match the name in your Blade
@@ -223,6 +221,78 @@ class PDFController extends Controller
             echo $e;
         }
     }
+
+
+    public function logsReportGenerationPDF(Request $request)
+    {
+        $name_id = $request->query('name_id');
+        $action = $request->query('action');
+        $startDate = $request->input('selected_StartDate');
+        $endDate = $request->input('selected_EndDate');
+        $userType = $request->query('user_type');
+
+        $userLogs = DB::table('user_logs')
+            ->join('users', 'user_logs.userID', '=', 'users.idNumber')
+            ->orderBy('date', 'desc')
+            ->orderBy('time', 'desc');
+
+        try {
+            if ($name_id) {
+                $userLogs->where(function ($query) use ($name_id) {
+                    $query->where('users.idNumber', '=', $name_id)
+                        ->orWhere('users.firstName', 'LIKE', '%' . $name_id . '%')
+                        ->orWhere('users.lastName', 'LIKE', '%' . $name_id . '%')
+                        ->orWhere(DB::raw("CONCAT(users.firstName, ' ', users.lastName)"), 'LIKE', '%' . $name_id . '%');
+                });
+            }
+
+            if ($action) {
+                $userLogs->where(function ($query) use ($action) {
+                    $query->where('user_logs.action', 'LIKE', '%' . $action . '%');
+                });
+            }
+
+            if ($userType) {
+                $userLogs->where('userType', $userType);
+            }
+
+
+            if ($startDate && $endDate) {
+                // Convert the start and end dates to the 'Y-m-d' format
+                $startDate = Carbon::parse($startDate)->format('Y-m-d');
+                $endDate = Carbon::parse($endDate)->format('Y-m-d');
+
+                $userLogs->whereBetween('user_logs.date', [$startDate, $endDate]);
+            } elseif ($startDate) {
+                // If only start date is selected, apply start date filter
+                $startDate = Carbon::parse($startDate)->format('Y-m-d');
+                $userLogs->where('user_logs.date', '=', $startDate);
+            } elseif ($endDate) {
+                // If only end date is selected, apply end date filter
+                $endDate = Carbon::parse($endDate)->format('Y-m-d');
+                $userLogs->where('user_logs.date', '=', $endDate);
+            }
+
+            $userLogs = $userLogs->get();
+
+            $dompdf = new Dompdf();
+
+            $imageCSPC = base64_encode(file_get_contents(public_path('images/CSPC.png')));
+            $imageCCS = base64_encode(file_get_contents(public_path('images/CCS.png')));
+            $CHRONOLOCK = base64_encode(file_get_contents(public_path('images/chronolock-small.png')));
+
+            $userLogsPDF = view('admin.admin-generateLogs-pdf', compact('userLogs', 'imageCSPC', 'imageCCS', 'CHRONOLOCK'))->render();
+            $dompdf->loadHtml($userLogsPDF);
+
+            $dompdf->setPaper('A4', 'landscape');
+            $dompdf->render();
+
+            return $dompdf->stream('user-logs.pdf', ['Attachment' => 0]);
+        } catch (\Exception $e) {
+            echo $e;
+        }
+    }
+
 
     public function facultyPreviewStudentAttendancePDF(Request $request)
     {
@@ -377,7 +447,7 @@ class PDFController extends Controller
 
     public function previewFacultyAttendancePDF(Request $request)
     {
-        $facultyID = $request->input('selected_id');
+        $facultyID = $request->input('name_id');
         $remarks = $request->input('selected_remarks');
         $startDate = $request->input('selected_StartDate');
         $endDate = $request->input('selected_EndDate');
@@ -402,7 +472,12 @@ class PDFController extends Controller
             }
 
             if ($facultyID) {
-                $faculty->where('idNumber', '=', $facultyID);
+                $faculty->where(function ($query) use ($facultyID) {
+                    $query->where('attendances.userID', '=', $facultyID)
+                        ->orWhere('users.firstName', 'LIKE', '%' . $facultyID . '%')
+                        ->orWhere('users.lastName', 'LIKE', '%' . $facultyID . '%')
+                        ->orWhere(DB::raw("CONCAT(users.firstName, ' ', users.lastName)"), 'LIKE', '%' . $facultyID . '%');
+                });
             }
 
             if ($remarks) {

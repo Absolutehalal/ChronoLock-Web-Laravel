@@ -66,7 +66,7 @@
 
               <div class="dropdown d-inline-block">
                 <div class="input-group date" id="month-picker">
-                  <input class="form-control border-primary" type="search" name="search_course" id="search_course" value="" placeholder="Search Course" autocomplete="false" >
+                  <input class="form-control border-primary" type="search" name="search_course" id="search_course" value="" placeholder="Search Course" autocomplete="false">
                   <div class="input-group-append">
                     <div class="input-group text-light btn btn-primary btn-sm" id="dateIcon">
                       <i class="mdi mdi-database-search"></i>
@@ -101,24 +101,15 @@
               <div class="row">
                 <div class="col-xl-9 col-md-9 mb-2 mt-1">
 
-
                   <div class="dropdown d-inline-block">
-                    <button class="btn btn-primary btn-sm dropdown-toggle fw-bold" type="button" id="instructorIDButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
-                      <i class="mdi mdi-alpha-i-box"></i> Instructor ID
-                    </button>
-                    <div class="dropdown-menu scrollable-dropdown" aria-labelledby="instructorIDButton">
-                      @forelse ($instructorID as $instructorID)
-                      @csrf
-                      <a class="dropdown-item id-item @if ($instructorID == $instructorID->userID) active @endif" data-value="{{ $instructorID->userID }}" href="#">
-                        {{ $instructorID->userID }} - {{ $instructorID->instFirstName }} {{ $instructorID->instLastName }}
-                      </a>
-                      @empty
-                      <a class="dropdown-item" data-value="None" href="#">
-                        None
-                      </a>
-                      @endforelse
+                    <div class="input-group date" id="month-picker">
+                      <input class="form-control border-primary" type="search" name="name_id" value="" placeholder="Name/ID" autocomplete="false" id="name_id">
+                      <div class="input-group-append">
+                        <div class="input-group text-light btn btn-primary btn-sm" id="dateIcon">
+                          <i class="mdi mdi-database-search"></i>
+                        </div>
+                      </div>
                     </div>
-                    <input type="hidden" name="selected_id" id="selected_id" value="">
                   </div>
 
                   <div class="dropdown d-inline-block">
@@ -174,7 +165,7 @@
             <h1>Instructor Attendance Report</h1>
             <div class="justify-content-end">
               <div class="dropdown d-inline-block mb-3">
-                <button title="Preview" class="btn btn-outline-dark btn-sm fw-bold" onclick='window.location = "{{ route("previewFacultyAttendancePDF", ["selected_id" => $selected_id, "selected_remarks" => $selected_remarks, "selected_StartDate" => $selected_StartDate, "selected_EndDate" => $selected_EndDate, "search_course" => $search_course]) }}"' type="button">
+                <button data-toggle="tooltip" title="PDF" class="btn btn-outline-dark btn-sm fw-bold" onclick='window.location = "{{ route("previewFacultyAttendancePDF", ["name_id" => $name_id, "selected_remarks" => $selected_remarks, "selected_StartDate" => $selected_StartDate, "selected_EndDate" => $selected_EndDate, "search_course" => $search_course]) }}"' type="button">
                   <i class="mdi mdi-feature-search"></i>
                   PDF
                 </button>
@@ -182,7 +173,7 @@
 
               <div class="d-inline-block mb-3 ms-2">
                 <form action="{{ url('/instructor-attendance-export') }}" method="GET">
-                  <button class="btn btn-info btn-sm fw-bold" id="exportButton" type="submit">
+                  <button data-toggle="tooltip" title="EXCEL" class="btn btn-outline-dark btn-sm fw-bold" id="exportButton" type="submit">
                     <i class="mdi mdi-file-download"></i>
                     Excel
                   </button>

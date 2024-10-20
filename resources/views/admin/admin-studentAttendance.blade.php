@@ -115,7 +115,7 @@
             <div class="dropdown d-inline-block mb-3">
               <form method="GET" action="{{ route('studentAttendanceManagement') }}">
                 <button class="btn btn-primary btn-sm dropdown-toggle fw-bold" type="button" id="statusDropdown" data-toggle="dropdown" aria-expanded="false">
-                  <i class="mdi mdi-alpha-s-box"></i>
+                  <i class="mdi mdi-alpha-r-box"></i>
                   Remark
                 </button>
                 <div class="dropdown-menu scrollable-dropdown" aria-labelledby="statusDropdown">

@@ -160,7 +160,7 @@
             <div class="justify-content-end">
 
               <div class="dropdown d-inline-block mb-3">
-                <button title="Preview" class="btn btn-outline-dark btn-sm fw-bold"
+                <button data-toggle="tooltip" title="PDF"  class="btn btn-outline-dark btn-sm fw-bold"
                 onclick='window.location = "{{ route("facultyPreviewStudentListPDF", ["selected_programs" => $selected_programs, "selected_years" => $selected_years, "student_status" => $student_status]) }}"' 
                   type="button">
                   <i class="mdi mdi-feature-search"></i>
