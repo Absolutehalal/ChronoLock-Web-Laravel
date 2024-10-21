@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     $.ajax({
         type: "GET",
-        url: "/get-Faculty-Schedules",
+        url: "/get-ERP-Schedules",
         success: function (response) {
             var schedules = response.ERPSchedules;
             console.log(schedules);

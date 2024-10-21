@@ -23,7 +23,7 @@
   <!-- Custom JS -->
   <script src="js/toastr.js"></script>
 
-  <script src='{{asset('https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js')}}'></script>
+ 
 
 </head>
 
@@ -289,6 +289,7 @@
   </div>
   </div>
   </div>
-
+  <script src="{{asset('js/calendar.js')}}"></script>
+  <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
 
   @include('footer')

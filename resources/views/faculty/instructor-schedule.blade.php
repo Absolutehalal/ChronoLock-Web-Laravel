@@ -41,7 +41,7 @@
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{{ route('instructorIndex') }}">Dashboard</a></li>
-                            <li class="breadcrumb-item active"><a href="{{ route('instructorScheduleManagement') }}">My Schedule</a></li>
+                            <li class="breadcrumb-item active"><a href="{{ route('instructorScheduleManagement') }}">ERP Schedule</a></li>
                         </ol>
                     </nav>
 
@@ -50,9 +50,6 @@
                         <p class="text-center date-time mb-3" id="liveDateTime">Your Date and Time</p>
                     </div>
                 </div>
-
-
-
 
                 <div class="card card-default shadow">
                     <div class="card-header card-header-border-bottom d-flex justify-content-between align-items-center">

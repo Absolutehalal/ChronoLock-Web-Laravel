@@ -8,6 +8,7 @@ use App\Models\Attendance;
 use App\Models\StudentMasterlist;
 use App\Models\Schedule;
 use App\Models\MakeUpSchedule;
+use App\Models\ScheduleNote;
 
 
 use Illuminate\Http\Request;
@@ -657,7 +658,7 @@ class UserController extends Controller
     {
         $ERPSchedules = array();
         $schedule = Schedule::all();
-
+       
         foreach ($schedule as $schedule) {
             if ($schedule->scheduleType == 'makeUpSchedule') {
                 $ERPSchedules[] = [
@@ -688,6 +689,25 @@ class UserController extends Controller
             'status' => 200,
             'ERPSchedules' => $ERPSchedules,
         ]);
+    }
+    public function getNotes($id, $id2)
+    {
+       
+        $ERPNotes = DB::table('schedule_notes')
+        ->where('scheduleID', $id)
+        ->where('date', $id2)
+        ->first();
+        
+        if($ERPNotes){
+        return response()->json([
+            'status' => 200,
+            'ERPNotes' => $ERPNotes,
+        ]);
+    }else{
+        return response()->json([
+            'status' => 400,
+        ]);
+    }
     }
     public function adminScheduleManagement()
     {

@@ -8,6 +8,7 @@
 
   <!-- Ajax Instructor Schedule -->
   <script defer src="js/instructorERPScheduleToClassList.js"></script>
+ 
 
   <title>ChronoLock Instructor - Class Schedules</title>
 
@@ -44,7 +45,7 @@
           <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="{{ route('instructorIndex') }}">Dashboard</a></li>
-              <li class="breadcrumb-item active"><a href="{{ route('classSchedules') }}">ERP Schedules</a></li>
+              <li class="breadcrumb-item active"><a href="{{ route('classSchedules') }}">My Schedules</a></li>
             </ol>
           </nav>
 
@@ -54,143 +55,208 @@
           </div>
         </div>
 
-        <div class="card card-default shadow">
-          <div class="card-header card-header-border-bottom">
-            <h1 class="mb-4">My Assigned Schedule</h1>
-            <!-- <form method="GET" action="{{ url('/instructorClassSchedules') }}">
-              <div class="dropdown d-inline-block mb-3">
-                <button class="btn btn-primary btn-sm dropdown-toggle fw-bold" type="button" id="nameDropdown" data-toggle="dropdown" aria-expanded="false">
-                  <i class="mdi mdi-alpha-s-box"></i>
-                  Sort My Schedule
-                </button>
-                <div class="dropdown-menu scrollable-dropdown" aria-labelledby="nameDropdown">
-                  @if(Auth::check())
-                  <a class="dropdown-item name-item filter-name" data-value="{{ Auth::user()->accountName }}" href="#">
-                    {{ Auth::user()->accountName }}
-                  </a>
-                  @endif
+            <ul class="nav nav-pills mb-3 justify-content-center" id="pills-tab" role="tablist">
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" id="pills-assigned-schedule-tab" data-bs-toggle="pill" href="assignedScheduleTab" data-bs-target="#pills-assigned-schedule" type="button" role="tab" aria-controls="pills-assigned-schedule" aria-selected="true">Assigned Schedule</button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" id="pills-notes-tab" data-bs-toggle="pill" href="notesTab" data-bs-target="#pills-notes" type="button" role="tab" aria-controls="pills-notes" aria-selected="false">Notes</button>
+              </li>
+            </ul>
+
+        <div class="tab-content" id="pills-tabContent">
+          <div class="tab-pane fade" id="pills-assigned-schedule" role="tabpanel" aria-labelledby="pills-assigned-schedule-tab">
+            <div class="card card-default shadow">
+              <div class="card-header card-header-border-bottom">
+                <h1 class="mb-4">My Assigned Schedule</h1>
+                <!-- <form method="GET" action="{{ url('/instructorClassSchedules') }}">
+                  <div class="dropdown d-inline-block mb-3">
+                    <button class="btn btn-primary btn-sm dropdown-toggle fw-bold" type="button" id="nameDropdown" data-toggle="dropdown" aria-expanded="false">
+                      <i class="mdi mdi-alpha-s-box"></i>
+                      Sort My Schedule
+                    </button>
+                    <div class="dropdown-menu scrollable-dropdown" aria-labelledby="nameDropdown">
+                      @if(Auth::check())
+                      <a class="dropdown-item name-item filter-name" data-value="{{ Auth::user()->accountName }}" href="#">
+                        {{ Auth::user()->accountName }}
+                      </a>
+                      @endif
+                    </div>
+                    <input type="hidden" name="name" id="selectedName">
+                  </div>
+
+                  <div class="dropdown d-inline-block mb-3">
+                    <button class="btn btn-danger btn-sm fw-bold" type="submit">
+                      <i class="mdi mdi-sort"></i> Filter
+                    </button>
+                  </div>
+
+                  <div class="dropdown d-inline-block mb-3">
+                    <button class="btn btn-warning btn-sm fw-bold" type="submit">
+                      <i class="mdi mdi-alpha-r-box"></i>
+                      RESET
+                    </button>
+                  </div>
+                </form> -->
+              </div>
+            </div>
+        
+            <div class="card-body px-3 px-md-5">
+              <div class="row">
+                @forelse($schedules as $schedule)
+                @csrf
+                <div class="col-lg-6 col-xl-6">
+                  <div class="card card-default border-dark p-4">
+                    <button href="javascript:0" class="editERPSchedule media text-secondary" data-target="#scheduleModal" data-avatar="{{ $schedule->avatar ?? asset('images/scheduleIcon.png') }}" data-inst-first-name="{{ $schedule->instFirstName }}" data-inst-last-name="{{ $schedule->instLastName }}" data-course-name="{{ $schedule->courseName }}" data-course-code="{{ $schedule->courseCode }}" data-program="{{ $schedule->program }}" data-year="{{ $schedule->year }}" data-section="{{ $schedule->section }}" data-schedule-id="{{ $schedule->scheduleID }}" value="{{ $schedule->scheduleID }}">
+                      <img src="{{ $schedule->avatar ?? asset('images/scheduleIcon.png') }}" class="mr-3 mt-4 img-fluid rounded schedule" alt="Avatar Image">
+                      <div class="media-body">
+                        <h3 class="mt-0 mb-2 text-dark d-flex text-left fw-bold">{{ strtoupper($schedule->courseCode) }} - {{ ucwords($schedule->courseName) }}</h3>
+                        <ul class="list-unstyled text-smoke">
+
+                          <li class="d-flex">
+                            <i class="mdi mdi-calendar-check mr-1"></i>
+                            <label class="mr-1">Date:</label>
+                            <span class="text-dark">{{ $schedule->formatted_startDate }} - {{ $schedule->formatted_endDate }}</span>
+                          </li>
+
+                          @php
+                          // Mapping of day numbers
+                          $dayMapping = [
+                          0 => 'Sunday',
+                          1 => 'Monday',
+                          2 => 'Tuesday',
+                          3 => 'Wednesday',
+                          4 => 'Thursday',
+                          5 => 'Friday',
+                          6 => 'Saturday'
+                          ];
+                          // Get the day name from the mapping
+                          $dayName = $dayMapping[$schedule->day];
+                          @endphp
+
+                          <li class="d-flex">
+                            <i class="mdi mdi-calendar-check mr-1"></i>
+                            <label class="mr-1">Day:</label>
+                            <span class="text-dark">{{ $dayName }}</span>
+                          </li>
+
+                          <li class="d-flex">
+                            <i class="mdi mdi-clock mr-1"></i>
+                            <label class="mr-1">Time:</label>
+                            <span class="text-dark">{{ $schedule->formatted_startTime }} - {{ $schedule->formatted_endTime }}</span>
+                          </li>
+                          <!-- <li class="d-flex">
+                                  <i class="mdi mdi-map mr-1"></i>
+                                  <label class="mr-1">Course Name:</label>
+                                  <span class="text-dark">{{ $schedule->courseName }}</span>
+                                </li> -->
+                          <!-- <li class="d-flex">
+                                  <i class="mdi mdi-map mr-1"></i>
+                                  <label class="mr-1">Course Code:</label>
+                                  <span class="text-dark">{{ $schedule->courseCode }}</span>
+                                </li> -->
+                          <li class="d-flex">
+                            <i class="mdi mdi-group mr-1"></i>
+                            <label class="mr-1">Program:</label>
+                            <span class="text-dark">{{ $schedule->program }}</span>
+                          </li>
+                          <li class="d-flex">
+                            <i class="mdi mdi-alpha-s-box mr-1"></i>
+                            <label class="mr-1">Year & Section:</label>
+                            <span class="text-dark">{{ $schedule->year }}-{{ $schedule->section }}</span>
+                          </li>
+                        </ul>
+                        @php
+                        $schedules = $schedule->scheduleID;
+                        $withClassFacultySchedules = DB::table('schedules')
+                        ->where('userID', $userID)
+                        ->where('scheduleID', $schedules)
+                        ->where('scheduleStatus', 'With Class')
+                        ->first();
+                        $withoutClassFacultySchedules = DB::table('schedules')
+                        ->where('userID', $userID)
+                        ->where('scheduleID', $schedules)
+                        ->where('scheduleStatus', 'Without Class')
+                        ->first();
+                        @endphp
+                        @if ($withClassFacultySchedules)
+                        <div class="overlay" style="color: #31ce3c">Scheduled</div>
+                        @elseif ($withoutClassFacultySchedules)
+                        <div class="overlay" style="color: #FF7F7F">Without Class</div>
+                        @else
+                        <div class="overlay" style="color: #FFFF00">Unscheduled</div>
+                        @endif
+                    </button>
+                  </div>
                 </div>
-                <input type="hidden" name="name" id="selectedName">
+                @empty
+                <div class="card-body">
+                  <p class="text-center fw-bold">No schedules available.</p>
+                </div>
+                @endforelse
               </div>
-
-              <div class="dropdown d-inline-block mb-3">
-                <button class="btn btn-danger btn-sm fw-bold" type="submit">
-                  <i class="mdi mdi-sort"></i> Filter
-                </button>
+            </div>
+          </div>
+          
+        
+    
+          <div class="tab-pane fade" id="pills-notes" role="tabpanel" aria-labelledby="pills-notes-tab">
+            <div class="card card-default shadow">
+              <div class="card-header card-header-border-bottom">
+                <h1 class="mb-4">My Notes</h1>
               </div>
-
-              <div class="dropdown d-inline-block mb-3">
-                <button class="btn btn-warning btn-sm fw-bold" type="submit">
-                  <i class="mdi mdi-alpha-r-box"></i>
-                  RESET
-                </button>
+            </div>
+            <div class="card-body">
+              <div class="full-calendar mb-5">
+                <div id="calendar"></div>
               </div>
-            </form> -->
+            </div>
           </div>
         </div>
+    <!--START MY SCHEDULE NOTES MODALS -->
+      <!-- Notes Modal -->
+      <div class="modal fade" id="addNotesModal" role="dialog" aria-labelledby="addNotes" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="addNotes" style="text-align:center;">Create Note for this Schedule</h5>
+              <button type="button" class="close" id="close" data-dismiss="modal" aria-label="Close" onclick="$('#addNotesModal').modal('hide');">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+            <form id="addNotes" method="post" action="{{route('addScheduleNote')}}">
+              @csrf
+              @method('post')
 
-        <div class="card-body px-3 px-md-5">
-          <div class="row">
-            @forelse($schedules as $schedule)
-            @csrf
-            <div class="col-lg-6 col-xl-6">
-              <div class="card card-default border-dark p-4">
-                <button href="javascript:0" class="editERPSchedule media text-secondary" data-target="#scheduleModal" data-avatar="{{ $schedule->avatar ?? asset('images/scheduleIcon.png') }}" data-inst-first-name="{{ $schedule->instFirstName }}" data-inst-last-name="{{ $schedule->instLastName }}" data-course-name="{{ $schedule->courseName }}" data-course-code="{{ $schedule->courseCode }}" data-program="{{ $schedule->program }}" data-year="{{ $schedule->year }}" data-section="{{ $schedule->section }}" data-schedule-id="{{ $schedule->scheduleID }}" value="{{ $schedule->scheduleID }}">
-                  <img src="{{ $schedule->avatar ?? asset('images/scheduleIcon.png') }}" class="mr-3 mt-4 img-fluid rounded schedule" alt="Avatar Image">
-                  <div class="media-body">
-                    <h3 class="mt-0 mb-2 text-dark d-flex text-left fw-bold">{{ strtoupper($schedule->courseCode) }} - {{ ucwords($schedule->courseName) }}</h3>
-                    <ul class="list-unstyled text-smoke">
-
-                      <li class="d-flex">
-                        <i class="mdi mdi-calendar-check mr-1"></i>
-                        <label class="mr-1">Date:</label>
-                        <span class="text-dark">{{ $schedule->formatted_startDate }} - {{ $schedule->formatted_endDate }}</span>
-                      </li>
-
-                      @php
-                      // Mapping of day numbers
-                      $dayMapping = [
-                      0 => 'Sunday',
-                      1 => 'Monday',
-                      2 => 'Tuesday',
-                      3 => 'Wednesday',
-                      4 => 'Thursday',
-                      5 => 'Friday',
-                      6 => 'Saturday'
-                      ];
-                      // Get the day name from the mapping
-                      $dayName = $dayMapping[$schedule->day];
-                      @endphp
-
-                      <li class="d-flex">
-                        <i class="mdi mdi-calendar-check mr-1"></i>
-                        <label class="mr-1">Day:</label>
-                        <span class="text-dark">{{ $dayName }}</span>
-                      </li>
-
-                      <li class="d-flex">
-                        <i class="mdi mdi-clock mr-1"></i>
-                        <label class="mr-1">Time:</label>
-                        <span class="text-dark">{{ $schedule->formatted_startTime }} - {{ $schedule->formatted_endTime }}</span>
-                      </li>
-                      <!-- <li class="d-flex">
-                              <i class="mdi mdi-map mr-1"></i>
-                              <label class="mr-1">Course Name:</label>
-                              <span class="text-dark">{{ $schedule->courseName }}</span>
-                            </li> -->
-                      <!-- <li class="d-flex">
-                              <i class="mdi mdi-map mr-1"></i>
-                              <label class="mr-1">Course Code:</label>
-                              <span class="text-dark">{{ $schedule->courseCode }}</span>
-                            </li> -->
-                      <li class="d-flex">
-                        <i class="mdi mdi-group mr-1"></i>
-                        <label class="mr-1">Program:</label>
-                        <span class="text-dark">{{ $schedule->program }}</span>
-                      </li>
-                      <li class="d-flex">
-                        <i class="mdi mdi-alpha-s-box mr-1"></i>
-                        <label class="mr-1">Year & Section:</label>
-                        <span class="text-dark">{{ $schedule->year }}-{{ $schedule->section }}</span>
-                      </li>
-                    </ul>
-                    @php
-                    $schedules = $schedule->scheduleID;
-                    $withClassFacultySchedules = DB::table('schedules')
-                    ->where('userID', $userID)
-                    ->where('scheduleID', $schedules)
-                    ->where('scheduleStatus', 'With Class')
-                    ->first();
-                    $withoutClassFacultySchedules = DB::table('schedules')
-                    ->where('userID', $userID)
-                    ->where('scheduleID', $schedules)
-                    ->where('scheduleStatus', 'Without Class')
-                    ->first();
-                    @endphp
-                    @if ($withClassFacultySchedules)
-                    <div class="overlay" style="color: #31ce3c">Scheduled</div>
-                    @elseif ($withoutClassFacultySchedules)
-                    <div class="overlay" style="color: #FF7F7F">Without Class</div>
-                    @else
-                    <div class="overlay" style="color: #FFFF00">Unscheduled</div>
-                    @endif
-                </button>
+              <div class="row">
+                
+              <div class="col-lg-12">
+                <ul id="noteError"></ul>
+                <div class="form-group">
+                  <label for="note">Note</label>
+                  <input type="text" class="note form-control border border-dark border border-dark" id="note" name="note" placeholder="Enter Note" />
+                </div>
               </div>
-            </div>
-            @empty
-            <div class="card-body">
-              <p class="text-center fw-bold">No schedules available.</p>
-            </div>
-            @endforelse
+
+              <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-pill" id="close" onclick="$('#addNotesModal').modal('hide');">Close</button>
+                <button type="submit" class="btn btn-primary btn-pill createNote">Create</button>
+              </div>
+            </form>
+            </div> <!-- Modal Boday End-->
+
+
+
           </div>
         </div>
       </div>
+      </div>
+      </div>
 
-    </div>
-  </div>
-  </div>
+<!--END MY SCHEDULE NOTES MODALS -->
 
-
+<!--START MY ASSIGNED SCHEDULES MODALS -->
   <!-- Schedule Modal -->
   <div class="modal fade" id="scheduleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -283,7 +349,7 @@
       </div>
     </div>
   </div>
-
+<!--END MY ASSIGNED SCHEDULES MODALS -->
   <script>
     document.addEventListener("DOMContentLoaded", function() {
       document.querySelectorAll('.name-item').forEach(function(item) {
@@ -343,5 +409,6 @@
     });
   </script>
 
-
+<script src="{{asset('js/scheduleNotes.js')}}"></script>
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
   @include('footer')

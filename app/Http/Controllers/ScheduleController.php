@@ -7,6 +7,7 @@ use App\Models\Schedule;
 use App\Models\ClassList;
 use App\Imports\ScheduleImport;
 use App\Models\StudentMasterlist;
+use App\Models\ScheduleNote;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -50,7 +51,163 @@ class ScheduleController extends Controller
             return redirect()->intended('/scheduleManagementPage');
         }
     }
+    public function closeERPLaboratory(){
+        
+        $maintenance = new Schedule;
+        $maintenance->scheduleStatus = 'maintenance';
+        $maintenance->save();
+        $existingSchedule = Schedule::where('scheduleStatus', 'maintenance')->first();
 
+        if ($existingSchedule) {
+            // Start Logs
+            $ID = Auth::id();
+            $userID = DB::table('users')->where('id', $ID)->value('idNumber');
+            date_default_timezone_set("Asia/Manila");
+            $date = date("Y-m-d");
+            $time = date("H:i:s");
+            $action = "Closed ERP Laboratory for Maintenance";
+            DB::table('user_logs')->insert([
+                'userID' => $userID,
+                'action' => $action,
+                'date' => $date,
+                'time' => $time,
+            ]);
+            // END Logs
+
+           Alert::Success("ERP Laboratory Closed")
+                ->showCloseButton()
+                ->timerProgressBar();
+
+            return redirect()->back();
+      } else {
+        Alert::Warning("Failed to Close ERP Laboratory")
+        ->showCloseButton()
+        ->timerProgressBar();
+
+        return redirect()->back();
+      }
+    }
+
+
+    public function openERPLaboratory(){
+
+        $liftMaintenance = Schedule::where('scheduleStatus', 'maintenance')->first();
+        $liftMaintenance->delete();
+      
+
+        if ($liftMaintenance) {
+            // Start Logs
+            $ID = Auth::id();
+            $userID = DB::table('users')->where('id', $ID)->value('idNumber');
+            date_default_timezone_set("Asia/Manila");
+            $date = date("Y-m-d");
+            $time = date("H:i:s");
+            $action = "Lifted ERP Laboratory Maintenance";
+            DB::table('user_logs')->insert([
+                'userID' => $userID,
+                'action' => $action,
+                'date' => $date,
+                'time' => $time,
+            ]);
+            // END Logs
+
+           Alert::Success("ERP Laboratory Opened")
+                ->showCloseButton()
+                ->timerProgressBar();
+
+            return redirect()->back();
+      } else {
+        Alert::Warning("Failed to Open ERP Laboratory")
+        ->showCloseButton()
+        ->timerProgressBar();
+
+        return redirect()->back();
+      }
+    }
+
+    public function lockClass($id){
+
+        $class = DB::table('class_lists')
+        ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
+        ->where('class_lists.classID', $id)  
+        ->select('schedules.scheduleID') // Select the scheduleID to identify the schedule record
+        ->first();
+
+        if ($class) {
+
+             DB::table('schedules')
+                ->where('scheduleID', $class->scheduleID)
+                ->update(['scheduleStatus' => 'Locked']);
+            // Start Logs
+            $ID = Auth::id();
+            $userID = DB::table('users')->where('id', $ID)->value('idNumber');
+            date_default_timezone_set("Asia/Manila");
+            $date = date("Y-m-d");
+            $time = date("H:i:s");
+            $action = "Locked Class Schedule";
+            DB::table('user_logs')->insert([
+                'userID' => $userID,
+                'action' => $action,
+                'date' => $date,
+                'time' => $time,
+            ]);
+            // END Logs
+
+           Alert::Success("Class Successfully Locked")
+                ->showCloseButton()
+                ->timerProgressBar();
+
+            return redirect()->back();
+      } else {
+        Alert::Warning("Failed to Lock Class")
+        ->showCloseButton()
+        ->timerProgressBar();
+
+        return redirect()->back();
+      }
+    }
+
+    public function openClass($id){
+
+        $class = DB::table('class_lists')
+        ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
+        ->where('class_lists.classID', $id)  
+        ->select('schedules.scheduleID') // Select the scheduleID to identify the schedule record
+        ->first();
+
+        if ($class) {
+
+             DB::table('schedules')
+                ->where('scheduleID', $class->scheduleID)
+                ->update(['scheduleStatus' => 'With Class']);
+            // Start Logs
+            $ID = Auth::id();
+            $userID = DB::table('users')->where('id', $ID)->value('idNumber');
+            date_default_timezone_set("Asia/Manila");
+            $date = date("Y-m-d");
+            $time = date("H:i:s");
+            $action = "Opened Class Schedule";
+            DB::table('user_logs')->insert([
+                'userID' => $userID,
+                'action' => $action,
+                'date' => $date,
+                'time' => $time,
+            ]);
+            // END Logs
+
+           Alert::Success("Class Successfully Opened")
+                ->showCloseButton()
+                ->timerProgressBar();
+
+            return redirect()->back();
+      } else {
+        Alert::Warning("Failed to Open Class")
+        ->showCloseButton()
+        ->timerProgressBar();
+
+        return redirect()->back();
+      }
+    }
 
     //-----------END Admin functions-----------
 
@@ -459,12 +616,12 @@ class ScheduleController extends Controller
         }
     }
 
-    public function facultyCalendarSchedules()
+    public function ERPCalendarSchedules()
     {
         $ERPSchedules = array();
         $schedule =DB::table('class_lists')
             ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
-            ->where('scheduleStatus','=','With Class')
+            // ->where('scheduleStatus','=','With Class')
             ->get();
        
 
@@ -499,172 +656,112 @@ class ScheduleController extends Controller
             'ERPSchedules' => $ERPSchedules,
         ]);
     }
-    // -----------End instructor functions------------
+   
 
 
-    public function getFacultySchedules()
+    // public function getFacultySchedules()
+    // {
+    //     $schedules = Schedule::where('id', Auth::id())->get();
+
+    //     return view('faculty.instructor-schedule', ['schedules' => $schedules]);
+
+    // }
+
+    public function getFacultyScheduleNote()
     {
-        $schedules = Schedule::where('id', Auth::id())->get();
-
-        return view('faculty.instructor-schedule', ['schedules' => $schedules]);
-
-    }
-
-    public function closeERPLaboratory(){
-        
-        $maintenance = new Schedule;
-        $maintenance->scheduleStatus = 'maintenance';
-        $maintenance->save();
-        $existingSchedule = Schedule::where('scheduleStatus', 'maintenance')->first();
-
-        if ($existingSchedule) {
-            // Start Logs
-            $ID = Auth::id();
-            $userID = DB::table('users')->where('id', $ID)->value('idNumber');
-            date_default_timezone_set("Asia/Manila");
-            $date = date("Y-m-d");
-            $time = date("H:i:s");
-            $action = "Closed ERP Laboratory for Maintenance";
-            DB::table('user_logs')->insert([
-                'userID' => $userID,
-                'action' => $action,
-                'date' => $date,
-                'time' => $time,
-            ]);
-            // END Logs
-
-           Alert::Success("ERP Laboratory Closed")
-                ->showCloseButton()
-                ->timerProgressBar();
-
-            return redirect()->back();
-      } else {
-        Alert::Warning("Failed to Close ERP Laboratory")
-        ->showCloseButton()
-        ->timerProgressBar();
-
-        return redirect()->back();
-      }
-    }
-
-
-    public function openERPLaboratory(){
-
-        $liftMaintenance = Schedule::where('scheduleStatus', 'maintenance')->first();
-        $liftMaintenance->delete();
-      
-
-        if ($liftMaintenance) {
-            // Start Logs
-            $ID = Auth::id();
-            $userID = DB::table('users')->where('id', $ID)->value('idNumber');
-            date_default_timezone_set("Asia/Manila");
-            $date = date("Y-m-d");
-            $time = date("H:i:s");
-            $action = "Lifted ERP Laboratory Maintenance";
-            DB::table('user_logs')->insert([
-                'userID' => $userID,
-                'action' => $action,
-                'date' => $date,
-                'time' => $time,
-            ]);
-            // END Logs
-
-           Alert::Success("ERP Laboratory Opened")
-                ->showCloseButton()
-                ->timerProgressBar();
-
-            return redirect()->back();
-      } else {
-        Alert::Warning("Failed to Open ERP Laboratory")
-        ->showCloseButton()
-        ->timerProgressBar();
-
-        return redirect()->back();
-      }
-    }
-
-    public function lockClass($id){
-
-        $class = DB::table('class_lists')
+        $id = Auth::id();
+        $userID = DB::table('users')->where('id', $id)->value('idNumber');
+        $ERPSchedules = array();
+        $schedule =DB::table('class_lists')
         ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
-        ->where('class_lists.classID', $id)  
-        ->select('schedules.scheduleID') // Select the scheduleID to identify the schedule record
-        ->first();
+        ->where('userID', $userID)
+        ->get();
+       
+        foreach ($schedule as $schedule) {
+            if ($schedule->scheduleType == 'makeUpSchedule') {
+                $ERPSchedules[] = [
+                    'id' =>   $schedule->scheduleID,
+                    'title' => $schedule->scheduleTitle . " - " . $schedule->instFirstName . " " . $schedule->instLastName,
+                    'startTime' => $schedule->startTime,
+                    'endTime' => $schedule->endTime,
+                    'startRecur' => $schedule->startDate,
+                    'endRecur' => $schedule->endDate,
+                    'color' => '#fa0202',
+                    'description' => 'makeUpSchedule',
+                ];
+            } else if ($schedule->scheduleType == 'regularSchedule') {
+                $ERPSchedules[] = [
+                    'id' =>  $schedule->scheduleID,
+                    'title' => $schedule->courseName . " - " . $schedule->instFirstName . " " . $schedule->instLastName,
+                    'startTime' => $schedule->startTime,
+                    'endTime' => $schedule->endTime,
+                    'startRecur' => $schedule->startDate,
+                    'endRecur' => $schedule->endDate,
+                    'daysOfWeek' => $schedule->day,
+                    'color' => '#1fd655',
+                    'description' => 'regularSchedule',
+                ];
+            }
+        }
+        return response()->json([
+            'status' => 200,
+            'ERPSchedules' => $ERPSchedules,
+        ]);
 
-        if ($class) {
+    }
 
-             DB::table('schedules')
-                ->where('scheduleID', $class->scheduleID)
-                ->update(['scheduleStatus' => 'Locked']);
-            // Start Logs
-            $ID = Auth::id();
-            $userID = DB::table('users')->where('id', $ID)->value('idNumber');
+
+    public function addScheduleNote(Request $request){
+        try {
+            $validator = Validator::make($request->all(), [
+                'note' => 'required',
+            ]);
+            $scheduleType = $request->scheduleType;
+            $scheduleID = $request->id;
+            $eventDate = $request->eventDate;
+            $courseCode = DB::table('schedules')->where('scheduleID', $scheduleID)->value('courseCode');
+
+
+            $id = Auth::id();
+            $userID = DB::table('users')->where('id', $id)->value('idNumber');
             date_default_timezone_set("Asia/Manila");
             $date = date("Y-m-d");
             $time = date("H:i:s");
-            $action = "Locked Class Schedule";
-            DB::table('user_logs')->insert([
-                'userID' => $userID,
-                'action' => $action,
-                'date' => $date,
-                'time' => $time,
-            ]);
-            // END Logs
 
-           Alert::Success("Class Successfully Locked")
-                ->showCloseButton()
-                ->timerProgressBar();
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => 400,
+                    'errors' => $validator->messages()
+                ]);
+            } else {
+                
+                $notes = new ScheduleNote;
+                $notes->scheduleID = $scheduleID;
+                $notes->note = $request->input('note');
+                $notes->date = $eventDate;
+                $notes->time = $time;
+                $notes->save();
 
+                // Start Logs
+                $action = "Added Note to $courseCode on $eventDate at $time";
+                DB::table('user_logs')->insert([
+                    'userID' => $userID,
+                    'action' => $action,
+                    'date' => $date,
+                    'time' => $time,
+                ]);
+                // END Logs
+                return response()->json([
+                    'status' => 200,
+                ]);
+            }
+        } catch (\Exception $e) {
+            Alert::error('Error', 'Something went wrong. Please try again later.')
+                ->autoClose(5000)
+                ->showCloseButton();
             return redirect()->back();
-      } else {
-        Alert::Warning("Failed to Lock Class")
-        ->showCloseButton()
-        ->timerProgressBar();
-
-        return redirect()->back();
-      }
+        }
     }
-
-    public function openClass($id){
-
-        $class = DB::table('class_lists')
-        ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
-        ->where('class_lists.classID', $id)  
-        ->select('schedules.scheduleID') // Select the scheduleID to identify the schedule record
-        ->first();
-
-        if ($class) {
-
-             DB::table('schedules')
-                ->where('scheduleID', $class->scheduleID)
-                ->update(['scheduleStatus' => 'With Class']);
-            // Start Logs
-            $ID = Auth::id();
-            $userID = DB::table('users')->where('id', $ID)->value('idNumber');
-            date_default_timezone_set("Asia/Manila");
-            $date = date("Y-m-d");
-            $time = date("H:i:s");
-            $action = "Opened Class Schedule";
-            DB::table('user_logs')->insert([
-                'userID' => $userID,
-                'action' => $action,
-                'date' => $date,
-                'time' => $time,
-            ]);
-            // END Logs
-
-           Alert::Success("Class Successfully Opened")
-                ->showCloseButton()
-                ->timerProgressBar();
-
-            return redirect()->back();
-      } else {
-        Alert::Warning("Failed to Open Class")
-        ->showCloseButton()
-        ->timerProgressBar();
-
-        return redirect()->back();
-      }
-    }
+ // -----------End instructor functions------------
+ 
 }

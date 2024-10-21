@@ -18,8 +18,6 @@ document.addEventListener("DOMContentLoaded", function () {
             url: "/getSchedules",
             success: function (response) {
                 var schedules = response.ERPSchedules;
-                // console.log(schedules);
-
                 var calendar = new FullCalendar.Calendar(calendarEl, {
                     headerToolbar: {
                         left: "prev,next today",
@@ -45,6 +43,73 @@ document.addEventListener("DOMContentLoaded", function () {
                         if (timeElement) {
                             timeElement.innerHTML = timeText;
                         }
+                        // var data = {
+                        //     eventID,
+                        //     eventDate,
+                        // };
+                        var eventID = info.event.id;
+                        // console.log(eventID);
+                        // Add a tooltip with the description
+                        var startStr = info.event.startStr; // Get the startStr
+
+                        // Convert the startStr to a Date object
+                        var date = new Date(startStr);
+
+                        if (!isNaN(date.getTime())) { // Check if the date is valid
+                            var eventDate = date.toISOString().split('T')[0]; // Format to YYYY-MM-DD
+                            // console.log(eventDate); // Output the formatted date
+                        } else {
+                            console.error('Invalid date:', startStr);
+                        }
+
+                        $.ajax({
+                            type: "GET",
+                            url: "/getNotes/"+ eventID +"/"+ eventDate,
+                            success: function (response) {
+                                console.log(response);
+                                if (response.status == 200) {
+                                    const tooltip = document.createElement('div');
+                                    tooltip.innerText = response.ERPNotes.note;
+                                    tooltip.style.position = 'absolute';
+                                    tooltip.style.backgroundColor = 'black';
+                                    tooltip.style.border = '1px solid black';
+                                    tooltip.style.padding = '5px';
+                                    tooltip.style.zIndex = 1000;
+                                    tooltip.style.display = 'none'; // Initially hidden
+
+                                    info.el.appendChild(tooltip); // Append tooltip to event element
+                                     // Show the tooltip on mouse enter
+                                    info.el.addEventListener('mouseenter', function() {
+                                        tooltip.style.display = 'block';
+                                    });
+
+                                    // Hide the tooltip on mouse leave
+                                    info.el.addEventListener('mouseleave', function() {
+                                        tooltip.style.display = 'none';
+                                    });
+                                  } else {
+                                    const tooltip = document.createElement('div');
+                                    tooltip.innerText = 'No Comment';
+                                    tooltip.style.position = 'absolute';
+                                    tooltip.style.backgroundColor = 'black';
+                                    tooltip.style.border = '1px solid black';
+                                    tooltip.style.padding = '5px';
+                                    tooltip.style.zIndex = 1000;
+                                    tooltip.style.display = 'none'; // Initially hidden
+            
+                                    info.el.appendChild(tooltip); // Append tooltip to event element
+                                     // Show the tooltip on mouse enter
+                                    info.el.addEventListener('mouseenter', function() {
+                                        tooltip.style.display = 'block';
+                                    });
+
+                                    // Hide the tooltip on mouse leave
+                                    info.el.addEventListener('mouseleave', function() {
+                                        tooltip.style.display = 'none';
+                                    });
+                                  }
+                                }
+                            });
                     },
                     dayCellClassNames: function (arg) {
                         var currentDate = moment().startOf("day");

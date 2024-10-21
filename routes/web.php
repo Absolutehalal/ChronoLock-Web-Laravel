@@ -87,6 +87,7 @@ Route::group(['middleware' => ['auth', 'admin:Admin']], function () {
     //--------START schedule Management Routes----------
     Route::get('/scheduleManagementPage', [UserController::class, 'adminScheduleManagement'])->name('adminScheduleManagement');
     Route::get('/getSchedules', [UserController::class, 'getSchedules'])->name('getSchedules');
+    Route::get('/getNotes/{id}/{id2}', [UserController::class, 'getNotes'])->name('getNotes');
     Route::post('/createMakeUpSchedule', [UserController::class, 'createSchedule'])->name('createSchedule');
     Route::post('/createRegularSchedule', [UserController::class, 'createRegularSchedule'])->name('createRegularSchedule');
     Route::get('/editMakeUpSchedule/{id}', [UserController::class, 'editMakeUpSchedule'])->name('editMakeUpSchedule');
@@ -161,7 +162,7 @@ Route::group(['middleware' => ['auth', 'faculty:Faculty']], function () {
     Route::get('/instructorSchedule', [ScheduleController::class, 'instructorScheduleManagement'])->name('instructorScheduleManagement');
     Route::get('/schedules', [ScheduleController::class, 'showMySchedules'])->name('showMySchedules');
 
-    Route::get('/get-faculty-schedules', [ScheduleController::class, 'getFacultySchedules'])->name('getFacultySchedules');
+    // Route::get('/get-faculty-schedules', [ScheduleController::class, 'getFacultySchedules'])->name('getFacultySchedules');
     Route::get('/student-status-counts-chart', [UserController::class, 'getStudentStatusCountsChart'])->name('getStudentStatusCountsChart');
     Route::get('/student-counts-chart', [UserController::class, 'getStudentCountsByClass'])->name('getStudentCountsByClass');
 
@@ -195,7 +196,9 @@ Route::group(['middleware' => ['auth', 'faculty:Faculty']], function () {
     //--------END instructor class Attendance and List  ROUTES---------
 
     //--------START instructor Calendar ROUTES---------
-    Route::get('/get-Faculty-Schedules', [ScheduleController::class, 'facultyCalendarSchedules'])->name('facultyCalendarSchedules');
+    Route::get('/get-ERP-Schedules', [ScheduleController::class, 'ERPCalendarSchedules'])->name('ERPCalendarSchedules');
+    Route::get('/get-Faculty-Schedule-Note', [ScheduleController::class, 'getFacultyScheduleNote'])->name('getFacultyScheduleNote');
+    Route::post('/add-Schedule-Note', [ScheduleController::class, 'addScheduleNote'])->name('addScheduleNote');
     //--------END instructor Calendar ROUTES---------
 
     Route::get('/student-attendance-export', [AttendanceController::class, 'studentAttendanceExport'])->name('studentAttendanceExport');

@@ -10,7 +10,7 @@ var activeTab = localStorage.getItem('activeTab');
         if (activeTab) {
             $('#pills-tab button[href="' + activeTab + '"]').tab('show');
         }
-        
+
 $(document).on('mouseover', '.editAttendanceBtn', function(e) {
     e.preventDefault();
 
