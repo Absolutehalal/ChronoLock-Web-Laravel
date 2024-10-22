@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                 console.log(response);
                                 if (response.status == 200) {
                                     const tooltip = document.createElement('div');
-                                    tooltip.innerText = response.ERPNotes.note;
+                                    tooltip.innerText = response.ERPNotes.note; // Use your note content here
                                     tooltip.style.position = 'absolute';
                                     tooltip.style.backgroundColor = 'black';
                                     tooltip.style.border = '1px solid black';
@@ -77,8 +77,14 @@ document.addEventListener("DOMContentLoaded", function () {
                                     tooltip.style.zIndex = 1000;
                                     tooltip.style.display = 'none'; // Initially hidden
 
+                                    // New styles for text wrapping
+                                    tooltip.style.maxWidth = '150px'; // Set a maximum width for the tooltip
+                                    tooltip.style.whiteSpace = 'normal'; // Allow text wrapping
+                                    tooltip.style.overflow = 'hidden'; // Hide overflow text
+
                                     info.el.appendChild(tooltip); // Append tooltip to event element
-                                     // Show the tooltip on mouse enter
+
+                                    // Show the tooltip on mouse enter
                                     info.el.addEventListener('mouseenter', function() {
                                         tooltip.style.display = 'block';
                                     });
@@ -89,7 +95,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                     });
                                   } else {
                                     const tooltip = document.createElement('div');
-                                    tooltip.innerText = 'No Comment';
+                                    tooltip.innerText = 'No Note';
                                     tooltip.style.position = 'absolute';
                                     tooltip.style.backgroundColor = 'black';
                                     tooltip.style.border = '1px solid black';

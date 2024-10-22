@@ -213,14 +213,129 @@
             </div>
           </div>
         </div>
+
+
     <!--START MY SCHEDULE NOTES MODALS -->
+
+
+<!-- Decision Notes Modal -->
+<div class="modal fade" id="decisionNotesModal" role="dialog" aria-labelledby="decisionNotes" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="decisionNotes" style="text-align:center;">Create Note for this Schedule</h5>
+        <button type="button" class="decisionUpClose" id="decisionUpClose" data-dismiss="modal" aria-label="Close" onclick="$('#decisionNotesModal').modal('hide');">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    <div class="modal-body">
+      <div class="row">
+        <i class="fa-solid fa-exclamation-circle" style="text-align:center; font-size:50px; padding:1rem;"></i>
+        <h4 style="text-align:center;">What Would you like to do?</h4>
+      </div>
+
+     
+      <div class="d-flex justify-content-center mt-5">
+        <button class="btn btn-warning btn-pill mr-2 editNote fw-bold" type="button" data-toggle="modal" data-target="#updateNoteModal">
+          <i class="mdi mdi-circle-edit-outline text-light"></i>
+          Edit Note</button>
+      
+        <button class="btn btn-danger btn-pill deleteNote fw-bold" type="button" data-toggle="modal" data-target="#deleteNoteModal">
+          <i class="mdi mdi-trash-can text-light"></i>
+          Delete Note</button>
+    
+
+    </div>
+  </div> <!-- Modal Boday End-->
+  
+</div>
+</div>
+</div>
+
+
+ <!-- Update Note MODAL -->
+ <div class="modal fade" id="updateNoteModal" role="dialog" aria-labelledby="updateNote" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="updateNote">Edit Note</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="clearForm" method="post">
+            @csrf
+            @method('put')
+            <ul id="editNoteIDError"></ul>
+            <input type="hidden" id="noteID" class="id form-control ">
+
+            <div class="row">
+              <div class="col-lg-12">
+                <ul id="editNoteError"></ul>
+                <div class="form-group">
+                  <label for="editNote">Note</label>
+                  <input type="text" class="updateNote form-control border border-dark border border-dark" id="editNote" name="editNote" placeholder="Enter New Note">
+                </div>
+              </div>
+            </div> <!-- Modal Boday End-->
+
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger btn-pill" id="updateClose" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary btn-pill updateNoteBtn">Update</button>
+            </div>
+
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+   <!-- Delete Note Modal -->
+   <div class="modal fade" id="deleteNoteModal" role="dialog" aria-labelledby="deleteNote" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteNote" style="text-align:center;">Delete Note</h5>
+          <button type="button" class="close" id="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form method="post">
+            @csrf
+            @method('delete')
+            <div class="row">
+              <i class="fa-solid fa-trash-can text-danger" style="text-align:center; font-size:50px; padding:1rem;"></i>
+            </div>
+            <div class="row">
+              <h4 style="text-align:center;"> Are you sure you want to delete the note for this schedule?</h4>
+            </div>
+        </div> <!-- Modal Boday End-->
+
+        <!-- Modal Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary btn-pill" id="deleteClose" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-danger btn-pill forceDeleteNote">Delete</button>
+        </div>
+
+        </form>
+
+      </div>
+    </div>
+  </div>
+  </div>
+
       <!-- Notes Modal -->
       <div class="modal fade" id="addNotesModal" role="dialog" aria-labelledby="addNotes" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title" id="addNotes" style="text-align:center;">Create Note for this Schedule</h5>
-              <button type="button" class="close" id="close" data-dismiss="modal" aria-label="Close" onclick="$('#addNotesModal').modal('hide');">
+              <button type="button" class="addNotesUpClose" id="addNotesUpClose" data-dismiss="modal" aria-label="Close" onclick="$('#addNotesModal').modal('hide');">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
@@ -240,7 +355,7 @@
               </div>
 
               <div class="modal-footer">
-                <button type="button" class="btn btn-danger btn-pill" id="close" onclick="$('#addNotesModal').modal('hide');">Close</button>
+                <button type="button" class="btn btn-danger btn-pill" id="addNotesDownClose" onclick="$('#addNotesModal').modal('hide');">Close</button>
                 <button type="submit" class="btn btn-primary btn-pill createNote">Create</button>
               </div>
             </form>

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id('noteID');
             $table->unsignedBigInteger('scheduleID');
             $table->foreign('scheduleID')->references('scheduleID')->on('schedules')->cascadeOnUpdate()->cascadeOnDelete();
-            $table->string('note',50);
+            $table->string('note',500);
             $table->date('date');
             $table->time('time');
             $table->timestamps();

@@ -199,6 +199,10 @@ Route::group(['middleware' => ['auth', 'faculty:Faculty']], function () {
     Route::get('/get-ERP-Schedules', [ScheduleController::class, 'ERPCalendarSchedules'])->name('ERPCalendarSchedules');
     Route::get('/get-Faculty-Schedule-Note', [ScheduleController::class, 'getFacultyScheduleNote'])->name('getFacultyScheduleNote');
     Route::post('/add-Schedule-Note', [ScheduleController::class, 'addScheduleNote'])->name('addScheduleNote');
+    Route::put('/updateNote/{id}', [ScheduleController::class, 'updateNote'])->name('updateNote');
+    Route::delete('/deleteNote/{id}', [ScheduleController::class, 'deleteNote'])->name('deleteNote');
+    Route::get('/getFacultyNotes/{id}/{id2}', [ScheduleController::class, 'getFacultyNotes'])->name('getFacultyNotes');
+    Route::get('/checkFacultyNotes/{id}/{id2}', [ScheduleController::class, 'checkFacultyNotes'])->name('checkFacultyNotes');
     //--------END instructor Calendar ROUTES---------
 
     Route::get('/student-attendance-export', [AttendanceController::class, 'studentAttendanceExport'])->name('studentAttendanceExport');

@@ -762,6 +762,149 @@ class ScheduleController extends Controller
             return redirect()->back();
         }
     }
+
+
+    public function getFacultyNotes($id, $id2)
+    {
+       
+        $ERPNotes = DB::table('schedule_notes')
+        ->where('scheduleID', $id)
+        ->where('date', $id2)
+        ->first();
+        
+        if($ERPNotes){
+        return response()->json([
+            'status' => 200,
+            'ERPNotes' => $ERPNotes,
+        ]);
+    }else{
+        return response()->json([
+            'status' => 400,
+        ]);
+    }
+    }
+    
+    public function checkFacultyNotes($id, $id2)
+    {
+       
+        $checkERPNotes = DB::table('schedule_notes')
+        ->where('scheduleID', $id)
+        ->where('date', $id2)
+        ->first();
+        
+        if($checkERPNotes){
+        return response()->json([
+            'status' => 200,
+            'checkERPNotes' => $checkERPNotes,
+        ]);
+    }else{
+        return response()->json([
+            'status' => 400,
+        ]);
+    }
+    }
+
+    public function updateNote($id, Request $request){
+        try {
+            $validator = Validator::make($request->all(), [
+                'id' => 'required',
+                'updateNote' => 'required',
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => 400,
+                    'errors' => $validator->messages()
+                ]);
+            } else {
+                $note = ScheduleNote::find($id);
+                date_default_timezone_set("Asia/Manila");
+                $date = date("Y-m-d");
+                $time = date("H:i:s");
+
+                $previousNote = DB::table('schedule_notes')->where('noteID', $id)->value('note');
+
+                if ($note) {
+                    $note->note = $request->input('updateNote');
+                    $note->time = $time;
+                    $note->update();
+
+                    // Start Logs
+                    $newNote = $request->input('updateNote');
+
+                    $id = Auth::id();
+                    $userID = DB::table('users')->where('id', $id)->value('idNumber');
+
+                    if ($previousNote == $newNote) {
+                        $action = "Attempt update on schedule note";
+                    } else {
+                        $action = "Updated Schedule Note";
+                    }
+
+                    DB::table('user_logs')->insert([
+                        'userID' => $userID,
+                        'action' => $action,
+                        'date' => $date,
+                        'time' => $time,
+                    ]);
+                    // END Logs
+
+                    return response()->json([
+                        'status' => 200,
+                    ]);
+                } else {
+                    return response()->json([
+                        'status' => 404,
+                        'message' => 'No Note Found.'
+                    ]);
+                }
+            }
+        } catch (\Exception $e) {
+
+            Alert::error('Error', 'Something went wrong. Please try again later.')
+                ->autoClose(5000)
+                ->showCloseButton();
+            return redirect()->back();
+        }
+    }
+
+    public function deleteNote($id){
+        try{
+            $note = ScheduleNote::find($id);
+            if ($note) {
+    
+                $note->delete();
+                // Start Logs
+                $ID = Auth::id();
+                $userID = DB::table('users')->where('id', $ID)->value('idNumber');
+                date_default_timezone_set("Asia/Manila");
+                $date = date("Y-m-d");
+                $time = date("H:i:s");
+                $action = "Deleted Note";
+                DB::table('user_logs')->insert([
+                    'userID' => $userID,
+                    'action' => $action,
+                    'date' => $date,
+                    'time' => $time,
+                ]);
+                // END Logs
+    
+                return response()->json([
+                    'status' => 200,
+                ]);
+            } else {
+                return response()->json([
+                    'status' => 404,
+                ]);
+            }
+        }catch (\Exception $e) {
+
+            Alert::error('Error', 'Something went wrong. Please try again later.')
+                ->autoClose(5000)
+                ->showCloseButton();
+            return redirect()->back();
+        }
+    }
  // -----------End instructor functions------------
  
 }

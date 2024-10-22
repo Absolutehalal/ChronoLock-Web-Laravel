@@ -4,7 +4,7 @@ $(document).ready(function () {
     $(document).on('pointerup', '.withoutClassBtn', function() {
         var id = $(this).val();
         $('#noClasses_ID').val(id);
-      console.log(id)
+      // console.log(id)
       });
 
 
@@ -13,7 +13,7 @@ $(document).ready(function () {
     
         $(this).text('Loading...');
         var id = $('#noClasses_ID').val();
-        console.log(id)
+        // console.log(id)
         $.ajaxSetup({
             headers: {
                 "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
