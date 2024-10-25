@@ -87,7 +87,6 @@ Route::group(['middleware' => ['auth', 'admin:Admin']], function () {
     //--------START schedule Management Routes----------
     Route::get('/scheduleManagementPage', [UserController::class, 'adminScheduleManagement'])->name('adminScheduleManagement');
     Route::get('/getSchedules', [UserController::class, 'getSchedules'])->name('getSchedules');
-    Route::get('/getNotes/{id}/{id2}', [UserController::class, 'getNotes'])->name('getNotes');
     Route::post('/createMakeUpSchedule', [UserController::class, 'createSchedule'])->name('createSchedule');
     Route::post('/createRegularSchedule', [UserController::class, 'createRegularSchedule'])->name('createRegularSchedule');
     Route::get('/editMakeUpSchedule/{id}', [UserController::class, 'editMakeUpSchedule'])->name('editMakeUpSchedule');
@@ -101,6 +100,9 @@ Route::group(['middleware' => ['auth', 'admin:Admin']], function () {
     Route::get('/preview-pdf', [PDFController::class, 'previewPDF'])->name('previewPDF');
     Route::get('/closeERPLaboratory', [ScheduleController::class, 'closeERPLaboratory'])->name('closeERPLaboratory');
     Route::get('/openERPLaboratory', [ScheduleController::class, 'openERPLaboratory'])->name('openERPLaboratory');
+
+    Route::get('/get-Actual-Schedule', [UserController::class, 'getActualSchedule'])->name('getActualSchedule');
+    Route::get('/getNotes/{id}/{id2}', [UserController::class, 'getNotes'])->name('getNotes');
     //--------END schedule Management Routes----------
 
     //--------START ClassList Management Routes----------

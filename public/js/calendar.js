@@ -12,7 +12,13 @@ document.addEventListener("DOMContentLoaded", function () {
             return n > 9 ? "" + n : "0" + n;
         }
         var month = n(month);
-
+        $(document).on(
+            "click",
+            ".nav-link",
+            function (e) {
+                e.preventDefault();
+                calendar.render();
+            })
         $.ajax({
             type: "GET",
             url: "/getSchedules",
@@ -43,79 +49,6 @@ document.addEventListener("DOMContentLoaded", function () {
                         if (timeElement) {
                             timeElement.innerHTML = timeText;
                         }
-                        // var data = {
-                        //     eventID,
-                        //     eventDate,
-                        // };
-                        var eventID = info.event.id;
-                        // console.log(eventID);
-                        // Add a tooltip with the description
-                        var startStr = info.event.startStr; // Get the startStr
-
-                        // Convert the startStr to a Date object
-                        var date = new Date(startStr);
-
-                        if (!isNaN(date.getTime())) { // Check if the date is valid
-                            var eventDate = date.toISOString().split('T')[0]; // Format to YYYY-MM-DD
-                            // console.log(eventDate); // Output the formatted date
-                        } else {
-                            console.error('Invalid date:', startStr);
-                        }
-
-                        $.ajax({
-                            type: "GET",
-                            url: "/getNotes/"+ eventID +"/"+ eventDate,
-                            success: function (response) {
-                                console.log(response);
-                                if (response.status == 200) {
-                                    const tooltip = document.createElement('div');
-                                    tooltip.innerText = response.ERPNotes.note; // Use your note content here
-                                    tooltip.style.position = 'absolute';
-                                    tooltip.style.backgroundColor = 'black';
-                                    tooltip.style.border = '1px solid black';
-                                    tooltip.style.padding = '5px';
-                                    tooltip.style.zIndex = 1000;
-                                    tooltip.style.display = 'none'; // Initially hidden
-
-                                    // New styles for text wrapping
-                                    tooltip.style.maxWidth = '150px'; // Set a maximum width for the tooltip
-                                    tooltip.style.whiteSpace = 'normal'; // Allow text wrapping
-                                    tooltip.style.overflow = 'hidden'; // Hide overflow text
-
-                                    info.el.appendChild(tooltip); // Append tooltip to event element
-
-                                    // Show the tooltip on mouse enter
-                                    info.el.addEventListener('mouseenter', function() {
-                                        tooltip.style.display = 'block';
-                                    });
-
-                                    // Hide the tooltip on mouse leave
-                                    info.el.addEventListener('mouseleave', function() {
-                                        tooltip.style.display = 'none';
-                                    });
-                                  } else {
-                                    const tooltip = document.createElement('div');
-                                    tooltip.innerText = 'No Note';
-                                    tooltip.style.position = 'absolute';
-                                    tooltip.style.backgroundColor = 'black';
-                                    tooltip.style.border = '1px solid black';
-                                    tooltip.style.padding = '5px';
-                                    tooltip.style.zIndex = 1000;
-                                    tooltip.style.display = 'none'; // Initially hidden
-            
-                                    info.el.appendChild(tooltip); // Append tooltip to event element
-                                     // Show the tooltip on mouse enter
-                                    info.el.addEventListener('mouseenter', function() {
-                                        tooltip.style.display = 'block';
-                                    });
-
-                                    // Hide the tooltip on mouse leave
-                                    info.el.addEventListener('mouseleave', function() {
-                                        tooltip.style.display = 'none';
-                                    });
-                                  }
-                                }
-                            });
                     },
                     dayCellClassNames: function (arg) {
                         var currentDate = moment().startOf("day");

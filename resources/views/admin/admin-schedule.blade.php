@@ -59,111 +59,130 @@
             <p class="text-center date-time mb-3" id="liveDateTime">Your Date and Time</p>
           </div>
         </div>
+        <ul class="nav nav-pills mb-3 justify-content-center" id="pills-tab" role="tablist">
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" id="pills-created-schedule-tab" data-bs-toggle="pill" href="createdScheduleTab" data-bs-target="#pills-created-schedule" type="button" role="tab" aria-controls="pills-created-schedule" aria-selected="true">Created Schedule</button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" id="pills-actual-schedule-tab" data-bs-toggle="pill" href="actualScheduleTab" data-bs-target="#pills-actual-schedule" type="button" role="tab" aria-controls="pills-actual-schedule" aria-selected="false">Actual schedule</button>
+              </li>
+            </ul>
 
-        <div class="row">
-          <div class="col-md-9 d-flex justify-content-start mb-2">
-            <form action="{{ route('schedule.import') }}" method="post" enctype="multipart/form-data">
-              @csrf
-
-              <div class="dropdown d-inline-block mr-2">
-                <button class="btn btn-primary btn-sm fw-bold" type="submit">
-                  <i class="mdi mdi-file-check"></i>
-                  Import
-                </button>
-              </div>
-
-              <div class="dropdown d-inline-block">
-                <div class="custom-file rounded">
-                  <input type="file" class="custom-file-input" id="excel-file" name="excel-file" required>
-                  <label class="custom-file-label" for="excel-file">Choose file</label>
-                  <div class="invalid-feedback">Example invalid custom file feedback</div>
-                </div>
-              </div>
-            </form>
-          </div>
-
-          <div class="col-md-3 d-flex justify-content-end mb-2">
-            <div class="dropdown d-inline-block mb-2 rounded-2">
-              <button title="Add Regular Schedule" class="btn btn-primary btn-sm fw-bold" type="button" data-toggle="modal" data-target="#addRegularScheduleModal">
-                <i class=" mdi mdi-calendar-plus"></i>
-                ADD SCHEDULE
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <div class="card card-default shadow">
-          <div class="card-header card-header-border-bottom d-flex justify-content-between align-items-center">
-            <h1>Schedule</h1>
+        <div class="tab-content" id="pills-tabContent">
+          <div class="tab-pane fade" id="pills-created-schedule" role="tabpanel" aria-labelledby="pills-created-schedule-tab">
             <div class="row">
+              <div class="col-md-9 d-flex justify-content-start mb-2">
+                <form action="{{ route('schedule.import') }}" method="post" enctype="multipart/form-data">
+                  @csrf
 
-              <div class="col-xl-12 col-md-12 d-flex justify-content-end">
-              @if($maintenance != null)
-               
-              <div class="d-inline-block mb-3">
-                <form action="{{ url('/openERPLaboratory') }}" method="GET">
-                  <!-- <input type="text" class="form-control border border-primary" id="exportDate" name="selectedDate" value="{{ Request()->date }}"> -->
-                  <button class="openERPButton btn btn-outline-success btn-sm fw-bold" id="openERPButton" type="submit">
-                    <i class="mdi mdi-lock-open-outline"></i>
-                      Open Laboratory
-                  </button>
+                  <div class="dropdown d-inline-block mr-2">
+                    <button class="btn btn-primary btn-sm fw-bold" type="submit">
+                      <i class="mdi mdi-file-check"></i>
+                      Import
+                    </button>
+                  </div>
+
+                  <div class="dropdown d-inline-block">
+                    <div class="custom-file rounded">
+                      <input type="file" class="custom-file-input" id="excel-file" name="excel-file" required>
+                      <label class="custom-file-label" for="excel-file">Choose file</label>
+                      <div class="invalid-feedback">Example invalid custom file feedback</div>
+                    </div>
+                  </div>
                 </form>
               </div>
 
-              @else
-              <div class="d-inline-block mb-3">
-                <form action="{{ url('/closeERPLaboratory') }}" method="GET">
-                  <!-- <input type="text" class="form-control border border-primary" id="exportDate" name="selectedDate" value="{{ Request()->date }}"> -->
-                  <button class="closeERPButton btn btn-outline-danger btn-sm fw-bold" id="closeERPButton" type="submit">
-                    <i class="mdi mdi-lock-outline"></i>
-                      Close Laboratory
-                  </button>
-                </form>
-              </div>
-              @endif
-        
-              
-                <!-- Sort button -->
-                <!-- <div class="dropdown d-inline-block mb-3 mr-3">
+              <div class="col-md-3 d-flex justify-content-end mb-2">
+                <div class="dropdown d-inline-block mb-2 rounded-2">
                   <button title="Add Regular Schedule" class="btn btn-primary btn-sm fw-bold" type="button" data-toggle="modal" data-target="#addRegularScheduleModal">
                     <i class=" mdi mdi-calendar-plus"></i>
                     ADD SCHEDULE
                   </button>
-                </div> -->
-                <!-- <div class="dropdown d-inline-block mb-3 mr-3">
-                  <button title="Export PDF" class="btn btn-warning btn-sm fw-bold" onclick='window.location = "{{ route("exportPDF") }}"' type="button">
-                    <i class="mdi mdi-file-pdf"></i>
-                    PDF
-                  </button>
-                </div> -->
+                </div>
+              </div>
+            </div>
 
-                <!-- <div class="dropdown d-inline-block mb-3">
-                  <button title="Preview" class="btn btn-outline-dark btn-sm fw-bold" onclick='window.location = "{{ route("previewPDF") }}"' type="button">
-                    <i class="mdi mdi-feature-search"></i>
-                    Preview
-                  </button>
-                </div> -->
+            <div class="card card-default shadow">
+              <div class="card-header card-header-border-bottom d-flex justify-content-between align-items-center">
+                <h1>Schedule</h1>
+                <div class="row">
+
+                  <div class="col-xl-12 col-md-12 d-flex justify-content-end">
+                  @if($maintenance != null)
+                  
+                  <div class="d-inline-block mb-3">
+                    <form action="{{ url('/openERPLaboratory') }}" method="GET">
+                      <!-- <input type="text" class="form-control border border-primary" id="exportDate" name="selectedDate" value="{{ Request()->date }}"> -->
+                      <button class="openERPButton btn btn-outline-success btn-sm fw-bold" id="openERPButton" type="submit">
+                        <i class="mdi mdi-lock-open-outline"></i>
+                          Open Laboratory
+                      </button>
+                    </form>
+                  </div>
+
+                  @else
+                  <div class="d-inline-block mb-3">
+                    <form action="{{ url('/closeERPLaboratory') }}" method="GET">
+                      <!-- <input type="text" class="form-control border border-primary" id="exportDate" name="selectedDate" value="{{ Request()->date }}"> -->
+                      <button class="closeERPButton btn btn-outline-danger btn-sm fw-bold" id="closeERPButton" type="submit">
+                        <i class="mdi mdi-lock-outline"></i>
+                          Close Laboratory
+                      </button>
+                    </form>
+                  </div>
+                  @endif
+            
+                  
+                    <!-- Sort button -->
+                    <!-- <div class="dropdown d-inline-block mb-3 mr-3">
+                      <button title="Add Regular Schedule" class="btn btn-primary btn-sm fw-bold" type="button" data-toggle="modal" data-target="#addRegularScheduleModal">
+                        <i class=" mdi mdi-calendar-plus"></i>
+                        ADD SCHEDULE
+                      </button>
+                    </div> -->
+                    <!-- <div class="dropdown d-inline-block mb-3 mr-3">
+                      <button title="Export PDF" class="btn btn-warning btn-sm fw-bold" onclick='window.location = "{{ route("exportPDF") }}"' type="button">
+                        <i class="mdi mdi-file-pdf"></i>
+                        PDF
+                      </button>
+                    </div> -->
+
+                    <!-- <div class="dropdown d-inline-block mb-3">
+                      <button title="Preview" class="btn btn-outline-dark btn-sm fw-bold" onclick='window.location = "{{ route("previewPDF") }}"' type="button">
+                        <i class="mdi mdi-feature-search"></i>
+                        Preview
+                      </button>
+                    </div> -->
+                  </div>
+                </div>
+              </div>
+
+              <div class="card-body">
+                <div class="full-calendar mb-5">
+                  <div id="calendar"></div>
+                </div>
               </div>
             </div>
           </div>
 
-          <div class="card-body">
-            <div class="full-calendar mb-5">
-              <div id="calendar"></div>
+
+
+
+
+        
+      <div class="tab-pane fade" id="pills-actual-schedule" role="tabpanel" aria-labelledby="pills-actual-schedule-tab">
+            <div class="card card-default shadow">
+              <div class="card-header card-header-border-bottom">
+                <h1 class="mb-4">Actual Schedule</h1>
+              </div>
             </div>
-          </div>
-        </div>
-
+            <div class="card-body">
+              <div class="full-calendar mb-5">
+                <div id="calendarActualSchedule"></div>
+              </div>
+            </div>
       </div>
-
     </div>
-  </div>
-  </div>
-  </div>
-
-
-  </div>
-  </div>
 
   <!-- CREATE MAKE UP SCHEDULE MODAL -->
   <div class="modal fade" id="makeUpScheduleModal" role="dialog" aria-labelledby="MakeUpSchedule" aria-hidden="true">
@@ -1022,6 +1041,7 @@
       }
     });
   </script>
+   <script src="{{asset('js/adminActualSchedule.js')}}"></script>
   <script src="{{asset('js/calendar.js')}}"></script>
   <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
   @include('footer')

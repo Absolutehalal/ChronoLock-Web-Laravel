@@ -1402,6 +1402,44 @@ class UserController extends Controller
         }
     }
 
+
+    public function getActualSchedule(){
+        $ActualERPSchedules = array();
+        $schedule =DB::table('class_lists')
+        ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
+        ->get();
+       
+        foreach ($schedule as $schedule) {
+            if ($schedule->scheduleType == 'makeUpSchedule') {
+                $ActualERPSchedules[] = [
+                    'id' =>   $schedule->scheduleID,
+                    'title' => $schedule->scheduleTitle . " - " . $schedule->instFirstName . " " . $schedule->instLastName,
+                    'startTime' => $schedule->startTime,
+                    'endTime' => $schedule->endTime,
+                    'startRecur' => $schedule->startDate,
+                    'endRecur' => $schedule->endDate,
+                    'color' => '#fa0202',
+                    'description' => 'makeUpSchedule',
+                ];
+            } else if ($schedule->scheduleType == 'regularSchedule') {
+                $ActualERPSchedules[] = [
+                    'id' =>  $schedule->scheduleID,
+                    'title' => $schedule->courseName . " - " . $schedule->instFirstName . " " . $schedule->instLastName,
+                    'startTime' => $schedule->startTime,
+                    'endTime' => $schedule->endTime,
+                    'startRecur' => $schedule->startDate,
+                    'endRecur' => $schedule->endDate,
+                    'daysOfWeek' => $schedule->day,
+                    'color' => '#1fd655',
+                    'description' => 'regularSchedule',
+                ];
+            }
+        }
+        return response()->json([
+            'status' => 200,
+            'ActualERPSchedules' => $ActualERPSchedules,
+        ]);
+    }
     //-------Start instructor functions-------
     //index page
 

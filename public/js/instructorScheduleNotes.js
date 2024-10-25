@@ -10,6 +10,14 @@ $(document).ready(function() {
             if (activeTab) {
                 $('#pills-tab button[href="' + activeTab + '"]').tab('show');
             }
+
+            $(document).on(
+                "click",
+                ".nav-link",
+                function (e) {
+                    e.preventDefault();
+                    location.reload();
+                })
 });
 document.addEventListener("DOMContentLoaded", function () {
     $(document).ready(function () {

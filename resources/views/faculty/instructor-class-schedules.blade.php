@@ -223,7 +223,7 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="decisionNotes" style="text-align:center;">Create Note for this Schedule</h5>
+        <h5 class="modal-title" id="decisionNotes" style="text-align:center;">Choose Note Action</h5>
         <button type="button" class="decisionUpClose" id="decisionUpClose" data-dismiss="modal" aria-label="Close" onclick="$('#decisionNotesModal').modal('hide');">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -524,6 +524,6 @@
     });
   </script>
 
-<script src="{{asset('js/scheduleNotes.js')}}"></script>
+<script src="{{asset('js/instructorScheduleNotes.js')}}"></script>
 <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
   @include('footer')
