@@ -82,9 +82,10 @@ document.addEventListener("DOMContentLoaded", function () {
                                 console.log(response);
                                 if (response.status == 200) {
                                     const tooltip = document.createElement('div');
-                                    tooltip.innerText = response.ERPNotes.note; // Use your note content here
+                                    tooltip.innerText = response.ERPNotes.note || 'No Note'; // Use your note content here
                                     tooltip.style.position = 'absolute';
-                                    tooltip.style.backgroundColor = 'black';
+                                    tooltip.style.color = 'black';
+                                    tooltip.style.backgroundColor = 'white';
                                     tooltip.style.border = '1px solid black';
                                     tooltip.style.padding = '5px';
                                     tooltip.style.zIndex = 1000;
@@ -92,8 +93,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
                                     // New styles for text wrapping
                                     tooltip.style.maxWidth = '150px'; // Set a maximum width for the tooltip
+                                    tooltip.style.maxHeight = '100px'; // Set a maximum height for the tooltip
+                                    tooltip.style.overflowY = 'auto'; // Enable vertical scrolling
                                     tooltip.style.whiteSpace = 'normal'; // Allow text wrapping
-                                    tooltip.style.overflow = 'hidden'; // Hide overflow text
+                                   
 
                                     info.el.appendChild(tooltip); // Append tooltip to event element
 
@@ -105,6 +108,14 @@ document.addEventListener("DOMContentLoaded", function () {
                                     // Hide the tooltip on mouse leave
                                     info.el.addEventListener('mouseleave', function() {
                                         tooltip.style.display = 'none';
+                                    });
+                                     // Allow the tooltip to remain visible while the mouse is over it
+                                     tooltip.addEventListener('mouseenter', function() {
+                                        tooltip.style.display = 'block'; // Keep it displayed
+                                    });
+                                    
+                                    tooltip.addEventListener('mouseleave', function() {
+                                        tooltip.style.display = 'none'; // Hide when the mouse leaves the tooltip
                                     });
                                   } else {
                                     const tooltip = document.createElement('div');
