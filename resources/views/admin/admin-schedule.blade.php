@@ -71,7 +71,7 @@
         <div class="tab-content" id="pills-tabContent">
           <div class="tab-pane fade" id="pills-created-schedule" role="tabpanel" aria-labelledby="pills-created-schedule-tab">
             <div class="row">
-              <div class="col-md-9 d-flex justify-content-start mb-2">
+              <div class="col-md-6 d-flex justify-content-start mb-2">
                 <form action="{{ route('schedule.import') }}" method="post" enctype="multipart/form-data">
                   @csrf
 
@@ -92,14 +92,22 @@
                 </form>
               </div>
 
-              <div class="col-md-3 d-flex justify-content-end mb-2">
-                <div class="dropdown d-inline-block mb-2 rounded-2">
+              <div class="col-md-6 d-flex justify-content-end mb-2">
+                <div class="dropdown d-inline-block mb-2 rounded-2 mr-2">
                   <button title="Add Regular Schedule" class="btn btn-primary btn-sm fw-bold" type="button" data-toggle="modal" data-target="#addRegularScheduleModal">
                     <i class=" mdi mdi-calendar-plus"></i>
                     ADD SCHEDULE
                   </button>
                 </div>
+
+                <div class="dropdown d-inline-block mb-2 rounded-2">
+                  <button title="Previous Schedule" class="btn btn-primary btn-sm fw-bold" type="button" data-toggle="modal" data-target="#previousScheduleModal">
+                    <i class=" mdi mdi-calendar-plus"></i>
+                    PREVIOUS SCHEDULE
+                  </button>
+                </div>
               </div>
+
             </div>
 
             <div class="card card-default shadow">
@@ -963,6 +971,176 @@
 
   </div>
   </div>
+
+
+   <!-- Previous Schedule Modal -->
+   <div class="modal fade" id="previousScheduleModal" tabindex="-1" role="dialog" aria-labelledby="previousScheduleModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="previousScheduleModal">Previous Schedule</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="previewPreviousSchedule" method="post">
+            @csrf
+            @method('get')
+
+            <div class="row">
+
+              <div class="col-lg-12">
+                <ul id="schoolYearError"></ul>
+                <div class="form-group">
+                  <label for="School Year">School Year</label>
+                  <input autocomplete="off" type="text" class="schoolYear form-control border border-dark" id="schoolYear" name="schoolYear" placeholder="Enter School Year">
+                  <ul id="schoolYearList" class="list-group" style="max-height: 100px; overflow-y: auto; margin-top: 5px;"></ul>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <ul id="semesterError"></ul>
+                <label>Semester</label>
+                <select class="form-select form-control border border-dark" aria-label="Default select example" id="semester" name="semester">
+                  <option selected value="" hidden>--Select Schedule Semester--</option>
+                  <option value="1st Semester">1st Semester</option>
+                  <option value=" 2nd Semester">2nd Semester</option>
+                </select>
+              </div>
+
+            </div>
+            <div class="modal-footer" style="justify-content:center;">
+              <button type="button" class="btn btn-danger btn-pill" class="close" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary btn-pill previewPreviousSchedule">Preview</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+<!-- script for previewing previous schedule -->
+<script>
+    $(document).ready(function() {
+      $('#schoolYear').on('keyup', function() {
+
+        $.ajaxSetup({
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
+        });
+
+        var query = $(this).val();
+        // console.log(query);
+
+        if (query.length > 0) {
+          $.ajax({
+            url: "{{ route('autocompletePreviousSchedule') }}",
+            type: "GET",
+            data: {
+              'query': query
+            },
+            success: function(response) {
+              $('#schoolYearList').empty();
+
+              if (response.schoolYear && response.schoolYear.length > 0) {
+                response.schoolYear.forEach(function(item) {
+                  $('#schoolYearList').append('<li class="list-group-item" style="font-weight: bold; cursor:pointer; border: 1px solid #000; margin-bottom: 2px">' +
+                    item.schoolYear + '</li>');
+                });
+              } else {
+                $('#schoolYearList').append('<li class="list-group-item" style="font-weight: bold; cursor:not-allowed; border: 1px solid #000; margin-bottom: 2px;pointer-events: none;">No results found</li>');
+              }
+            }
+          });
+        } else {
+          // $('#clearForm')[0].reset();
+          $('#schoolYearList').empty();
+        }
+      });
+
+      $(document).on('click', 'li', function() {
+        $('#schoolYear').val($(this).text());
+        $('#schoolYearList').empty();
+      });
+   
+
+
+    $(document).on('click', '.previewPreviousSchedule', function(e) {
+        e.preventDefault();
+        var schoolYear = $('#schoolYear').val();
+        var semester = $('#semester').val();
+        $(this).text('Loading..');
+        var data = {
+          'semester': $('#semester').val(),
+          'schoolYear': $('#schoolYear').val(),
+        }
+
+        $.ajaxSetup({
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
+        });
+
+        $.ajax({
+          type: "GET",
+          url: "/check-previous-schedule-pdf",
+          data: data,
+          dataType: "json",
+          success: function(response) {
+            // console.log(response);
+            if (response.status == 400) {
+              $('#schoolYearError').html("");
+              $('#schoolYearError').addClass('error');
+              $('#semesterError').html("");
+              $('#semesterError').addClass('error');
+            
+              $.each(response.errors.schoolYear, function(key, err_value) {
+                $('#schoolYearError').append('<li>' + err_value + '</li>');
+              });
+              $.each(response.errors.semester, function(key, err_value) {
+                $('#semesterError').append('<li>' + err_value + '</li>');
+              });
+            
+              $('.previewPreviousSchedule').text('Preview');
+            } else if (response.status == 404) {
+              $('#schoolYearError').html("");
+              $('#semesterError').html("");
+              Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "No Data Found",
+              })
+            }else if (response.status == 200) {
+              window.location.href = "/preview-previous-schedule-pdf/" + schoolYear +"/"+ semester;
+            }
+          }
+          });
+        });
+      });
+  </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+
+      $('#pendingRFIDModal').on('hidden.bs.modal', function() {
+        $('#clearRFIDPending')[0].reset();
+        $('#idNumberList').empty();
+        clearRFIDPendingErrors();
+      });
+
+      function clearRFIDPendingErrors() {
+        $('#userIDError').empty();
+        $('#rfidError').empty();
+      }
+
+    });
+  </script>
+  
+  <!-- end for previewing previous schedule -->
+
 
   <script>
     document.addEventListener("DOMContentLoaded", function() {

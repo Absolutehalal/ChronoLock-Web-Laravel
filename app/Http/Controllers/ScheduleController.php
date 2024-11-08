@@ -584,9 +584,9 @@ class ScheduleController extends Controller
                 } else {
                     $classList = new ClassList;
                     $classList->scheduleID = $request->input('scheduleID');
-                    $classList->semester = $request->input('semester');
                     $classList->enrollmentKey = $request->input('enrollmentKey');
                     $classList->save();
+                    $schedule->semester = $request->input('semester');
                     $schedule->scheduleStatus = 'With Class';
                     $schedule->update();
 

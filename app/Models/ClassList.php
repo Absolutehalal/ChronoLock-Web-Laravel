@@ -15,7 +15,6 @@ class ClassList extends Model
         'course',
         'year',
         'section',
-        'semester',
         'enrollmentKey',
     ];
 

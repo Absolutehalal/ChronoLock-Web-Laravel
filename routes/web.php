@@ -98,6 +98,8 @@ Route::group(['middleware' => ['auth', 'admin:Admin']], function () {
     Route::post('/scheduleManagementPage/import', [ScheduleController::class, 'import_schedule'])->name('schedule.import');
     Route::get('/generate-pdf', [PDFController::class, 'exportPDF'])->name('exportPDF');
     Route::get('/preview-pdf', [PDFController::class, 'previewPDF'])->name('previewPDF');
+    Route::get('/check-previous-schedule-pdf', [PDFController::class, 'checkPreviousSchedulePDF'])->name('checkPreviousSchedulePDF');
+    Route::get('/preview-previous-schedule-pdf/{id}/{id2}', [PDFController::class, 'previewPreviousSchedulePDF'])->name('previewPreviousSchedulePDF');
     Route::get('/closeERPLaboratory', [ScheduleController::class, 'closeERPLaboratory'])->name('closeERPLaboratory');
     Route::get('/openERPLaboratory', [ScheduleController::class, 'openERPLaboratory'])->name('openERPLaboratory');
 
@@ -126,7 +128,7 @@ Route::group(['middleware' => ['auth', 'admin:Admin']], function () {
 
     //--------END Admin student attendance Management ROUTES-----------
 
-    //--------START Admin instructor attendance Management ROUTES---------  
+    //--------START Admin instructor attendance Management ROUTES------
 
     Route::get('/instructorAttendanceManagementPage', [AttendanceController::class, 'instructorAttendanceManagement'])->name('instructorAttendanceManagement');
     Route::get('/editInstructorAttendance/{id}', [AttendanceController::class, 'editInstructorAttendance'])->name('editAttendance');
@@ -149,7 +151,10 @@ Route::group(['middleware' => ['auth', 'admin:Admin']], function () {
     Route::put('/activateRFID/{id}', [RFIDController::class, 'activateRFID'])->name('activateRFID');
     Route::get('/RFIDManagementPage', [RFIDController::class, 'RFIDManagement'])->name('RFIDManagement');
     Route::delete('/deleteUserRFID/{id}', [RFIDController::class, 'deleteUserRFID'])->name('deleteUserRFID');
+
     Route::get('/autocomplete', [RFIDController::class, 'autocomplete'])->name('autocomplete');
+
+    Route::get('/autocompletePreviousSchedule', [PDFController::class, 'autocompletePreviousSchedule'])->name('autocompletePreviousSchedule');
     //--------End Admin Pending RFID ROUTES---------  
 
     Route::get('/logsPage', [UserLogController::class, 'logs'])->name('logs');

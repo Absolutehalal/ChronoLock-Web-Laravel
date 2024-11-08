@@ -86,6 +86,13 @@
 
 <body>
     <h1 class="header">ERP Laboratory Schedules</h1>
+    @foreach($schedules as $schedule)
+    @if($schedule->schoolYear)
+    <h3 class="header">School Year: {{ $schedule->schoolYear }}</h3>
+    @else
+    <h3 class="header">School Year: N/A</h3>
+    @endif
+    @endforeach
     <div class="CSPCLogo">
         <img src="data:image/png;base64,{{ $imageCSPC }}" alt="CSPCLogo">
     </div>

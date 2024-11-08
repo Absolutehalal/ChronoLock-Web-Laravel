@@ -22,6 +22,8 @@ return new class extends Migration
             $table->string('program', 50)->nullable();
             $table->string('section', 50)->nullable();
             $table->string('year', 50)->nullable();
+            $table->string('semester', 50)->nullable();
+            $table->string('schoolYear', 50)->nullable();
             $table->time('startTime')->nullable();
             $table->time('endTime')->nullable();
             $table->date('startDate')->nullable();

@@ -19,6 +19,8 @@ class Schedule extends Model
         'program',
         'section',
         'year',
+        'semester',
+        'schoolYear',
         'startTime',
         'endTime',
         'startDate',

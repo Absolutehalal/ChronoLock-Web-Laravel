@@ -2,8 +2,10 @@
 namespace App\Http\Controllers;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\User;
+use App\Models\Schedule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
 use Dompdf\Options;
 use Dompdf\Dompdf;
@@ -56,10 +58,14 @@ class PDFController extends Controller
     }
     public function previewPDF()
     {
+        date_default_timezone_set("Asia/Manila");
+        $date = date("Y-m-d");
         $schedules = DB::table('schedules')
             ->join('users', 'schedules.userID', '=', 'users.idNumber')
             ->select('schedules.*', 'users.firstName', 'users.lastName')
             ->where('scheduleType', '=', 'regularSchedule')
+            ->where('startDate', '<', $date)
+            ->where('endDate', '>', $date)
             ->orderby('day', 'ASC')
             ->orderby('startTime', 'ASC')
             ->get();
@@ -108,7 +114,7 @@ class PDFController extends Controller
             $imageCCS = base64_encode(file_get_contents(public_path('images/CCS.png')));
             $CHRONOLOCK = base64_encode(file_get_contents(public_path('images/chronolock-small.png')));
             // Load HTML content from a Blade view
-            $schedulePDF = view('admin.admin-generateSchedule-pdf', compact('formattedSchedules', 'imageCSPC', 'imageCCS', 'CHRONOLOCK'))->render();
+            $schedulePDF = view('admin.admin-generateSchedule-pdf', compact('formattedSchedules', 'schedules', 'imageCSPC', 'imageCCS', 'CHRONOLOCK'))->render();
             $dompdf->loadHtml($schedulePDF);
             // Set paper size and orientation
             $dompdf->setPaper('A4', 'landscape');
@@ -124,6 +130,128 @@ class PDFController extends Controller
         }
     }
 
+    public function checkPreviousSchedulePDF(Request $request)
+    {
+        try{
+        $validator = Validator::make($request->all(), [
+            'schoolYear' => 'required',
+            'semester' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 400,
+                'errors' => $validator->messages()
+            ]);
+        }else{
+            return response()->json([
+                'status' => 200,
+                
+            ]);
+        }
+        } catch (\Exception $e) {
+          
+            Alert::error('Error', 'Something went wrong. Please try again later.')
+                ->autoClose(5000)
+                ->showCloseButton();
+            return redirect()->back();
+           } 
+        }
+    
+
+
+public function previewPreviousSchedulePDF($id, $id2)
+    {
+        $schedules = DB::table('schedules')
+            ->join('users', 'schedules.userID', '=', 'users.idNumber')
+            ->select('schedules.*', 'users.firstName', 'users.lastName')
+            ->where('schoolYear', $id)
+            ->where('semester', $id2)
+            ->where('scheduleType', '=', 'regularSchedule')
+            ->orderby('day', 'ASC')
+            ->orderby('startTime', 'ASC')
+            ->get();
+        if($schedules->isEmpty()){
+            Alert::error('Error', 'No Schedule Found.')
+            ->autoClose(5000)
+            ->showCloseButton();
+            return redirect()->back();
+        }else{
+        // Days mapping
+        $daysOfWeek = [
+            '0' => 'SUN',
+            '1' => 'MON',
+            '2' => 'TUE',
+            '3' => 'WED',
+            '4' => 'THU',
+            '5' => 'FRI',
+            '6' => 'SAT'
+        ];
+
+
+
+        try {
+            $formattedSchedules = [];
+            foreach ($schedules as $schedule) {
+                $day = $daysOfWeek[$schedule->day];
+                $instructor = $schedule->instFirstName . ' ' . $schedule->instLastName;
+                $formatted_startTime = Carbon::parse($schedule->startTime)->format('g:i A');
+                $formatted_endTime = Carbon::parse($schedule->endTime)->format('g:i A');
+                $programYearSection = $schedule->program . '-' . $schedule->year . $schedule->section;
+                $time = $formatted_startTime . ' - ' . $formatted_endTime;
+                $course = $schedule->courseCode;
+                // $course = $schedule->courseCode . ' | ' . $schedule->courseName;
+
+                $formattedSchedules[$day][][] = [
+                    'instructor' => $instructor,
+                    'time' => $time,
+                    'course' => $course,
+                    'programYearSection' => $programYearSection
+                ];
+            }
+
+            // dd($formattedSchedules);
+
+
+            //   $options = new Options();
+            //   $options->set('isHtml5ParserEnabled', true);
+            //   $options->set('isPhpEnabled', false); 
+            $dompdf = new Dompdf();
+            $imageCSPC = base64_encode(file_get_contents(public_path('images/CSPC.png')));
+            $imageCCS = base64_encode(file_get_contents(public_path('images/CCS.png')));
+            $CHRONOLOCK = base64_encode(file_get_contents(public_path('images/chronolock-small.png')));
+            // Load HTML content from a Blade view
+            $schedulePDF = view('admin.admin-generateSchedule-pdf', compact('formattedSchedules', 'schedules', 'imageCSPC', 'imageCCS', 'CHRONOLOCK'))->render();
+            $dompdf->loadHtml($schedulePDF);
+            // Set paper size and orientation
+            $dompdf->setPaper('A4', 'landscape');
+            // Render and stream the PDF
+            $dompdf->render();
+            return $dompdf->stream('schedules.pdf', ['Attachment' => 0]);
+        } catch (\Exception $e) {
+           
+            Alert::error('Error', 'Something went wrong. Please try again later.')
+                ->autoClose(5000)
+                ->showCloseButton();
+            return redirect()->back();
+           }
+     }
+    }
+
+    public function autocompletePreviousSchedule(Request $request)
+    {
+        $query = $request->get('query');
+        // Modify the query to exclude users where RFID_Code is not null
+        $schoolYear = Schedule::where('schoolYear', 'LIKE', "%{$query}%")
+            ->where('scheduleType', 'regularSchedule')
+            ->distinct()
+            ->get(['schoolYear']);
+
+        if ($schoolYear->isNotEmpty()) {
+            return response()->json(['schoolYear' => $schoolYear]);
+        } else {
+            return response()->json(['status' => 400]);
+        }
+    }
 
     public function previewStudentAttendancePDF(Request $request)
     {
