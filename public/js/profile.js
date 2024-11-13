@@ -137,10 +137,88 @@ $(document).ready(function () {
 
             error: function (response) {
                 if (response.status === 500) {
-                    alert("Something went wrong! Please try again later.");
+                    Swal.fire({
+                        icon: "error",
+                        title: "Error",
+                        text: "Something went wrong! Please try again later.",
+                        timer: 5000,
+                        timerProgressBar: true,
+                    });
+                    // alert("Something went wrong! Please try again later.");
                     // console.log(response.errors);
                 }
             },
         });
     });
 });
+
+// PROFILE FUNCTION
+document.addEventListener("DOMContentLoaded", function () {
+    $("#update-modal-profile").on("hidden.bs.modal", function () {
+        $("#clearProfile")[0].reset();
+        clearProfileErrors();
+    });
+    function clearProfileErrors() {
+        $("#emailError").empty();
+        $("#idNumberError").empty();
+    }
+});
+const profileShowPassword = document.querySelector("#show-password-profile");
+const profilePasswordField = document.querySelector("#edit-password");
+profileShowPassword.addEventListener("click", function () {
+    this.classList.toggle("fa-eye");
+    const type =
+        profilePasswordField.getAttribute("type") === "password"
+            ? "text"
+            : "password";
+    // Toggle password field visibility
+    profilePasswordField.setAttribute("type", type);
+});
+// function validateFieldPassword() {
+//     var passwordInput = document.getElementById("edit-password").value;
+//     if (!/^\d*$/.test(passwordInput)) {
+//         Swal.fire({
+//             timer: 5000,
+//             timerProgressBar: true,
+//             icon: "error",
+//             title: "Invalid Input",
+//             text: "Only numerical values are allowed.",
+//             confirmButtonText: "OK",
+//         });
+//         document.getElementById("edit-password").value = passwordInput.replace(
+//             /\D/g,
+//             ""
+//         ); // Remove non-numeric characters
+//         return false; // Prevent form submission
+//     }
+//     return true; // Allow form submission
+// }
+document
+    .querySelector(".update-profile")
+    .addEventListener("click", function (e) {
+        e.preventDefault(); // Prevent the default form submission behavior
+        const passwordField = document.getElementById("edit-password");
+        const password = passwordField.value;
+        // Check if the password is less than 6 characters
+        if (password.length < 6 || password.length > 10) {
+            Swal.fire({
+                icon: "warning",
+                title: "Invalid Password",
+                text: "Password must be between 6-10 characters long.",
+                confirmButtonColor: "#3085d6",
+                confirmButtonText: "Okay",
+            });
+            return; // Exit the function to prevent form submission
+        }        
+        // Check if the password is more than 6 characters
+        if (password.length > 10) {
+            Swal.fire({
+                icon: "warning",
+                title: "Invalid Password",
+                text: "Password must not exceed 10 characters.",
+                confirmButtonColor: "#3085d6",
+                confirmButtonText: "Okay",
+            });
+            return; // Exit the function to prevent form submission
+        }
+    });

@@ -1,9 +1,7 @@
 <script defer src="{{asset('js/activePage.js')}}"></script>
 
 
-<!-- ====================================
-    ——— WRAPPER
-    ===================================== -->
+
 <div class="wrapper">
     <!-- ====================================
           ——— LEFT SIDEBAR WITH OUT FOOTER

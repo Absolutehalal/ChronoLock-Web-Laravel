@@ -1,7 +1,8 @@
 <?php
 $servername = "127.0.0.1";
 $username = "root";
-$password = "";$dbname = "chronolock";
+$password = "";
+$dbname = "chronolock";
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 

@@ -52,6 +52,7 @@ class StudentController extends Controller
                 END LIKE ?
             ", ['%' . $data['search'] . '%']);
                 });
+                
             $data['schedules'] = $query->get();
             // END SEARCH FUNCTION
             // ----------------------------------------------------------------------- //

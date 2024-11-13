@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- FAVICON -->
     <link href="{{asset('/images/chronolock-small.png' )}}" rel="shortcut icon" />
-    <title>Student List Report</title>
+    <title>Logs Report</title>
     <style>
         table {
             width: 100%;
@@ -20,18 +20,20 @@
         th {
             background-color: #f2f2f2;
         }
-        .drop {
+        .Faculty {
             background-color: red;
             font-weight: bold;
+            color: white;
             /* Color for the text "EMPTY" */
         }
-        .irregular {
+        .Student {
             background-color: yellow;
             font-weight: bold;
             /* Color for the text "EMPTY" */
         }
-        .regular {
-            background-color: #b0fc38;
+        .Admin, .Dean, .ProgramChair, .Technician, .LabInCharge {
+            background-color: #0f0e6b   ;
+            color: white;
             font-weight: bold;
         }
         .CSPCLogo {
@@ -64,7 +66,7 @@
     </style>
 </head>
 <body>
-    <h1 class="header">Student List Report</h1>
+    <h1 class="header">User Logs Report</h1>
     <div class="CSPCLogo">
         <img src="data:image/png;base64,{{ $imageCSPC }}" alt="CSPCLogo">
     </div>
@@ -76,35 +78,45 @@
     <table style="margin-top: 2%;">
         <thead>
             <tr>
-                <th>No.</th>
-                <th>Student Name</th>
-                <th>Student ID</th>
-                <th>Program</th>
-                <th>Year & Section</th>
-                <th>Status</th>
+                <th>#</th>
+                <th>User ID</th>
+                <th>Name</th>
+                <th>Action</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>UserType</th>
             </tr>
         </thead>
         <tbody>
             @php $counter = 1; @endphp
-            @forelse($studentList as $student)
+            @forelse($userLogs as $userLog)
             <tr>
                 <td> {{$counter}} </td>
-                <td>{{ ucwords($student->firstName) }} {{ ucwords($student->lastName) }}</td>
-                <td>{{$student->idNumber}}</td>
-                <td>{{$student->program}}</td>
-                <td>{{$student->year}}-{{$student->section}}</td>
-                @if($student->status == 'Regular')
-                <td class="regular" style="font-size: 15px;">Present</td>
-                @elseif($student->status == 'Irregular')
-                <td class="irregular" style="font-size: 15px;">Irregular</td>
-                @elseif($student->status == 'Drop')
-                <td class="drop" style="font-size: 15px;">Drop</td>
+                <td> {{ ucwords($userLog->userID) }} </td>
+                <td> {{ ucwords($userLog->firstName)}} {{ucwords($userLog->lastName) }} </td>
+                <td> {{$userLog->action}} </td>
+                <td>{{ date('F j, Y', strtotime($userLog->date)) }}</td>
+                <td>{{ date('h:i A', strtotime($userLog->time)) }}</td>
+                @if($userLog->userType == 'Admin')
+                <td class="Admin" style="font-size: 15px;">Admin</td>
+                @elseif($userLog->userType == 'Dean')
+                <td class="Dean" style="font-size: 15px;">Dean</td>
+                @elseif($userLog->userType == 'Program Chair')
+                <td class="ProgramChair" style="font-size: 15px;">Program Chair</td>
+                @elseif($userLog->userType == 'Technician')
+                <td class="Technician" style="font-size: 15px;">Technician</td>
+                @elseif($userLog->userType == 'Lab-in-Charge')
+                <td class="Lab-in-Charge" style="font-size: 15px;">Lab-in-Charge</td>
+                @elseif($userLog->userType == 'Faculty')
+                <td class="Faculty" style="font-size: 15px;">Faculty</td>
+                @elseif($userLog->userType == 'Student')
+                <td class="Student" style="font-size: 15px;">Student</td>
                 @endif
             </tr>
             @php $counter++; @endphp
             @empty
             <tr>
-                <td colspan="6" style="text-align: center;">No records found.</td>
+                <td coltd="7" style="text-align: center;">No records found.</td>
             </tr>
             @endforelse
         </tbody>

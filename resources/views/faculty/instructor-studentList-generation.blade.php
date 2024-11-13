@@ -1,25 +1,19 @@
 <!DOCTYPE html>
-
 <!--
  // WEBSITE: https://themefisher.com
  // TWITTER: https://twitter.com/themefisher
  // FACEBOOK: https://www.facebook.com/themefisher
  // GITHUB: https://github.com/themefisher/
 -->
-
 <html lang="en" dir="ltr">
-
 <head>
   <meta charset="utf-8" />
   <meta name="csrf-token" content="{{ csrf_token() }}" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-
   <title>ChronoLock Faculty-Student List Generation</title>
-
   @include('head')
 </head>
-
 <body class="navbar-fixed sidebar-fixed" id="body">
   <script>
     NProgress.configure({
@@ -27,23 +21,18 @@
     });
     NProgress.start();
   </script>
-
   @include('faculty.instructorSideNav')
   <!-- ====================================
       ——— PAGE WRAPPER
       ===================================== -->
-
   <div class="page-wrapper">
     <!-- Header -->
     @include('header')
-
     <!-- ====================================
         ——— CONTENT WRAPPER
         ===================================== -->
     <div class="content-wrapper">
       <div class="content">
-
-
         <div class="d-flex justify-content-between align-items-center">
           <!-- Navigation -->
           <nav aria-label="breadcrumb">
@@ -53,20 +42,15 @@
               <li class="breadcrumb-item active"><a href="{{ route('facultyStudentListGeneration') }}">Student List</a></li>
             </ol>
           </nav>
-
           <!-- Live Date and Time -->
           <div>
             <p class="text-center date-time mb-3" id="liveDateTime">Your Date and Time</p>
           </div>
         </div>
-
         <!-- DROPRDOWN NAV -->
-
         <div class="row">
           <div class="col-xl-9 col-md-9">
-
             <form action="{{ url('/faculty-student-list-generation') }}" method="GET">
-
               <div class="dropdown d-inline-block">
                 <button class="btn btn-primary btn-sm dropdown-toggle fw-bold" type="button" id="studentProgramsButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
                   <i class="mdi mdi-alpha-c-box"></i> Program
@@ -84,7 +68,6 @@
                 </div>
                 <input type="hidden" name="selected_programs" id="selected_programs" value="">
               </div>
-
               <div class="dropdown d-inline-block">
                 <button class="btn btn-primary btn-sm dropdown-toggle fw-bold" type="button" id="studentYearsButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
                   <i class="mdi mdi-developer-board"></i> Year & Section
@@ -102,7 +85,6 @@
                 </div>
                 <input type="hidden" name="selected_years" id="selected_year" value="">
               </div>
-
               <div class="dropdown d-inline-block">
                 <button class="btn btn-primary btn-sm dropdown-toggle fw-bold" type="button" id="studentStatusDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
                   <i class="mdi mdi-alpha-s-box"></i>
@@ -122,22 +104,15 @@
                 </div>
                 <input type="hidden" name="student_status" id="student_status">
               </div>
-
-
           </div>
           <!-- END -->
-
-
-
           <div class="col-xl-3 col-md-3 d-flex justify-content-end">
-
             <div class="dropdown d-inline-block mb-3 mr-1">
               <button class="btn btn-danger btn-sm fw-bold" type="submit">
                 <i class="mdi mdi-sort"></i> Filter
               </button>
             </div>
             </form>
-
             <form action="{{ url('/faculty-student-list-generation')}}" method="GET">
               <div class="dropdown d-inline-block mb-3 ">
                 <button class="btn btn-warning btn-sm fw-bold" type="submit">
@@ -146,28 +121,22 @@
                 </button>
               </div>
             </form>
-
           </div>
         </div>
-
         <!-- END -->
-
-
         <!-- Student List Table -->
         <div class="card card-default shadow">
           <div class="card-header">
             <h1>Student List</h1>
             <div class="justify-content-end">
-
               <div class="dropdown d-inline-block mb-3">
-                <button title="Preview" class="btn btn-outline-dark btn-sm fw-bold"
+                <button data-toggle="tooltip" title="PDF"  class="btn btn-outline-dark btn-sm fw-bold"
                 onclick='window.location = "{{ route("facultyPreviewStudentListPDF", ["selected_programs" => $selected_programs, "selected_years" => $selected_years, "student_status" => $student_status]) }}"' 
                   type="button">
                   <i class="mdi mdi-feature-search"></i>
                   PDF
                 </button>
               </div>
-
             </div>
           </div>
           <div class="card-body ">
@@ -180,7 +149,6 @@
                   <th>Program</th>
                   <th>Year & Section</th>
                   <th>Status</th>
-
                 </tr>
               </thead>
               <tbody>
@@ -206,25 +174,15 @@
                 @endforeach
               </tbody>
             </table>
-
           </div>
         </div>
         <!-- END -->
-
-
-
-
       </div>
     </div>
   </div>
-
-
   </div>
   </div>
-
   </div>
-
-
   <script>
     document.addEventListener("DOMContentLoaded", function() {
       document.querySelectorAll('.course-item').forEach(function(item) {
@@ -250,5 +208,4 @@
       });
     });
   </script>
-
   @include('footer')

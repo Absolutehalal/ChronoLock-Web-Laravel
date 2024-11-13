@@ -1,27 +1,3 @@
-<!DOCTYPE html>
-
-<html lang="en" dir="ltr">
-
-<head>
-  <style>
-    #show-password-profile {
-      position: absolute;
-      right: 10px;
-      /* Adjust distance from the right as needed */
-      top: 50%;
-      transform: translateY(-50%);
-      cursor: pointer;
-      font-size: 1.25rem;
-      /* Adjust icon size as needed */
-      color: #000000;
-      /* Optional: change icon color */
-    }
-  </style>
-
-</head>
-
-@include('sweetalert::alert')
-
 @if(Auth::check())
 <!-- VIEW PROFILE -->
 <div class="modal fade" id="modal-profile" tabindex="-1" role="dialog" aria-labelledby="modal-profile" aria-hidden="true">
@@ -156,7 +132,7 @@
               <ul id="passwordError"></ul>
               <label for="edit-password" class="form-label fw-bold">Password</label>
               <div class="form-group position-relative">
-                <input id="edit-password" name="update-password" type="password" class="profile_password form-control border-dark" placeholder="Password" oninput="validateFieldPassword()" maxlength="6" autocomplete="true">
+                <input id="edit-password" name="update-password" type="password" class="profile_password form-control border-dark" placeholder="Password" oninput="validateFieldPassword()" autocomplete="true">
                 <i class="fa fa-eye-slash" id="show-password-profile"></i>
               </div>
             </div>
@@ -171,48 +147,12 @@
     </div>
   </div>
 </div>
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    $('#update-modal-profile').on('hidden.bs.modal', function() {
-      $('#clearProfile')[0].reset();
-      clearProfileErrors();
-    });
-    function clearProfileErrors() {
-      $('#emailError').empty();
-      $('#idNumberError').empty();
-    }
-  });
+<!-- <script>
+  
 </script>
-
-
 <script>
-  const profileShowPassword = document.querySelector("#show-password-profile");
-  const profilePasswordField = document.querySelector("#edit-password");
-  profileShowPassword.addEventListener("click", function() {
-    this.classList.toggle("fa-eye");
-    const type = profilePasswordField.getAttribute("type") === "password" ? "text" : "password";
-    // Toggle password field visibility
-    profilePasswordField.setAttribute("type", type);
-  });
+  
 </script>
-
 <script>
-  function validateFieldPassword() {
-    var passwordInput = document.getElementById("edit-password").value;
-    if (!/^\d*$/.test(passwordInput)) {
-      Swal.fire({
-        timer: 5000,
-        timerProgressBar: true,
-        icon: 'error',
-        title: 'Invalid Input',
-        text: 'Only numerical values are allowed.',
-        confirmButtonText: 'OK'
-      });
-      document.getElementById("edit-password").value = passwordInput.replace(/\D/g, ''); // Remove non-numeric characters
-      return false; // Prevent form submission
-    }
-    return true; // Allow form submission
-  }
-</script>
-
-</html>
+  
+</script> -->

@@ -158,6 +158,8 @@ Route::group(['middleware' => ['auth', 'admin:Admin']], function () {
     //--------End Admin Pending RFID ROUTES---------  
 
     Route::get('/logsPage', [UserLogController::class, 'logs'])->name('logs');
+    Route::get('/user-logs-generation', [UserLogController::class, 'logsGeneration'])->name('logsGeneration');
+    Route::get('/user-logs-report-generation', [PDFController::class, 'logsReportGenerationPDF'])->name('logsReportGenerationPDF');
     // Route::get('/reportGenerationPage', [UserController::class, 'reportGeneration'])->name('reportGeneration');
 });
 

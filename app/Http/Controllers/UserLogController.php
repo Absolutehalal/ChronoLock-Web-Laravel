@@ -120,4 +120,65 @@ class UserLogController extends Controller
                'studentIDS' => $studentIDS,
           ]);
      }
+
+     public function logsGeneration(Request $request)
+     {
+          $data['name_id'] = $request->query('name_id');
+          $data['action'] = $request->query('action');
+          $data['selected_StartDate'] = $request->query('selected_StartDate');
+          $data['selected_EndDate'] = $request->query('selected_EndDate');
+          $data['user_type'] = $request->query('user_type');
+          $data['userType'] = DB::table('users')
+                ->distinct()
+                ->select('userType') 
+                ->orderByRaw("FIELD(users.userType, 'Admin', 'Dean', 'Program Chair', 'Lab-in-Charge', 'Technician', 'Student', 'Faculty')")
+                ->get();
+          $query = DB::table('user_logs')
+               ->join('users', 'user_logs.userID', '=', 'users.idNumber')
+               ->orderBy('date', 'desc')
+               ->orderBy('time', 'desc');
+          if ($data['selected_StartDate'] && $data['selected_EndDate']) {
+               // Convert "October 7, 2024" and similar formats to "2024-10-07"
+               $startDate = Carbon::parse($data['selected_StartDate'])->format('Y-m-d');
+               $endDate = Carbon::parse($data['selected_EndDate'])->format('Y-m-d');
+               // Filter between start and end dates
+               $query->whereBetween('user_logs.date', [$startDate, $endDate]);
+          } elseif ($data['selected_StartDate']) {
+               // If only start date is selected, apply start date filter
+               $startDate = Carbon::parse($data['selected_StartDate'])->format('Y-m-d');
+               $query->where('user_logs.date', '=', $startDate);
+          } elseif ($data['selected_EndDate']) {
+               // If only end date is selected, apply end date filter
+               $endDate = Carbon::parse($data['selected_EndDate'])->format('Y-m-d');
+               $query->where('user_logs.date', '=', $endDate);
+          }
+          if ($data['name_id']) {
+               // Adjusting the course name search with LIKE for partial match
+               $query->where(function ($query) use ($data) {
+                    $query->where('users.idNumber', '=', $data['name_id'])
+                         ->orWhere('users.firstName', 'LIKE', '%' . $data['name_id'] . '%')
+                         ->orWhere('users.lastName', 'LIKE', '%' . $data['name_id'] . '%')
+                         ->orWhere(DB::raw("CONCAT(users.firstName, ' ', users.lastName)"), 'LIKE', '%' . $data['name_id'] . '%');
+               });
+          }
+          if ($data['action']) {
+               // Adjusting the course name search with LIKE for partial match
+               $query->where(function ($query) use ($data) {
+                    $query->where('user_logs.action', 'LIKE', '%' . $data['action'] . '%');
+               });
+          }
+          if ($data['user_type']) {
+               $query->where('userType', $data['user_type']);
+          }
+          $data['userLogs'] = $query->get();
+          // Store the filtered query in the session
+          session(['logs_query' => $query->toSql(), 'logs_bindings' => $query->getBindings()]);
+          $userIDS = UserLog::select('userID', 'firstName', 'lastName')
+               ->join('users', 'user_logs.userID', '=', 'users.idNumber')
+               ->distinct()
+               ->get();
+          return view('admin.admin-logs-generation',   $data, [
+               'userIDS' => $userIDS,
+          ]);
+     }
 }

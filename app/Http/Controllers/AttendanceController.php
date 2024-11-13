@@ -69,6 +69,8 @@ class AttendanceController extends Controller
            $data['selected_StartDate'] = $request->query('selected_StartDate');
            $data['selected_EndDate'] = $request->query('selected_EndDate');
            $data['search_course'] = $request->query('search_course');
+           $data['name_id'] = $request->query('name_id');
+
             // REMARKS
             $data['selected_remarks'] = $request->query('selected_remarks');
 
@@ -77,19 +79,6 @@ class AttendanceController extends Controller
                 ->distinct()
                 ->where('users.userType', '=', 'Faculty')
                 ->orderByRaw("FIELD(attendances.remark, 'PRESENT', 'ABSENT', 'LATE')")
-                ->get();
-
-            // INSTRUCTOR ID
-            $data['selected_id'] = $request->query('selected_id');
-
-            $data['instructorID'] = Attendance::select('attendances.userID', 'instFirstName', 'instLastName')
-
-                ->join('users', 'attendances.userID', '=', 'users.idNumber')
-                ->join('class_lists', 'attendances.classID', '=', 'class_lists.classID')
-                ->join('schedules', 'class_lists.scheduleID', '=', 'schedules.scheduleID')
-                ->orderBy('instFirstName')
-                ->where('users.userType', '=', 'Faculty')
-                ->distinct()
                 ->get();
 
             $query = Attendance::select('attendances.*', 'schedules.*', 'users.*', 'class_lists.*')
@@ -123,10 +112,16 @@ class AttendanceController extends Controller
                 $query->where('remark', $data['selected_remarks']);
             };
 
-            if ($data['selected_id']) {
-                $query->where('attendances.userID', $data['selected_id']);
-            };
-
+            if ($data['name_id']) {
+                // Adjusting the course name search with LIKE for partial match
+                $query->where(function ($query) use ($data) {
+                    $query->where('attendances.userID', '=', $data['name_id'])
+                        ->orWhere('users.firstName', 'LIKE', '%' . $data['name_id'] . '%')
+                        ->orWhere('users.lastName', 'LIKE', '%' . $data['name_id'] . '%')
+                        ->orWhere(DB::raw("CONCAT(users.firstName, ' ', users.lastName)"), 'LIKE', '%' . $data['name_id'] . '%');
+                });
+            }
+            
             if ($data['search_course']) {
                 // Adjusting the course name search with LIKE for partial match
                 $query->where(function ($query) use ($data) {

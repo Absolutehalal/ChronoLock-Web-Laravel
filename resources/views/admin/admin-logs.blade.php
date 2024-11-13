@@ -119,7 +119,7 @@
                   </div>
                 </div>
 
-                <table id="adminTable" class="table table-hover table-bordered nowrap" style="width:100%">
+                <table id="adminTable" class="table table-hover table-bordered no-wrap" style="width:100%">
                   <thead class="table-dark">
                     <tr>
                       <th>#</th>
@@ -195,7 +195,7 @@
                   </div>
                 </div>
 
-                <table id="labInChargeTable" class="table table-hover table-bordered nowrap" style="width:100%">
+                <table id="labInChargeTable" class="table table-hover table-bordered no-wrap" style="width:100%">
                   <thead class="table-dark">
                     <tr>
                       <th>#</th>
@@ -269,7 +269,7 @@
                   </div>
                 </div>
 
-                <table id="technicianTable" class="table table-hover table-bordered nowrap" style="width:100%">
+                <table id="technicianTable" class="table table-hover table-bordered no-wrap" style="width:100%">
                   <thead class="table-dark">
                     <tr>
                       <th>#</th>
@@ -341,7 +341,7 @@
                   </div>
                 </div>
 
-                <table id="facultyTable" class="table table-hover table-bordered nowrap" style="width:100%">
+                <table id="facultyTable" class="table table-hover table-bordered no-wrap" style="width:100%">
                   <thead class="table-dark">
                     <tr>
                       <th>#</th>
@@ -412,7 +412,7 @@
                   </div>
                 </div>
 
-                <table id="studentTable" class="table table-hover table-bordered nowrap" style="width:100%">
+                <table id="studentTable" class="table table-hover table-bordered no-wrap" style="width:100%">
                   <thead class="table-dark">
                     <tr>
                       <th>#</th>

@@ -43,7 +43,7 @@ class ProfileController extends Controller
             'profile_lastName' => 'required',
             'profile_email' => 'required|email',
             'profile_idNumber' => 'required',
-            'profile_password' => 'nullable|min:6',
+           'profile_password' => ['nullable', 'string', 'min:6', 'max:10'],
         ]);
         // $checkIdNumber = User::where('idNumber', $request->input('profile_idNumber'))->first();
         if ($validator->fails()) {
@@ -55,8 +55,7 @@ class ProfileController extends Controller
 
             // Validate that the email has the required domain
             $email = $request->input('profile_email');
-            
-            $password = $request->input('profile_password');
+
             // Get the authenticated user type
             $userType = Auth::user()->userType;
 

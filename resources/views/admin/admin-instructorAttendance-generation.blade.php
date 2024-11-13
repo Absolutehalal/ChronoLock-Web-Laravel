@@ -1,18 +1,25 @@
 <!DOCTYPE html>
+
 <!--
  // WEBSITE: https://themefisher.com
  // TWITTER: https://twitter.com/themefisher
  // FACEBOOK: https://www.facebook.com/themefisher
  // GITHUB: https://github.com/themefisher/
 -->
+
 <html lang="en" dir="ltr">
+
 <head>
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+
   <title>ChronoLock Admin-Instructor Attendance Generation</title>
+
   @include('head')
+
 </head>
+
 <body class="navbar-fixed sidebar-fixed" id="body">
   <script>
     NProgress.configure({
@@ -27,11 +34,14 @@
   <div class="page-wrapper">
     <!-- Header -->
     @include('header')
+
     <!-- ====================================
         ——— CONTENT WRAPPER
         ===================================== -->
     <div class="content-wrapper">
       <div class="content">
+
+
         <div class="d-flex justify-content-between align-items-center">
           <!-- Navigation -->
           <nav aria-label="breadcrumb">
@@ -48,13 +58,15 @@
           </div>
         </div>
         <!-- DROPRDOWN NAV -->
+
         <div class="row">
           <div class="col-xl-9 col-md-9">
+
             <form action="{{ url('/instructor-attendance-generation') }}" method="GET">
 
               <div class="dropdown d-inline-block">
                 <div class="input-group date" id="month-picker">
-                  <input class="form-control border-primary" type="search" name="search_course" id="search_course" value="" placeholder="Search Course" autocomplete="false" >
+                  <input class="form-control border-primary" type="search" name="search_course" id="search_course" value="" placeholder="Search Course" autocomplete="false">
                   <div class="input-group-append">
                     <div class="input-group text-light btn btn-primary btn-sm" id="dateIcon">
                       <i class="mdi mdi-database-search"></i>
@@ -89,24 +101,15 @@
               <div class="row">
                 <div class="col-xl-9 col-md-9 mb-2 mt-1">
 
-
                   <div class="dropdown d-inline-block">
-                    <button class="btn btn-primary btn-sm dropdown-toggle fw-bold" type="button" id="instructorIDButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
-                      <i class="mdi mdi-alpha-i-box"></i> Instructor ID
-                    </button>
-                    <div class="dropdown-menu scrollable-dropdown" aria-labelledby="instructorIDButton">
-                      @forelse ($instructorID as $instructorID)
-                      @csrf
-                      <a class="dropdown-item id-item @if ($instructorID == $instructorID->userID) active @endif" data-value="{{ $instructorID->userID }}" href="#">
-                        {{ $instructorID->userID }} - {{ $instructorID->instFirstName }} {{ $instructorID->instLastName }}
-                      </a>
-                      @empty
-                      <a class="dropdown-item" data-value="None" href="#">
-                        None
-                      </a>
-                      @endforelse
+                    <div class="input-group date" id="month-picker">
+                      <input class="form-control border-primary" type="search" name="name_id" value="" placeholder="Name/ID" autocomplete="false" id="name_id">
+                      <div class="input-group-append">
+                        <div class="input-group text-light btn btn-primary btn-sm" id="dateIcon">
+                          <i class="mdi mdi-database-search"></i>
+                        </div>
+                      </div>
                     </div>
-                    <input type="hidden" name="selected_id" id="selected_id" value="">
                   </div>
 
                   <div class="dropdown d-inline-block">
@@ -142,6 +145,7 @@
               </button>
             </div>
             </form>
+
             <form action="{{ url('/instructor-attendance-generation')}}" method="GET">
               <div class="dropdown d-inline-block mb-3 ">
                 <button class="btn btn-warning btn-sm fw-bold" type="submit">
@@ -150,15 +154,18 @@
                 </button>
               </div>
             </form>
+
           </div>
         </div>
         <!-- END -->
+
+
         <div class="card card-default shadow">
           <div class="card-header">
             <h1>Instructor Attendance Report</h1>
             <div class="justify-content-end">
               <div class="dropdown d-inline-block mb-3">
-                <button title="Preview" class="btn btn-outline-dark btn-sm fw-bold" onclick='window.location = "{{ route("previewFacultyAttendancePDF", ["selected_id" => $selected_id, "selected_remarks" => $selected_remarks, "selected_StartDate" => $selected_StartDate, "selected_EndDate" => $selected_EndDate, "search_course" => $search_course]) }}"' type="button">
+                <button data-toggle="tooltip" title="PDF" class="btn btn-outline-dark btn-sm fw-bold" onclick='window.location = "{{ route("previewFacultyAttendancePDF", ["name_id" => $name_id, "selected_remarks" => $selected_remarks, "selected_StartDate" => $selected_StartDate, "selected_EndDate" => $selected_EndDate, "search_course" => $search_course]) }}"' type="button">
                   <i class="mdi mdi-feature-search"></i>
                   PDF
                 </button>
@@ -166,7 +173,7 @@
 
               <div class="d-inline-block mb-3 ms-2">
                 <form action="{{ url('/instructor-attendance-export') }}" method="GET">
-                  <button class="btn btn-info btn-sm fw-bold" id="exportButton" type="submit">
+                  <button data-toggle="tooltip" title="EXCEL" class="btn btn-outline-dark btn-sm fw-bold" id="exportButton" type="submit">
                     <i class="mdi mdi-file-download"></i>
                     Excel
                   </button>
@@ -174,6 +181,7 @@
               </div>
             </div>
           </div>
+
           <div class="card-body ">
             <table id="AttendanceTable" class="table table-bordered table-hover no-wrap" style="width:100%">
               <thead class="table-dark">
@@ -218,11 +226,14 @@
                 @endforeach
               </tbody>
             </table>
+
           </div>
         </div>
+
       </div>
     </div>
   </div>
+
   <script>
     document.addEventListener("DOMContentLoaded", function() {
       document.querySelectorAll('.remark-item').forEach(function(item) {
@@ -241,6 +252,7 @@
       });
     });
   </script>
+
   <script>
     document.addEventListener("DOMContentLoaded", function() {
       const monthPicker = flatpickr("#selectedMonth", {
@@ -260,4 +272,3 @@
       });
     });
   </script>
-  @include('footer')

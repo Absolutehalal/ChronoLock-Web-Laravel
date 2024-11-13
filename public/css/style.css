@@ -18361,5 +18361,17 @@ html[dir="rtl"] .sidebar li > a .caret:before {
     opacity: 0.5;
   }
 
-
+  #show-password-profile {
+    position: absolute;
+    right: 10px;
+    /* Adjust distance from the right as needed */
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 1.25rem;
+    /* Adjust icon size as needed */
+    color: #000000;
+    /* Optional: change icon color */
+  }
+  
 /*# sourceMappingURL=style.css.map */

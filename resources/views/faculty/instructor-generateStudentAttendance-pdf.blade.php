@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -61,19 +60,15 @@
         }
     </style>
 </head>
-
 <body>
     <h1 class="header">Student Attendance Report</h1>
     <div class="CSPCLogo">
         <img src="data:image/png;base64,{{ $imageCSPC }}" alt="CSPCLogo">
-
-
     </div>
     <div class="CCSLogo">
         <img src="data:image/png;base64,{{ $imageCCS }}" alt="CCSLogo">
     </div>
     <br>
-
     <hr>
     <table style="margin-top: 2%;">
         <thead>
@@ -115,10 +110,6 @@
             </tr>
             @endforelse
         </tbody>
-
     </table>
-
-
 </body>
-
 </html>

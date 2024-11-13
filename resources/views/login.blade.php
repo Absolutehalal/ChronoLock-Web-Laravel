@@ -71,7 +71,7 @@
                             </div>
                             <label class="form-label fw-bold">Password</label>
                             <div class="form-group mb-1 position-relative">
-                                <input id="password" name="password" type="password" class="form-control form-control-lg bg-light border-dark fs-6" placeholder="Password" required autocomplete="true" maxlength="6">
+                            <input id="password" name="password" type="password" class="form-control form-control-lg bg-light border-dark fs-6" placeholder="Password" required autocomplete="true">
                                 <i class="fa fa-eye-slash" id="show-password"></i>
                             </div>
 
@@ -110,11 +110,11 @@
     <script>
         function validatePassword() {
             const password = document.getElementById('password').value;
-            if (password.length !== 6 || isNaN(password)) {
+            if (password.length < 8 || password.length > 10) {
                 Swal.fire({
                     icon: "info",
                     title: "Info",
-                    text: "Invalid password. Please enter a 6-digit password.",
+                    text: "Please enter your valid password.",
                     timer: 5000,
                     timerProgressBar: true
                 });
