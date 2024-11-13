@@ -1105,16 +1105,11 @@
               });
             
               $('.previewPreviousSchedule').text('Preview');
-            } else if (response.status == 404) {
+            } else if (response.status == 200) {
               $('#schoolYearError').html("");
               $('#semesterError').html("");
-              Swal.fire({
-                icon: "error",
-                title: "Error",
-                text: "No Data Found",
-              })
-            }else if (response.status == 200) {
               window.location.href = "/preview-previous-schedule-pdf/" + schoolYear +"/"+ semester;
+              $("#previousScheduleModal .close").click()
             }
           }
           });
