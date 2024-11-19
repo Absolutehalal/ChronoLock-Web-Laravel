@@ -629,7 +629,7 @@ class ScheduleController extends Controller
             if ($schedule->scheduleType == 'makeUpSchedule') {
                 $ERPSchedules[] = [
                     'id' =>   $schedule->scheduleID,
-                    'title' => $schedule->scheduleTitle . " - " . $schedule->instFirstName . " " . $schedule->instLastName,
+                    'title' => $schedule->courseName . " - " . $schedule->instFirstName . " " . $schedule->instLastName,
                     'startTime' => $schedule->startTime,
                     'endTime' => $schedule->endTime,
                     'startRecur' => $schedule->startDate,
@@ -681,7 +681,7 @@ class ScheduleController extends Controller
             if ($schedule->scheduleType == 'makeUpSchedule') {
                 $ERPSchedules[] = [
                     'id' =>   $schedule->scheduleID,
-                    'title' => $schedule->scheduleTitle . " - " . $schedule->instFirstName . " " . $schedule->instLastName,
+                    'title' => $schedule->courseName . " - " . $schedule->instFirstName . " " . $schedule->instLastName,
                     'startTime' => $schedule->startTime,
                     'endTime' => $schedule->endTime,
                     'startRecur' => $schedule->startDate,

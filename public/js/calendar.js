@@ -87,8 +87,8 @@ document.addEventListener("DOMContentLoaded", function () {
                                     $(this).text("Creating...");
 
                                     var data = {
-                                        scheduleTitle:
-                                            $(".scheduleTitle").val(),
+                                        //scheduleTitle:
+                                        //     $(".scheduleTitle").val(),
                                         program: $(".program").val(),
                                         makeUpCourseCode:
                                             $(".makeUpCourseCode").val(),
@@ -125,10 +125,10 @@ document.addEventListener("DOMContentLoaded", function () {
                                         success: function (response) {
                                             //   console.log(response);
                                             if (response.status == 400) {
-                                                $("#titleError").html("");
-                                                $("#titleError").addClass(
-                                                    "error"
-                                                );
+                                                // $("#titleError").html("");
+                                                // $("#titleError").addClass(
+                                                //     "error"
+                                                // );
                                                 $("#programError").html("");
                                                 $("#programError").addClass(
                                                     "error"
@@ -165,17 +165,17 @@ document.addEventListener("DOMContentLoaded", function () {
                                                 $("#facultyError").addClass(
                                                     "error"
                                                 );
-                                                $.each(
-                                                    response.errors
-                                                        .scheduleTitle,
-                                                    function (key, err_value) {
-                                                        $("#titleError").append(
-                                                            "<li>" +
-                                                                err_value +
-                                                                "</li>"
-                                                        );
-                                                    }
-                                                );
+                                                // $.each(
+                                                //     response.errors
+                                                //         .scheduleTitle,
+                                                //     function (key, err_value) {
+                                                //         $("#titleError").append(
+                                                //             "<li>" +
+                                                //                 err_value +
+                                                //                 "</li>"
+                                                //         );
+                                                //     }
+                                                // );
                                                 $.each(
                                                     response.errors.program,
                                                     function (key, err_value) {
@@ -278,7 +278,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                                     "Create"
                                                 );
                                             } else if (response.status == 200) {
-                                                $("#titleError").html("");
+                                                // $("#titleError").html("");
                                                 $("#programError").html("");
                                                 $(
                                                     "#makeUpCourseCodeError"
@@ -310,7 +310,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                                     }
                                                 });
                                             } else if (response.status == 300) {
-                                                $("#titleError").html("");
+                                                // $("#titleError").html("");
                                                 $("#programError").html("");
                                                 $(
                                                     "#makeUpCourseCodeError"
@@ -351,34 +351,35 @@ document.addEventListener("DOMContentLoaded", function () {
                                                             "/AppointedSchedules";
                                                     }
                                                 });
-                                            } else if (response.status == 100) {
-                                                $("#titleError").html("");
-                                                $("#programError").html("");
-                                                $(
-                                                    "#makeUpCourseCodeError"
-                                                ).html("");
-                                                $(
-                                                    "#makeUpCourseNameError"
-                                                ).html("");
-                                                $("#yearError").html("");
-                                                $("#sectionError").html("");
-                                                $("#startTimeError").html("");
-                                                $("#endTimeError").html("");
-                                                $("#facultyError").html("");
-                                                Swal.fire({
-                                                    icon: "warning",
-                                                    title: "Warning",
-                                                    text: "Duplicated Schedule Title!!!",
-                                                    timer: 5000,
-                                                    timerProgressBar: true,
-                                                });
-                                                $(".addMakeUpSchedule").text(
-                                                    "Create"
-                                                );
-                                                $(
-                                                    "#makeUpScheduleModal .close"
-                                                ).click();
                                             }
+                                            //  else if (response.status == 100) {
+                                            //     // $("#titleError").html("");
+                                            //     $("#programError").html("");
+                                            //     $(
+                                            //         "#makeUpCourseCodeError"
+                                            //     ).html("");
+                                            //     $(
+                                            //         "#makeUpCourseNameError"
+                                            //     ).html("");
+                                            //     $("#yearError").html("");
+                                            //     $("#sectionError").html("");
+                                            //     $("#startTimeError").html("");
+                                            //     $("#endTimeError").html("");
+                                            //     $("#facultyError").html("");
+                                            //     Swal.fire({
+                                            //         icon: "warning",
+                                            //         title: "Warning",
+                                            //         text: "Duplicated Schedule Title!!!",
+                                            //         timer: 5000,
+                                            //         timerProgressBar: true,
+                                            //     });
+                                            //     $(".addMakeUpSchedule").text(
+                                            //         "Create"
+                                            //     );
+                                            //     $(
+                                            //         "#makeUpScheduleModal .close"
+                                            //     ).click();
+                                            // }
                                         },
                                     });
                                 }
@@ -795,10 +796,10 @@ document.addEventListener("DOMContentLoaded", function () {
                                                 response.makeUpSchedule
                                             );
 
-                                            $("#edit_schedule_title").val(
-                                                response.makeUpSchedule
-                                                    .scheduleTitle
-                                            );
+                                            // $("#edit_schedule_title").val(
+                                            //     response.makeUpSchedule
+                                            //         .scheduleTitle
+                                            // );
                                             $("#edit_schedule_program").val(
                                                 response.makeUpSchedule.program
                                             );
@@ -840,9 +841,9 @@ document.addEventListener("DOMContentLoaded", function () {
                                         // alert(id);
 
                                         var data = {
-                                            updateScheduleTitle: $(
-                                                ".updateScheduleTitle"
-                                            ).val(),
+                                            // updateScheduleTitle: $(
+                                            //     ".updateScheduleTitle"
+                                            // ).val(),
                                             updateProgram:
                                                 $(".updateProgram").val(),
                                             updateYear: $(".updateYear").val(),
@@ -874,9 +875,9 @@ document.addEventListener("DOMContentLoaded", function () {
                                             success: function (response) {
                                                 // console.log(response);
                                                 if (response.status == 400) {
-                                                    $(
-                                                        "#editMakeUpScheduleTitleError"
-                                                    ).html("");
+                                                    // $(
+                                                    //     "#editMakeUpScheduleTitleError"
+                                                    // ).html("");
                                                     $(
                                                         "#editMakeUpScheduleTitleError"
                                                     ).addClass("error");
@@ -914,22 +915,22 @@ document.addEventListener("DOMContentLoaded", function () {
                                                     // $("#editScheduleFacultyError").addClass(
                                                     //     "error"
                                                     // );
-                                                    $.each(
-                                                        response.errors
-                                                            .updateScheduleTitle,
-                                                        function (
-                                                            key,
-                                                            err_value
-                                                        ) {
-                                                            $(
-                                                                "#editCourseCodeError"
-                                                            ).append(
-                                                                "<li>" +
-                                                                    err_value +
-                                                                    "</li>"
-                                                            );
-                                                        }
-                                                    );
+                                                    // $.each(
+                                                    //     response.errors
+                                                    //         .updateScheduleTitle,
+                                                    //     function (
+                                                    //         key,
+                                                    //         err_value
+                                                    //     ) {
+                                                    //         $(
+                                                    //             "#editMakeUpScheduleTitleError"
+                                                    //         ).append(
+                                                    //             "<li>" +
+                                                    //                 err_value +
+                                                    //                 "</li>"
+                                                    //         );
+                                                    //     }
+                                                    // );
                                                     $.each(
                                                         response.errors
                                                             .updateProgram,
@@ -938,7 +939,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                                             err_value
                                                         ) {
                                                             $(
-                                                                "#editCourseNameError"
+                                                                "#editProgramError"
                                                             ).append(
                                                                 "<li>" +
                                                                     err_value +
@@ -954,7 +955,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                                             err_value
                                                         ) {
                                                             $(
-                                                                "#startTimeError"
+                                                                "#editYearError"
                                                             ).append(
                                                                 "<li>" +
                                                                     err_value +
@@ -970,7 +971,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                                             err_value
                                                         ) {
                                                             $(
-                                                                "#endTimeError"
+                                                                "#editSectionError"
                                                             ).append(
                                                                 "<li>" +
                                                                     err_value +
@@ -986,7 +987,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                                             err_value
                                                         ) {
                                                             $(
-                                                                "#startDateError"
+                                                                "#editStartTimeError"
                                                             ).append(
                                                                 "<li>" +
                                                                     err_value +
@@ -1003,7 +1004,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                                             err_value
                                                         ) {
                                                             $(
-                                                                "#endDateError"
+                                                                "#editEndTimeError"
                                                             ).append(
                                                                 "<li>" +
                                                                     err_value +
@@ -1030,9 +1031,9 @@ document.addEventListener("DOMContentLoaded", function () {
                                                 } else if (
                                                     response.status == 200
                                                 ) {
-                                                    $(
-                                                        "#updateScheduleTitle"
-                                                    ).html("");
+                                                    // $(
+                                                    //     "#updateScheduleTitle"
+                                                    // ).html("");
                                                     $("#updateProgram").html(
                                                         ""
                                                     );
@@ -1068,9 +1069,9 @@ document.addEventListener("DOMContentLoaded", function () {
                                                 } else if (
                                                     response.status == 300
                                                 ) {
-                                                    $(
-                                                        "#updateScheduleTitle"
-                                                    ).html("");
+                                                    // $(
+                                                    //     "#updateScheduleTitle"
+                                                    // ).html("");
                                                     $("#updateProgram").html(
                                                         ""
                                                     );

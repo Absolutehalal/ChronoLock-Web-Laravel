@@ -30,7 +30,7 @@ return new class extends Migration
             $table->date('endDate')->nullable();
             $table->string('day', 50)->nullable();
             $table->string('scheduleStatus', 50)->nullable();
-            $table->string('scheduleTitle', 50)->nullable()->unique();
+            // $table->string('scheduleTitle', 50)->nullable()->unique();
             $table->string('scheduleType', 50)->nullable();
             $table->timestamps();
         });

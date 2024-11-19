@@ -1044,7 +1044,7 @@ class UserController extends Controller
     {
         try {
             $validator = Validator::make($request->all(), [
-                'scheduleTitle' => 'required',
+                // 'scheduleTitle' => 'required',
                 'program' => 'required',
                 'makeUpCourseCode' => 'required',
                 'makeUpCourseName' => 'required',
@@ -1055,9 +1055,9 @@ class UserController extends Controller
                 'faculty' => 'required',
             ]);
             $checkDay = $request->dayOfWeekString;
-            $scheduleTitle = $request->get('scheduleTitle');
+            // $scheduleTitle = $request->get('scheduleTitle');
             $facultyID = $request->get('faculty');
-            $duplicateScheduleTitle = DB::table('schedules')->where('scheduleTitle', $scheduleTitle)->get();
+            // $duplicateScheduleTitle = DB::table('schedules')->where('scheduleTitle', $scheduleTitle)->get();
             $facultyFirstName = DB::table('users')->where('idNumber', $facultyID)->value('firstName');
             $facultyLastName = DB::table('users')->where('idNumber', $facultyID)->value('lastName');
             $startTime = date("H:i:s", strtotime($request->input('makeUpScheduleStartTime')));
@@ -1097,17 +1097,19 @@ class UserController extends Controller
                     'status' => 400,
                     'errors' => $validator->messages()
                 ]);
-            } else if ($duplicateScheduleTitle->isNotEmpty()) {
-                return response()->json([
-                    'status' => 100,
-                ]);
-            } else if (($checkStartTime->isNotEmpty()) || ($checkEndTime->isNotEmpty()) || ($checkSameSchedule->isNotEmpty()) || ($checkOverlappingSchedule->isNotEmpty())) {
+            } 
+            // else if ($duplicateScheduleTitle->isNotEmpty()) {
+            //     return response()->json([
+            //         'status' => 100,
+            //     ]);
+            // } 
+            else if (($checkStartTime->isNotEmpty()) || ($checkEndTime->isNotEmpty()) || ($checkSameSchedule->isNotEmpty()) || ($checkOverlappingSchedule->isNotEmpty())) {
                 
                 $makeUpSchedule = new Schedule;
                 $makeUpSchedule->courseCode = $request->input('makeUpCourseCode');
                 $makeUpSchedule->courseName = $request->input('makeUpCourseName');
                 $makeUpSchedule->userID =  $request->input('faculty');
-                $makeUpSchedule->scheduleTitle = $request->input('scheduleTitle');
+                // $makeUpSchedule->scheduleTitle = $request->input('scheduleTitle');
                 $makeUpSchedule->instFirstName = $facultyFirstName;
                 $makeUpSchedule->instLastName = $facultyLastName;
                 $makeUpSchedule->program = $request->input('program');
@@ -1142,7 +1144,7 @@ class UserController extends Controller
                 $makeUpSchedule->courseCode = $request->input('makeUpCourseCode');
                 $makeUpSchedule->courseName = $request->input('makeUpCourseName');
                 $makeUpSchedule->userID =  $request->input('faculty');
-                $makeUpSchedule->scheduleTitle = $request->input('scheduleTitle');
+                // $makeUpSchedule->scheduleTitle = $request->input('scheduleTitle');
                 $makeUpSchedule->instFirstName = $facultyFirstName;
                 $makeUpSchedule->instLastName = $facultyLastName;
                 $makeUpSchedule->program = $request->input('program');
@@ -1185,7 +1187,7 @@ class UserController extends Controller
     {
         $makeUpSchedule = Schedule::find($id);
         $archivedID = DB::table('schedules')->where('scheduleID', $id)->value('scheduleID');
-        $scheduleTitle = DB::table('schedules')->where('scheduleID', $archivedID)->value('scheduleTitle');
+        // $scheduleTitle = DB::table('schedules')->where('scheduleID', $archivedID)->value('scheduleTitle');
 
         if ($makeUpSchedule) {
             $makeUpSchedule->delete();
@@ -1196,7 +1198,7 @@ class UserController extends Controller
             date_default_timezone_set("Asia/Manila");
             $date = date("Y-m-d");
             $time = date("H:i:s");
-            $action = "Deleted a Make Up Schedule -> $scheduleTitle ";
+            $action = "Deleted a Make Up Schedule";
             DB::table('user_logs')->insert([
                 'userID' => $userID,
                 'action' => $action,
@@ -1243,7 +1245,7 @@ class UserController extends Controller
     {
         try {
             $validator = Validator::make($request->all(), [
-                'updateScheduleTitle' => 'required',
+                // 'updateScheduleTitle' => 'required',
                 'updateProgram' => 'required',
                 'updateYear' => 'required',
                 'updateSection' => 'required',
@@ -1264,7 +1266,7 @@ class UserController extends Controller
 
                 // Retrieve existing schedule details
                 $checkDay = $request->input('day');
-                $scheduleTitle = DB::table('schedules')->where('scheduleID', $updatedID)->value('scheduleTitle');
+                // $scheduleTitle = DB::table('schedules')->where('scheduleID', $updatedID)->value('scheduleTitle');
                 $program = DB::table('schedules')->where('scheduleID', $updatedID)->value('program');
                 $year = DB::table('schedules')->where('scheduleID', $updatedID)->value('year');
                 $section = DB::table('schedules')->where('scheduleID', $updatedID)->value('section');
@@ -1307,7 +1309,7 @@ class UserController extends Controller
                 if (($makeUpSchedule) && (($checkStartTime->isNotEmpty()) || ($checkEndTime->isNotEmpty()) || ($checkSameSchedule->isNotEmpty()) || ($checkOverlappingSchedule->isNotEmpty()))) {
 
                     // Update schedule details
-                    $makeUpSchedule->scheduleTitle = $request->input('updateScheduleTitle');
+                    // $makeUpSchedule->scheduleTitle = $request->input('updateScheduleTitle');
                     $makeUpSchedule->program = $request->input('updateProgram');
                     $makeUpSchedule->year = $request->input('updateYear');
                     $makeUpSchedule->section = $request->input('updateSection');
@@ -1316,7 +1318,7 @@ class UserController extends Controller
                     $makeUpSchedule->update();
 
                     // Start Logs
-                    $inputScheduleTitle = $request->input('updateScheduleTitle');
+                    // $inputScheduleTitle = $request->input('updateScheduleTitle');
                     $inputProgram = $request->input('updateProgram');
                     $inputYear = $request->input('updateYear');
                     $inputSection = $request->input('updateSection');
@@ -1330,10 +1332,10 @@ class UserController extends Controller
                     $time = date("H:i:s");
 
                     // Determine the action for the log
-                    if (($inputScheduleTitle == $scheduleTitle) && ($inputProgram == $program) && ($inputYear == $year) && ($inputSection == $section)  && ($inputStartTime == $startTime)  && ($inputEndTime == $endTime)) {
-                        $action = "Attempt update on $scheduleTitle schedule";
+                    if (($inputProgram == $program) && ($inputYear == $year) && ($inputSection == $section)  && ($inputStartTime == $startTime)  && ($inputEndTime == $endTime)) {
+                        $action = "Attempt update on Make-Up Schedule";
                     } else {
-                        $action = "Updated $scheduleTitle schedule";
+                        $action = "Updated Make-Up Schedule";
                     }
 
                     // Insert log entry
@@ -1350,7 +1352,7 @@ class UserController extends Controller
                     ]);
                 } else if ($makeUpSchedule) {
                     // Update schedule details
-                    $makeUpSchedule->scheduleTitle = $request->input('updateScheduleTitle');
+                    // $makeUpSchedule->scheduleTitle = $request->input('updateScheduleTitle');
                     $makeUpSchedule->program = $request->input('updateProgram');
                     $makeUpSchedule->year = $request->input('updateYear');
                     $makeUpSchedule->section = $request->input('updateSection');
@@ -1359,7 +1361,7 @@ class UserController extends Controller
                     $makeUpSchedule->update();
 
                     // Start Logs
-                    $inputScheduleTitle = $request->input('updateScheduleTitle');
+                    // $inputScheduleTitle = $request->input('updateScheduleTitle');
                     $inputProgram = $request->input('updateProgram');
                     $inputYear = $request->input('updateYear');
                     $inputSection = $request->input('updateSection');
@@ -1373,10 +1375,10 @@ class UserController extends Controller
                     $time = date("H:i:s");
 
                     // Determine the action for the log
-                    if (($inputScheduleTitle == $scheduleTitle) && ($inputProgram == $program) && ($inputYear == $year) && ($inputSection == $section)  && ($inputStartTime == $startTime)  && ($inputEndTime == $endTime)) {
-                        $action = "Attempt update on $scheduleTitle schedule";
+                    if (($inputProgram == $program) && ($inputYear == $year) && ($inputSection == $section)  && ($inputStartTime == $startTime)  && ($inputEndTime == $endTime)) {
+                        $action = "Attempt update on Make-Up Schedule";
                     } else {
-                        $action = "Updated $scheduleTitle schedule";
+                        $action = "Updated Make-Up Schedule";
                     }
 
                     // Insert log entry
@@ -1413,7 +1415,7 @@ class UserController extends Controller
             if ($schedule->scheduleType == 'makeUpSchedule') {
                 $ActualERPSchedules[] = [
                     'id' =>   $schedule->scheduleID,
-                    'title' => $schedule->scheduleTitle . " - " . $schedule->instFirstName . " " . $schedule->instLastName,
+                    'title' => $schedule->courseName . " - " . $schedule->instFirstName . " " . $schedule->instLastName,
                     'startTime' => $schedule->startTime,
                     'endTime' => $schedule->endTime,
                     'startRecur' => $schedule->startDate,

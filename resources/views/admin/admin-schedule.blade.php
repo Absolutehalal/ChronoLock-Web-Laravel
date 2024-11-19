@@ -208,14 +208,14 @@
             @method('post')
 
             <div class="row">
-              <div class="col-lg-6">
+              <!-- <div class="col-lg-6">
                 <ul id="titleError"></ul>
                 <div class="form-group">
                   <label for="scheduleTitle">Schedule Title</label>
                   <input type="text" class="scheduleTitle form-control border border-dark border border-dark" id="scheduleTitle" name="scheduleTitle" placeholder="Enter Title" />
                 </div>
               </div>
-
+ -->
 
               <div class="col-lg-6">
                 <ul id="programError"></ul>
@@ -282,6 +282,30 @@
               </div>
 
               <div class="col-lg-6">
+                <ul id="facultyError"></ul>
+                <form method="GET" action="{{ route('adminScheduleManagement') }}">
+                <label for="makeupinstIDDropdown">Instructor</label>
+                  <button class="btn btn-primary btn-sm dropdown-toggle fw-bold" type="button" id="makeupInstIDDropdown" data-toggle="dropdown" aria-expanded="false">
+                    <i class="mdi mdi-alpha-i-box"></i>
+                    Instructor ID
+                  </button>
+                  <div class="dropdown-menu scrollable-dropdown" aria-labelledby="instIDDropdown">
+                    @forelse($instructorsID as $instructorID)
+                    @csrf
+                    <a class="dropdown-item id-item filter-inst-id" data-value="{{ $instructorID->idNumber }}" href="#">
+                    {{ $instructorID->idNumber }}-{{ ucwords($instructorID->firstName) }} {{ ucwords($instructorID->lastName) }}
+                    </a>
+                    @empty
+                    <a class="dropdown-item filter-faculty-id" data-value="None" href="#">
+                      None
+                    </a>
+                    @endforelse
+                  </div>
+                  <input type="hidden" class="faculty form-control" name="instructorID" id="selectedInstID">
+                </form>
+              </div>
+
+              <div class="col-lg-6">
                 <ul id="startTimeError"></ul>
                 <div class="dropdown d-inline-block mb-3">
                   <label for="selectedTime1">Start Time</label>
@@ -311,30 +335,6 @@
                 </div>
               </div>
 
-              <label for="makeupinstIDDropdown">Instructor</label>
-              <div class="col-lg-6">
-                <ul id="facultyError"></ul>
-                <form method="GET" action="{{ route('adminScheduleManagement') }}">
-
-                  <button class="btn btn-primary btn-sm dropdown-toggle fw-bold" type="button" id="makeupInstIDDropdown" data-toggle="dropdown" aria-expanded="false">
-                    <i class="mdi mdi-alpha-i-box"></i>
-                    Instructor ID
-                  </button>
-                  <div class="dropdown-menu scrollable-dropdown" aria-labelledby="instIDDropdown">
-                    @forelse($instructorsID as $instructorID)
-                    @csrf
-                    <a class="dropdown-item id-item filter-inst-id" data-value="{{ $instructorID->idNumber }}" href="#">
-                    {{ $instructorID->idNumber }}-{{ ucwords($instructorID->firstName) }} {{ ucwords($instructorID->lastName) }}
-                    </a>
-                    @empty
-                    <a class="dropdown-item filter-faculty-id" data-value="None" href="#">
-                      None
-                    </a>
-                    @endforelse
-                  </div>
-                  <input type="hidden" class="faculty form-control" name="instructorID" id="selectedInstID">
-                </form>
-              </div>
 
             </div> <!-- Modal Boday End-->
 
@@ -770,14 +770,14 @@
             <input type="hidden" id="day" class="day form-control ">
 
             <div class="row">
-              <div class="col-lg-6">
+              <!-- <div class="col-lg-6">
                 <ul id="editMakeUpScheduleTitleError"></ul>
                 <div class="form-group">
                   <label for="edit_schedule_title">Schedule Title</label>
                   <input type="text" class="updateScheduleTitle form-control border border-dark border border-dark" id="edit_schedule_title" name="updateScheduleTitle" placeholder="Enter New Schedule Title">
 
                 </div>
-              </div>
+              </div> -->
 
               <div class="col-lg-6">
                 <ul id="editProgramError"></ul>
