@@ -335,6 +335,23 @@
                 </div>
               </div>
 
+              
+              <div class="col-lg-6">
+                <ul id="makeUpStartSchoolYearError"></ul>
+                  <div class="form-group">
+                    <label for="makeUpStartSchoolYear">Start of School Year</label>
+                    <select class="makeUpStartSchoolYear form-select form-control border border-dark"   aria-label="Default select example" id="makeUpStartSchoolYear" name="makeUpStartSchoolYear"></select>
+                  </div>
+              </div>
+
+              <div class="col-lg-6">
+                <ul id="makeUpEndSchoolYearError"></ul>
+                  <div class="form-group">
+                    <label for="makeUpEndSchoolYear">End of School Year</label>
+                    <select class="makeUpEndSchoolYear form-select form-control border border-dark"   aria-label="Default select example" id="makeUpEndSchoolYear" name="makeUpEndSchoolYear"></select>
+                  </div>
+              </div>
+
 
             </div> <!-- Modal Boday End-->
 
@@ -578,10 +595,28 @@
                 </div>
               </div>
 
-              <label for="facultyIDDropdown">Instructor</label>
 
-              <div class="col-lg-6">
+              <div class="col-lg-4">
+                <ul id="regularStartSchoolYearError"></ul>
+                  <div class="form-group">
+                    <label for="regularStartSchoolYear">Start of School Year</label>
+                    <select class="regularStartSchoolYear form-select form-control border border-dark"   aria-label="Default select example" id="regularStartSchoolYear" name="regularStartSchoolYear"></select>
+                  </div>
+              </div>
+
+              <div class="col-lg-4">
+                <ul id="regularEndSchoolYearError"></ul>
+                  <div class="form-group">
+                    <label for="regularEndSchoolYear">End of School Year</label>
+                    <select class="regularEndSchoolYear form-select form-control border border-dark"   aria-label="Default select example" id="regularEndSchoolYear" name="regularEndSchoolYear"></select>
+                  </div>
+              </div>
+
+            
+
+              <div class="col-lg-4">
                 <ul id="scheduleFacultyError"></ul>
+                <label for="facultyIDDropdown">Instructor</label>
                 <form id="" method="GET" action="{{ route('adminScheduleManagement') }}">
 
                   <button class="btn btn-primary btn-sm dropdown-toggle fw-bold" type="button" id="facultyIDDropdown" data-toggle="dropdown" aria-expanded="false">
@@ -1214,6 +1249,81 @@
       }
     });
   </script>
+
+<script>
+(() => {
+    let year_satart = 1940;
+    let year_end = (new Date).getFullYear(); // current year
+    let year_selected = 1992;
+
+    let option = '';
+    option = '<option value="">Year</option>'; // first option
+
+    for (let i = year_satart; i <= year_end; i++) {
+        let selected = (i === year_selected ? ' selected' : '');
+        option += '<option value="' + i + '"' + selected + '>' + i + '</option>';
+    }
+
+    document.getElementById("makeUpStartSchoolYear").innerHTML = option;
+})();
+</script> 
+
+<script>
+(() => {
+    let year_satart = 1940;
+    let year_end = (new Date).getFullYear(); // current year
+    let year_selected = 1992;
+
+    let option = '';
+    option = '<option value="">Year</option>'; // first option
+
+    for (let i = year_satart; i <= year_end; i++) {
+        let selected = (i === year_selected ? ' selected' : '');
+        option += '<option value="' + i + '"' + selected + '>' + i + '</option>';
+    }
+
+    document.getElementById("makeUpEndSchoolYear").innerHTML = option;
+})();
+</script> 
+
+
+<script>
+(() => {
+    let year_satart = 1940;
+    let year_end = (new Date).getFullYear(); // current year
+    let year_selected = 1992;
+
+    let option = '';
+    option = '<option value="">Year</option>'; // first option
+
+    for (let i = year_satart; i <= year_end; i++) {
+        let selected = (i === year_selected ? ' selected' : '');
+        option += '<option value="' + i + '"' + selected + '>' + i + '</option>';
+    }
+
+    document.getElementById("regularStartSchoolYear").innerHTML = option;
+})();
+</script> 
+
+
+<script>
+(() => {
+    let year_satart = 1940;
+    let year_end = (new Date).getFullYear(); // current year
+    let year_selected = 1992;
+
+    let option = '';
+    option = '<option value="">Year</option>'; // first option
+
+    for (let i = year_satart; i <= year_end; i++) {
+        let selected = (i === year_selected ? ' selected' : '');
+        option += '<option value="' + i + '"' + selected + '>' + i + '</option>';
+    }
+
+    document.getElementById("regularEndSchoolYear").innerHTML = option;
+})();
+</script> 
+
    <script src="{{asset('js/adminActualSchedule.js')}}"></script>
   <script src="{{asset('js/calendar.js')}}"></script>
   <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>

@@ -663,7 +663,7 @@ class UserController extends Controller
             if ($schedule->scheduleType == 'makeUpSchedule') {
                 $ERPSchedules[] = [
                     'id' =>   $schedule->scheduleID,
-                    'title' => $schedule->scheduleTitle . " - " . $schedule->instFirstName . " " . $schedule->instLastName,
+                    'title' => $schedule->courseName . " - " . $schedule->instFirstName . " " . $schedule->instLastName,
                     'startTime' => $schedule->startTime,
                     'endTime' => $schedule->endTime,
                     'startRecur' => $schedule->startDate,
@@ -1090,7 +1090,7 @@ class UserController extends Controller
             //--------------------------
             $id = Auth::id();
             $userID = DB::table('users')->where('id', $id)->value('idNumber');
-            $newSchedule = $request->input('scheduleTitle');
+          
 
             if ($validator->fails()) {
                 return response()->json([
@@ -1128,7 +1128,7 @@ class UserController extends Controller
                 date_default_timezone_set("Asia/Manila");
                 $date = date("Y-m-d");
                 $time = date("H:i:s");
-                $action = "Added Make Up Schedule ($newSchedule)";
+                $action = "Added Make Up Schedule";
                 DB::table('user_logs')->insert([
                     'userID' => $userID,
                     'action' => $action,
@@ -1163,7 +1163,7 @@ class UserController extends Controller
                 date_default_timezone_set("Asia/Manila");
                 $date = date("Y-m-d");
                 $time = date("H:i:s");
-                $action = "Added Make Up Schedule ($newSchedule)";
+                $action = "Added Make Up Schedule";
                 DB::table('user_logs')->insert([
                     'userID' => $userID,
                     'action' => $action,
