@@ -14,6 +14,8 @@ $(document).on('click', '.createRegularSchedule', function(e) {
       'scheduleStartDate': $('.scheduleStartDate').val(),
       'scheduleEndDate': $('.scheduleEndDate').val(),
       'scheduleWeekDay': $('.scheduleWeekDay').val(),
+      'regularStartSchoolYear': $('.regularStartSchoolYear').val(),
+      'regularEndSchoolYear': $('.regularEndSchoolYear').val(),
       'scheduleFaculty': $('.scheduleFaculty').val(),
      
     }
@@ -52,6 +54,10 @@ $(document).on('click', '.createRegularSchedule', function(e) {
           $('#scheduleEndDateError').addClass('error');
           $('#scheduleEditWeekDayError').html("");
           $('#scheduleEditWeekDayError').addClass('error');
+          $('#regularStartSchoolYearError').html("");
+          $('#regularStartSchoolYearError').addClass('error');
+          $('#regularEndSchoolYearError').html("");
+          $('#regularEndSchoolYearError').addClass('error');
           $('#scheduleFacultyError').html("");
           $('#scheduleFacultyError').addClass('error');
           
@@ -86,6 +92,12 @@ $(document).on('click', '.createRegularSchedule', function(e) {
           $.each(response.errors.scheduleWeekDay, function(key, err_value) {
             $('#scheduleEditWeekDayError').append('<li>' + err_value + '</li>');
           });
+          $.each(response.errors.regularStartSchoolYear, function(key, err_value) {
+            $('#regularStartSchoolYearError').append('<li>' + err_value + '</li>');
+          });
+          $.each(response.errors.regularEndSchoolYear, function(key, err_value) {
+            $('#regularEndSchoolYearError').append('<li>' + err_value + '</li>');
+          });
           $.each(response.errors.scheduleFaculty, function(key, err_value) {
             $('#scheduleFacultyError').append('<li>' + err_value + '</li>');
           });
@@ -101,6 +113,8 @@ $(document).on('click', '.createRegularSchedule', function(e) {
             $('#scheduleStartDateError').html("");
             $('#scheduleEndDateError').html("");
             $('#scheduleEditWeekDayError').html("");
+            $('#regularStartSchoolYearError').html("");
+            $('#regularEndSchoolYearError').html("");
             $('#scheduleFacultyError').html("");
             $('.createRegularSchedule').text('Create');
           $("#addRegularScheduleModal .close").click()
@@ -127,6 +141,8 @@ $(document).on('click', '.createRegularSchedule', function(e) {
           $('#scheduleStartDateError').html("");
           $('#scheduleEndDateError').html("");
           $('#scheduleEditWeekDayError').html("");
+          $('#regularStartSchoolYearError').html("");
+          $('#regularEndSchoolYearError').html("");
           $('#scheduleFacultyError').html("");
           $('.createRegularSchedule').text('Create');
         $("#addRegularScheduleModal .close").click()

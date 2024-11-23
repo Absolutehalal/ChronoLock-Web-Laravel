@@ -1254,13 +1254,12 @@
 (() => {
     let year_satart = 1940;
     let year_end = (new Date).getFullYear(); // current year
-    let year_selected = 1992;
 
     let option = '';
     option = '<option value="">Year</option>'; // first option
 
     for (let i = year_satart; i <= year_end; i++) {
-        let selected = (i === year_selected ? ' selected' : '');
+        let selected = (i === option ? ' selected' : '');
         option += '<option value="' + i + '"' + selected + '>' + i + '</option>';
     }
 
@@ -1272,13 +1271,12 @@
 (() => {
     let year_satart = 1940;
     let year_end = (new Date).getFullYear(); // current year
-    let year_selected = 1992;
 
     let option = '';
     option = '<option value="">Year</option>'; // first option
 
     for (let i = year_satart; i <= year_end; i++) {
-        let selected = (i === year_selected ? ' selected' : '');
+        let selected = (i === option ? ' selected' : '');
         option += '<option value="' + i + '"' + selected + '>' + i + '</option>';
     }
 
@@ -1291,13 +1289,12 @@
 (() => {
     let year_satart = 1940;
     let year_end = (new Date).getFullYear(); // current year
-    let year_selected = 1992;
 
     let option = '';
     option = '<option value="">Year</option>'; // first option
 
     for (let i = year_satart; i <= year_end; i++) {
-        let selected = (i === year_selected ? ' selected' : '');
+        let selected = (i === option ? ' selected' : '');
         option += '<option value="' + i + '"' + selected + '>' + i + '</option>';
     }
 
@@ -1310,13 +1307,12 @@
 (() => {
     let year_satart = 1940;
     let year_end = (new Date).getFullYear(); // current year
-    let year_selected = 1992;
 
     let option = '';
     option = '<option value="">Year</option>'; // first option
 
     for (let i = year_satart; i <= year_end; i++) {
-        let selected = (i === year_selected ? ' selected' : '');
+        let selected = (i === option ? ' selected' : '');
         option += '<option value="' + i + '"' + selected + '>' + i + '</option>';
     }
 

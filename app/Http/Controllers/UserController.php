@@ -735,8 +735,12 @@ class UserController extends Controller
                 'scheduleStartDate' => 'required',
                 'scheduleEndDate' => 'required',
                 'scheduleWeekDay' => 'required',
+                'regularStartSchoolYear' => 'required',
+                'regularEndSchoolYear' => 'required',
                 'scheduleFaculty' => 'required',
             ]);
+            $startSchoolYear = $request->input('regularStartSchoolYear');
+            $endSchoolYear = $request->input('regularEndSchoolYear');
             $checkDay = $request->input('scheduleWeekDay');
             $facultyID = $request->get('scheduleFaculty');
             $facultyFirstName = DB::table('users')->where('idNumber', $facultyID)->value('firstName');
@@ -813,6 +817,7 @@ class UserController extends Controller
                 $newRegularSchedule->startDate = $startDate;
                 $newRegularSchedule->endDate = $endDate;
                 $newRegularSchedule->day = $request->input('scheduleWeekDay');
+                $newRegularSchedule->schoolYear ="$startSchoolYear-$endSchoolYear";
                 $newRegularSchedule->scheduleStatus = 'unscheduled';
                 $newRegularSchedule->scheduleType = 'regularSchedule';
                 $newRegularSchedule->save();
@@ -1052,10 +1057,14 @@ class UserController extends Controller
                 'section' => 'required',
                 'makeUpScheduleStartTime' => 'required',
                 'makeUpScheduleEndTime' => 'required',
+                'makeUpStartSchoolYear' => 'required',
+                'makeUpEndSchoolYear' => 'required',
                 'faculty' => 'required',
             ]);
             $checkDay = $request->dayOfWeekString;
             // $scheduleTitle = $request->get('scheduleTitle');
+            $startSchoolYear = $request->get('makeUpStartSchoolYear');
+            $endSchoolYear = $request->get('makeUpEndSchoolYear');
             $facultyID = $request->get('faculty');
             // $duplicateScheduleTitle = DB::table('schedules')->where('scheduleTitle', $scheduleTitle)->get();
             $facultyFirstName = DB::table('users')->where('idNumber', $facultyID)->value('firstName');
@@ -1115,6 +1124,7 @@ class UserController extends Controller
                 $makeUpSchedule->program = $request->input('program');
                 $makeUpSchedule->year = $request->input('year');
                 $makeUpSchedule->section = $request->input('section');
+                $makeUpSchedule->schoolYear ="$startSchoolYear-$endSchoolYear";
                 $makeUpSchedule->startTime = $startTime;
                 $makeUpSchedule->endTime = $endTime;
                 $makeUpSchedule->startDate = $request->start_date;
@@ -1150,6 +1160,7 @@ class UserController extends Controller
                 $makeUpSchedule->program = $request->input('program');
                 $makeUpSchedule->year = $request->input('year');
                 $makeUpSchedule->section = $request->input('section');
+                $makeUpSchedule->schoolYear ="$startSchoolYear-$endSchoolYear";
                 $makeUpSchedule->startTime = $startTime;
                 $makeUpSchedule->endTime = $endTime;
                 $makeUpSchedule->startDate = $request->start_date;

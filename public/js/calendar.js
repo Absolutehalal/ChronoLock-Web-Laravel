@@ -102,6 +102,12 @@ document.addEventListener("DOMContentLoaded", function () {
                                         makeUpScheduleEndTime: $(
                                             ".makeUpScheduleEndTime"
                                         ).val(),
+                                        makeUpStartSchoolYear: $(
+                                            ".makeUpStartSchoolYear"
+                                        ).val(),
+                                        makeUpEndSchoolYear: $(
+                                            ".makeUpEndSchoolYear"
+                                        ).val(),
                                         start_date,
                                         end_date,
                                         dayOfWeekString,
@@ -159,6 +165,14 @@ document.addEventListener("DOMContentLoaded", function () {
                                                 );
                                                 $("#endTimeError").html("");
                                                 $("#endTimeError").addClass(
+                                                    "error"
+                                                );
+                                                $("#makeUpStartSchoolYearError").html("");
+                                                $("#makeUpStartSchoolYearError").addClass(
+                                                    "error"
+                                                );
+                                                $("#makeUpEndSchoolYearError").html("");
+                                                $("#makeUpEndSchoolYearError").addClass(
                                                     "error"
                                                 );
                                                 $("#facultyError").html("");
@@ -263,6 +277,30 @@ document.addEventListener("DOMContentLoaded", function () {
                                                     }
                                                 );
                                                 $.each(
+                                                    response.errors.makeUpStartSchoolYear,
+                                                    function (key, err_value) {
+                                                        $(
+                                                            "#makeUpStartSchoolYearError"
+                                                        ).append(
+                                                            "<li>" +
+                                                                err_value +
+                                                                "</li>"
+                                                        );
+                                                    }
+                                                );
+                                                $.each(
+                                                    response.errors.makeUpEndSchoolYear,
+                                                    function (key, err_value) {
+                                                        $(
+                                                            "#makeUpEndSchoolYearError"
+                                                        ).append(
+                                                            "<li>" +
+                                                                err_value +
+                                                                "</li>"
+                                                        );
+                                                    }
+                                                );
+                                                $.each(
                                                     response.errors.faculty,
                                                     function (key, err_value) {
                                                         $(
@@ -290,6 +328,8 @@ document.addEventListener("DOMContentLoaded", function () {
                                                 $("#sectionError").html("");
                                                 $("#startTimeError").html("");
                                                 $("#endTimeError").html("");
+                                                $("#makeUpStartSchoolYearError").html("");
+                                                $("#makeUpEndSchoolYearError").html("");
                                                 $("#facultyError").html("");
 
                                                 Swal.fire({
@@ -322,6 +362,8 @@ document.addEventListener("DOMContentLoaded", function () {
                                                 $("#sectionError").html("");
                                                 $("#startTimeError").html("");
                                                 $("#endTimeError").html("");
+                                                $("#makeUpStartSchoolYearError").html("");
+                                                $("#makeUpEndSchoolYearError").html("");
                                                 $("#facultyError").html("");
                                                 $(".addMakeUpSchedule").text(
                                                     "Create"
