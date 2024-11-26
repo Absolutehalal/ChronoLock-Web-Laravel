@@ -102,7 +102,8 @@ Route::group(['middleware' => ['auth', 'admin:Admin']], function () {
     Route::get('/preview-previous-schedule-pdf/{id}/{id2}', [PDFController::class, 'previewPreviousSchedulePDF'])->name('previewPreviousSchedulePDF');
     Route::get('/closeERPLaboratory', [ScheduleController::class, 'closeERPLaboratory'])->name('closeERPLaboratory');
     Route::get('/openERPLaboratory', [ScheduleController::class, 'openERPLaboratory'])->name('openERPLaboratory');
-
+    Route::get('/regularInstructorSchedule', [ScheduleController::class, 'regularInstructorSchedule'])->name('regularInstructorSchedule');
+    Route::get('/makeUpInstructorSchedule', [ScheduleController::class, 'makeUpInstructorSchedule'])->name('makeUpInstructorSchedule');
     Route::get('/get-Actual-Schedule', [UserController::class, 'getActualSchedule'])->name('getActualSchedule');
     Route::get('/getNotes/{id}/{id2}', [UserController::class, 'getNotes'])->name('getNotes');
     //--------END schedule Management Routes----------
@@ -129,7 +130,8 @@ Route::group(['middleware' => ['auth', 'admin:Admin']], function () {
     //--------END Admin student attendance Management ROUTES-----------
 
     //--------START Admin instructor attendance Management ROUTES------
-
+    
+    Route::get('/instructorIDAutoComplete', [AttendanceController::class, 'instructorIDAutoComplete'])->name('instructorIDAutoComplete');
     Route::get('/instructorAttendanceManagementPage', [AttendanceController::class, 'instructorAttendanceManagement'])->name('instructorAttendanceManagement');
     Route::get('/editInstructorAttendance/{id}', [AttendanceController::class, 'editInstructorAttendance'])->name('editAttendance');
     Route::put('/updateInstructorAttendance/{id}', [AttendanceController::class, 'updateInstructorAttendance'])->name('updateAttendance');
@@ -151,9 +153,7 @@ Route::group(['middleware' => ['auth', 'admin:Admin']], function () {
     Route::put('/activateRFID/{id}', [RFIDController::class, 'activateRFID'])->name('activateRFID');
     Route::get('/RFIDManagementPage', [RFIDController::class, 'RFIDManagement'])->name('RFIDManagement');
     Route::delete('/deleteUserRFID/{id}', [RFIDController::class, 'deleteUserRFID'])->name('deleteUserRFID');
-
     Route::get('/autocomplete', [RFIDController::class, 'autocomplete'])->name('autocomplete');
-
     Route::get('/autocompletePreviousSchedule', [PDFController::class, 'autocompletePreviousSchedule'])->name('autocompletePreviousSchedule');
     //--------End Admin Pending RFID ROUTES---------  
 

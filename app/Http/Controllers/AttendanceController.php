@@ -62,6 +62,25 @@ class AttendanceController extends Controller
         ]);
     }
 
+    public function instructorIDAutoComplete(Request $request)
+    {
+        $query = $request->get('query');
+        
+        // Modify the query to exclude users where RFID_Code is not null
+        $number = DB::table('attendances')
+            ->join('users', 'attendances.userID', '=', 'users.idNumber')
+            ->whereRaw("CONCAT(firstName, ' ', lastName) LIKE ?", ["%{$query}%"])
+            ->where('userType', 'Faculty')
+            ->distinct()
+            ->get(['idNumber', 'firstName', 'lastName', 'userType']);
+
+        if ($number->isNotEmpty()) {
+            return response()->json(['number' => $number]);
+        } else {
+            return response()->json(['status' => 400]);
+        }
+    }
+
     public function instructorAttendanceGeneration(Request $request)
     {
         try {

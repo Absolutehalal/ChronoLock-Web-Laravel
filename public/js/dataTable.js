@@ -600,19 +600,14 @@ $(document).ready(function () {
 
     // INSTRUCTOR FILTERS
     // Instructor Name
-    $(".filter-inst-id").on("click", function (e) {
-        e.preventDefault();
-        var instructorID = $(this).data("value");
-
-        // Update the selected inst_name in a hidden input (if needed)
-        $("#selectedInstID").val(instructorID);
-
+  
+    $(document).on('click', 'li', function() {
+        var instructorID = $(this).data('id');
         // Filter DataTable based on the selected inst_name
         attendanceTable.column(6).search(instructorID).draw();
-
-        // Toggle active class for visual indication
-        $(".filter-inst-id").removeClass("active");
-        $(this).addClass("active");
+        $('#instructorID').val($(this).data('id'));
+        $('#instructorIDList').empty();
+      
     });
 
     // Instructor Status

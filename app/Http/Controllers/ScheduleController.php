@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Attendance;
+use App\Models\User;
 use App\Models\Schedule;
 use App\Models\ClassList;
 use App\Imports\ScheduleImport;
@@ -49,6 +50,38 @@ class ScheduleController extends Controller
 
             toast('Import failed.', 'error')->autoClose(3000)->timerProgressBar()->showCloseButton();
             return redirect()->intended('/scheduleManagementPage');
+        }
+    }
+
+    public function regularInstructorSchedule(Request $request)
+    {
+        $query = $request->get('query');
+        
+        // Modify the query to exclude users where RFID_Code is not null
+        $number = User::whereRaw("CONCAT(firstName, ' ', lastName) LIKE ?", ["%{$query}%"])
+            ->where('userType', 'Faculty')
+            ->get(['idNumber', 'firstName', 'lastName', 'userType']);
+
+        if ($number->isNotEmpty()) {
+            return response()->json(['number' => $number]);
+        } else {
+            return response()->json(['status' => 400]);
+        }
+    }
+    
+    public function makeUpInstructorSchedule(Request $request)
+    {
+        $query = $request->get('query');
+        
+        // Modify the query to exclude users where RFID_Code is not null
+        $number = User::whereRaw("CONCAT(firstName, ' ', lastName) LIKE ?", ["%{$query}%"])
+            ->where('userType', 'Faculty')
+            ->get(['idNumber', 'firstName', 'lastName', 'userType']);
+
+        if ($number->isNotEmpty()) {
+            return response()->json(['number' => $number]);
+        } else {
+            return response()->json(['status' => 400]);
         }
     }
     public function closeERPLaboratory(){

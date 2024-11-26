@@ -283,6 +283,15 @@
 
               <div class="col-lg-6">
                 <ul id="facultyError"></ul>
+                <div class="form-group">
+                  <label for="faculty">Instructor</label>
+                  <input autocomplete="off" type="text" class="faculty form-control border border-dark" id="faculty" name="faculty" placeholder="Enter Instuctor Name">
+                  <ul id="makeUpScheduleInstructorList" class="list-group" style="max-height: 100px; overflow-y: auto; margin-top: 5px;"></ul>
+                </div>
+              </div>
+
+              <!-- <div class="col-lg-6">
+                <ul id="facultyError"></ul>
                 <form method="GET" action="{{ route('adminScheduleManagement') }}">
                 <label for="makeupinstIDDropdown">Instructor</label>
                   <button class="btn btn-primary btn-sm dropdown-toggle fw-bold" type="button" id="makeupInstIDDropdown" data-toggle="dropdown" aria-expanded="false">
@@ -303,7 +312,7 @@
                   </div>
                   <input type="hidden" class="faculty form-control" name="instructorID" id="selectedInstID">
                 </form>
-              </div>
+              </div> -->
 
               <div class="col-lg-6">
                 <ul id="startTimeError"></ul>
@@ -612,9 +621,16 @@
                   </div>
               </div>
 
-            
-
               <div class="col-lg-4">
+                <ul id="scheduleFacultyError"></ul>
+                <div class="form-group">
+                  <label for="scheduleFaculty">Instructor</label>
+                  <input autocomplete="off" type="text" class="scheduleFaculty form-control border border-dark" id="scheduleFaculty" name="scheduleFaculty" placeholder="Enter Instuctor Name">
+                  <ul id="regularScheduleInstructorList" class="list-group" style="max-height: 100px; overflow-y: auto; margin-top: 5px;"></ul>
+                </div>
+              </div>
+
+              <!-- <div class="col-lg-4">
                 <ul id="scheduleFacultyError"></ul>
                 <label for="facultyIDDropdown">Instructor</label>
                 <form id="" method="GET" action="{{ route('adminScheduleManagement') }}">
@@ -637,7 +653,7 @@
                     <input type="hidden" class="scheduleFaculty form-control" name="facultyID" id="selectedFacultyID">
                   </div>
                 </form>
-              </div>
+              </div> -->
             </div> <!-- Modal Boday End-->
 
             <!-- Modal Footer -->
@@ -1320,6 +1336,98 @@
 })();
 </script> 
 
+
+<script>
+    $(document).ready(function() {
+      $('#scheduleFaculty').on('keyup', function() {
+
+        $.ajaxSetup({
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
+        });
+
+        var query = $(this).val();
+        // console.log(query);
+
+        if (query.length > 0) {
+          $.ajax({
+            url: "{{ route('regularInstructorSchedule') }}",
+            type: "GET",
+            data: {
+              'query': query
+            },
+            success: function(response) {
+              $('#regularScheduleInstructorList').empty();
+
+              if (response.number && response.number.length > 0) {
+                response.number.forEach(function(item) {
+                  $('#regularScheduleInstructorList').append('<li class="list-group-item" data-id="' + item.idNumber + '" style="font-weight: bold; cursor:pointer; border: 1px solid #000; margin-bottom: 2px">' +
+                  item.idNumber + '-' + item.firstName + ' ' + item.lastName +'</li>');
+                });
+              } else {
+                $('#regularScheduleInstructorList').append('<li class="list-group-item" style="font-weight: bold; cursor:not-allowed; border: 1px solid #000; margin-bottom: 2px;pointer-events: none;">No results found</li>');
+              }
+            }
+          });
+        } else {
+          // $('#clearForm')[0].reset();
+          $('#regularScheduleInstructorList').empty();
+        }
+      });
+
+      $(document).on('click', 'li', function() {
+        $('#scheduleFaculty').val($(this).data('id'));
+        $('#regularScheduleInstructorList').empty();
+      });
+    });
+  </script>
+  
+  <script>
+    $(document).ready(function() {
+      $('#faculty').on('keyup', function() {
+
+        $.ajaxSetup({
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
+        });
+
+        var query = $(this).val();
+        // console.log(query);
+
+        if (query.length > 0) {
+          $.ajax({
+            url: "{{ route('makeUpInstructorSchedule') }}",
+            type: "GET",
+            data: {
+              'query': query
+            },
+            success: function(response) {
+              $('#makeUpScheduleInstructorList').empty();
+
+              if (response.number && response.number.length > 0) {
+                response.number.forEach(function(item) {
+                  $('#makeUpScheduleInstructorList').append('<li class="list-group-item" data-id="' + item.idNumber + '" style="font-weight: bold; cursor:pointer; border: 1px solid #000; margin-bottom: 2px">' +
+                  item.idNumber + '-' + item.firstName + ' ' + item.lastName +'</li>');
+                });
+              } else {
+                $('#makeUpScheduleInstructorList').append('<li class="list-group-item" style="font-weight: bold; cursor:not-allowed; border: 1px solid #000; margin-bottom: 2px;pointer-events: none;">No results found</li>');
+              }
+            }
+          });
+        } else {
+          // $('#clearForm')[0].reset();
+          $('#makeUpScheduleInstructorList').empty();
+        }
+      });
+
+      $(document).on('click', 'li', function() {
+        $('#faculty').val($(this).data('id'));
+        $('#makeUpScheduleInstructorList').empty();
+      });
+    });
+  </script>
    <script src="{{asset('js/adminActualSchedule.js')}}"></script>
   <script src="{{asset('js/calendar.js')}}"></script>
   <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>

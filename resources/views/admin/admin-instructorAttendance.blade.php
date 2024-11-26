@@ -65,8 +65,14 @@
         <div class="row">
           <div class="col-xl-9 col-md-9">
 
-            <div class="dropdown d-inline-block mb-3">
-              <form method="GET" action="{{ route('instructorAttendanceManagement') }}">
+          <div class="dropdown d-inline-block mb-3">
+            <div class="form-group" style="position: relative;">
+              <input autocomplete="off" type="text" class="instructorID form-control border border-dark" id="instructorID" name="instructorID" placeholder="Enter Instructor Name">
+              <ul id="instructorIDList" class="list-group" style="position: absolute; z-index: 1000; width: 100%; max-height: 100px; overflow-y: auto; margin-top: 5px;"></ul>
+            </div>
+          </div>
+             
+              <!-- <form method="GET" action="{{ route('instructorAttendanceManagement') }}">
                 <button class="btn btn-primary btn-sm dropdown-toggle fw-bold" type="button" id="instIDDropdown" data-toggle="dropdown" aria-expanded="false">
                   <i class="mdi mdi-alpha-i-box"></i>
                   Instructor ID
@@ -85,7 +91,7 @@
                 </div>
                 <input type="hidden" name="instructorID" id="selectedInstID">
               </form>
-            </div>
+            </div> -->
 
             <div class="dropdown d-inline-block mb-3">
               <form method="GET" action="{{ route('instructorAttendanceManagement') }}">
@@ -332,8 +338,53 @@
     $("#resetBtn").on("click", function(e) {
       e.preventDefault();
       // Reset the dropdown button to its default UI
+      $('#instructorID').val('');
       document.getElementById("instIDDropdown").innerHTML = instIDDropdown;
       document.getElementById("instStatusDropdown").innerHTML = instStatusDropdown;
+    });
+  </script>
+
+
+<script>
+    $(document).ready(function() {
+      $('#instructorID').on('keyup', function() {
+
+        $.ajaxSetup({
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
+        });
+
+        var query = $(this).val();
+        // console.log(query);
+
+        if (query.length > 0) {
+          $.ajax({
+            url: "{{ route('instructorIDAutoComplete') }}",
+            type: "GET",
+            data: {
+              'query': query
+            },
+            success: function(response) {
+              $('#instructorIDList').empty();
+
+              if (response.number && response.number.length > 0) {
+                response.number.forEach(function(item) {
+                  $('#instructorIDList').append('<li class="list-group-item" data-id="' + item.idNumber + '" style="font-weight: bold; cursor:pointer; border: 1px solid #000; margin-bottom: 2px">' +
+                  item.idNumber + '-' + item.firstName + ' ' + item.lastName +'</li>');
+                });
+              } else {
+                $('#instructorIDList').append('<li class="list-group-item" style="font-weight: bold; cursor:not-allowed; border: 1px solid #000; margin-bottom: 2px;pointer-events: none;">No results found</li>');
+              }
+            }
+          });
+        } else {
+          // $('#clearForm')[0].reset();
+          $('#instructorIDList').empty();
+        }
+      });
+
+      
     });
   </script>
   @include('footer')
