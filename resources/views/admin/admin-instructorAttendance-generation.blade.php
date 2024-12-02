@@ -236,6 +236,7 @@
 
   <script>
     document.addEventListener("DOMContentLoaded", function() {
+
       document.querySelectorAll('.remark-item').forEach(function(item) {
         item.addEventListener('click', function(e) {
           e.preventDefault();
@@ -243,6 +244,7 @@
           document.getElementById('selected_remarks').value = this.getAttribute('data-value');
         });
       });
+
       document.querySelectorAll('.id-item').forEach(function(item) {
         item.addEventListener('click', function(e) {
           e.preventDefault();
@@ -250,6 +252,7 @@
           document.getElementById('selected_id').value = this.getAttribute('data-value');
         });
       });
+
     });
   </script>
 
@@ -272,3 +275,6 @@
       });
     });
   </script>
+
+
+  @include('footer')

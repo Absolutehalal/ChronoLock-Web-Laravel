@@ -85,6 +85,7 @@
 
         <!-- END -->
 
+
         <!-- table -->
         <form action="{{ route('deleteSelectedUsers') }}" method="POST" id="bulkDeleteForm">
           @csrf
@@ -124,6 +125,8 @@
 
             </div>
         </form>
+
+
         <div class="card-body">
           <table id="exampleTable" class="table table-bordered table-hover nowrap" style="width:100%">
             <thead class="table-dark">
@@ -198,10 +201,10 @@
             </tbody>
           </table>
 
-          </div>
         </div>
       </div>
     </div>
+  </div>
   </div>
   </div>
   </div>
@@ -424,13 +427,13 @@
     </div>
   </div>
 
-
   <script>
     // Add event listener to the delete buttons
     document.addEventListener('DOMContentLoaded', function() {
       document.querySelectorAll('.deleteForceBtn').forEach(button => {
         button.addEventListener('click', function(e) {
           e.preventDefault();
+
           const id = this.value;
 
           Swal.fire({
@@ -460,11 +463,13 @@
     });
   </script>
 
-<script>
+
+  <script>
     // Function to handle both select/deselect and button click
     document.getElementById('selectAllBtn').addEventListener('click', function() {
       var checkBox = document.getElementById('selectAll');
       checkBox.checked = !checkBox.checked; // Toggle the checkbox state
+
       // Select/Deselect all checkboxes based on the state of 'selectAll'
       var checkboxes = document.querySelectorAll('.userCheckbox');
       for (var checkbox of checkboxes) {

@@ -163,6 +163,7 @@ document.addEventListener("DOMContentLoaded", function () {
         $("#idNumberError").empty();
     }
 });
+
 const profileShowPassword = document.querySelector("#show-password-profile");
 const profilePasswordField = document.querySelector("#edit-password");
 profileShowPassword.addEventListener("click", function () {
@@ -174,6 +175,7 @@ profileShowPassword.addEventListener("click", function () {
     // Toggle password field visibility
     profilePasswordField.setAttribute("type", type);
 });
+
 // function validateFieldPassword() {
 //     var passwordInput = document.getElementById("edit-password").value;
 //     if (!/^\d*$/.test(passwordInput)) {
@@ -191,16 +193,20 @@ profileShowPassword.addEventListener("click", function () {
 //         ); // Remove non-numeric characters
 //         return false; // Prevent form submission
 //     }
+
 //     return true; // Allow form submission
 // }
+
 document
     .querySelector(".update-profile")
     .addEventListener("click", function (e) {
         e.preventDefault(); // Prevent the default form submission behavior
+
         const passwordField = document.getElementById("edit-password");
         const password = passwordField.value;
+
         // Check if the password is less than 6 characters
-        if (password.length < 6 || password.length > 10) {
+        if (password !== "" && (password.length < 6 || password.length > 10)) {
             Swal.fire({
                 icon: "warning",
                 title: "Invalid Password",
@@ -209,7 +215,9 @@ document
                 confirmButtonText: "Okay",
             });
             return; // Exit the function to prevent form submission
-        }        
+        }
+            
+
         // Check if the password is more than 6 characters
         if (password.length > 10) {
             Swal.fire({
