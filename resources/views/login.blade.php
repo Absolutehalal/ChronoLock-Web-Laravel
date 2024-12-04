@@ -110,7 +110,7 @@
     <script>
         function validatePassword() {
             const password = document.getElementById('password').value;
-            if (password.length < 8 || password.length > 10) {
+            if (password.length < 6 || password.length > 10) {
                 Swal.fire({
                     icon: "info",
                     title: "Info",

@@ -17,42 +17,36 @@
                 <img src="{{ Auth::user()->avatar ?? asset('images/User Icon.png') }}" class="user-image rounded-circle" style="display: block; margin-left: auto; margin-right: auto; height: 110px; width: 110px" alt="User Image" />
               </div>
             </div>
-
             <div class="col-lg-6">
               <div class="form-group mt-4">
                 <label for="userType">User Type</label>
                 <input type="text" class="profile-userType form-control border-dark" value="{{ Auth::user()->userType }}" id="profile-userType" name="userType" disabled>
               </div>
             </div>
-
             <div class="col-lg-6">
               <div class="form-group mb-4">
                 <label for="firstName">First name</label>
                 <input type="text" class="profile-firstName form-control border-dark" value="{{ Auth::user()->firstName }}" id="profile-firstName" name="firstName" disabled>
               </div>
             </div>
-
             <div class="col-lg-6">
               <div class="form-group mb-4">
                 <label for="lastName">Last name</label>
                 <input type="text" class="profile-lastName form-control border-dark" value="{{ Auth::user()->lastName }}" id="profile-lastName" name="lastName" disabled>
               </div>
             </div>
-
             <div class="col-lg-6">
               <div class="form-group mb-4">
                 <label for="email">Email</label>
                 <input type="email" class="profile-email form-control border-dark" value="{{ Auth::user()->email }}" id="profile-email" name="email" disabled autocomplete="true">
               </div>
             </div>
-
             <div class="col-lg-6">
               <div class="form-group mb-4">
                 <label for="idNumber">ID Number</label>
                 <input type="text" class="profile-idNumber form-control border-dark" value="{{ Auth::user()->idNumber }}" id="profile-idNumber" name="idNumber" disabled>
               </div>
             </div>
-
           </div>
         </div>
         <div class="modal-footer px-4">
@@ -76,10 +70,8 @@
       </div>
       <div class="modal-body px-4">
         <form id="clearProfile" method="post" action="{{ route('profile.update', ['id' => Auth::id()]) }}">
-
           @csrf
           @method('put')
-
           <input type="hidden" id="profile_userID" class="form-control">
           <div class="row mb-2">
             <div class="col-lg-6">
@@ -87,14 +79,12 @@
                 <img src="{{ Auth::user()->avatar ?? asset('images/User Icon.png') }}" id="" class="user-image rounded-circle" style="display: block; margin-left: auto; margin-right: auto; height: 110px; width: 110px" alt="User Image" />
               </div>
             </div>
-
             <div class="col-lg-6">
               <div class="form-group mt-4">
                 <label for="edit-userType">User Type</label>
                 <input type="text" class="profile_userType form-control border-dark" id="edit-userType" name="update-userType" placeholder="Input User Type" readonly>
               </div>
             </div>
-
             <div class="col-lg-6">
               <ul id="firstNameError"></ul>
               <div class="form-group">
@@ -102,7 +92,6 @@
                 <input type="text" class="profile_firstName form-control border-dark" id="edit-firstName" name="update-firstName" placeholder="Input First Name">
               </div>
             </div>
-
             <div class="col-lg-6">
               <ul id="lastNameError"></ul>
               <div class="form-group">
@@ -110,8 +99,6 @@
                 <input type="text" class="profile_lastName form-control border-dark" id="edit-lastName" name="update-lastName" placeholder="Input Last Name">
               </div>
             </div>
-
-
             <div class="col-lg-4">
               <ul id="emailError"></ul>
               <div class="form-group mb-4">
@@ -119,7 +106,6 @@
                 <input type="email" class="profile_email form-control border-dark" id="edit-email" name="update-email" placeholder="Input Email">
               </div>
             </div>
-
             <div class="col-lg-4">
               <ul id="idNumberError"></ul>
               <div class="form-group mb-4">
@@ -127,7 +113,6 @@
                 <input type="text" class="profile_idNumber form-control border-dark" id="edit-idNumber" name="update-idNumber" placeholder="Input ID Number">
               </div>
             </div>
-
             <div class="col-lg-4">
               <ul id="passwordError"></ul>
               <label for="edit-password" class="form-label fw-bold">Password</label>
@@ -136,7 +121,6 @@
                 <i class="fa fa-eye-slash" id="show-password-profile"></i>
               </div>
             </div>
-
           </div>
           <div class="modal-footer px-4">
             <button type="button" class="btn btn-danger btn-pill" data-dismiss="modal" data-toggle="modal" data-target="#modal-profile">Cancel</button>
@@ -147,6 +131,7 @@
     </div>
   </div>
 </div>
+
 <!-- <script>
   
 </script>

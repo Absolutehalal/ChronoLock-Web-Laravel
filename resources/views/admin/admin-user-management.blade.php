@@ -1,17 +1,12 @@
 <!DOCTYPE html>
-
 <html lang="en" dir="ltr">
-
 <head>
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>ChronoLock Admin-User Management</title>
-
   @include('head')
-
 </head>
-
 <body class="navbar-fixed sidebar-fixed" id="body">
   <script>
     NProgress.configure({
@@ -20,7 +15,6 @@
     NProgress.start();
   </script>
   @include('sweetalert::alert')
-
   @include('admin.adminSideNav')
   <!-- ====================================
       ——— PAGE WRAPPER
@@ -28,13 +22,11 @@
   <div class="page-wrapper">
     <!-- Header -->
     @include('header')
-
     <!-- ====================================
         ——— CONTENT WRAPPER
         ===================================== -->
     <div class="content-wrapper">
       <div class="content">
-
         <div class="d-flex justify-content-between align-items-center">
           <!-- Navigation -->
           <nav aria-label="breadcrumb">
@@ -44,25 +36,21 @@
               <li class="breadcrumb-item active"><a href="{{ route('userManagement') }}">User Management</a></li>
             </ol>
           </nav>
-
           <!-- Live Date and Time -->
           <div>
             <p class="text-center date-time mb-3" id="liveDateTime">Your Date and Time</p>
           </div>
         </div>
-
         <div class="row">
           <div class="col-md-9 d-flex justify-content-start mb-2">
             <form action="{{ route('user.import') }}" method="post" enctype="multipart/form-data">
               @csrf
-
               <div class="dropdown d-inline-block mr-2">
                 <button class="btn btn-primary btn-sm fw-bold" type="submit">
                   <i class="mdi mdi-file-check"></i>
                   Import
                 </button>
               </div>
-
               <div class="dropdown d-inline-block">
                 <div class="custom-file rounded">
                   <input type="file" class="custom-file-input" id="excel-file" name="excel-file" required>
@@ -72,7 +60,6 @@
               </div>
             </form>
           </div>
-
           <div class="col-md-3 d-flex justify-content-end mb-2">
             <div class="dropdown d-inline-block mb-2 rounded-2">
               <button class="btn btn-warning btn-sm fw-bold" type="button" data-toggle="modal" data-target="#addUserModal">
@@ -85,48 +72,71 @@
 
         <!-- END -->
 
+
         <!-- table -->
         <form action="{{ route('deleteSelectedUsers') }}" method="POST" id="bulkDeleteForm">
           @csrf
+
+    
+        
+          
+    
+
+        
+        Expand All
+    
+    @@ -93,37 +94,31 @@
+  
           <div class="card card-default shadow">
             <div class="card-header">
               <h1>User Management</h1>
               <div class="row">
                 <div class="col-xl-12 col-md-12 d-flex justify-content-between">
+                  <div class="mb-3 mr-2">
+                    <button type="button" class="btn btn-outline-dark btn-sm fw-bold" id="selectAllBtn">
+                      <i class="mdi mdi-account"></i> Select All User
+                      <input type="hidden" class="btn btn-danger btn-sm fw-bold" id="selectAll" />
+                    </button>
+                  </div>
+
+                  <div class="mb-3 mr-2">
+                    <button type="button" class="btn btn-outline-danger btn-sm fw-bold" id="deleteSelectedBtn">
+                      <i class="mdi mdi-archive"></i> Delete Selected
+                    </button>
+                  </div>
+
                   <div class="mb-3">
-                    <!-- Dropdown Button -->
-                    <div class="dropdown">
-                      <button class="btn btn-outline-dark btn-sm fw-bold dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="mdi mdi-account"></i> User Actions
-                      </button>
-                      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <li>
-                          <button type="button" class="dropdown-item" id="selectAllBtn">
-                            <i class="mdi mdi-account"></i> Select All User
-                            <input type="hidden" class="btn btn-danger btn-sm fw-bold" id="selectAll" />
-                          </button>
-                        </li>
-                        <li>
-                          <button type="button" class="dropdown-item" id="deleteSelectedBtn">
-                            <i class="mdi mdi-archive"></i> Delete Selected
-                          </button>
-                        </li>
-                        <li>
-                          <a class="dropdown-item" href="archive">
-                            <i class="mdi mdi-archive"></i> Archives
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
+                    <a class="btn btn-outline-info btn-sm fw-bold" href="archive">
+                      <i class="mdi mdi-archive"></i> Archives
+                    </a>
                   </div>
                 </div>
               </div>
 
             </div>
         </form>
+
+
         <div class="card-body">
           <table id="exampleTable" class="table table-bordered table-hover nowrap" style="width:100%">
             <thead class="table-dark">
+
+    
+          
+            
+    
+
+          
+          Expand Down
+          
+            
+    
+
+          
+          Expand Up
+    
+    @@ -198,13 +193,13 @@
+  
               <tr>
                 <th>#</th>
                 <th>No.</th>
@@ -141,7 +151,6 @@
             </thead>
             <tbody>
               @php $counter = 1; @endphp
-
               @foreach ($users as $user)
               <tr>
                 <td class="text-center">
@@ -181,33 +190,46 @@
                       <button class="dropdown-item btn-sm deleteBtn" type="button" data-toggle="modal" data-target="#deleteUserModal" value="{{$user->id}}">
                         <i class="mdi mdi-archive text-info"></i>
                         Archive</button>
-
                       <button class="dropdown-item btn-sm deleteForceBtn" href="#" id="deleteUserBtn" value="{{$user->id}}">
                         <i class="mdi mdi-trash-can text-danger"></i>
                         Force Delete
                       </button>
-
-
                     </div>
                   </div>
                 </th>
               </tr>
-
               @php $counter++; @endphp
               @endforeach
             </tbody>
           </table>
 
-          </div>
         </div>
       </div>
     </div>
   </div>
   </div>
   </div>
+  </div>
 
 
 
+
+    
+          
+            
+    
+
+          
+          Expand Down
+          
+            
+    
+
+          
+          Expand Up
+    
+    @@ -424,13 +419,13 @@
+  
   <!-- Add User Modal -->
   <div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="addUser" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
@@ -222,7 +244,6 @@
           <form id="clearAddUser" method="post" action="{{route('addUser')}}">
             @csrf
             @method('post')
-
             <div class="row">
               <div class="col-lg-6">
                 <ul id="firstNameError"></ul>
@@ -231,7 +252,6 @@
                   <input type="text" class="form-control border border-dark border border-dark" id="firstName" name="firstName" placeholder="Enter First Name" />
                 </div>
               </div>
-
               <div class="col-lg-6">
                 <ul id="lastNameError"></ul>
                 <div class="form-group">
@@ -239,7 +259,6 @@
                   <input type="text" class="form-control border border-dark border border-dark" id="lastName" name="lastName" placeholder="Enter Last Name" />
                 </div>
               </div>
-
               <div class="col-lg-6">
                 <ul id="userTypeError"></ul>
                 <div class="form-group">
@@ -253,7 +272,6 @@
                   </select>
                 </div>
               </div>
-
               <div class="col-lg-6">
                 <ul id="emailError"></ul>
                 <div class="form-group">
@@ -261,7 +279,6 @@
                   <input type="text" class="form-control border border-dark" id="email" name="email" placeholder="Enter Email" autocomplete="true" oninput="this.value = this.value.toLowerCase()" />
                 </div>
               </div>
-
               <div class="col-lg-6">
                 <ul id="idNumberError"></ul>
                 <div class="form-group">
@@ -269,7 +286,6 @@
                   <input type="text" class="form-control border border-dark" id="idNumber" name="idNumber" placeholder="Enter ID Number" />
                 </div>
               </div>
-
               <div class="col-lg-6">
                 <ul id="passwordError"></ul>
                 <div class="form-group">
@@ -284,21 +300,16 @@
                 </div>
               </div>
             </div> <!-- Modal Boday End-->
-
             <!-- Modal Footer -->
             <div class="modal-footer">
               <button type="button" class="btn btn-danger btn-pill" id="downClose" data-dismiss="modal">Close</button>
               <button type="submit" class="btn btn-primary btn-pill addUser">Send</button>
             </div>
-
           </form>
-
         </div>
       </div>
     </div>
   </div>
-
-
   <!-- Delete User Modal -->
   <div class="modal fade" id="deleteUserModal" tabindex="-1" role="dialog" aria-labelledby="deleteUser" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -321,21 +332,16 @@
               <h4 style="text-align:center;"> Are you sure you want to archive this user?</h4>
             </div>
         </div> <!-- Modal Boday End-->
-
         <!-- Modal Footer -->
         <div class="modal-footer">
           <button type="button" class="btn btn-primary btn-pill" id="deleteClose" data-dismiss="modal">Close</button>
           <button type="submit" class="btn btn-danger btn-pill deleteUser">Archive</button>
         </div>
-
         </form>
-
       </div>
     </div>
   </div>
   </div>
-
-
   <!-- Update User Modal -->
   <div class="modal fade" id="updateUserModal" tabindex="-1" role="dialog" aria-labelledby="updateUser" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
@@ -347,41 +353,31 @@
           </button>
         </div>
         <div class="modal-body">
-
           <ul id="userError"></ul>
-
-
           <form method="post">
             @csrf
             @method('put')
-
             <input type="hidden" id="user_ID" class="id form-control ">
-
             <div class="row">
               <div class="col-lg-6">
                 <ul id="editFirstNameError"></ul>
                 <div class="form-group">
                   <label>First Name</label>
                   <input type="text" class="updateFirstName form-control border border-dark border border-dark" id="edit_firstName" name="updateFirstName" placeholder="Enter New First Name">
-
                 </div>
               </div>
-
               <div class="col-lg-6">
                 <ul id="editLastNameError"></ul>
                 <div class="form-group">
                   <label>Last Name</label>
                   <input type="text" class="updateLastName form-control border border-dark border border-dark" id="edit_lastName" name="updateLastName" placeholder="Enter New Last Name">
-
                 </div>
               </div>
-
               <div class="col-lg-6">
                 <ul id="editUserTypeError"></ul>
                 <div class="form-group">
                   <label>User Type</label>
                   <select class="updateUserType form-select form-control border border-dark" aria-label="Default select example" id="edit_userType" name="updateUserType">
-
                     <option selected hidden></option>
                     <option value="Admin">Admin</option>
                     <option value="Lab-in-Charge">Lab-in-Charge</option>
@@ -391,39 +387,31 @@
                   </select>
                 </div>
               </div>
-
               <div class="col-lg-6">
                 <ul id="editEmailError"></ul>
                 <div class="form-group">
                   <label>Email</label>
                   <input type="text" class="userEmail form-control border border-dark" id="edit_email" name="userEmail" placeholder="ex. chronolock@my.cspc.edu.ph" oninput="this.value = this.value.toLowerCase()">
-
                 </div>
               </div>
-
               <div class="col-lg-6">
                 <ul id="editUserIdError"></ul>
                 <div class="form-group">
                   <label>User ID Number</label>
                   <input type="text" class="userIdNumber form-control border border-dark" id="edit_userId_no" name="userIdNumber" placeholder="Enter User ID">
-
                 </div>
               </div>
             </div> <!-- Modal Boday End-->
-
             <!-- Modal Footer -->
             <div class="modal-footer">
               <button type="button" class="btn btn-danger btn-pill" id="updateClose" data-dismiss="modal">Close</button>
               <button type="submit" class="btn btn-primary btn-pill updateUser">Update</button>
             </div>
-
           </form>
-
         </div>
       </div>
     </div>
   </div>
-
 
   <script>
     // Add event listener to the delete buttons
@@ -432,8 +420,24 @@
         button.addEventListener('click', function(e) {
           e.preventDefault();
           const id = this.value;
-
           Swal.fire({
+
+    
+          
+            
+    
+
+          
+          Expand Down
+          
+            
+    
+
+          
+          Expand Up
+    
+    @@ -460,11 +455,13 @@
+  
             title: 'Are you sure?',
             text: "This action cannot be undone!",
             icon: 'warning',
@@ -460,7 +464,8 @@
     });
   </script>
 
-<script>
+
+  <script>
     // Function to handle both select/deselect and button click
     document.getElementById('selectAllBtn').addEventListener('click', function() {
       var checkBox = document.getElementById('selectAll');
@@ -468,11 +473,21 @@
       // Select/Deselect all checkboxes based on the state of 'selectAll'
       var checkboxes = document.querySelectorAll('.userCheckbox');
       for (var checkbox of checkboxes) {
+
+    
+          
+            
+    
+
+          
+          Expand Down
+    
+    
+  
         checkbox.checked = checkBox.checked;
       }
     });
   </script>
-
   <script>
     // Ensure that the script runs after the DOM is fully loaded
     document.addEventListener('DOMContentLoaded', function() {
@@ -485,7 +500,6 @@
       });
     });
   </script>
-
   <script>
     document.getElementById('deleteSelectedBtn').addEventListener('click', function(e) {
       Swal.fire({
@@ -503,20 +517,15 @@
       });
     });
   </script>
-
-
   <script>
     const firstName = document.getElementById("firstName");
     const lastName = document.getElementById("lastName");
     const userType = document.getElementById("userType");
     const email = document.getElementById("email");
     const password = document.getElementById("password");
-
-
     $(document).ready(function() {
       // fetchUsers();
       //   function fetchUsers(){
-
       // $.ajax({
       //     type: "GET",
       //     url: "/fetchUsers",
@@ -524,7 +533,6 @@
       //     success: function (response) {
       //       $('tbody').html("");
       //                 $.each(response.users, function (key, item) {
-
       //                     $('tbody').append('<tr>\
       //               <td>' + item.id + '</td>\
       //               <td>' + item.firstName + '</td>\
@@ -548,9 +556,7 @@
       //               </th>\
       //             </tr>');
       //                 });
-
       //             }
-
       //         });
       //       }
       $(document).on('click', '.addUser', function(e) {
@@ -564,13 +570,11 @@
           'password': $(password).val(),
           'idNumber': $(idNumber).val(),
         }
-
         $.ajaxSetup({
           headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
           }
         });
-
         $.ajax({
           type: "POST",
           url: "/userManagementPage",
@@ -626,18 +630,14 @@
                 if (result.isConfirmed) {
                   $('.addUser').text('Send');
                   $("#addUserModal .close").click()
-
                   // fetchUsers(); -----------reserve-------------
                   window.location.href = "{{route('userManagement')}}";
                 }
-
                 // $('.addUser').text('Save');
                 //             $("#addUserModal .close").click()
-
                 //             // fetchUsers(); -----------reserve-------------
                 //             setTimeout(function () { location.reload(1); }, 1000);
               });
-
             } else if (response.status == 100) {
               $('#firstNameError').html("");
               $('#lastNameError').html("");
@@ -651,7 +651,6 @@
                 title: "Oops...",
                 text: "Email already Exist. Please use a another Email.",
               });
-
             } else if (response.status === 101) {
               $('#firstNameError').html("");
               $('#lastNameError').html("");
@@ -680,7 +679,6 @@
                 timer: 5000,
                 timerProgressBar: true,
               });
-
             } else if (response.status === 409) {
               $('#firstNameError').html("");
               $('#lastNameError').html("");
@@ -696,21 +694,17 @@
                 timer: 5000,
                 timerProgressBar: true,
               });
-
               // $('.updateUser').text('Update');
               // $("#updateUserModal .close").click()
             }
           }
         });
-
       });
-
       $(document).on('click', '.editBtn', function(e) {
         e.preventDefault();
         var id = $(this).val();
         // console.log(userID);
         // // alert(userID);
-
         $.ajax({
           type: "GET",
           url: "/editUser/" + id,
@@ -734,18 +728,12 @@
             }
           }
         });
-
       });
-
-
-
       $(document).on('click', '.updateUser', function(e) {
         e.preventDefault();
-
         $(this).text('Updating..');
         var id = $('#user_ID').val();
         // alert(id);
-
         var data = {
           'updateFirstName': $('.updateFirstName').val(),
           'updateLastName': $('.updateLastName').val(),
@@ -758,7 +746,6 @@
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
           }
         });
-
         $.ajax({
           type: "PUT",
           url: "/updateUser/" + id,
@@ -807,12 +794,9 @@
                 text: "User Updated",
                 buttons: false,
               });
-
               $('.updateUser').text('Update');
               $("#updateUserModal .close").click()
-
               // $('#updateUserModal').find('input').val('');
-
               window.location.href = "{{route('userManagement')}}", 4000;
             } else if ((response.status == 300)) {
               $('#editFirstNameError').html("");
@@ -840,7 +824,6 @@
                 title: "Oops...",
                 text: "Email already exist. Please use another email.",
               });
-
               $("#updateUserModal .close").click()
             } else if (response.status === 409) {
               $('#editFirstNameError').html("");
@@ -855,31 +838,25 @@
                 timer: 5000,
                 timerProgressBar: true,
               });
-
               $('.updateUser').text('Update');
               $("#updateUserModal .close").click()
             }
           }
         });
       });
-
       $(document).on('mouseover', '.deleteBtn', function() {
         var id = $(this).val();
         $('#deleteID').val(id);
       });
-
       $(document).on('click', '.deleteUser', function(e) {
         e.preventDefault();
-
         $(this).text('Archiving..');
         var id = $('#deleteID').val();
-
         $.ajaxSetup({
           headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
           }
         });
-
         $.ajax({
           type: "DELETE",
           url: "/deleteUser/" + id,
@@ -894,7 +871,6 @@
                 title: "Oops...",
                 text: "No User Found",
               });
-
             } else {
               $('.deleteUser').text('Delete');
               $("#deleteUserModal .close").click()
@@ -904,25 +880,19 @@
                 text: "User Archived",
                 buttons: false,
               });
-
               window.location.href = "{{route('userManagement')}}", 4000;
             }
           }
         });
       });
-
     });
   </script>
-
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-
       $('#addUserModal').on('hidden.bs.modal', function() {
         $('#clearAddUser')[0].reset();
         clearAddUserErrors();
       });
-
-
       function clearAddUserErrors() {
         $('#firstNameError').empty();
         $('#lastNameError').empty();
@@ -932,7 +902,4 @@
       }
     });
   </script>
-
-
-
   @include('footer')

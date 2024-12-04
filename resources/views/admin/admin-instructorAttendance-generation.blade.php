@@ -271,4 +271,7 @@
         monthPicker.open();
       });
     });
-  </script>
+</script>
+
+
+@include('footer')
