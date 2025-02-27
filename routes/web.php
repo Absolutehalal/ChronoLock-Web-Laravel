@@ -225,14 +225,9 @@ Route::group(['middleware' => ['auth', 'faculty:Faculty']], function () {
 
 Route::group(['middleware' => ['auth', 'student:Student']], function () {
     Route::get('/student-dashboard', [StudentController::class, 'studentIndex'])->name('studentIndex');
-
     Route::get('/search-schedules', [StudentController::class, 'search']);
-
     Route::get('/student-view-schedule', [StudentController::class, 'studentViewSchedule'])->name('studentViewSchedule');
-
     Route::get('/upcoming-schedules', [StudentController::class, 'upcomingSchedules'])->name('upcomingSchedules');
-
-
     Route::get('/studentEditSchedule/{id}', [StudentMasterListController::class, 'studentEditSchedule'])->name('studentEditSchedule');
     Route::post('/student-view-schedule', [StudentMasterListController::class, 'enroll'])->name('enroll');
 
