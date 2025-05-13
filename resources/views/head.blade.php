@@ -33,7 +33,7 @@
     <link href="{{asset('plugins/nprogress/nprogress.css')}}" rel="stylesheet" />
 
     <link href="{{asset('plugins/jvectormap/jquery-jvectormap-2.0.3.css')}}" rel="stylesheet" />
-
+        
     <!-- Date Picker-->
     <!-- <link href="plugins/daterangepicker/daterangepicker.css" rel="stylesheet" /> -->
 

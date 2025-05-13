@@ -67,13 +67,15 @@ class RFIDController extends Controller
                 $RFID_Code = DB::table('users')->where('idNumber', $id)->value('RFID_Code');
                 if ($user && $RFID_Code == Null) {
 
+                    
+
+                    $user->RFID_Code = $request->input('Rfid_Code');
+                    $user->update();
+
                     $RFID_Account = new RfidAccount;
                     $RFID_Account->RFID_Code = $request->input('Rfid_Code');
                     $RFID_Account->RFID_Status = 'Activated';
                     $RFID_Account->save();
-
-                    $user->RFID_Code = $request->input('Rfid_Code');
-                    $user->update();
 
                     $tempRFIDCode->delete();
                     // Start Logs
